@@ -1,10 +1,13 @@
 package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -18,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Calendar;
 import java.util.Collections;
 
 public class Main2Activity extends AppCompatActivity implements View.OnClickListener {
@@ -27,6 +31,16 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     Button three_window;
     private static final int RC_SIGN_IN = 101;
 
+    
+    Button choisData;
+    TextView settext;
+    int year;
+    int month;
+    int dayOfmonth;
+    Calendar calendar;
+    DatePickerDialog datePickerDialog;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +49,31 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
         three_window = (Button) findViewById(R.id.three_window);
         three_window.setOnClickListener(this);
+
+
+//Add Calendar
+
+        choisData=findViewById(R.id.choisData);
+        settext=findViewById(R.id.settext);
+
+        choisData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calendar=Calendar.getInstance();
+                year=calendar.get(Calendar.YEAR);
+                month=calendar.get(Calendar.MONTH);
+                dayOfmonth=calendar.get(Calendar.DAY_OF_MONTH);
+                datePickerDialog=new DatePickerDialog(Main2Activity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                                settext.setText(day + "." + (month + 1) + "." + year);
+                            }
+                        }, year,month,dayOfmonth);
+                datePickerDialog.show();
+            }
+        });
+
 
 
         doPhoneLogin();
@@ -68,6 +107,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                 );
                 showAlertDialog(user);
                 btn_sign_out.setEnabled(true);
+                choisData.setEnabled(true);
                 String user_id = user.getPhoneNumber();
                 DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child("Customers").child(user_id);
                 current_user_db.setValue(user_id);
