@@ -33,8 +33,10 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     Button flight_4;
     Button btn_sign_out;
     Button three_window;
+    Button addFlight;
     TextView setnumber;
     TextView settext;
+    TextView word;
     Button choisData;
     int year;
     int month;
@@ -61,11 +63,13 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         flight_3 =(Button)findViewById(R.id.flight_3);
         flight_4 =(Button)findViewById(R.id.flight_4);
         setnumber = findViewById(R.id.setnumber);
+        word=findViewById(R.id.word);
 
 
 
-        three_window = (Button) findViewById(R.id.three_window);
-        three_window.setOnClickListener(this);
+
+       three_window = findViewById(R.id.three_window);
+       three_window.setOnClickListener(this);
 
 
         //ADD number flight
@@ -150,10 +154,10 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        flight_1 =findViewById(R.id.flight_1);
+       /* flight_1 =findViewById(R.id.flight_1);
         flight_2 =findViewById(R.id.flight_2);
         flight_3 =findViewById(R.id.flight_3);
-        flight_4 =findViewById(R.id.flight_4);
+        flight_4 =findViewById(R.id.flight_4);*/
         btn_sign_out =findViewById(R.id.btn_sign_out);
         three_window =findViewById(R.id.three_window);
 
@@ -180,7 +184,28 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
                 String user_id = user.getPhoneNumber();
                 DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child("Customers").child(user_id);
-                current_user_db.setValue(user_id);
+                current_user_db.setValue(true);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

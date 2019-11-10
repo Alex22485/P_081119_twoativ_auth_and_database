@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">P_081119_twoativ_auth_and_database</string>
+    <string name="vois" />
+    <string name="data" />
 </resources>
