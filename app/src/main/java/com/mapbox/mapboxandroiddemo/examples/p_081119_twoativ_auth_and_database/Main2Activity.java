@@ -15,6 +15,9 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Collections;
 
 public class Main2Activity extends AppCompatActivity implements View.OnClickListener {
@@ -65,6 +68,10 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                 );
                 showAlertDialog(user);
                 btn_sign_out.setEnabled(true);
+                String user_id = user.getPhoneNumber();
+                DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child("Customers").child(user_id);
+                current_user_db.setValue(user_id);
+
 
 
 
