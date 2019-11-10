@@ -27,18 +27,27 @@ import java.util.Collections;
 public class Main2Activity extends AppCompatActivity implements View.OnClickListener {
 
 
+    Button flight_1;
+    Button flight_2;
+    Button flight_3;
+    Button flight_4;
     Button btn_sign_out;
     Button three_window;
-    private static final int RC_SIGN_IN = 101;
-
-    
-    Button choisData;
+    TextView setnumber;
     TextView settext;
+    Button choisData;
     int year;
     int month;
     int dayOfmonth;
     Calendar calendar;
     DatePickerDialog datePickerDialog;
+
+    private static final int RC_SIGN_IN = 101;
+
+
+
+
+
 
 
     @Override
@@ -46,9 +55,52 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
+        //ADD number flight
+        flight_1 =(Button)findViewById(R.id.flight_1);
+        flight_2 =(Button)findViewById(R.id.flight_2);
+        flight_3 =(Button)findViewById(R.id.flight_3);
+        flight_4 =(Button)findViewById(R.id.flight_4);
+        setnumber = findViewById(R.id.setnumber);
+
+
 
         three_window = (Button) findViewById(R.id.three_window);
         three_window.setOnClickListener(this);
+
+
+        //ADD number flight
+        flight_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setnumber.setText("1");
+            }
+        });
+        flight_2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setnumber.setText("2");
+            }
+        });
+        flight_3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setnumber.setText("3");
+            }
+        });
+        flight_4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setnumber.setText("4");
+            }
+        });
+
+
+
+
+
+
+
+
 
 
 //Add Calendar
@@ -82,6 +134,8 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
 
 
+
+
     private void doPhoneLogin() {
         Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
                 .setIsSmartLockEnabled(!BuildConfig.DEBUG)
@@ -96,7 +150,16 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        btn_sign_out =(Button)findViewById(R.id.btn_sign_out);
+        flight_1 =findViewById(R.id.flight_1);
+        flight_2 =findViewById(R.id.flight_2);
+        flight_3 =findViewById(R.id.flight_3);
+        flight_4 =findViewById(R.id.flight_4);
+        btn_sign_out =findViewById(R.id.btn_sign_out);
+        three_window =findViewById(R.id.three_window);
+
+
+
+
         if (requestCode == RC_SIGN_IN) {
             IdpResponse idpResponse = IdpResponse.fromResultIntent(data);
 
@@ -108,6 +171,13 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                 showAlertDialog(user);
                 btn_sign_out.setEnabled(true);
                 choisData.setEnabled(true);
+
+                flight_1.setEnabled(true);
+                flight_2.setEnabled(true);
+                flight_3.setEnabled(true);
+                flight_4.setEnabled(true);
+                three_window.setEnabled(true);
+
                 String user_id = user.getPhoneNumber();
                 DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child("Customers").child(user_id);
                 current_user_db.setValue(user_id);
@@ -122,7 +192,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                  *   sign-in flow using the back button. Otherwise check
                  *   response.getError().getErrorCode() and handle the error.
                  */
-                Toast.makeText(getBaseContext(), "Ошибка Автоирзации", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Ошибка Авторизации", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -161,3 +231,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         }
     }
 }
+
+
+
+
