@@ -58,6 +58,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         if (requestCode == RC_SIGN_IN) {
             IdpResponse idpResponse = IdpResponse.fromResultIntent(data);
 
+
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser(
@@ -105,7 +106,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.three_window:
-                Intent intent = new Intent(this,Main3Activity.class);
+                Intent intent = new Intent(this,Main4Activity.class);
                 startActivity(intent);
                 // TODO Call second activity
                 break;
