@@ -1,5 +1,4 @@
 package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -57,7 +56,6 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         btn_sign_out =(Button)findViewById(R.id.btn_sign_out);
         if (requestCode == RC_SIGN_IN) {
             IdpResponse idpResponse = IdpResponse.fromResultIntent(data);
-
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
