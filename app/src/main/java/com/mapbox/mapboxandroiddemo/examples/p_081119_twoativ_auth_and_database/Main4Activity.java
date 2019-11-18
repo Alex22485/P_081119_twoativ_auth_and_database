@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,7 +25,7 @@ import java.util.Calendar;
 public class Main4Activity extends AppCompatActivity {
 
     Button btnInsert;
-    EditText Flight;
+    TextView Flight;
     FirebaseDatabase database;
     DatabaseReference ref;
     User user;
@@ -32,7 +33,7 @@ public class Main4Activity extends AppCompatActivity {
 
     // ADD Calendar
     Button choisData;
-    EditText Calend;
+    TextView Calend;
     int year;
     int month;
     int dayOfmonth;
