@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -52,10 +53,15 @@ public class Main4Activity extends AppCompatActivity {
     Button fly_4;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
+
+
+
 
 
         // ПРОБА
@@ -141,6 +147,7 @@ public class Main4Activity extends AppCompatActivity {
     };
 
     public void btnInsert (View view){
+
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -161,16 +168,39 @@ public class Main4Activity extends AppCompatActivity {
         });
 
 
+
+
     }
     public void btnout (View view){
-        ref.addValueEventListener(new ValueEventListener() {
+
+        DatabaseReference data_one=FirebaseDatabase.getInstance().getReference("Пользователь");
+        data_one.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                FirebaseUser bbb = FirebaseAuth.getInstance().getCurrentUser();
-                String user_id = bbb.getPhoneNumber();
-                //String vvv=FirebaseDatabase.getInstance().getReference().child("дата").equals()
-               Flightout.setText(user_id);
+                for (DataSnapshot calendout:dataSnapshot.getChildren()){
+
+                    String as =calendout.child("дата").getValue(String.class);
+
+
+                    Calendout.setText(as);
+
+                }
+
+                for (DataSnapshot flightout:dataSnapshot.getChildren()){
+
+                    String ad =flightout.child("рейс").getValue(String.class);
+
+                    Flightout.setText(ad);
+
+
+
+
+
+                }
+
+
+
             }
 
             @Override
@@ -178,6 +208,51 @@ public class Main4Activity extends AppCompatActivity {
 
             }
         });
+
+
+       /* ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                //FirebaseUser bbb = FirebaseAuth.getInstance().getCurrentUser();
+               // FirebaseDatabase ass =FirebaseDatabase.getInstance();
+             //  String user_id = bbb.getPhoneNumber();
+                //String vvv=FirebaseDatabase.getInstance().getReference().child("Пользователь").child("дата").getKey();
+             //  Flightout.setText(vvv);
+                ;
+               // Flightout.setText(user_id);
+
+
+                DatabaseReference dfd = FirebaseDatabase.getInstance().getReference("Пользователь").child("дата");
+                dfd.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String xzx=dataSnapshot.getValue(String.class);
+                        Flightout.setText(xzx);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+
+
+
+
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });*/
 
     }
 }
