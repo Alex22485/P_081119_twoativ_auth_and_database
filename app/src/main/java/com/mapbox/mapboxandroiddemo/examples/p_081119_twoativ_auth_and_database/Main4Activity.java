@@ -29,6 +29,11 @@ public class Main4Activity extends AppCompatActivity {
     DatabaseReference ref;
     User user;
 
+    //ПРОБА
+    Button btnout;
+    TextView Calendout;
+    TextView Flightout;
+
 
     // ADD Calendar
     Button choisData;
@@ -51,6 +56,12 @@ public class Main4Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
+
+
+        // ПРОБА
+        btnout=findViewById(R.id.btnout);
+        Calendout=findViewById(R.id.Calendout);
+        Flightout=findViewById(R.id.Flightout);
 
 
 
@@ -149,6 +160,24 @@ public class Main4Activity extends AppCompatActivity {
             }
         });
 
+
+    }
+    public void btnout (View view){
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                FirebaseUser bbb = FirebaseAuth.getInstance().getCurrentUser();
+                String user_id = bbb.getPhoneNumber();
+                //String vvv=FirebaseDatabase.getInstance().getReference().child("дата").equals()
+               Flightout.setText(user_id);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 }
