@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.os.health.UidHealthStats;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.util.UidVerifier;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -168,7 +170,8 @@ public class Main4Activity extends AppCompatActivity {
 
                 // база данных во главе ID пользователя далее дата и номер рейса
                 String user_id = mmm.getUid();
-// база данных во главе телефон далее дата и номер рейса
+
+                // база данных во главе телефон далее дата и номер рейса
                 //String user_id = mmm.getPhoneNumber();
 
                 ref.child(user_id).setValue(user);
@@ -190,12 +193,60 @@ public class Main4Activity extends AppCompatActivity {
 
 
 
+
+
         DatabaseReference data_one=FirebaseDatabase.getInstance().getReference("Пользователь");
 
         DatabaseReference data_two=FirebaseDatabase.getInstance().getReference().child("дата");
 
+        //Проба
 
-        data_two.addValueEventListener(new ValueEventListener() {
+        final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference usersRef = rootRef.child("Пользователь");
+
+        ValueEventListener valueEventListener= new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot mjm:dataSnapshot.getChildren()){
+
+
+
+
+                    //String as =calendout.child("дата").getValue(String.class);
+                    //  Calendout.setText(as);
+
+
+                    // Проба
+                    User uInfo = mjm.getValue(User.class);
+
+
+                    String ppp = uInfo.getДата();
+                    String ddd = uInfo.getPhone();
+                    String fff= uInfo.getРейс();
+
+                    Calendout.setText(ddd+"  "+ppp+"  "+"рейс№"+"  "+fff);
+                    Flightout.setText(uid);
+
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+
+        //Проба
+        usersRef.addListenerForSingleValueEvent(valueEventListener);
+
+
+
+//Рабочие коды
+       /* data_one.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -228,7 +279,8 @@ public class Main4Activity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        })*/
+        ;
 
 
        /* ref.addValueEventListener(new ValueEventListener() {
