@@ -29,6 +29,7 @@ public class Main4Activity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference ref;
     User user;
+    String Bnbn;
 
     //ПРОБА
     Button btnout;
@@ -64,7 +65,6 @@ public class Main4Activity extends AppCompatActivity {
 
 
 
-        // ПРОБА
         btnout=findViewById(R.id.btnout);
         Calendout=findViewById(R.id.Calendout);
         Flightout=findViewById(R.id.Flightout);
@@ -138,11 +138,22 @@ public class Main4Activity extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
+
+// добавить телефон пользователя в базу
+        FirebaseUser phone = FirebaseAuth.getInstance().getCurrentUser();
+        String Phone=phone.getPhoneNumber();
+        Bnbn=Phone;
+
+
+
     }
 
     private void  getValues(){
+
+        user.setPhone(Bnbn);
         user.setРейс(Flight.getText().toString());
         user.setДата(Calend.getText().toString());
+
 
     };
 
@@ -154,7 +165,11 @@ public class Main4Activity extends AppCompatActivity {
                 getValues();
 
                 FirebaseUser mmm = FirebaseAuth.getInstance().getCurrentUser();
-                String user_id = mmm.getPhoneNumber();
+
+                // база данных во главе ID пользователя далее дата и номер рейса
+                String user_id = mmm.getUid();
+// база данных во главе телефон далее дата и номер рейса
+                //String user_id = mmm.getPhoneNumber();
 
                 ref.child(user_id).setValue(user);
                 Toast.makeText(Main4Activity.this,"Data Insert....",Toast.LENGTH_LONG).show();
@@ -173,8 +188,14 @@ public class Main4Activity extends AppCompatActivity {
     }
     public void btnout (View view){
 
+
+
         DatabaseReference data_one=FirebaseDatabase.getInstance().getReference("Пользователь");
-        data_one.addValueEventListener(new ValueEventListener() {
+
+        DatabaseReference data_two=FirebaseDatabase.getInstance().getReference().child("дата");
+
+
+        data_two.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
