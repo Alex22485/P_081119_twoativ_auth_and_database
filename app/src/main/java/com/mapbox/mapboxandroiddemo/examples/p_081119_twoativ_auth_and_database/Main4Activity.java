@@ -31,7 +31,7 @@ public class Main4Activity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference ref;
     User user;
-    String Bnbn;
+    String Phone;
 
     //ПРОБА
     Button btnout;
@@ -143,8 +143,8 @@ public class Main4Activity extends AppCompatActivity {
 
 // добавить телефон пользователя в базу
         FirebaseUser phone = FirebaseAuth.getInstance().getCurrentUser();
-        String Phone=phone.getPhoneNumber();
-        Bnbn=Phone;
+        String addphone=phone.getPhoneNumber();
+        Phone=addphone;
 
 
 
@@ -152,7 +152,7 @@ public class Main4Activity extends AppCompatActivity {
 
     private void  getValues(){
 
-        user.setPhone(Bnbn);
+        user.setPhone(Phone);
         user.setРейс(Flight.getText().toString());
         user.setДата(Calend.getText().toString());
 
@@ -192,9 +192,31 @@ public class Main4Activity extends AppCompatActivity {
     public void btnout (View view){
 
 
+  //ЕЩЕ одна ПРОБА
+        FirebaseDatabase database=FirebaseDatabase.getInstance();
+        DatabaseReference myRef=database.getReference("Пользователь");
+        myRef.orderByChild("рейс").equalTo("3").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+
+                    Flightout.setText(childDataSnapshot.getKey()+"   "+childDataSnapshot.child("дата").getValue()+"   "+childDataSnapshot.child("phone").getValue());
+
+                   // Log.d(TAG, "PARENT: "+ childDataSnapshot.getKey());
+                   // Log.d(TAG,""+ childDataSnapshot.child("name").getValue());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
 //НОВАЯ ПРОБА
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Пользователь");
+       /* DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Пользователь");
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         ref.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -202,7 +224,8 @@ public class Main4Activity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String data=dataSnapshot.child("дата").getValue().toString();
                 String flight=dataSnapshot.child("рейс").getValue().toString();
-                Flightout.setText("Дата полета "+data+" "+"Рейс номер "+flight);
+                String phone=dataSnapshot.child("phone").getValue().toString();
+                Flightout.setText(phone+" "+"Дата полета "+data+" "+"Рейс номер "+flight);
 
             }
             @Override
