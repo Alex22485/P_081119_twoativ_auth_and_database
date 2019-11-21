@@ -192,10 +192,27 @@ public class Main4Activity extends AppCompatActivity {
     public void btnout (View view){
 
 
+//НОВАЯ ПРОБА
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Пользователь");
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        ref.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String data=dataSnapshot.child("дата").getValue().toString();
+                String flight=dataSnapshot.child("рейс").getValue().toString();
+                Flightout.setText("Дата полета "+data+" "+"Рейс номер "+flight);
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
 
 
 
-        DatabaseReference data_one=FirebaseDatabase.getInstance().getReference("Пользователь");
+       /* DatabaseReference data_one=FirebaseDatabase.getInstance().getReference("Пользователь");
 
         DatabaseReference data_two=FirebaseDatabase.getInstance().getReference().child("дата");
 
