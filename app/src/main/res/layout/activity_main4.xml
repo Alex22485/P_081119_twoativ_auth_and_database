@@ -196,13 +196,29 @@
             android:text="       "
             android:textSize="20dp" />
 
-
-        <TextView
-            android:id="@+id/Flightout"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="10dp" />
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/Flightout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorAccent"
+                android:textSize="10dp" />
+
+            <ListView
+                android:id="@+id/lv"
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
+
+            </ListView>
+
+        </RelativeLayout>
+
+
+
+
 
     </LinearLayout>
 

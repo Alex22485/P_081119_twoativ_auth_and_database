@@ -2,18 +2,16 @@ package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.os.health.UidHealthStats;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.common.util.UidVerifier;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,7 +19,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.Calendar;
 
 public class Main4Activity extends AppCompatActivity {
@@ -62,6 +59,8 @@ public class Main4Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
+
+        ListView lvMain=(ListView)findViewById(R.id.lv);
 
 
 
@@ -175,7 +174,7 @@ public class Main4Activity extends AppCompatActivity {
                 //String user_id = mmm.getPhoneNumber();
 
                 ref.child(user_id).setValue(user);
-                Toast.makeText(Main4Activity.this,"Data Insert....",Toast.LENGTH_LONG).show();
+                Toast.makeText(Main4Activity.this,"Заявка принята....",Toast.LENGTH_LONG).show();
 
             }
 
@@ -191,9 +190,71 @@ public class Main4Activity extends AppCompatActivity {
     }
     public void btnout (View view){
 
+        final ListView lvMain=(ListView)findViewById(R.id.lv);
+
+
+
+        // Проба ArrayList
+
+        DatabaseReference rootRef=FirebaseDatabase.getInstance().getReference();
+        DatabaseReference usersdRef = rootRef.child("Пользователь");
+        ValueEventListener eventListener=new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+
+                    String name = ds.child("рейс").getValue(String.class);
+
+                    Log.d("TAG", name);
+
+                 // array.add(name);
+
+                }
+              // ArrayAdapter<String> adapter = new ArrayAdapter(Main4Activity.this, android.R.layout.simple_list_item_1, array);
+
+               ArrayAdapter<CharSequence> adapter= ArrayAdapter.createFromResource(Main4Activity.this,R.array.day_of_weeks,android.R.layout.simple_list_item_1);
+                lvMain.setAdapter(adapter);
+
+
+               // mListView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        usersdRef .addListenerForSingleValueEvent(eventListener);
+
+
+
+        //Проба №3  orderByChild("дата").equalTo("22.11.2019")
+
+     /*   DatabaseReference ref=FirebaseDatabase.getInstance().getReference().child("Пользователь");
+
+        Query queries=ref.orderByChild("дата").equalTo("22.11.2019");
+        queries.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot nnn:dataSnapshot.getChildren()){
+
+
+
+                    Flightout.setText(nnn.child("дата").getValue()+"   "+nnn.child("phone").getValue()+"   "+nnn.child("рейс").getValue());
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });*/
+
 
   //ЕЩЕ одна ПРОБА
-        FirebaseDatabase database=FirebaseDatabase.getInstance();
+        /*FirebaseDatabase database=FirebaseDatabase.getInstance();
         DatabaseReference myRef=database.getReference("Пользователь");
         myRef.orderByChild("рейс").equalTo("3").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -211,7 +272,7 @@ public class Main4Activity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
 
 //НОВАЯ ПРОБА

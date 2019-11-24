@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">P_081119_twoativ_auth_and_database</string>
+    <string-array name="day_of_weeks">
+        <item>понедельник</item>
+
+    </string-array>
 </resources>
