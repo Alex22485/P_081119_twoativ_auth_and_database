@@ -9,6 +9,8 @@ public class User {
 
 
     public User() {
+
+
     }
 
     public User(String phone, String дата, String рейс) {

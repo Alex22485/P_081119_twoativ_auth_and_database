@@ -21,19 +21,28 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 
+
 public class Main4Activity extends AppCompatActivity {
 
     Button btnInsert;
     TextView Flight;
     FirebaseDatabase database;
     DatabaseReference ref;
+
+    FirebaseDatabase nextdatabase;
+    DatabaseReference nextref;
+
     User user;
+    //Новая ветка в базе Пользователи
+    UserTwo userTwo;
+
     String Phone;
 
+    //TextView proba;
     //ПРОБА
-    Button btnout;
-    TextView Calendout;
-    TextView Flightout;
+   // Button btnout;
+   // TextView Calendout;
+ //   TextView Flightout;
 
 
     // ADD Calendar
@@ -54,24 +63,17 @@ public class Main4Activity extends AppCompatActivity {
 
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
 
-        ListView lvMain=(ListView)findViewById(R.id.lv);
+      //  btnout=findViewById(R.id.btnout);
+     //   Calendout=findViewById(R.id.Calendout);
+     //   Flightout=findViewById(R.id.Flightout);
+       // proba=findViewById(R.id.proba);
 
-
-
-
-
-        btnout=findViewById(R.id.btnout);
-        Calendout=findViewById(R.id.Calendout);
-        Flightout=findViewById(R.id.Flightout);
-
-
-
+        //String ada=( valueOf( Calendout ) );
 
         Flight = findViewById(R.id.Flight);
 
@@ -84,14 +86,10 @@ public class Main4Activity extends AppCompatActivity {
 // ADD Calendar
         choisData=(Button)findViewById(R.id.choisData);
         Calend=findViewById(R.id.Calend);
-
-
-
-
         btnInsert = findViewById(R.id.btnInsert);
-        database = FirebaseDatabase.getInstance();
-        ref = database.getReference("Пользователь");
+
         user = new User();
+        userTwo=new UserTwo(  );
 
 
 
@@ -133,17 +131,22 @@ public class Main4Activity extends AppCompatActivity {
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                                Calend.setText(day + "." + (month + 1) + "." + year);
+                                Calend.setText(day + " " + (month + 1) + " " + year);
                             }
                         }, year,month,dayOfmonth);
                 datePickerDialog.show();
             }
         });
 
+
+
 // добавить телефон пользователя в базу
         FirebaseUser phone = FirebaseAuth.getInstance().getCurrentUser();
         String addphone=phone.getPhoneNumber();
         Phone=addphone;
+
+        //String addada=Calendout.getText().toString();
+        //ada=addada;
 
 
 
@@ -155,11 +158,17 @@ public class Main4Activity extends AppCompatActivity {
         user.setРейс(Flight.getText().toString());
         user.setДата(Calend.getText().toString());
 
+        userTwo.setПоездки("число8");
 
-    };
+
+    }
+
+
 
     public void btnInsert (View view){
 
+        database = FirebaseDatabase.getInstance();
+        ref = database.getReference("Заявки").child("Дата").child("В Красноярск").child( Calend.getText().toString() );
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -184,21 +193,44 @@ public class Main4Activity extends AppCompatActivity {
             }
         });
 
+        //Новая ветка в базе Пользователи
+       nextdatabase = FirebaseDatabase.getInstance();
+        nextref = nextdatabase.getReference("Пользователи");
+        nextref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                getValues();
 
+                FirebaseUser ccc = FirebaseAuth.getInstance().getCurrentUser();
+
+                // база данных во главе ID пользователя далее дата и номер рейса
+                //String user_id = mmm.getUid();
+
+                // база данных во главе телефон далее дата и номер рейса
+                String nextuser_id = ccc.getPhoneNumber();
+
+                nextref.child(nextuser_id).setValue(userTwo);
+                Toast.makeText(Main4Activity.this,"Заявка принята....",Toast.LENGTH_LONG).show();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
     }
-    public void btnout (View view){
+   /* public void btnout (View view){
 
         final ListView lvMain=(ListView)findViewById(R.id.lv);
-
-
 
         // Проба ArrayList
 
         DatabaseReference rootRef=FirebaseDatabase.getInstance().getReference();
         DatabaseReference usersdRef = rootRef.child("Пользователь");
-        ValueEventListener eventListener=new ValueEventListener() {
+       /* ValueEventListener eventListener=new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -238,8 +270,6 @@ public class Main4Activity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot nnn:dataSnapshot.getChildren()){
-
-
 
                     Flightout.setText(nnn.child("дата").getValue()+"   "+nnn.child("phone").getValue()+"   "+nnn.child("рейс").getValue());
 
@@ -426,8 +456,8 @@ public class Main4Activity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });*/
+        });
 
-    }
+    }*/
 }
 
