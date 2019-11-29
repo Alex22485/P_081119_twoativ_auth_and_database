@@ -7,81 +7,27 @@
     android:orientation="vertical"
     tools:context=".Main4Activity">
 
-
     <Button
         android:id="@+id/choisData"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Выберите дату поездки"
+        android:text="1 Выберите дату поездки"
         android:textSize="20dp">
     </Button>
 
-    <TextView
+    <Button
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:text=""
-        android:textSize="20dp" />
-
-
-    <TextView
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ВЫБЕРИТЕ НОМЕР РЕЙСА"
-        android:textSize="20dp" />
-
-    <LinearLayout
-        android:id="@+id/one"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_alignParentTop="true"
-        android:orientation="horizontal">
-
-
-        <Button
-            android:id="@+id/fly_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="№1"
-            android:layout_weight="1"
-            android:textSize="20dp"
-            />
-
-        <Button
-            android:id="@+id/fly_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="№2"
-            android:textSize="20dp" />
-
-        <Button
-            android:id="@+id/fly_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="№3"
-            android:layout_weight="1"
-            android:textSize="20dp"
-            />
-
-        <Button
-            android:id="@+id/fly_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="№4"
-            android:layout_weight="1"
-            android:textSize="20dp"
-            />
-
-
-    </LinearLayout>
-
+        android:text="2 Выберите номер рейса"
+        android:textSize="20dp"
+        android:onClick="btn_number_Flight">
+    </Button>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:text=""
         android:textSize="20dp" />
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -113,7 +59,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -125,7 +70,6 @@
             android:layout_height="wrap_content"
             android:text="       "
             android:textSize="20dp" />
-
 
         <TextView
             android:id="@+id/Flight"
@@ -142,8 +86,7 @@
         android:layout_height="wrap_content"
         android:text="Продолжить"
         android:textSize="25dp"
-        android:onClick="btnInsert"
-        />
+        android:onClick="btnInsert"/>
 
     </LinearLayout>
 

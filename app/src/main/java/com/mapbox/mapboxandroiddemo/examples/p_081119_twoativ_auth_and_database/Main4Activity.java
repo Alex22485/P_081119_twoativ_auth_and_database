@@ -1,8 +1,10 @@
 package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,16 +35,17 @@ public class Main4Activity extends AppCompatActivity {
     DatabaseReference nextref;
 
     User user;
+
     //Новая ветка в базе Пользователи
     UserTwo userTwo;
 
     String Phone;
 
-    //TextView proba;
-    //ПРОБА
-   // Button btnout;
-   // TextView Calendout;
- //   TextView Flightout;
+    /*TextView proba;
+   ПРОБА
+   Button btnout;
+   TextView Calendout;
+   TextView Flightout;*/
 
 
     // ADD Calendar
@@ -55,12 +58,14 @@ public class Main4Activity extends AppCompatActivity {
     DatePickerDialog datePickerDialog;
 
 
-    // Chois Data and number Flight
-    Button fly_1;
+    // Выбрать номер рейса Старый вариант
+    /*Button fly_1;
     Button fly_2;
     Button fly_3;
-    Button fly_4;
+    Button fly_4;*/
 
+    //Выбрать номер рейса Новый вариант
+    String[] listFlights = {"1","2","3","4"};
 
 
     @Override
@@ -68,19 +73,22 @@ public class Main4Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
 
-      //  btnout=findViewById(R.id.btnout);
-     //   Calendout=findViewById(R.id.Calendout);
-     //   Flightout=findViewById(R.id.Flightout);
-       // proba=findViewById(R.id.proba);
+      /* btnout=findViewById(R.id.btnout);
+     Calendout=findViewById(R.id.Calendout);
+     Flightout=findViewById(R.id.Flightout);
+       proba=findViewById(R.id.proba);
 
-        //String ada=( valueOf( Calendout ) );
+        String ada=( valueOf( Calendout ) );*/
 
         Flight = findViewById(R.id.Flight);
 
-        fly_1 =(Button)findViewById(R.id.fly_1);
+
+
+        // Выбрать номер рейса Старый вариант
+        /*fly_1 =(Button)findViewById(R.id.fly_1);
         fly_2 =(Button)findViewById(R.id.fly_2);
         fly_3 =(Button)findViewById(R.id.fly_3);
-        fly_4 =(Button)findViewById(R.id.fly_4);
+        fly_4 =(Button)findViewById(R.id.fly_4);*/
 
 
 // ADD Calendar
@@ -93,7 +101,10 @@ public class Main4Activity extends AppCompatActivity {
 
 
 
-        fly_1.setOnClickListener(new View.OnClickListener() {
+
+
+//Выбрать номер рейса старый вариант
+      /*  fly_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Flight.setText("1");
@@ -116,7 +127,7 @@ public class Main4Activity extends AppCompatActivity {
             public void onClick(View v) {
                 Flight.setText("4");
             }
-        });
+        });*/
 
 
 
@@ -145,11 +156,29 @@ public class Main4Activity extends AppCompatActivity {
         String addphone=phone.getPhoneNumber();
         Phone=addphone;
 
-        //String addada=Calendout.getText().toString();
-        //ada=addada;
+        /*String addada=Calendout.getText().toString();
+        ada=addada;*/
 
 
 
+    }
+
+    //Выбрать номер рейса Новый вариант
+    public void btn_number_Flight (View view){
+
+        AlertDialog.Builder builder=new AlertDialog.Builder( Main4Activity.this );
+        builder.setTitle( "Выбирите Номер рейса");
+        builder.setCancelable( false );
+        builder.setItems( listFlights, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+
+                Flight.setText(listFlights[which]);
+
+            }
+        } );
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void  getValues(){
@@ -158,6 +187,7 @@ public class Main4Activity extends AppCompatActivity {
         user.setРейс(Flight.getText().toString());
         user.setДата(Calend.getText().toString());
 
+        // Запись во вторую ветку БД Пользователи
         userTwo.setПоездки("число8");
 
 
@@ -168,7 +198,7 @@ public class Main4Activity extends AppCompatActivity {
     public void btnInsert (View view){
 
         database = FirebaseDatabase.getInstance();
-        ref = database.getReference("Заявки").child("Дата").child("В Красноярск").child( Calend.getText().toString() );
+        ref = database.getReference("Заявки").child("В Красноярск").child( Calend.getText().toString() ).child("Маршрут 1").child("Рейс номер"+" "+Flight.getText().toString()  );
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
