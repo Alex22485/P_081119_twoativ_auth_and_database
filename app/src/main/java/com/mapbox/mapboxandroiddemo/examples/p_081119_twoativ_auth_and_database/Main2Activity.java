@@ -28,17 +28,11 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-
         three_window = (Button) findViewById(R.id.three_window);
         three_window.setOnClickListener(this);
 
-
         doPhoneLogin();
-
     }
-
-
-
     private void doPhoneLogin() {
         Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
                 .setIsSmartLockEnabled(!BuildConfig.DEBUG)
@@ -53,7 +47,9 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         btn_sign_out =(Button)findViewById(R.id.btn_sign_out);
+
         if (requestCode == RC_SIGN_IN) {
             IdpResponse idpResponse = IdpResponse.fromResultIntent(data);
 
@@ -64,21 +60,14 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                 );
                 showAlertDialog(user);
                 btn_sign_out.setEnabled(true);
-
-
-
-
-            } else {
-                /**
-                 *   Sign in failed. If response is null the user canceled the
-                 *   sign-in flow using the back button. Otherwise check
-                 *   response.getError().getErrorCode() and handle the error.
-                 */
+                three_window.setEnabled(true);
+            }
+            else {
                 Toast.makeText(getBaseContext(), "Ошибка Автоирзации", Toast.LENGTH_LONG).show();
             }
         }
     }
-
+// Всплывающая информация
     public void showAlertDialog(FirebaseUser user) {
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
                 Main2Activity.this);
@@ -87,15 +76,14 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         mAlertDialog.setTitle("Авторизация успешна");
 
         // Set Message
-        mAlertDialog.setMessage(" Номер телефона " + user.getPhoneNumber());
-
-        mAlertDialog.setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+        mAlertDialog
+                .setMessage(" Номер телефона " + user.getPhoneNumber())
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
             }
         });
         mAlertDialog.create();
-
         // Showing Alert Message
         mAlertDialog.show();
     }

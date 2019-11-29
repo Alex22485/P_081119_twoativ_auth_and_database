@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -84,6 +86,7 @@ public class Main4Activity extends AppCompatActivity {
 
 
 
+
         // Выбрать номер рейса Старый вариант
         /*fly_1 =(Button)findViewById(R.id.fly_1);
         fly_2 =(Button)findViewById(R.id.fly_2);
@@ -98,6 +101,11 @@ public class Main4Activity extends AppCompatActivity {
 
         user = new User();
         userTwo=new UserTwo(  );
+
+
+
+
+
 
 
 
@@ -159,9 +167,62 @@ public class Main4Activity extends AppCompatActivity {
         /*String addada=Calendout.getText().toString();
         ada=addada;*/
 
+       /* if (Calend.getText().length() == 0){
+            btnInsert.setEnabled( true );
 
+        }*/
+
+
+
+
+        /*Calend.addTextChangedListener(new TextWatcher() {
+            @Override public void afterTextChanged(Editable s) {
+                btnInsert.setEnabled(Calend.length() > 0);
+            }
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            } @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+        }); */
+
+
+
+
+      /* if (Calend.getText().toString().equals( null )) {
+        btnInsert.setEnabled( false );
+
+        }
+        else {btnInsert.setEnabled( true );
+        }*/
+
+
+// Disable Button it Text is Empty
+        Calend.addTextChangedListener( loginTextWather );
+        Flight.addTextChangedListener( loginTextWather );
 
     }
+
+    private TextWatcher loginTextWather = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            String calendInput =Calend.getText().toString().trim();
+            String flightInput =Flight.getText().toString().trim();
+
+            btnInsert.setEnabled(!calendInput.isEmpty()&& !flightInput.isEmpty() );
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
+    };
 
     //Выбрать номер рейса Новый вариант
     public void btn_number_Flight (View view){
