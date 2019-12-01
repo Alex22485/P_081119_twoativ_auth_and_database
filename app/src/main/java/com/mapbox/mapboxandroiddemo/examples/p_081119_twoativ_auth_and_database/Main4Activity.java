@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -28,7 +29,7 @@ import java.util.Calendar;
 
 public class Main4Activity extends AppCompatActivity {
 
-    Button btnInsert;
+    Button btnInsert,btnStatus;
     TextView Flight;
     FirebaseDatabase database;
     DatabaseReference ref;
@@ -83,6 +84,7 @@ public class Main4Activity extends AppCompatActivity {
         String ada=( valueOf( Calendout ) );*/
 
         Flight = findViewById(R.id.Flight);
+        btnStatus=findViewById( R.id.btnStatus );
 
 
 
@@ -171,10 +173,6 @@ public class Main4Activity extends AppCompatActivity {
             btnInsert.setEnabled( true );
 
         }*/
-
-
-
-
         /*Calend.addTextChangedListener(new TextWatcher() {
             @Override public void afterTextChanged(Editable s) {
                 btnInsert.setEnabled(Calend.length() > 0);
@@ -184,28 +182,20 @@ public class Main4Activity extends AppCompatActivity {
 
             }
         }); */
-
-
-
-
       /* if (Calend.getText().toString().equals( null )) {
         btnInsert.setEnabled( false );
-
         }
         else {btnInsert.setEnabled( true );
         }*/
-
 
 // Disable Button it Text is Empty
         Calend.addTextChangedListener( loginTextWather );
         Flight.addTextChangedListener( loginTextWather );
 
     }
-
     private TextWatcher loginTextWather = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
         }
 
         @Override
@@ -215,9 +205,7 @@ public class Main4Activity extends AppCompatActivity {
             String flightInput =Flight.getText().toString().trim();
 
             btnInsert.setEnabled(!calendInput.isEmpty()&& !flightInput.isEmpty() );
-
         }
-
         @Override
         public void afterTextChanged(Editable editable) {
 
@@ -259,7 +247,7 @@ public class Main4Activity extends AppCompatActivity {
     public void btnInsert (View view){
 
         database = FirebaseDatabase.getInstance();
-        ref = database.getReference("Заявки").child("В Красноярск").child( Calend.getText().toString() ).child("Маршрут 1").child("Рейс номер"+" "+Flight.getText().toString()  );
+        ref = database.getReference("Заявки").child("Аэропорт-Красноярск").child( Calend.getText().toString() ).child("Маршрут 1").child("Рейс номер"+" "+Flight.getText().toString()  );
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -275,6 +263,9 @@ public class Main4Activity extends AppCompatActivity {
 
                 ref.child(user_id).setValue(user);
                 Toast.makeText(Main4Activity.this,"Заявка принята....",Toast.LENGTH_LONG).show();
+                //Видимость кнопки Проверить статус
+                btnStatus.setEnabled( true );
+
 
             }
 
@@ -313,6 +304,12 @@ public class Main4Activity extends AppCompatActivity {
 
 
     }
+    public void btnStatus(View view){
+        Intent zxz = new Intent( this,Main5Activity.class );
+        startActivity( zxz);
+
+    };
+
    /* public void btnout (View view){
 
         final ListView lvMain=(ListView)findViewById(R.id.lv);

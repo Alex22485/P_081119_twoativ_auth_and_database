@@ -55,9 +55,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser(
-
-                );
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 showAlertDialog(user);
                 btn_sign_out.setEnabled(true);
                 three_window.setEnabled(true);

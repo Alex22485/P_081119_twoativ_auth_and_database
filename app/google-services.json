@@ -15,11 +15,56 @@
       },
       "oauth_client": [
         {
+          "client_id": "946579597964-ab56igtkj03b54ba0uh3bbekmaspnl2l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database",
+            "certificate_hash": "de838e28b756a78269a7cd6442320f8d114e5430"
+          }
+        },
+        {
           "client_id": "946579597964-vgmkijtfr32a6comlba1d5u3hegktqdk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database",
             "certificate_hash": "a8a43910467e861085552a4f60bd04ae3deaf6a3"
+          }
+        },
+        {
+          "client_id": "946579597964-uvnr2k7993in6iblk8c36nh23th7fror.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-4nbD3PHqGbfSvYRL_hVSjsOqvPHAFe0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "946579597964-uvnr2k7993in6iblk8c36nh23th7fror.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:946579597964:android:5b000d3e2873a6058de9a9",
+        "android_client_info": {
+          "package_name": "ru.startandroid.develop.server_one"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "946579597964-lv727gug4uufmg1bgookcnskol6u030f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.startandroid.develop.server_one",
+            "certificate_hash": "de838e28b756a78269a7cd6442320f8d114e5430"
           }
         },
         {
