@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,6 +40,8 @@ public class Main6Activity extends AppCompatActivity {
     ArrayAdapter ad;
     String[] array={};
 
+    TextView oder_Ok;
+
 
 
 
@@ -48,10 +51,18 @@ public class Main6Activity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main6 );
 
+        oder_Ok=findViewById( R.id.oder_Ok );
         btnStatus = findViewById( R.id.btnStatus );
         mAuth= FirebaseAuth.getInstance(  );
         FirebaseUser user=mAuth.getCurrentUser();
-        userID=user.getUid();
+
+        //полуаем номер телефона пользователя
+        userID=user.getPhoneNumber();
+
+        //полуаем номер ID пользователя
+        //userID=user.getUid();
+
+
         Log.d("TAG", userID);
 
 
@@ -65,8 +76,54 @@ public class Main6Activity extends AppCompatActivity {
 
 public void btnStatus(View view){
 
+    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Пользователи");
+    rootRef.orderByChild( userID ).addChildEventListener( new ChildEventListener() {
+        @Override
+        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            String data=dataSnapshot.child( "дата" ).getValue(String.class);
+            String map=dataSnapshot.child( "направление" ).getValue(String.class);
+            String roar_number=dataSnapshot.child( "маршрут_номер" ).getValue(String.class);
+            String road_name=dataSnapshot.child( "маршрут_название" ).getValue(String.class);
+            String flidht_number=dataSnapshot.child( "рейс_самолета" ).getValue(String.class);
+
+
+            basa.add( "Дата:"+" "+data+"  "+map+" "+roar_number+":"+" "+road_name+" "+"Рейс самолета №"+" "+flidht_number );
+            ad.notifyDataSetChanged();
+
+
+        }
+
+        @Override
+        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    } );
+
+    oder_Ok.setText( "Спасибо, Ваш заказ принят!" );
+
+
+
+
+
+
 // ВАЖНЫЙ ПРИМЕР!!! извлечение конкретных данных из CHILD
-    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Заявки")
+   /* DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Заявки")
             .child("Аэропорт-Красноярск")
             .child( "8 12 2019" )
             .child( "Маршрут 1")
@@ -104,7 +161,7 @@ public void btnStatus(View view){
         public void onCancelled(@NonNull DatabaseError databaseError) {
 
         }
-    } );
+    } );*/
 
 
 

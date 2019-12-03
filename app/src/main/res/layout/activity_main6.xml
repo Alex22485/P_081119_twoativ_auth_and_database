@@ -7,23 +7,80 @@
     android:orientation="vertical"
     tools:context=".Main6Activity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:text=""
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Статус Заказа"
+            android:layout_weight="0"
+            android:textSize="25sp"/>
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:text=""
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Информация о пользователе"
-        android:textSize="25sp"/>
+        android:layout_height="15sp" />
 
-    <Button
-        android:id="@+id/btnStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Проверить базу"
-        android:onClick="btnStatus"/>
-
-    <ListView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btnStatus"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:text="Обновить данные"
+            android:layout_weight="5"
+            android:textSize="15sp"
+            android:onClick="btnStatus"/>
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+
+
+
+    <ListView
         android:id="@+id/listwiew"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="179dp"
+        android:cacheColorHint="@color/colorRed" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="15sp" />
+    <TextView
+        android:id="@+id/oder_Ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorRed"
+        android:textSize="25sp"/>
+
+
 
 </LinearLayout>

@@ -237,7 +237,14 @@ public class Main4Activity extends AppCompatActivity {
         user.setДата(Calend.getText().toString());
 
         // Запись во вторую ветку БД Пользователи
+
+        userTwo.setДата(Calend.getText().toString());
+        userTwo.setНаправление("Аэропорт-Красноярск");
+        userTwo.setМаршрут_номер("Маршрут 1");
+        userTwo.setМаршрут_название("Аэропорт-КрасТэц");
+        userTwo.setРейс_самолета(Flight.getText().toString());
         userTwo.setПоездки("число8");
+
 
 
     }
