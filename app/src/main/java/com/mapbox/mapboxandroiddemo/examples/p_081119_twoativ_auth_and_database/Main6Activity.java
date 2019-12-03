@@ -107,7 +107,54 @@ public void btnStatus(View view){
     } );
 
 
+
+    // ВАЖНЫЙ ПРИМЕР!!! извлечение ВСЕХ данных из всех CHILDs КОНКРЕТНОГО ПОЛЬЗОВАТЕЛЯ
    /* DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Заявки")
+            .child("Аэропорт-Красноярск")
+            .child( "8 12 2019" )
+            .child( "Маршрут 1")
+            .child( "Рейс номер 1" )
+            .child( userID );
+    // слово "photo" может быть вообще любым даже не совпадать с названием child. В listView получается каждое значение child в новой строке!!!!
+    rootRef.orderByChild( "photo" ).addChildEventListener( new ChildEventListener() {
+        @Override
+        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+
+            String data=dataSnapshot.getValue(String.class);
+
+            basa.add( data );
+            ad.notifyDataSetChanged();
+
+
+
+        }
+
+        @Override
+        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    } );*/
+
+
+
+
+   /* Старье не работает !!!!!DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Заявки")
             .child("Аэропорт-Красноярск")
             .child( "8 12 2019" )
             .child( "Маршрут 1")
