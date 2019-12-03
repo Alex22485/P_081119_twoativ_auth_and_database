@@ -305,7 +305,7 @@ public class Main4Activity extends AppCompatActivity {
 
     }
     public void btnStatus(View view){
-        Intent zxz = new Intent( this,Main5Activity.class );
+        Intent zxz = new Intent( this,Main6Activity.class );
         startActivity( zxz);
 
     };

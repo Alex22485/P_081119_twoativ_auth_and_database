@@ -1,81 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Main5Activity">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/choisData"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="1 Выберите Дату поездки"/>
-            <Button
-                android:id="@+id/choisMap"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="2 Выберите Маршрут"
-                android:onClick="showDialog_6"/>
-        </LinearLayout>
-        <Button
-            android:id="@+id/choisFlight"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="3 Выберите Номер Рейса"
-            android:onClick="showDialog_7"/>
-        <TextView
-            android:id="@+id/Calend"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:hint="Дата поездки" />
-        <TextView
-            android:id="@+id/pushMap"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:hint="Вариант маршрута"/>
-        <TextView
-            android:id="@+id/pushflight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:hint="Номер рейса"/>
-        <Button
-            android:id="@+id/btnInsert"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Найти заявки"
-            android:enabled="false"
-            android:onClick="btnInsert"
-            />
-
-        <Button
-            android:id="@+id/btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Переход в на другой лист"
-            android:onClick="next_list2"/>
-
-        <ListView
-            android:id="@+id/lv2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    </LinearLayout>
-
-</LinearLayout>
+ </LinearLayout>
