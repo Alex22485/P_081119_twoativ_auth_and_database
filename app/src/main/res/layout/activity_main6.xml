@@ -80,6 +80,12 @@
         android:layout_height="wrap_content"
         android:textColor="@color/colorRed"
         android:textSize="25sp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Данные с базы"
+        android:textSize="30sp"
+        android:id="@+id/edTextfromBD"/>
 
 
 

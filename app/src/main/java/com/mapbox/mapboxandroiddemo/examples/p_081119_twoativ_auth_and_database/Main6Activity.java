@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 
 import java.util.ArrayList;
@@ -33,6 +35,7 @@ public class Main6Activity extends AppCompatActivity {
 
     Button btnStatus;
     String userID;
+    String userI;
     FirebaseAuth mAuth;
     ListView listwiew;
 
@@ -41,6 +44,7 @@ public class Main6Activity extends AppCompatActivity {
     String[] array={};
 
     TextView oder_Ok;
+    EditText edTextfromBD;
 
 
 
@@ -53,11 +57,14 @@ public class Main6Activity extends AppCompatActivity {
 
         oder_Ok=findViewById( R.id.oder_Ok );
         btnStatus = findViewById( R.id.btnStatus );
+
+        edTextfromBD=findViewById( R.id.edTextfromBD );
         mAuth= FirebaseAuth.getInstance(  );
         FirebaseUser user=mAuth.getCurrentUser();
 
         //полуаем номер телефона пользователя
         userID=user.getPhoneNumber();
+        userI=user.getUid();
 
         //полуаем номер ID пользователя
         //userID=user.getUid();
@@ -76,8 +83,53 @@ public class Main6Activity extends AppCompatActivity {
 
 public void btnStatus(View view){
 
-    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Пользователи");
-    rootRef.orderByChild( userID ).addChildEventListener( new ChildEventListener() {
+
+
+    Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userI )
+            .orderByChild( userID );
+    aaa.addChildEventListener( new ChildEventListener() {
+        @Override
+        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            String data=dataSnapshot.child( "дата" ).getValue(String.class);
+            String map=dataSnapshot.child( "направление" ).getValue(String.class);
+            String roar_number=dataSnapshot.child( "маршрут_номер" ).getValue(String.class);
+            String road_name=dataSnapshot.child( "маршрут_название" ).getValue(String.class);
+            String flidht_number=dataSnapshot.child( "рейс_самолета" ).getValue(String.class);
+
+            basa.add( "Дата:"+" "+data+"  "+map+" "+roar_number+":"+" "+road_name+" "+"Рейс самолета №"+" "+flidht_number );
+            ad.notifyDataSetChanged();
+
+            edTextfromBD.setText( data );
+
+        }
+
+        @Override
+        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    } );
+    oder_Ok.setText( "Спасибо, Ваш заказ принят!" );
+
+
+// рабочий код возвращает правда всех юзеров
+    //DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Пользователи");
+    /*rootRef.orderByChild( userID ).addChildEventListener( new ChildEventListener() {
         @Override
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
@@ -113,9 +165,9 @@ public void btnStatus(View view){
         public void onCancelled(@NonNull DatabaseError databaseError) {
 
         }
-    } );
+    } );*/
 
-    oder_Ok.setText( "Спасибо, Ваш заказ принят!" );
+
 
 
 

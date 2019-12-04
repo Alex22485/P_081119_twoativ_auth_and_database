@@ -282,9 +282,14 @@ public class Main4Activity extends AppCompatActivity {
             }
         });
 
+        FirebaseUser mmm = FirebaseAuth.getInstance().getCurrentUser();
+
+        // база данных во главе ID пользователя далее дата и номер рейса
+        String user_i = mmm.getUid();
+
         //Новая ветка в базе Пользователи
        nextdatabase = FirebaseDatabase.getInstance();
-        nextref = nextdatabase.getReference("Пользователи");
+        nextref = nextdatabase.getReference("Пользователи").child(user_i);
         nextref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
