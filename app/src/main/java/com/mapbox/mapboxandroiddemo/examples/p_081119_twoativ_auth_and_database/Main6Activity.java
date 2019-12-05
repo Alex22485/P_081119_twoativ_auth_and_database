@@ -37,14 +37,15 @@ public class Main6Activity extends AppCompatActivity {
     String userID;
     String userI;
     FirebaseAuth mAuth;
-    ListView listwiew;
 
+    // создание ListView
+    /*ListView listwiew;
     List<String> basa=new ArrayList<String>(  );
     ArrayAdapter ad;
-    String[] array={};
+    String[] array={};*/
 
-    TextView oder_Ok;
-    EditText edTextfromBD;
+    TextView oder_Ok,Calend_Out,flight_number_Out,Map,road_number_out,road_name_out;
+
 
 
 
@@ -58,7 +59,12 @@ public class Main6Activity extends AppCompatActivity {
         oder_Ok=findViewById( R.id.oder_Ok );
         btnStatus = findViewById( R.id.btnStatus );
 
-        edTextfromBD=findViewById( R.id.edTextfromBD );
+        Calend_Out=findViewById( R.id.Calend_Out );
+        flight_number_Out=findViewById( R.id.flight_number_Out );
+        Map=findViewById( R.id.Map );
+        road_number_out=findViewById( R.id.road_number_out );
+        road_name_out=findViewById( R.id.road_name_out );
+
         mAuth= FirebaseAuth.getInstance(  );
         FirebaseUser user=mAuth.getCurrentUser();
 
@@ -72,21 +78,21 @@ public class Main6Activity extends AppCompatActivity {
 
         Log.d("TAG", userID);
 
-
-        listwiew=findViewById( R.id.listwiew );
+// прослушивание listwiew
+        /*listwiew=findViewById( R.id.listwiew );
         basa=new ArrayList<String>( Arrays.asList( array ) );
         ad= new ArrayAdapter<>( this,android.R.layout.simple_list_item_1,basa );
-        listwiew.setAdapter( ad );
+        listwiew.setAdapter( ad );*/
 
     }
 
-
+// Вызов Личного статуса заказа вкладка пользователи "Пользователи"
 public void btnStatus(View view){
 
 
 
-    Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userI )
-            .orderByChild( userID );
+    Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userID )
+            .orderByChild( userI );
     aaa.addChildEventListener( new ChildEventListener() {
         @Override
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -97,10 +103,16 @@ public void btnStatus(View view){
             String road_name=dataSnapshot.child( "маршрут_название" ).getValue(String.class);
             String flidht_number=dataSnapshot.child( "рейс_самолета" ).getValue(String.class);
 
-            basa.add( "Дата:"+" "+data+"  "+map+" "+roar_number+":"+" "+road_name+" "+"Рейс самолета №"+" "+flidht_number );
-            ad.notifyDataSetChanged();
+            // установка данных в listwiew
+            /*basa.add( "Дата:"+" "+data+"  "+map+" "+roar_number+":"+" "+road_name+" "+"Рейс самолета №"+" "+flidht_number );
+            ad.notifyDataSetChanged();*/
 
-            edTextfromBD.setText( data );
+
+            Calend_Out.setText( data );
+            Map.setText( map );
+            road_number_out.setText( roar_number );
+            road_name_out.setText( road_name );
+            flight_number_Out.setText( flidht_number );
 
         }
 

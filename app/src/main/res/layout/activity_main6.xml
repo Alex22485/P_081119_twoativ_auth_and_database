@@ -62,30 +62,116 @@
             android:layout_weight="1"/>
 
     </LinearLayout>
-
-
-
-
-    <ListView
-        android:id="@+id/listwiew"
-        android:layout_width="match_parent"
-        android:layout_height="179dp"
-        android:cacheColorHint="@color/colorRed" />
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="15sp" />
+        android:layout_height="7sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Дата: "
+            android:textSize="20sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="чч мм гг"
+            android:textSize="20sp"
+            android:textColor="@color/colorRed"
+            android:id="@+id/Calend_Out"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="  "
+            android:textSize="20sp"
+             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Рейс самолета:  "
+            android:textSize="20sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="№"
+            android:textColor="@color/colorRed"
+            android:textSize="20sp"
+            android:id="@+id/flight_number_Out"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="5sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="направление   "
+            android:textColor="@color/colorRed"
+            android:textSize="20sp"
+            android:id="@+id/Map"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="5sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="номер маршрута"
+            android:textSize="20sp"
+            android:textColor="@color/colorRed"
+            android:id="@+id/road_number_out"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=" :"
+            android:textSize="20sp"
+            android:textColor="@color/colorRed"/>
+
+    </LinearLayout>
+
+
+        <TextView
+        android:layout_width="match_parent"
+        android:layout_height="5sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="название маршрута"
+            android:textColor="@color/colorRed"
+            android:textSize="20sp"
+            android:id="@+id/road_name_out"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40sp" />
     <TextView
         android:id="@+id/oder_Ok"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/colorRed"
-        android:textSize="25sp"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Данные с базы"
-        android:textSize="30sp"
-        android:id="@+id/edTextfromBD"/>
+        android:textSize="30sp"/>
 
 
 

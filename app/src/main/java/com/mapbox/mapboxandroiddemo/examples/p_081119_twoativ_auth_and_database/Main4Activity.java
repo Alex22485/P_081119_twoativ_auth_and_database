@@ -261,10 +261,8 @@ public class Main4Activity extends AppCompatActivity {
                 getValues();
 
                 FirebaseUser mmm = FirebaseAuth.getInstance().getCurrentUser();
-
                 // база данных во главе ID пользователя далее дата и номер рейса
                 String user_id = mmm.getUid();
-
                 // база данных во главе телефон далее дата и номер рейса
                 //String user_id = mmm.getPhoneNumber();
 
@@ -285,7 +283,7 @@ public class Main4Activity extends AppCompatActivity {
         FirebaseUser mmm = FirebaseAuth.getInstance().getCurrentUser();
 
         // база данных во главе ID пользователя далее дата и номер рейса
-        String user_i = mmm.getUid();
+        String user_i = mmm.getPhoneNumber();
 
         //Новая ветка в базе Пользователи
        nextdatabase = FirebaseDatabase.getInstance();
@@ -295,14 +293,9 @@ public class Main4Activity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 getValues();
 
+                //вызов
                 FirebaseUser ccc = FirebaseAuth.getInstance().getCurrentUser();
-
-                // база данных во главе ID пользователя далее дата и номер рейса
-                //String user_id = mmm.getUid();
-
-                // база данных во главе телефон далее дата и номер рейса
-                String nextuser_id = ccc.getPhoneNumber();
-
+                String nextuser_id = ccc.getUid();
                 nextref.child(nextuser_id).setValue(userTwo);
                 Toast.makeText(Main4Activity.this,"Заявка принята....",Toast.LENGTH_LONG).show();
 
