@@ -313,7 +313,10 @@ public class Main4Activity extends AppCompatActivity {
         Intent zxz = new Intent( this,Main6Activity.class );
         startActivity( zxz);
 
-    };
+    }
+
+
+
 
    /* public void btnout (View view){
 

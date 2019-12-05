@@ -7,10 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
 
@@ -22,13 +19,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 
 public class Main6Activity extends AppCompatActivity {
+
+
+    FirebaseDatabase userReference;
+    DatabaseReference nextref;
 
 
 
@@ -36,6 +35,8 @@ public class Main6Activity extends AppCompatActivity {
     Button btnStatus;
     String userID;
     String userI;
+
+
     FirebaseAuth mAuth;
 
     // создание ListView
@@ -45,6 +46,9 @@ public class Main6Activity extends AppCompatActivity {
     String[] array={};*/
 
     TextView oder_Ok,Calend_Out,flight_number_Out,Map,road_number_out,road_name_out;
+    TextView number;
+
+    int a,c;
 
 
 
@@ -58,6 +62,8 @@ public class Main6Activity extends AppCompatActivity {
 
         oder_Ok=findViewById( R.id.oder_Ok );
         btnStatus = findViewById( R.id.btnStatus );
+
+        number = findViewById( R.id.number );
 
         Calend_Out=findViewById( R.id.Calend_Out );
         flight_number_Out=findViewById( R.id.flight_number_Out );
@@ -77,6 +83,7 @@ public class Main6Activity extends AppCompatActivity {
 
 
         Log.d("TAG", userID);
+
 
 // прослушивание listwiew
         /*listwiew=findViewById( R.id.listwiew );
@@ -103,6 +110,16 @@ public void btnStatus(View view){
             String road_name=dataSnapshot.child( "маршрут_название" ).getValue(String.class);
             String flidht_number=dataSnapshot.child( "рейс_самолета" ).getValue(String.class);
 
+            // Эксперименты с числами. Работает!!!!!
+            /*int b = Integer.parseInt(flidht_number);
+            a=7;
+            c=a+b;
+            String f=Integer.toString(c);
+            number.setText( f );*/
+
+
+
+
             // установка данных в listwiew
             /*basa.add( "Дата:"+" "+data+"  "+map+" "+roar_number+":"+" "+road_name+" "+"Рейс самолета №"+" "+flidht_number );
             ad.notifyDataSetChanged();*/
@@ -113,6 +130,30 @@ public void btnStatus(View view){
             road_number_out.setText( roar_number );
             road_name_out.setText( road_name );
             flight_number_Out.setText( flidht_number );
+
+// ПРОБА
+            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Заявки")
+                    .child("Аэропорт-Красноярск")
+                    .child( data )
+                    .child( roar_number );
+            DatabaseReference usersdRef = rootRef.child( flidht_number );
+            ValueEventListener valueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+
+
+                        String flight = ds.child("рейс").getValue(String.class);
+                        number.setText(flight);
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            };usersdRef.addListenerForSingleValueEvent(valueEventListener);
 
         }
 
@@ -137,6 +178,9 @@ public void btnStatus(View view){
         }
     } );
     oder_Ok.setText( "Спасибо, Ваш заказ принят!" );
+
+
+
 
 
 // рабочий код возвращает правда всех юзеров
