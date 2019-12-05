@@ -297,7 +297,7 @@ public class Main4Activity extends AppCompatActivity {
                 FirebaseUser ccc = FirebaseAuth.getInstance().getCurrentUser();
                 String nextuser_id = ccc.getUid();
                 nextref.child(nextuser_id).setValue(userTwo);
-                Toast.makeText(Main4Activity.this,"Заявка принята....",Toast.LENGTH_LONG).show();
+                //Toast.makeText(Main4Activity.this,"Заявка принята....",Toast.LENGTH_LONG).show();
 
             }
 

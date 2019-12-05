@@ -89,6 +89,10 @@
         android:enabled="false"
         android:textSize="20sp"
         android:onClick="btnInsert"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40sp"/>
     <Button
         android:id="@+id/btnStatus"
         android:layout_width="match_parent"
