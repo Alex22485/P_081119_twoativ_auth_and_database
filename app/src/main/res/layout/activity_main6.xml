@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
         <TextView
             android:layout_width="0sp"
             android:layout_height="match_parent"
@@ -21,9 +20,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Статус Заказа"
             android:layout_weight="0"
-            android:textSize="25sp"/>
+            android:text="Статус Заказа"
+            android:textSize="25sp" />
 
         <TextView
             android:layout_width="0sp"
@@ -82,7 +81,7 @@
             android:layout_height="wrap_content"
             android:hint="чч мм гг"
             android:textSize="20sp"
-            android:textColor="@color/colorRed"
+            android:textColor="@color/fui_bgEmail"
             android:id="@+id/Calend_Out"/>
         <TextView
             android:layout_width="wrap_content"
@@ -101,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="№"
-            android:textColor="@color/colorRed"
+            android:textColor="@color/fui_bgEmail"
             android:textSize="20sp"
             android:id="@+id/flight_number_Out"/>
     </LinearLayout>
@@ -119,7 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="направление   "
-            android:textColor="@color/colorRed"
+            android:textColor="@color/fui_bgEmail"
             android:textSize="20sp"
             android:id="@+id/Map"/>
     </LinearLayout>
@@ -138,14 +137,15 @@
             android:layout_height="wrap_content"
             android:hint="номер маршрута"
             android:textSize="20sp"
-            android:textColor="@color/colorRed"
+            android:textColor="@color/fui_bgEmail"
             android:id="@+id/road_number_out"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=" :"
-            android:textSize="20sp"
-            android:textColor="@color/colorRed"/>
+            android:text=":"
+            android:textColor="@color/fui_bgEmail"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -158,27 +158,244 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="название маршрута"
-            android:textColor="@color/colorRed"
+            android:textColor="@color/fui_bgEmail"
             android:textSize="20sp"
             android:id="@+id/road_name_out"/>
 
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="40sp" />
-    <TextView
-        android:id="@+id/oder_Ok"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorRed"
-        android:textSize="30sp"/>
+        android:layout_height="20sp" />
 
-    <TextView
-        android:id="@+id/number"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorRed"
-        android:textSize="30sp"/>
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:hint="заявка оформлена  Х"
+            android:textColor="@color/colorRed"
+            android:textSize="20sp" />
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/process"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:hint="|"
+            android:textColor="@color/colorRed"
+            android:textSize="13sp" />
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/process1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:hint="|"
+            android:textColor="@color/colorRed"
+            android:textSize="13sp" />
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/information"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:hint="идет формирование маршрута:"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp" />
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+        <TextView
+            android:id="@+id/information2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="(уже зарегистрировано"
+            android:layout_weight="0"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp" />
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+        android:layout_width="0sp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/people"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="  "
+            android:textSize="20sp"
+            android:textColor="@color/colorNew" />
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="  "
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/people2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="человек(а))"
+            android:layout_weight="0"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp" />
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/process2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:hint="|"
+            android:textColor="@color/colorRed"
+            android:textSize="13sp" />
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/process3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:hint="|"
+            android:textColor="@color/colorRed"
+            android:textSize="13sp" />
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/searchCar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:hint="идет поиск автомобиля:"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp" />
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+
+
+
 
 
 

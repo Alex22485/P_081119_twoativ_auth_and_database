@@ -5,18 +5,16 @@ public class User {
     private String Phone;
     private String Дата;
     private String Рейс;
-
-
+    private Integer Число;
 
     public User() {
-
-
     }
 
-    public User(String phone, String дата, String рейс) {
+    public User(String phone, String дата, String рейс, Integer число) {
         Phone = phone;
         Дата = дата;
         Рейс = рейс;
+        Число = число;
     }
 
     public String getPhone() {
@@ -41,6 +39,14 @@ public class User {
 
     public void setРейс(String рейс) {
         Рейс = рейс;
+    }
+
+    public Integer getЧисло() {
+        return Число;
+    }
+
+    public void setЧисло(Integer число) {
+        Число = число;
     }
 }
 

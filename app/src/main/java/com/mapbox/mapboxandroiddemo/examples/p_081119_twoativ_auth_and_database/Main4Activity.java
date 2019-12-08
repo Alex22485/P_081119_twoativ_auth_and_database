@@ -235,6 +235,7 @@ public class Main4Activity extends AppCompatActivity {
         user.setPhone(Phone);
         user.setРейс(Flight.getText().toString());
         user.setДата(Calend.getText().toString());
+        user.setЧисло( 1 );
 
         // Запись во вторую ветку БД Пользователи
 
@@ -254,7 +255,10 @@ public class Main4Activity extends AppCompatActivity {
     public void btnInsert (View view){
 
         database = FirebaseDatabase.getInstance();
-        ref = database.getReference("Заявки").child("Аэропорт-Красноярск").child( Calend.getText().toString() ).child("Маршрут 1").child("Рейс номер"+" "+Flight.getText().toString()  );
+        ref = database.getReference("Заявки")
+                .child("Аэропорт-Красноярск" )
+                .child( Calend.getText().toString() )
+                .child("Маршрут 1").child(Flight.getText().toString()  );
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
