@@ -2,6 +2,8 @@ package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database
 
 public class UserInformation {
 
+    // Activity Не Используется !!!!!!!
+
     private String phone;
 
     public UserInformation() {
