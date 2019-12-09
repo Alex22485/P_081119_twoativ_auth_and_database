@@ -255,7 +255,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:hint="идет формирование маршрута:"
+            android:hint="формирование маршрута:"
             android:textColor="@color/colorAccent"
             android:textSize="20sp" />
         <TextView
@@ -392,6 +392,46 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+
+
+        <Button
+            android:id="@+id/cancelOder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="отменить заявку"
+            android:textSize="15sp"
+            android:enabled="false"
+
+            />
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="3" />
+        <Button
+            android:id="@+id/detailsTrip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="детали поездки"
+            android:textSize="15sp"
+            android:enabled="false"
+            />
+
+
+    </LinearLayout>
+
+
 
 
 

@@ -188,7 +188,7 @@ public class Main4Activity extends AppCompatActivity {
         else {btnInsert.setEnabled( true );
         }*/
 
-// Disable Button it Text is Empty
+// Disable Button if Text is Empty
         Calend.addTextChangedListener( loginTextWather );
         Flight.addTextChangedListener( loginTextWather );
 

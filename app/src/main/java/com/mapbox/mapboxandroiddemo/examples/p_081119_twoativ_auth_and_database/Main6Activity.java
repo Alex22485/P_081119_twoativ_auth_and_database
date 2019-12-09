@@ -3,14 +3,13 @@ package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -29,7 +28,7 @@ public class Main6Activity extends AppCompatActivity {
 
     List<Integer> num=new ArrayList<Integer>(  );
     Integer[] ar={};
-     Button btnStatus;
+     Button btnStatus,cancelOder,detailsTrip;
     String userID;
     String userI;
 
@@ -40,7 +39,7 @@ public class Main6Activity extends AppCompatActivity {
     ArrayAdapter ad;
     String[] array={};*/
     TextView Calend_Out,flight_number_Out,Map,road_number_out,road_name_out;
-    TextView number,information,information2,people,people2,process,process1,process2,process3;
+    TextView number,information,information2,people,people2,process,process1,process2,process3,searchCar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -61,6 +60,9 @@ public class Main6Activity extends AppCompatActivity {
         process1=findViewById( R.id.process1 );
         process2=findViewById( R.id.process2 );
         process3=findViewById( R.id.process3 );
+        searchCar=findViewById( R.id.searchCar );
+        cancelOder=findViewById( R.id.cancelOder );
+        detailsTrip=findViewById( R.id.detailsTrip );
 
         num=new ArrayList<Integer>( Arrays.asList( ar ) );
 
@@ -78,11 +80,18 @@ public class Main6Activity extends AppCompatActivity {
         basa=new ArrayList<String>( Arrays.asList( array ) );
         ad= new ArrayAdapter<>( this,android.R.layout.simple_list_item_1,basa );
         listwiew.setAdapter( ad );*/
+
+        // Disable Button "Отменить заявку" if Text is Empty
+        Calend_Out.addTextChangedListener( loginTextWather );
+        Map.addTextChangedListener( loginTextWather );
+        road_number_out.addTextChangedListener( loginTextWather );
+        road_name_out.addTextChangedListener( loginTextWather );
+        flight_number_Out.addTextChangedListener( loginTextWather );
     }
 // Вызов Личного статуса заказа вкладка пользователи "Пользователи"
 public void btnStatus(View view){
         //очистка массива для обновления количества пользователей по заявке
-    num.clear();
+   // num.clear();
 
     Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userID )
             .orderByChild( userI );
@@ -123,7 +132,16 @@ public void btnStatus(View view){
                         for (int counter=0;counter<num.size();counter++){
                             sum+= num.get(counter);
                         }
-                        people.setText(" "+sum);
+                        people.setText(""+sum);
+
+                        if(sum>=5){
+                            information.setText( "Маршрут сформирован V" );
+                            information.setTextColor( getResources().getColor( R.color.colorRed ) );
+                            searchCar.setText("идет поиск автомобиля");
+                            process2.setText( "|" );
+                            process3.setText( "|" );
+
+                    }
                     }
                 }
 
@@ -322,4 +340,28 @@ public void btnStatus(View view){
         }
     };usersdRef.addListenerForSingleValueEvent(valueEventListener);*/
         }
+
+    // Disable Button "Отменить заявку" if Text is Empty
+    private TextWatcher loginTextWather = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            String calendInput =Calend_Out.getText().toString().trim();
+            String flightInput =Map.getText().toString().trim();
+            String road_number_ou =road_number_out.getText().toString().trim();
+            String road_name_ou =road_name_out.getText().toString().trim();
+            String flight_number_Ou =flight_number_Out.getText().toString().trim();
+
+            cancelOder.setEnabled(!calendInput.isEmpty()&& !flightInput.isEmpty()
+                    && !road_number_ou.isEmpty()&& !road_name_ou.isEmpty()&& !flight_number_Ou.isEmpty() );
+        }
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
+    };
 }
