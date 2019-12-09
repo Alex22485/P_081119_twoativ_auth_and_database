@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -25,6 +27,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Main6Activity extends AppCompatActivity {
+
+    FirebaseDatabase ggg;
+    DatabaseReference mmm;
 
     List<Integer> num=new ArrayList<Integer>(  );
     Integer[] ar={};
@@ -149,7 +154,7 @@ public void btnStatus(View view){
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
-            };;usersdRef.addListenerForSingleValueEvent(valueEventListener);
+            };usersdRef.addListenerForSingleValueEvent(valueEventListener);
 // ПРОБА
             /*DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Заявки")
                     .child("Аэропорт-Красноярск")
@@ -364,4 +369,19 @@ public void btnStatus(View view){
 
         }
     };
+// Отмена текущей заявки нажимаем (УДАЛЕНИЕ ИЗ БД)
+    public void cancelOder (View view){
+
+        ggg = FirebaseDatabase.getInstance();
+        mmm = ggg.getReference("Заявки")
+                .child(Map.getText().toString() )
+                .child( Calend_Out.getText().toString() )
+                .child(road_number_out.getText().toString())
+                .child(flight_number_Out.getText().toString()  );
+        mmm.child( userI ).removeValue();
+        Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
+        
+
+
+    }
 }

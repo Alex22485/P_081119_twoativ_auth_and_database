@@ -259,7 +259,7 @@ public class Main4Activity extends AppCompatActivity {
                 .child("Аэропорт-Красноярск" )
                 .child( Calend.getText().toString() )
                 .child("Маршрут 1").child(Flight.getText().toString()  );
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 getValues();
@@ -270,19 +270,26 @@ public class Main4Activity extends AppCompatActivity {
                 // база данных во главе телефон далее дата и номер рейса
                 //String user_id = mmm.getPhoneNumber();
 
-                ref.child(user_id).setValue(user);
-                Toast.makeText(Main4Activity.this,"Заявка принята....",Toast.LENGTH_LONG).show();
+                ref.child( user_id ).setValue( user );
+                Toast.makeText( Main4Activity.this, "Заявка принята....", Toast.LENGTH_LONG ).show();
                 //Видимость кнопки Проверить статус
                 btnStatus.setEnabled( true );
 
 
+                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Заявки"
+                ref.removeEventListener( this );
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
-        });
+
+
+        } );
+
+
+
+
 
         FirebaseUser mmm = FirebaseAuth.getInstance().getCurrentUser();
 
