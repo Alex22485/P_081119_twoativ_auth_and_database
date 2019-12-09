@@ -135,11 +135,11 @@ public void btnStatus(View view){
                         people.setText(""+sum);
 
                         if(sum>=5){
-                            information.setText( "Маршрут сформирован V" );
+                            information.setText( "маршрут сформирован V" );
                             information.setTextColor( getResources().getColor( R.color.colorRed ) );
-                            searchCar.setText("идет поиск автомобиля");
+                            searchCar.setText("поиск автомобиля...");
                             process2.setText( "|" );
-                            process3.setText( "|" );
+                            process3.setText( "V" );
 
                     }
                     }
@@ -186,9 +186,9 @@ public void btnStatus(View view){
         }
     } );
     number.setText( " заявка оформлена   V" );
-    information.setText( "идет формирование маршрута:" );
+    information.setText( "формирование маршрута..." );
     process.setText( "|" );
-    process1.setText( "|" );
+    process1.setText( "V" );
     information2.setText( "уже зарегистрировано" );
     people2.setText( "человек(а)" );
 // рабочий код возвращает правда всех юзеров

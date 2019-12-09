@@ -184,7 +184,7 @@
             android:layout_weight="0"
             android:hint="заявка оформлена  Х"
             android:textColor="@color/colorRed"
-            android:textSize="20sp" />
+            android:textSize="25sp" />
         <TextView
             android:layout_width="0sp"
             android:layout_height="match_parent"
@@ -255,9 +255,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:hint="формирование маршрута:"
-            android:textColor="@color/colorAccent"
-            android:textSize="20sp" />
+            android:hint="формирование маршрута..."
+            android:textColor="@color/colorBlue"
+            android:textSize="25sp" />
         <TextView
             android:layout_width="0sp"
             android:layout_height="match_parent"
@@ -280,7 +280,6 @@
             android:layout_height="wrap_content"
             android:hint="(уже зарегистрировано"
             android:layout_weight="0"
-            android:textColor="@color/colorAccent"
             android:textSize="20sp" />
         <TextView
             android:layout_width="0sp"
@@ -316,7 +315,6 @@
             android:layout_height="wrap_content"
             android:hint="человек(а))"
             android:layout_weight="0"
-            android:textColor="@color/colorAccent"
             android:textSize="20sp" />
         <TextView
             android:layout_width="0sp"
@@ -384,9 +382,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:hint="идет поиск автомобиля:"
-            android:textColor="@color/colorAccent"
-            android:textSize="20sp" />
+            android:hint="поиск автомобиля..."
+            android:textColor="@color/colorBlue"
+            android:textSize="25sp" />
         <TextView
             android:layout_width="0sp"
             android:layout_height="match_parent"
