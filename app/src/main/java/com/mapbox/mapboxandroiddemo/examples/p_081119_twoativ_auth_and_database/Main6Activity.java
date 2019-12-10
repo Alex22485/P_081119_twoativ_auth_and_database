@@ -2,8 +2,10 @@ package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -35,9 +37,11 @@ public class Main6Activity extends AppCompatActivity {
 
     List<Integer> num=new ArrayList<Integer>(  );
     Integer[] ar={};
-     Button btnStatus,cancelOder,detailsTrip;
+    Button btnStatus,cancelOder,detailsTrip;
     String userID;
     String userI;
+
+    String[] CancelOderWhy ={"Передумал", "Самолет отменён", "Назад"};
 
     FirebaseAuth mAuth;
     // создание ListView
@@ -374,17 +378,32 @@ public void btnStatus(View view){
 // Отмена текущей заявки нажимаем (УДАЛЕНИЕ ИЗ БД)
     public void cancelOder (View view){
 
-        ggg = FirebaseDatabase.getInstance();
-        mmm = ggg.getReference("Заявки")
-                .child(Map.getText().toString() )
-                .child( Calend_Out.getText().toString() )
-                .child(road_number_out.getText().toString())
-                .child(flight_number_Out.getText().toString()  );
-        mmm.child( userI ).removeValue();
-        Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
+        AlertDialog.Builder builder=new AlertDialog.Builder( Main6Activity.this );
+        builder.setTitle( "Укажите причину отмены");
+        //builder.setCancelable( false );
+        builder.setItems( CancelOderWhy, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
 
-        Intent sss = new Intent(this,Main4Activity.class );
-        startActivity( sss );
+                ggg = FirebaseDatabase.getInstance();
+                mmm = ggg.getReference("Заявки")
+                        .child(Map.getText().toString() )
+                        .child( Calend_Out.getText().toString() )
+                        .child(road_number_out.getText().toString())
+                        .child(flight_number_Out.getText().toString()  );
+                mmm.child( userI ).removeValue();
+                Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
+            }
+        } );
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        /*Intent sss = new Intent(this,Main4Activity.class );
+        startActivity( sss );*/
+
+
+
+
     }
 
 
