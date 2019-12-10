@@ -3,6 +3,8 @@ package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -380,8 +382,11 @@ public void btnStatus(View view){
                 .child(flight_number_Out.getText().toString()  );
         mmm.child( userI ).removeValue();
         Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
-        
 
-
+        Intent sss = new Intent(this,Main4Activity.class );
+        startActivity( sss );
     }
+
+
+
 }

@@ -310,12 +310,17 @@ public class Main4Activity extends AppCompatActivity {
                 nextref.child(nextuser_id).setValue(userTwo);
                 //Toast.makeText(Main4Activity.this,"Заявка принята....",Toast.LENGTH_LONG).show();
 
+                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Пользователи"
+                nextref.removeEventListener( this );
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+            // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Заявки"
+
         });
 
 
