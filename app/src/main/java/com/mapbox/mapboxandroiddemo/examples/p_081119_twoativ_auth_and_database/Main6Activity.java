@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,7 +42,7 @@ public class Main6Activity extends AppCompatActivity {
     String userID;
     String userI;
 
-    String[] CancelOderWhy ={"Передумал", "Самолет отменён", "Назад"};
+    String[] CancelOderWhy ={"Самолет отменён","Передумал", };
 
     FirebaseAuth mAuth;
     // создание ListView
@@ -101,6 +102,7 @@ public class Main6Activity extends AppCompatActivity {
     }
 // Вызов Личного статуса заказа вкладка пользователи "Пользователи"
 public void btnStatus(View view){
+
         //очистка массива для обновления количества пользователей по заявке
    // num.clear();
 
@@ -197,6 +199,7 @@ public void btnStatus(View view){
         }
     } );
     number.setText( " заявка оформлена   V" );
+    number.setTextColor(getResources().getColor( R.color.colorRed ));
     information.setText( "формирование маршрута..." );
     process.setText( "|" );
     process1.setText( "V" );
@@ -381,6 +384,7 @@ public void btnStatus(View view){
         AlertDialog.Builder builder=new AlertDialog.Builder( Main6Activity.this );
         builder.setTitle( "Укажите причину отмены");
         //builder.setCancelable( false );
+
         builder.setItems( CancelOderWhy, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
@@ -392,11 +396,44 @@ public void btnStatus(View view){
                         .child(road_number_out.getText().toString())
                         .child(flight_number_Out.getText().toString()  );
                 mmm.child( userI ).removeValue();
+
                 Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
+
+                Calend_Out.setText( "" );
+                Map.setText( "" );
+                road_number_out.setText( "" );
+                road_name_out.setText( "" );
+                flight_number_Out.setText( "" );
+                number.setText( " заявка НЕ оформлена   Х" );
+                number.setTextColor(getResources().getColor( R.color.colorNew ));
+
+                information.setText( "" );
+                searchCar.setText("");
+                process2.setText( "" );
+                process3.setText( "" );
+                people.setText("");
+                btnStatus.setEnabled(false);
+
+
+
+
+
+
             }
+
+
         } );
+
+        builder.setNeutralButton("Назад", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
         AlertDialog dialog = builder.create();
         dialog.show();
+
+
 
         /*Intent sss = new Intent(this,Main4Activity.class );
         startActivity( sss );*/
@@ -404,6 +441,11 @@ public void btnStatus(View view){
 
 
 
+    }
+
+    public void backMainList (View view){
+        Intent qwe= new Intent(this,Main4Activity.class);
+        startActivity(qwe);
     }
 
 
