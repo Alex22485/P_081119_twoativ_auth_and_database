@@ -106,7 +106,7 @@ public void btnStatus(View view){
         //очистка массива для обновления количества пользователей по заявке
    // num.clear();
 
-    Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userID )
+    Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userID ).child("Status")
             .orderByChild( userI );
     aaa.addChildEventListener( new ChildEventListener() {
         @Override
@@ -198,13 +198,14 @@ public void btnStatus(View view){
         public void onCancelled(@NonNull DatabaseError databaseError) {
         }
     } );
-    number.setText( " заявка оформлена   V" );
+   /*number.setText( " заявка оформлена   V" );
     number.setTextColor(getResources().getColor( R.color.colorRed ));
     information.setText( "формирование маршрута..." );
     process.setText( "|" );
     process1.setText( "V" );
     information2.setText( "уже зарегистрировано" );
-    people2.setText( "человек(а)" );
+    people2.setText( "человек(а)" );*/
+
 // рабочий код возвращает правда всех юзеров
     //DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Пользователи");
     /*rootRef.orderByChild( userID ).addChildEventListener( new ChildEventListener() {
@@ -356,7 +357,7 @@ public void btnStatus(View view){
         }
 
     // Disable Button "Отменить заявку" if Text is Empty
-    private TextWatcher loginTextWather = new TextWatcher() {
+    private final TextWatcher loginTextWather = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         }
@@ -364,15 +365,27 @@ public void btnStatus(View view){
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            String calendInput =Calend_Out.getText().toString().trim();
-            String flightInput =Map.getText().toString().trim();
-            String road_number_ou =road_number_out.getText().toString().trim();
-            String road_name_ou =road_name_out.getText().toString().trim();
-            String flight_number_Ou =flight_number_Out.getText().toString().trim();
+            String calendInput = Calend_Out.getText().toString().trim();
+            String flightInput = Map.getText().toString().trim();
+            String road_number_ou = road_number_out.getText().toString().trim();
+            String road_name_ou = road_name_out.getText().toString().trim();
+            String flight_number_Ou = flight_number_Out.getText().toString().trim();
 
-            cancelOder.setEnabled(!calendInput.isEmpty()&& !flightInput.isEmpty()
-                    && !road_number_ou.isEmpty()&& !road_name_ou.isEmpty()&& !flight_number_Ou.isEmpty() );
+            cancelOder.setEnabled(!calendInput.isEmpty() && !flightInput.isEmpty()
+                    && !road_number_ou.isEmpty() && !road_name_ou.isEmpty() && !flight_number_Ou.isEmpty());
+
+
+
+            //если база данных НЕ Пуста (а именно параметры loginTextWather НЕ пусты!!! ) то вступают в силу эти изменения
+            number.setText( " заявка оформлена   V" );
+            number.setTextColor(getResources().getColor( R.color.colorRed ));
+            information.setText( "формирование маршрута..." );
+            process.setText( "|" );
+            process1.setText( "V" );
+            information2.setText( "уже зарегистрировано" );
+            people2.setText( "человек(а)" );
         }
+
         @Override
         public void afterTextChanged(Editable editable) {
 
@@ -389,6 +402,9 @@ public void btnStatus(View view){
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
 
+
+
+
                 ggg = FirebaseDatabase.getInstance();
                 mmm = ggg.getReference("Заявки")
                         .child(Map.getText().toString() )
@@ -396,6 +412,16 @@ public void btnStatus(View view){
                         .child(road_number_out.getText().toString())
                         .child(flight_number_Out.getText().toString()  );
                 mmm.child( userI ).removeValue();
+
+                mmm = ggg.getReference("Пользователи")
+                        .child(userID)
+                        .child("Status");
+                mmm.child( userI ).removeValue();
+
+
+
+
+
 
                 Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
 
@@ -412,6 +438,8 @@ public void btnStatus(View view){
                 process2.setText( "" );
                 process3.setText( "" );
                 people.setText("");
+                process.setText( "" );
+                process1.setText( "" );
                 btnStatus.setEnabled(false);
 
 

@@ -245,12 +245,7 @@ public class Main4Activity extends AppCompatActivity {
         userTwo.setМаршрут_название("Аэропорт-КрасТэц");
         userTwo.setРейс_самолета(Flight.getText().toString());
         userTwo.setПоездки("число8");
-
-
-
     }
-
-
 
     public void btnInsert (View view){
 
@@ -287,10 +282,6 @@ public class Main4Activity extends AppCompatActivity {
 
         } );
 
-
-
-
-
         FirebaseUser mmm = FirebaseAuth.getInstance().getCurrentUser();
 
         // база данных во главе ID пользователя далее дата и номер рейса
@@ -307,7 +298,7 @@ public class Main4Activity extends AppCompatActivity {
                 //вызов
                 FirebaseUser ccc = FirebaseAuth.getInstance().getCurrentUser();
                 String nextuser_id = ccc.getUid();
-                nextref.child(nextuser_id).setValue(userTwo);
+                nextref.child("Status").child(nextuser_id).setValue(userTwo);
                 //Toast.makeText(Main4Activity.this,"Заявка принята....",Toast.LENGTH_LONG).show();
 
                 // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Пользователи"
@@ -321,6 +312,22 @@ public class Main4Activity extends AppCompatActivity {
             }
             // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Заявки"
 
+        });
+
+        //Добавить вкладку История Поездок
+
+        nextref = nextdatabase.getReference("Пользователи").child(user_i);
+        nextref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                nextref.child("History").setValue("Исторя поездок");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
         });
 
 
