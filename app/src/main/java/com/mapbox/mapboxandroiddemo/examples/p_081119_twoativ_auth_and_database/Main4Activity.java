@@ -1,6 +1,7 @@
 package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
@@ -19,20 +20,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 
 
 public class Main4Activity extends AppCompatActivity {
 
+    FirebaseAuth mAuth;
+    String userID;
+    String userI;
+
+
     Button btnInsert,btnStatus;
     TextView Flight;
     FirebaseDatabase database;
     DatabaseReference ref;
+
+    FirebaseDatabase ddd;
+    DatabaseReference ggg;
 
     FirebaseDatabase nextdatabase;
     DatabaseReference nextref;
@@ -71,16 +82,23 @@ public class Main4Activity extends AppCompatActivity {
     String[] listFlights = {"1","2","3","4"};
 
 
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
 
+
+
+
+
       /* btnout=findViewById(R.id.btnout);
      Calendout=findViewById(R.id.Calendout);
      Flightout=findViewById(R.id.Flightout);
        proba=findViewById(R.id.proba);
-
         String ada=( valueOf( Calendout ) );*/
 
         Flight = findViewById(R.id.Flight);
@@ -142,6 +160,7 @@ public class Main4Activity extends AppCompatActivity {
 
 
         choisData.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 calendar=Calendar.getInstance();
@@ -156,22 +175,29 @@ public class Main4Activity extends AppCompatActivity {
                             }
                         }, year,month,dayOfmonth);
                 datePickerDialog.show();
-            }
-        });
+            };
+
+
+
+
+
+        }
+
+
+        );
 
 
 
 // добавить телефон пользователя в базу
-        FirebaseUser phone = FirebaseAuth.getInstance().getCurrentUser();
+        /*FirebaseUser phone = FirebaseAuth.getInstance().getCurrentUser();
         String addphone=phone.getPhoneNumber();
-        Phone=addphone;
+        Phone=addphone;*/
 
         /*String addada=Calendout.getText().toString();
         ada=addada;*/
 
        /* if (Calend.getText().length() == 0){
             btnInsert.setEnabled( true );
-
         }*/
         /*Calend.addTextChangedListener(new TextWatcher() {
             @Override public void afterTextChanged(Editable s) {
@@ -179,7 +205,6 @@ public class Main4Activity extends AppCompatActivity {
             }
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             } @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
         }); */
       /* if (Calend.getText().toString().equals( null )) {
@@ -215,6 +240,8 @@ public class Main4Activity extends AppCompatActivity {
     //Выбрать номер рейса Новый вариант
     public void btn_number_Flight (View view){
 
+
+
         AlertDialog.Builder builder=new AlertDialog.Builder( Main4Activity.this );
         builder.setTitle( "Выбирите Номер рейса");
         builder.setCancelable( false );
@@ -228,6 +255,50 @@ public class Main4Activity extends AppCompatActivity {
         } );
         AlertDialog dialog = builder.create();
         dialog.show();
+
+         /*mAuth= FirebaseAuth.getInstance(  );
+        FirebaseUser ghg=mAuth.getCurrentUser();
+
+        //полуаем номер телефона пользователя
+        userID=ghg.getPhoneNumber();
+        userI=ghg.getUid();
+
+        Query aaa=FirebaseDatabase.getInstance().getReference("Пользователи").child( userID ).child("Status")
+                .orderByChild( userI );
+        aaa.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String data=dataSnapshot.child( "дата" ).getValue(String.class);
+                String map=dataSnapshot.child( "направление" ).getValue(String.class);
+                String roar_number=dataSnapshot.child( "маршрут_номер" ).getValue(String.class);
+                String flidht_number=dataSnapshot.child( "рейс_самолета" ).getValue(String.class);
+
+                ddd = FirebaseDatabase.getInstance();
+                ggg = ddd.getReference("Заявки")
+                        .child(map)
+                        .child(data)
+                        .child(roar_number)
+                        .child(flidht_number);
+                //ggg.child( userI ).removeValue();
+                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Заявки"
+                ref.removeEventListener( this );
+
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });*/
+
+
     }
 
     private void  getValues(){
@@ -248,6 +319,92 @@ public class Main4Activity extends AppCompatActivity {
     }
 
     public void btnInsert (View view){
+
+        mAuth= FirebaseAuth.getInstance(  );
+        FirebaseUser ghg=mAuth.getCurrentUser();
+
+        //полуаем номер телефона пользователя
+        userID=ghg.getPhoneNumber();
+        userI=ghg.getUid();
+
+        Query aaa=FirebaseDatabase.getInstance().getReference("Пользователи").child( userID ).child("Status")
+                .orderByChild( userI );
+        aaa.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String data=dataSnapshot.child( "дата" ).getValue(String.class);
+                String map=dataSnapshot.child( "направление" ).getValue(String.class);
+                String roar_number=dataSnapshot.child( "маршрут_номер" ).getValue(String.class);
+                String flidht_number=dataSnapshot.child( "рейс_самолета" ).getValue(String.class);
+
+                ddd = FirebaseDatabase.getInstance();
+                ggg = ddd.getReference("Заявки")
+                        .child(map)
+                        .child(data)
+                        .child(roar_number)
+                        .child(flidht_number);
+
+                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Заявки"
+                ggg.removeEventListener( this );
+                
+
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { ggg.child( userI ).removeValue();
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+
+       /* mAuth= FirebaseAuth.getInstance(  );
+        FirebaseUser ghg=mAuth.getCurrentUser();
+
+        //полуаем номер телефона пользователя
+        userID=ghg.getPhoneNumber();
+        userI=ghg.getUid();
+
+        Query aaa=FirebaseDatabase.getInstance().getReference("Пользователи").child( userID ).child("Status")
+                .orderByChild( userI );
+        aaa.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String data=dataSnapshot.child( "дата" ).getValue(String.class);
+                String map=dataSnapshot.child( "направление" ).getValue(String.class);
+                String roar_number=dataSnapshot.child( "маршрут_номер" ).getValue(String.class);
+                String flidht_number=dataSnapshot.child( "рейс_самолета" ).getValue(String.class);
+
+                ddd = FirebaseDatabase.getInstance();
+                ggg = ddd.getReference("Заявки")
+                        .child(map)
+                        .child(data)
+                        .child(roar_number)
+                        .child(flidht_number);
+                ggg.child( userI ).removeValue();
+
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });*/
+
+
 
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("Заявки")
@@ -288,7 +445,7 @@ public class Main4Activity extends AppCompatActivity {
         String user_i = mmm.getPhoneNumber();
 
         //Новая ветка в базе Пользователи
-       nextdatabase = FirebaseDatabase.getInstance();
+        nextdatabase = FirebaseDatabase.getInstance();
         nextref = nextdatabase.getReference("Пользователи").child(user_i);
         nextref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -310,7 +467,6 @@ public class Main4Activity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-            // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Заявки"
 
         });
 
@@ -321,6 +477,9 @@ public class Main4Activity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 nextref.child("History").setValue("Исторя поездок");
+
+                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "History
+                nextref.removeEventListener( this );
 
             }
 
@@ -336,90 +495,68 @@ public class Main4Activity extends AppCompatActivity {
         Intent zxz = new Intent( this,Main6Activity.class );
         startActivity( zxz);
 
+
+
     }
 
 
 
 
+
+
    /* public void btnout (View view){
-
         final ListView lvMain=(ListView)findViewById(R.id.lv);
-
         // Проба ArrayList
-
         DatabaseReference rootRef=FirebaseDatabase.getInstance().getReference();
         DatabaseReference usersdRef = rootRef.child("Пользователь");
        /* ValueEventListener eventListener=new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-
                     String name = ds.child("рейс").getValue(String.class);
-
                     Log.d("TAG", name);
-
                  // array.add(name);
-
                 }
               // ArrayAdapter<String> adapter = new ArrayAdapter(Main4Activity.this, android.R.layout.simple_list_item_1, array);
-
                ArrayAdapter<CharSequence> adapter= ArrayAdapter.createFromResource(Main4Activity.this,R.array.day_of_weeks,android.R.layout.simple_list_item_1);
                 lvMain.setAdapter(adapter);
-
-
                // mListView.setAdapter(adapter);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         };
         usersdRef .addListenerForSingleValueEvent(eventListener);
-
-
-
         //Проба №3  orderByChild("дата").equalTo("22.11.2019")
-
      /*   DatabaseReference ref=FirebaseDatabase.getInstance().getReference().child("Пользователь");
-
         Query queries=ref.orderByChild("дата").equalTo("22.11.2019");
         queries.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot nnn:dataSnapshot.getChildren()){
-
                     Flightout.setText(nnn.child("дата").getValue()+"   "+nnn.child("phone").getValue()+"   "+nnn.child("рейс").getValue());
-
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });*/
 
 
-  //ЕЩЕ одна ПРОБА
+    //ЕЩЕ одна ПРОБА
         /*FirebaseDatabase database=FirebaseDatabase.getInstance();
         DatabaseReference myRef=database.getReference("Пользователь");
         myRef.orderByChild("рейс").equalTo("3").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
-
                     Flightout.setText(childDataSnapshot.getKey()+"   "+childDataSnapshot.child("дата").getValue()+"   "+childDataSnapshot.child("phone").getValue());
-
                    // Log.d(TAG, "PARENT: "+ childDataSnapshot.getKey());
                    // Log.d(TAG,""+ childDataSnapshot.child("name").getValue());
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });*/
 
@@ -428,7 +565,6 @@ public class Main4Activity extends AppCompatActivity {
 
        /* DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Пользователь");
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         ref.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -436,107 +572,61 @@ public class Main4Activity extends AppCompatActivity {
                 String flight=dataSnapshot.child("рейс").getValue().toString();
                 String phone=dataSnapshot.child("phone").getValue().toString();
                 Flightout.setText(phone+" "+"Дата полета "+data+" "+"Рейс номер "+flight);
-
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-
-
-
        /* DatabaseReference data_one=FirebaseDatabase.getInstance().getReference("Пользователь");
-
         DatabaseReference data_two=FirebaseDatabase.getInstance().getReference().child("дата");
-
         //Проба
-
         final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference usersRef = rootRef.child("Пользователь");
-
         ValueEventListener valueEventListener= new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot mjm:dataSnapshot.getChildren()){
-
-
-
-
                     //String as =calendout.child("дата").getValue(String.class);
                     //  Calendout.setText(as);
-
-
                     // Проба
                     User uInfo = mjm.getValue(User.class);
-
-
                     String ppp = uInfo.getДата();
                     String ddd = uInfo.getPhone();
                     String fff= uInfo.getРейс();
-
                     Calendout.setText(ddd+"  "+ppp+"  "+"рейс№"+"  "+fff);
                     Flightout.setText(uid);
-
-
-
                 }
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         };
-
         //Проба
         usersRef.addListenerForSingleValueEvent(valueEventListener);
-
-
-
 //Рабочие коды
        /* data_one.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 for (DataSnapshot calendout:dataSnapshot.getChildren()){
-
                     String as =calendout.child("дата").getValue(String.class);
-
-
                     Calendout.setText(as);
-
                 }
-
                 for (DataSnapshot flightout:dataSnapshot.getChildren()){
-
                     String ad =flightout.child("рейс").getValue(String.class);
-
                     Flightout.setText(ad);
-
-
-
-
-
                 }
-
-
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         })*/
-        ;
+    ;
 
 
        /* ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 //FirebaseUser bbb = FirebaseAuth.getInstance().getCurrentUser();
                // FirebaseDatabase ass =FirebaseDatabase.getInstance();
              //  String user_id = bbb.getPhoneNumber();
@@ -544,39 +634,21 @@ public class Main4Activity extends AppCompatActivity {
              //  Flightout.setText(vvv);
                 ;
                // Flightout.setText(user_id);
-
-
                 DatabaseReference dfd = FirebaseDatabase.getInstance().getReference("Пользователь").child("дата");
                 dfd.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String xzx=dataSnapshot.getValue(String.class);
                         Flightout.setText(xzx);
-
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
                     }
                 });
-
-
-
-
-
-
-
-
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
-
     }*/
 }
-

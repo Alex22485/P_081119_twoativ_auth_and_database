@@ -100,10 +100,14 @@ public class Main6Activity extends AppCompatActivity {
         road_name_out.addTextChangedListener( loginTextWather );
         flight_number_Out.addTextChangedListener( loginTextWather );
     }
+// Блокировка кнопки Back!!!! (Иначе в БД Будет Задвоение! :)))
+    @Override
+    public void onBackPressed(){
+    }
 // Вызов Личного статуса заказа вкладка пользователи "Пользователи"
 public void btnStatus(View view){
 
-        //очистка массива для обновления количества пользователей по заявке
+        //ВАЖНО УБРАТЬ КОМЕНТЫ!!! очистка массива для обновления количества пользователей по заявке
    // num.clear();
 
     Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userID ).child("Status")
