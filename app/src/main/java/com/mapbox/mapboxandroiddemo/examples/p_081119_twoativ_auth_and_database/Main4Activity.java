@@ -95,6 +95,8 @@ public class Main4Activity extends AppCompatActivity {
 
 
 
+
+
       /* btnout=findViewById(R.id.btnout);
      Calendout=findViewById(R.id.Calendout);
      Flightout=findViewById(R.id.Flightout);
@@ -303,7 +305,7 @@ public class Main4Activity extends AppCompatActivity {
 
     private void  getValues(){
 
-        user.setPhone(Phone);
+        user.setPhone(userID);
         user.setРейс(Flight.getText().toString());
         user.setДата(Calend.getText().toString());
         user.setЧисло( 1 );
@@ -350,7 +352,8 @@ public class Main4Activity extends AppCompatActivity {
 
             }
             @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { ggg.child( userI ).removeValue();
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                /*Удаление старых заявок, чтобы не было запараллеливания*/ ggg.child( userI ).removeValue();
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
@@ -494,9 +497,11 @@ public class Main4Activity extends AppCompatActivity {
     public void btnStatus(View view){
         Intent zxz = new Intent( this,Main6Activity.class );
         startActivity( zxz);
+    }
 
-
-
+    // Блокировка кнопки Back!!!! :)))
+    @Override
+    public void onBackPressed(){
     }
 
 
