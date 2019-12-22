@@ -504,11 +504,6 @@ public class Main4Activity extends AppCompatActivity {
     public void onBackPressed(){
     }
 
-
-
-
-
-
    /* public void btnout (View view){
         final ListView lvMain=(ListView)findViewById(R.id.lv);
         // Проба ArrayList
