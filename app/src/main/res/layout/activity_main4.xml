@@ -101,6 +101,14 @@
         android:enabled="false"
         android:textSize="20sp"
         android:onClick="btnStatus"/>
+    <Button
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Переход на 9 лист"
+        android:enabled="true"
+        android:textSize="20sp"
+        android:onClick="List9"/>
 
 
 

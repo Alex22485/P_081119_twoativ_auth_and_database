@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.Worker;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -157,6 +160,15 @@ public void btnStatus(View view){
                             searchCar.setText("поиск автомобиля...");
                             process2.setText( "|" );
                             process3.setText( "V" );
+
+                            final OneTimeWorkRequest request= new OneTimeWorkRequest.Builder(MyWorker.class).build();
+                            WorkManager.getInstance(getApplicationContext() ).enqueue(request);
+
+
+
+
+
+
 
                     }
                     }

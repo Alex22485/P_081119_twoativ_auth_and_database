@@ -320,7 +320,7 @@ public class Main4Activity extends AppCompatActivity {
         userTwo.setПоездки("число8");
     }
 
-    public void btnInsert (View view){
+    public void btnInsert (View view){ 
 
         mAuth= FirebaseAuth.getInstance(  );
         FirebaseUser ghg=mAuth.getCurrentUser();
@@ -503,6 +503,12 @@ public class Main4Activity extends AppCompatActivity {
     @Override
     public void onBackPressed(){
     }
+
+    public void List9(View view){
+        Intent dsd = new Intent( this,Main10Activity.class );
+        startActivity( dsd);
+    }
+
 
    /* public void btnout (View view){
         final ListView lvMain=(ListView)findViewById(R.id.lv);
