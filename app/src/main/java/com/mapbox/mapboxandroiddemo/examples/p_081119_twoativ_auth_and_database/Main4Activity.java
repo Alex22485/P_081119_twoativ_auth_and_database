@@ -320,7 +320,7 @@ public class Main4Activity extends AppCompatActivity {
         userTwo.setПоездки("число8");
     }
 
-    public void btnInsert (View view){ 
+    public void btnInsert (View view){
 
         mAuth= FirebaseAuth.getInstance(  );
         FirebaseUser ghg=mAuth.getCurrentUser();

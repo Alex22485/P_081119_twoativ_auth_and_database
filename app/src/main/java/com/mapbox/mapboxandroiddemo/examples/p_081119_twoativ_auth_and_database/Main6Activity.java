@@ -4,13 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.ListenableWorker;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,6 +25,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -36,6 +42,7 @@ import java.util.List;
 
 public class Main6Activity extends AppCompatActivity {
 
+    MyWorker myWorker;
     FirebaseDatabase ggg;
     DatabaseReference mmm;
 
@@ -154,6 +161,7 @@ public void btnStatus(View view){
                         }
                         people.setText(""+sum);
 
+
                         if(sum>=5){
                             information.setText( "маршрут сформирован V" );
                             information.setTextColor( getResources().getColor( R.color.colorRed ) );
@@ -161,8 +169,12 @@ public void btnStatus(View view){
                             process2.setText( "|" );
                             process3.setText( "V" );
 
-                            final OneTimeWorkRequest request= new OneTimeWorkRequest.Builder(MyWorker.class).build();
-                            WorkManager.getInstance(getApplicationContext() ).enqueue(request);
+//                            final OneTimeWorkRequest request= new OneTimeWorkRequest.Builder(MyWorker.class).build();
+//                            WorkManager.getInstance(getApplicationContext() ).enqueue(request);
+
+
+
+
 
 
 
@@ -173,6 +185,7 @@ public void btnStatus(View view){
                     }
                     }
                 }
+
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
