@@ -18,6 +18,8 @@ import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -27,6 +29,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
 import java.util.Calendar;
 
 
@@ -82,6 +87,7 @@ public class Main4Activity extends AppCompatActivity {
 
     //Выбрать номер рейса Новый вариант
     String[] listFlights = {"1","2","3","4"};
+    String newToken;
 
 
 
@@ -92,6 +98,19 @@ public class Main4Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
+
+        // Получить Токен!!!! Работает с показом на экане
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Main4Activity.this,new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                newToken = instanceIdResult.getToken();
+                Log.d("TAG", newToken);
+                // Показ на экране Toast.makeText(Main4Activity.this, newToken, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
 
 
 
@@ -305,15 +324,7 @@ public class Main4Activity extends AppCompatActivity {
 
     }
 
-    // Получить Токен!!!! Работает с показом на экане
-//    FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Main6Activity.this,new OnSuccessListener<InstanceIdResult>() {
-//        @Override
-//        public void onSuccess(InstanceIdResult instanceIdResult) {
-//            String newToken = instanceIdResult.getToken();
-//            Log.d("TAG", newToken);
-//            Toast.makeText(Main6Activity.this, newToken, Toast.LENGTH_SHORT).show();
-//        }
-//    });
+
 
     private void  getValues(){
 
@@ -321,6 +332,8 @@ public class Main4Activity extends AppCompatActivity {
         user.setРейс(Flight.getText().toString());
         user.setДата(Calend.getText().toString());
         user.setЧисло( 1 );
+        user.setToken( newToken );
+
 
         // Запись во вторую ветку БД Пользователи
 
@@ -330,9 +343,14 @@ public class Main4Activity extends AppCompatActivity {
         userTwo.setМаршрут_название("Аэропорт-КрасТэц");
         userTwo.setРейс_самолета(Flight.getText().toString());
         userTwo.setПоездки("число8");
+        userTwo.setToken( newToken );
     }
 
     public void btnInsert (View view){
+
+
+
+
 
         mAuth= FirebaseAuth.getInstance(  );
         FirebaseUser ghg=mAuth.getCurrentUser();

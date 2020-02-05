@@ -6,15 +6,17 @@ public class User {
     private String Дата;
     private String Рейс;
     private Integer Число;
+    private String Token;
 
-    public User() {
+    public User(){
     }
 
-    public User(String phone, String дата, String рейс, Integer число) {
+    public User(String phone, String дата, String рейс, Integer число, String token) {
         Phone = phone;
         Дата = дата;
         Рейс = рейс;
         Число = число;
+        Token = token;
     }
 
     public String getPhone() {
@@ -48,7 +50,16 @@ public class User {
     public void setЧисло(Integer число) {
         Число = число;
     }
+
+    public String getToken() {
+        return Token;
+    }
+
+    public void setToken(String token) {
+        Token = token;
+    }
 }
+
 
 
 
