@@ -132,9 +132,11 @@ public void btnStatus(View view){
             DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Заявки")
                     .child( Map.getText().toString() )
                     .child( Calend_Out.getText().toString() )
-                    .child( road_number_out.getText().toString() );
+                    .child(flight_number_Out.getText().toString())
+                    .child( road_number_out.getText().toString() )
+                    ;
 
-            DatabaseReference usersdRef = rootRef.child( flight_number_Out.getText().toString() );
+            DatabaseReference usersdRef = rootRef.child( "Users" );
             ValueEventListener valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -413,8 +415,10 @@ public void btnStatus(View view){
                 mmm = ggg.getReference("Заявки")
                         .child(Map.getText().toString() )
                         .child( Calend_Out.getText().toString() )
+                        //.child(road_number_out.getText().toString())
+                        .child(flight_number_Out.getText().toString()  )
                         .child(road_number_out.getText().toString())
-                        .child(flight_number_Out.getText().toString()  );
+                        .child("Users");
                 mmm.child( userI ).removeValue();
 
                 mmm = ggg.getReference("Пользователи")

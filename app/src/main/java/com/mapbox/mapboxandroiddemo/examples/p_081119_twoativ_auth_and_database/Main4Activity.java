@@ -30,6 +30,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 
 
+
+
 public class Main4Activity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
@@ -303,6 +305,16 @@ public class Main4Activity extends AppCompatActivity {
 
     }
 
+    // Получить Токен!!!! Работает с показом на экане
+//    FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Main6Activity.this,new OnSuccessListener<InstanceIdResult>() {
+//        @Override
+//        public void onSuccess(InstanceIdResult instanceIdResult) {
+//            String newToken = instanceIdResult.getToken();
+//            Log.d("TAG", newToken);
+//            Toast.makeText(Main6Activity.this, newToken, Toast.LENGTH_SHORT).show();
+//        }
+//    });
+
     private void  getValues(){
 
         user.setPhone(userID);
@@ -343,8 +355,10 @@ public class Main4Activity extends AppCompatActivity {
                 ggg = ddd.getReference("Заявки")
                         .child(map)
                         .child(data)
+                        //.child(roar_number)
+                        .child(flidht_number)
                         .child(roar_number)
-                        .child(flidht_number);
+                        .child("Users");
 
                 // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Заявки"
                 ggg.removeEventListener( this );
@@ -413,7 +427,10 @@ public class Main4Activity extends AppCompatActivity {
         ref = database.getReference("Заявки")
                 .child("Аэропорт-Красноярск" )
                 .child( Calend.getText().toString() )
-                .child("Маршрут 1").child(Flight.getText().toString()  );
+                //.child("Маршрут 1")
+                .child(Flight.getText().toString()  )
+                .child("Маршрут 1")
+                .child("Users");
         ref.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
