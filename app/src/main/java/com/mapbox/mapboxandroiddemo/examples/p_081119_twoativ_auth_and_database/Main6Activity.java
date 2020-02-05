@@ -109,7 +109,7 @@ public class Main6Activity extends AppCompatActivity {
     }
 // Вызов Личного статуса заказа вкладка пользователи "Пользователи"
 public void btnStatus(View view){
-        
+
 
         //ВАЖНО УБРАТЬ КОМЕНТЫ!!! очистка массива для обновления количества пользователей по заявке
    // num.clear();
