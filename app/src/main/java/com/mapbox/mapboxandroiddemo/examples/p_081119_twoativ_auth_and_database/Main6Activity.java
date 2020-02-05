@@ -109,16 +109,7 @@ public class Main6Activity extends AppCompatActivity {
     }
 // Вызов Личного статуса заказа вкладка пользователи "Пользователи"
 public void btnStatus(View view){
-
-    // Получить Токен!!!! Работает с показом на экане
-    FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Main6Activity.this,new OnSuccessListener<InstanceIdResult>() {
-        @Override
-        public void onSuccess(InstanceIdResult instanceIdResult) {
-            String newToken = instanceIdResult.getToken();
-            Log.d("TAG", newToken);
-            Toast.makeText(Main6Activity.this, newToken, Toast.LENGTH_SHORT).show();
-        }
-    });
+        
 
         //ВАЖНО УБРАТЬ КОМЕНТЫ!!! очистка массива для обновления количества пользователей по заявке
    // num.clear();
