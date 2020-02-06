@@ -54,6 +54,8 @@ public class Main4Activity extends AppCompatActivity {
 
     FirebaseDatabase nextdatabase;
     DatabaseReference nextref;
+    DatabaseReference nextref2;
+    DatabaseReference nextref3;
 
     User user;
 
@@ -335,6 +337,7 @@ public class Main4Activity extends AppCompatActivity {
         user.setToken( newToken );
 
 
+
         // Запись во вторую ветку БД Пользователи
 
         userTwo.setДата(Calend.getText().toString());
@@ -448,7 +451,8 @@ public class Main4Activity extends AppCompatActivity {
                 //.child("Маршрут 1")
                 .child(Flight.getText().toString()  )
                 .child("Маршрут 1")
-                .child("Users");
+                .child("Users")
+                .child(userI);
         ref.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -460,7 +464,8 @@ public class Main4Activity extends AppCompatActivity {
                 // база данных во главе телефон далее дата и номер рейса
                 //String user_id = mmm.getPhoneNumber();
 
-                ref.child( user_id ).setValue( user );
+                //ref.child( user_id ).setValue( user );
+                ref.child( userI ).setValue( user_id );
                 Toast.makeText( Main4Activity.this, "Заявка принята....", Toast.LENGTH_LONG ).show();
                 //Видимость кнопки Проверить статус
                 btnStatus.setEnabled( true );
@@ -527,6 +532,26 @@ public class Main4Activity extends AppCompatActivity {
             }
         });
 
+        //06.02.20 Проба новая структура для работы уведомления Nodjs
+        FirebaseUser kkk = FirebaseAuth.getInstance().getCurrentUser();
+        // база данных во главе ID пользователя далее дата и номер рейса
+        String user_id = kkk.getUid();
+        nextref2 = nextdatabase.getReference("Пользователи").child(user_id).child("notificationTokens");
+        nextref2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                nextref2.child(newToken).setValue("true");
+
+                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "History
+                nextref2.removeEventListener( this );
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
     public void btnStatus(View view){

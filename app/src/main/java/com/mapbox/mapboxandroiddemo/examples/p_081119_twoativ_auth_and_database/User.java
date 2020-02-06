@@ -1,5 +1,8 @@
 package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class User {
 
     private String Phone;
@@ -9,7 +12,9 @@ public class User {
     private String Token;
 
     public User(){
+
     }
+
 
     public User(String phone, String дата, String рейс, Integer число, String token) {
         Phone = phone;
