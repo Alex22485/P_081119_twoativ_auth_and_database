@@ -42,20 +42,25 @@ public class Main4Activity extends AppCompatActivity {
     FirebaseAuth mAuth;
     String userID;
     String userI;
+    String token;
 
 
-    Button btnInsert,btnStatus;
+    Button btnInsert,btnStatus,btn_number_Flight;
     TextView Flight;
     FirebaseDatabase database;
+    FirebaseDatabase database01;
     DatabaseReference ref;
+    DatabaseReference ref01;
 
     FirebaseDatabase ddd;
+    FirebaseDatabase ddd01;
     DatabaseReference ggg;
+    DatabaseReference ggg01;
 
     FirebaseDatabase nextdatabase;
     DatabaseReference nextref;
     DatabaseReference nextref2;
-    DatabaseReference nextref3;
+
 
     User user;
 
@@ -128,6 +133,7 @@ public class Main4Activity extends AppCompatActivity {
 
         Flight = findViewById(R.id.Flight);
         btnStatus=findViewById( R.id.btnStatus );
+        btn_number_Flight=findViewById( R.id.btn_number_Flight );
 
 
 
@@ -238,6 +244,9 @@ public class Main4Activity extends AppCompatActivity {
         else {btnInsert.setEnabled( true );
         }*/
 
+
+
+
 // Disable Button if Text is Empty
         Calend.addTextChangedListener( loginTextWather );
         Flight.addTextChangedListener( loginTextWather );
@@ -254,7 +263,9 @@ public class Main4Activity extends AppCompatActivity {
             String calendInput =Calend.getText().toString().trim();
             String flightInput =Flight.getText().toString().trim();
 
+            btn_number_Flight.setEnabled(!calendInput.isEmpty());
             btnInsert.setEnabled(!calendInput.isEmpty()&& !flightInput.isEmpty() );
+
         }
         @Override
         public void afterTextChanged(Editable editable) {
@@ -268,7 +279,7 @@ public class Main4Activity extends AppCompatActivity {
 
 
         AlertDialog.Builder builder=new AlertDialog.Builder( Main4Activity.this );
-        builder.setTitle( "Выбирите Номер рейса");
+        builder.setTitle( "Выберите Номер рейса");
         builder.setCancelable( false );
         builder.setItems( listFlights, new DialogInterface.OnClickListener() {
             @Override
@@ -276,10 +287,35 @@ public class Main4Activity extends AppCompatActivity {
 
                 Flight.setText(listFlights[which]);
 
+                // 15.02.2020 Проба запись токена пользователя в БД сразу после выбора номера рейса
+                // чтобы при нажатии на регистрацию заявки токен уже был в нужном месте БД нужно для Nodejs!!!
+
+                database01 = FirebaseDatabase.getInstance();
+                ref01 = database01.getReference("Заявки")
+                        .child("Аэропорт-Красноярск")
+                        .child( Calend.getText().toString() )
+                        .child(Flight.getText().toString()  )
+                        .child("Маршрут 1")
+                        .child("notificationTokens");
+                ref01.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        ref01.child(newToken).setValue("true");
+                        // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "newToken
+                        ref01.removeEventListener( this );
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+
             }
         } );
+
         AlertDialog dialog = builder.create();
         dialog.show();
+
+
 
          /*mAuth= FirebaseAuth.getInstance(  );
         FirebaseUser ghg=mAuth.getCurrentUser();
@@ -330,6 +366,8 @@ public class Main4Activity extends AppCompatActivity {
 
     private void  getValues(){
 
+
+        // с 14.02.2020 Не используется Запись во первую ветку БД Заявки
         user.setPhone(userID);
         user.setРейс(Flight.getText().toString());
         user.setДата(Calend.getText().toString());
@@ -371,6 +409,7 @@ public class Main4Activity extends AppCompatActivity {
                 String map=dataSnapshot.child( "направление" ).getValue(String.class);
                 String roar_number=dataSnapshot.child( "маршрут_номер" ).getValue(String.class);
                 String flidht_number=dataSnapshot.child( "рейс_самолета" ).getValue(String.class);
+                token=dataSnapshot.child( "token" ).getValue(String.class);
 
                 ddd = FirebaseDatabase.getInstance();
                 ggg = ddd.getReference("Заявки")
@@ -383,12 +422,28 @@ public class Main4Activity extends AppCompatActivity {
 
                 // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Заявки"
                 ggg.removeEventListener( this );
+
+                // Для удаления токена в пустых заявках
+                ddd01 = FirebaseDatabase.getInstance();
+                ggg01 = ddd01.getReference("Заявки")
+                        .child(map)
+                        .child(data)
+                        //.child(roar_number)
+                        .child(flidht_number)
+                        .child(roar_number)
+                        .child("notificationTokens");
+
+                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Заявки-Notification"
+                ggg01.removeEventListener( this );
+
                 
 
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                /*Удаление старых заявок, чтобы не было запараллеливания*/ ggg.child( userI ).removeValue();
+                /*Удаление старых заявок, чтобы не было запараллеливания*/
+                ggg.child( userI ).removeValue();
+                ggg01.child( token ).removeValue();
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
@@ -478,9 +533,9 @@ public class Main4Activity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
+        }
+        );
 
-
-        } );
 
         FirebaseUser mmm = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -532,8 +587,8 @@ public class Main4Activity extends AppCompatActivity {
             }
         });
 
-        //06.02.20 Проба новая структура для работы уведомления Nodjs
-        FirebaseUser kkk = FirebaseAuth.getInstance().getCurrentUser();
+        //06.02.20 Проба новая структура для работы уведомления Nodjs Не нужна пока что
+       /* FirebaseUser kkk = FirebaseAuth.getInstance().getCurrentUser();
         // база данных во главе ID пользователя далее дата и номер рейса
         String user_id = kkk.getUid();
         nextref2 = nextdatabase.getReference("Пользователи").child(user_id).child("notificationTokens");
@@ -552,6 +607,7 @@ public class Main4Activity extends AppCompatActivity {
 
             }
         });
+        */
 
     }
     public void btnStatus(View view){

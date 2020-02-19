@@ -16,11 +16,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import java.util.Collections;
 
-public class Main2Activity extends AppCompatActivity implements View.OnClickListener {
+public class Main2Activity extends AppCompatActivity {
 
 
     Button btn_sign_out;
     Button three_window;
+    Button inAirport,inCity;
     private static final int RC_SIGN_IN = 101;
 
     @Override
@@ -29,7 +30,9 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_main2);
 
         three_window = (Button) findViewById(R.id.three_window);
-        three_window.setOnClickListener(this);
+        //three_window.setOnClickListener(this);
+        inAirport = (Button) findViewById(R.id.inAirport);
+        inCity = (Button) findViewById(R.id.inCity);
 
         doPhoneLogin();
     }
@@ -59,13 +62,15 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                 showAlertDialog(user);
                 btn_sign_out.setEnabled(true);
                 three_window.setEnabled(true);
+                inAirport.setEnabled(true);
+                inCity.setEnabled(true);
             }
             else {
                 Toast.makeText(getBaseContext(), "Ошибка Автоирзации", Toast.LENGTH_LONG).show();
             }
         }
     }
-// Всплывающая информация
+    // Всплывающая информация
     public void showAlertDialog(FirebaseUser user) {
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
                 Main2Activity.this);
@@ -77,16 +82,16 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         mAlertDialog
                 .setMessage(" Номер телефона " + user.getPhoneNumber())
                 .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-            }
-        });
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
         mAlertDialog.create();
         // Showing Alert Message
         mAlertDialog.show();
     }
 
-    @Override
+    /*@Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.three_window:
@@ -97,5 +102,14 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
             default:
                 break;
         }
+    }*/
+        public void inCity(View view){
+            Intent Main4Activity = new Intent( this,Main4Activity.class );
+            startActivity( Main4Activity);
+        }
+
+    public void inAirport(View view){
+        Intent InAir_choise_routes = new Intent( this,InAir_choise_routes.class );
+        startActivity( InAir_choise_routes);
     }
-}
+    }
