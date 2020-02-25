@@ -21,7 +21,8 @@ public class Main2Activity extends AppCompatActivity {
 
     Button btn_sign_out;
     Button three_window;
-    Button inAirport,inCity;
+    //Button inAirport,inCity;
+    Button start_order;
     private static final int RC_SIGN_IN = 101;
 
     @Override
@@ -31,8 +32,10 @@ public class Main2Activity extends AppCompatActivity {
 
         three_window = (Button) findViewById(R.id.three_window);
         //three_window.setOnClickListener(this);
-        inAirport = (Button) findViewById(R.id.inAirport);
-        inCity = (Button) findViewById(R.id.inCity);
+        //inAirport = (Button) findViewById(R.id.inAirport);
+        //inCity = (Button) findViewById(R.id.inCity);
+
+        start_order = (Button) findViewById(R.id.start_order);
 
         doPhoneLogin();
     }
@@ -62,11 +65,13 @@ public class Main2Activity extends AppCompatActivity {
                 showAlertDialog(user);
                 btn_sign_out.setEnabled(true);
                 three_window.setEnabled(true);
-                inAirport.setEnabled(true);
-                inCity.setEnabled(true);
+
+                start_order.setEnabled( true );
+                //inAirport.setEnabled(true);
+                //inCity.setEnabled(true);
             }
             else {
-                Toast.makeText(getBaseContext(), "Ошибка Автоирзации", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Ошибка Авторизации", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -91,6 +96,11 @@ public class Main2Activity extends AppCompatActivity {
         mAlertDialog.show();
     }
 
+    public void  start_order (View view){
+        Intent List_Choose_direction =new Intent( this,Choose_direction.class );
+        startActivity( List_Choose_direction );
+    }
+
     /*@Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -103,13 +113,28 @@ public class Main2Activity extends AppCompatActivity {
                 break;
         }
     }*/
-        public void inCity(View view){
-            Intent Main4Activity = new Intent( this,Main4Activity.class );
-            startActivity( Main4Activity);
+        /*public void inCity(View view){
+            Intent nextListInAir_choise_routes = new Intent( this,InAir_choise_routes.class );
+
+            nextListInAir_choise_routes.putExtra( "Маршрут", "Аэропорт-Красноярск" );
+            nextListInAir_choise_routes.putExtra( "oneMap", "Аэропорт-КрасТэц" );
+            nextListInAir_choise_routes.putExtra( "twoMap", "Аэропорт-Щорса" );
+            nextListInAir_choise_routes.putExtra( "treeMap", "Аэропорт-Северный" );
+            nextListInAir_choise_routes.putExtra( "fourMap", "Аэропорт-Ветлужанка" );
+            startActivity( nextListInAir_choise_routes);
         }
 
     public void inAirport(View view){
-        Intent InAir_choise_routes = new Intent( this,InAir_choise_routes.class );
-        startActivity( InAir_choise_routes);
-    }
+        Intent nextListInAir_choise_routes = new Intent( this,InAir_choise_routes.class );
+
+        nextListInAir_choise_routes.putExtra( "Маршрут", "Красноярск-Аэропорт" );
+        nextListInAir_choise_routes.putExtra( "fourMap", "Ветлужанка-Аэропорт" );
+        nextListInAir_choise_routes.putExtra( "oneMap", "КрасТэц-Аэропорт" );
+        nextListInAir_choise_routes.putExtra( "twoMap", "Щорса-Аэропорт" );
+        nextListInAir_choise_routes.putExtra( "treeMap", "Северный-Аэропорт" );
+        nextListInAir_choise_routes.putExtra( "fourMap", "Ветлужанка-Аэропорт" );
+
+
+        startActivity( nextListInAir_choise_routes);
+    }*/
     }

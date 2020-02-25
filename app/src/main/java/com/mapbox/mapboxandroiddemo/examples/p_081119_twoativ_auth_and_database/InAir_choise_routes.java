@@ -19,11 +19,14 @@ public class InAir_choise_routes extends AppCompatActivity {
 
     Button nextList;
 
-    //Выбрать выбрать пункт Сбора Маршрута №1 КрасТэц-Аэропорт
+    //Выбрать выбрать пункт Сбора Маршрута №1 КрасТэц-Аэропорт-КрасТэц
     String[] pointOneMap = {"ДК КрасТЭЦ","Аэрокосмическая академия","Торговый центр","Предмостная пл."};
 
-    //Выбрать выбрать пункт Сбора Маршрута №2 Щорса-Аэропорт
+    //Выбрать выбрать пункт Сбора Маршрута №2 Щорса-Аэропорт-Щорса
     String[] pointTwoMap={"Кинотеатр Металлург","Автобусный пер.","Пикра","Мебельная фабрика"};
+
+
+    TextView mapTop,oneMap,twoMap,treeMap,fourMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,36 +45,60 @@ public class InAir_choise_routes extends AppCompatActivity {
         TVchoiseMap.addTextChangedListener( loginTextWather );
         TVchoise_pointMap.addTextChangedListener( loginTextWather );
 
+        // for Extra
+        oneMap= findViewById(R.id.oneMap);
+        twoMap= findViewById(R.id.twoMap);
+        treeMap= findViewById(R.id.treeMap);
+        fourMap= findViewById(R.id.fourMap);
+        mapTop= findViewById(R.id.mapTop);
+
+        //Put Extra form Main2Activity Определяет какое значение установть в название маршрута если в Main2Activity нажата В Аэропорт или из Аэропорта
+        Intent nextListInAir_choise_routes =getIntent();
+        String sMapTop =nextListInAir_choise_routes.getStringExtra( "Маршрут" );
+        String sOneMap =nextListInAir_choise_routes.getStringExtra( "oneMap" );
+        String sTwoMap =nextListInAir_choise_routes.getStringExtra( "twoMap" );
+        String sTreeMap =nextListInAir_choise_routes.getStringExtra( "treeMap" );
+        String sFourMap =nextListInAir_choise_routes.getStringExtra( "fourMap" );
+
+        mapTop.setText( sMapTop );
+        oneMap.setText( sOneMap );
+        twoMap.setText( sTwoMap );
+        treeMap.setText( sTreeMap );
+        fourMap.setText( sFourMap );
+
+
+
     }
 
-    //Выбрать выбрать пункт Сбора Маршрута №1 КрасТэц-Аэропорт
+    //Выбрать выбрать пункт Сбора Маршрута КрасТэц-Аэропорт-КрасТэц
 public  void oneChoose(View view) {
     AlertDialog.Builder builder=new AlertDialog.Builder( InAir_choise_routes.this );
-    builder.setTitle( R.string.Первый5маршрут);
+    builder.setTitle( oneMap.getText().toString());
     builder.setCancelable( true );
     builder.setItems( pointOneMap, new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialogInterface, int which) {
 
-            TVchoiseMap.setText( R.string.Первый5маршрут );
+            TVchoiseMap.setText( oneMap.getText().toString() );
             TVchoise_pointMap.setText(pointOneMap[which]);
 
         }
     } );
     AlertDialog dialog = builder.create();
     dialog.show();
+
 }
 
-    //Выбрать выбрать пункт Сбора Маршрута №2 Щорса-Аэропорт
+    //Выбрать выбрать пункт Сбора Маршрута Щорса-Аэропорт-Щорса
     public  void twoChoose(View view) {
         AlertDialog.Builder builder=new AlertDialog.Builder( InAir_choise_routes.this );
-        builder.setTitle( R.string.Второй5маршрут);
+        builder.setTitle(twoMap.getText().toString());
         builder.setCancelable( true );
         builder.setItems( pointTwoMap, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
 
-                TVchoiseMap.setText( R.string.Второй5маршрут );
+                TVchoiseMap.setText( twoMap.getText().toString() );
                 TVchoise_pointMap.setText(pointTwoMap[which]);
             }
         } );
@@ -100,7 +127,11 @@ public  void oneChoose(View view) {
     };
 
     public void nextList(View view){
+
         Intent nextList = new Intent( this,Main3Activity.class );
+        nextList.putExtra( "TVchoiseMap",TVchoiseMap.getText().toString() );
+        nextList.putExtra( "TVchoise_pointMap",TVchoise_pointMap.getText().toString() );
+        nextList.putExtra( "mapTop",mapTop.getText().toString() );
         startActivity( nextList);
     }
 }

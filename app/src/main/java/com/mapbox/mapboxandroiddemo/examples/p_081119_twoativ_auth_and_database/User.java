@@ -6,17 +6,56 @@ import com.google.firebase.auth.FirebaseUser;
 public class User {
 
     private String Phone;
-    private String Дата;
-    private String Рейс;
+    //private String Дата;
+    //private String Рейс;
     private Integer Число;
     private String Token;
+    private String UserI;
 
     public User(){
 
     }
 
+    public User(String phone, Integer число, String token, String userI) {
+        Phone = phone;
+        Число = число;
+        Token = token;
+        UserI = userI;
+    }
 
-    public User(String phone, String дата, String рейс, Integer число, String token) {
+    public String getPhone() {
+        return Phone;
+    }
+
+    public void setPhone(String phone) {
+        Phone = phone;
+    }
+
+    public Integer getЧисло() {
+        return Число;
+    }
+
+    public void setЧисло(Integer число) {
+        Число = число;
+    }
+
+    public String getToken() {
+        return Token;
+    }
+
+    public void setToken(String token) {
+        Token = token;
+    }
+
+    public String getUserI() {
+        return UserI;
+    }
+
+    public void setUserI(String userI) {
+        UserI = userI;
+    }
+
+    /*public User(String phone, String дата, String рейс, Integer число, String token) {
         Phone = phone;
         Дата = дата;
         Рейс = рейс;
@@ -62,7 +101,7 @@ public class User {
 
     public void setToken(String token) {
         Token = token;
-    }
+    }*/
 }
 
 

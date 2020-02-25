@@ -8,20 +8,28 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/mapTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:text=""
+        android:textSize="25sp" />
+    <TextView
         android:id="@+id/toptext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="15dp"
         android:text="@string/ВариантыМаршрутов"
-        android:textSize="25sp" />
+        android:layout_marginBottom="5dp"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/oneMap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Первый5маршрут"
-        android:textSize="24sp"/>
+        android:text=""
+        android:textSize="20sp"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -51,8 +59,8 @@
         android:id="@+id/twoMap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Второй5маршрут"
-        android:textSize="24sp"/>
+        android:text=""
+        android:textSize="20sp"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -80,8 +88,8 @@
         android:id="@+id/treeMap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Третий5маршрут"
-        android:textSize="24sp"/>
+        android:text=""
+        android:textSize="20sp"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -109,8 +117,8 @@
         android:id="@+id/fourMap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Четвертый5маршрут"
-        android:textSize="24sp"/>
+        android:text=""
+        android:textSize="15sp"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -153,7 +161,6 @@
             android:id="@+id/TVchoiseMap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
             android:textColor="@color/colorAccent"
             android:textSize="20dp" />
 

@@ -2,16 +2,22 @@
     <string name="app_name">P_081119_twoativ_auth_and_database</string>
 
     //InAir_choise_routes
-    <string name="Первый5маршрут">1. КрасТЭЦ-Аэропорт</string>
-    <string name="Второй5маршрут">2. Щорса-Аэропорт</string>
-    <string name="Третий5маршрут">3. Северный-Аэропорт</string>
-    <string name="Четвертый5маршрут">4. Ветлужанка-Аэропорт</string>
+
     <string name="Карта">Карта</string>
     <string name="Выбратьмаршрут">Выбрать маршрут и пункт сбора</string>
-    <string name="ВариантыМаршрутов">Варианты Маршрутов</string>
+    <string name="ВариантыМаршрутов">Маршруты</string>
     <string name="choiseMap">Маршрут</string>
     <string name="choise_pointMap">Пункт сбора</string>
 
+    <string name="InAir_Map1">КрасТэц-Аэропорт</string>
+    <string name="InAir_Map2">Щорса-Аэропорт</string>
+    <string name="InAir_Map3">Северный-Аэропорт</string>
+    <string name="InAir_Map4">Ветлужанка-Аэропорт</string>
+
+    <string name="InCity_Map1">Аэропорт-КрасТэц</string>
+    <string name="InCity_Map2">Аэропорт-Щорса</string>
+    <string name="InCity_Map3">Аэропорт-Северный</string>
+    <string name="InCity_Map4">Аэропорт-Ветлужанка</string>
 
 
     <string-array name="day_of_weeks">

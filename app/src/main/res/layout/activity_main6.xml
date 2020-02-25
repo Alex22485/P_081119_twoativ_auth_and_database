@@ -135,7 +135,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="номер маршрута"
+            android:hint="название маршрута"
             android:textSize="20sp"
             android:textColor="@color/colorNew"
             android:id="@+id/road_number_out"/>
@@ -157,7 +157,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="название маршрута"
+            android:hint="пункт назначения"
             android:textColor="@color/colorNew"
             android:textSize="20sp"
             android:id="@+id/road_name_out"/>

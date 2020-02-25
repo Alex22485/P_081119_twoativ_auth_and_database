@@ -368,11 +368,11 @@ public class Main4Activity extends AppCompatActivity {
 
 
         // с 14.02.2020 Не используется Запись во первую ветку БД Заявки
-        user.setPhone(userID);
-        user.setРейс(Flight.getText().toString());
-        user.setДата(Calend.getText().toString());
+        //user.setPhone(userID);
+        //user.setРейс(Flight.getText().toString());
+        //user.setДата(Calend.getText().toString());
         user.setЧисло( 1 );
-        user.setToken( newToken );
+        //user.setToken( newToken );
 
 
 
@@ -381,9 +381,8 @@ public class Main4Activity extends AppCompatActivity {
         userTwo.setДата(Calend.getText().toString());
         userTwo.setНаправление("Аэропорт-Красноярск");
         userTwo.setМаршрут_номер("Маршрут 1");
-        userTwo.setМаршрут_название("Аэропорт-КрасТэц");
+        //userTwo.setМаршрут_точкаСбора("впедс");
         userTwo.setРейс_самолета(Flight.getText().toString());
-        userTwo.setПоездки("число8");
         userTwo.setToken( newToken );
     }
 

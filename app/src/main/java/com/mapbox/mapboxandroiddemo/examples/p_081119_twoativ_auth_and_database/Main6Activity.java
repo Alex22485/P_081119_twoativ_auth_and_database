@@ -45,6 +45,8 @@ public class Main6Activity extends AppCompatActivity {
     String userID;
     String userI;
 
+    String token;
+
     String[] CancelOderWhy ={"Самолет отменён","Передумал", };
 
     FirebaseAuth mAuth;
@@ -123,8 +125,9 @@ public void btnStatus(View view){
             String data=dataSnapshot.child( "дата" ).getValue(String.class);
             String map=dataSnapshot.child( "направление" ).getValue(String.class);
             String roar_number=dataSnapshot.child( "маршрут_номер" ).getValue(String.class);
-            String road_name=dataSnapshot.child( "маршрут_название" ).getValue(String.class);
+            String road_name=dataSnapshot.child( "маршрут_точкаСбора" ).getValue(String.class);
             String flidht_number=dataSnapshot.child( "рейс_самолета" ).getValue(String.class);
+            token=dataSnapshot.child( "token" ).getValue(String.class);
 
             Calend_Out.setText( data );
             Map.setText( map );
@@ -138,7 +141,7 @@ public void btnStatus(View view){
                     .child( Calend_Out.getText().toString() )
                     .child(flight_number_Out.getText().toString())
                     .child( road_number_out.getText().toString() )
-                    ;
+                    .child( road_name_out.getText().toString() );
 
             DatabaseReference usersdRef = rootRef.child( "Users" );
             ValueEventListener valueEventListener = new ValueEventListener() {
@@ -422,13 +425,26 @@ public void btnStatus(View view){
                         //.child(road_number_out.getText().toString())
                         .child(flight_number_Out.getText().toString()  )
                         .child(road_number_out.getText().toString())
+                        .child(road_name_out.getText().toString())
                         .child("Users");
                 mmm.child( userI ).removeValue();
+
+                mmm = ggg.getReference("Заявки")
+                        .child(Map.getText().toString() )
+                        .child( Calend_Out.getText().toString() )
+                        //.child(road_number_out.getText().toString())
+                        .child(flight_number_Out.getText().toString()  )
+                        .child(road_number_out.getText().toString())
+                        .child(road_name_out.getText().toString())
+                        .child("notificationTokens");
+                mmm.child( token ).removeValue();
 
                 mmm = ggg.getReference("Пользователи")
                         .child(userID)
                         .child("Status");
                 mmm.child( userI ).removeValue();
+
+
 
 
 
@@ -484,7 +500,7 @@ public void btnStatus(View view){
     }
 
     public void backMainList (View view){
-        Intent qwe= new Intent(this,Main4Activity.class);
+        Intent qwe= new Intent(this,Choose_direction.class);
         startActivity(qwe);
     }
 
