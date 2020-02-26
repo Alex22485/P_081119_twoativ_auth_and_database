@@ -188,7 +188,7 @@ public class Main3Activity extends AppCompatActivity {
 
         // с 23.02.2020  используется Запись во первую ветку БД Заявки
         //user.setPhone(userID);
-        user.setUserI(userI);
+        //user.setUserI(userI);
         //user.setРейс(Flight.getText().toString());
         //user.setДата(Calend.getText().toString());
         user.setЧисло( 1 );
@@ -374,7 +374,7 @@ public class Main3Activity extends AppCompatActivity {
                                               }
                 );
             }
-        },2000
+        },10000
         );
 
 
