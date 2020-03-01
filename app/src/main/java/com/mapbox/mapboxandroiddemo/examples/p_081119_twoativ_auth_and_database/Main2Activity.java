@@ -101,6 +101,11 @@ public class Main2Activity extends AppCompatActivity {
         startActivity( List_Choose_direction );
     }
 
+    public void ПробаGETChild (View view){
+        Intent ПробаGETChild= new Intent(this,Main5Activity.class);
+        startActivity(ПробаGETChild);
+    }
+
     /*@Override
     public void onClick(View v) {
         switch (v.getId()) {

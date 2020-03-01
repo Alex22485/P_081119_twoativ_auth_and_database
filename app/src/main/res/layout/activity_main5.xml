@@ -7,4 +7,22 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Main5Activity">
+
+ <TextView
+     android:id="@+id/proba"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:textSize="25sp"
+     android:text="sfsdfsd"/>
+
+ <Button
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:text="Выбрать водитлей"
+     android:onClick="btn_number_Flight"/>
+
+ <ListView
+     android:id="@+id/lv2"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"/>
  </LinearLayout>

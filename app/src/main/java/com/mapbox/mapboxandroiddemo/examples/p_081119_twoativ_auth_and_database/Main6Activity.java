@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -415,20 +416,7 @@ public void btnStatus(View view){
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
 
-
-
-
                 ggg = FirebaseDatabase.getInstance();
-                mmm = ggg.getReference("Заявки")
-                        .child(Map.getText().toString() )
-                        .child( Calend_Out.getText().toString() )
-                        //.child(road_number_out.getText().toString())
-                        .child(flight_number_Out.getText().toString()  )
-                        .child(road_number_out.getText().toString())
-                        .child(road_name_out.getText().toString())
-                        .child("Users");
-                mmm.child( userI ).removeValue();
-
                 mmm = ggg.getReference("Заявки")
                         .child(Map.getText().toString() )
                         .child( Calend_Out.getText().toString() )
@@ -439,21 +427,74 @@ public void btnStatus(View view){
                         .child("notificationTokens");
                 mmm.child( token ).removeValue();
 
-                mmm = ggg.getReference("Пользователи")
+                //28 02 2020  задержка на удаление из БД, нужна для правильного подсчета человек в БД ЗАявкиServerApp
+                Handler handler = new Handler();
+                handler.postDelayed( new Runnable() {
+                    @Override
+                    public void run() {
+                        mmm = ggg.getReference("Заявки")
+                                .child(Map.getText().toString() )
+                                .child( Calend_Out.getText().toString() )
+                                //.child(road_number_out.getText().toString())
+                                .child(flight_number_Out.getText().toString()  )
+                                .child(road_number_out.getText().toString())
+                                .child(road_name_out.getText().toString())
+                                .child("Users");
+                        mmm.child( userI ).removeValue();
+
+                        mmm = ggg.getReference("Пользователи")
+                                .child(userID)
+                                .child("Status");
+                        mmm.child( userI ).removeValue();
+                        Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
+
+                        Calend_Out.setText( "" );
+                        Map.setText( "" );
+                        road_number_out.setText( "" );
+                        road_name_out.setText( "" );
+                        flight_number_Out.setText( "" );
+                        number.setText( " заявка НЕ оформлена   Х" );
+                        number.setTextColor(getResources().getColor( R.color.colorNew ));
+
+                        information.setText( "" );
+                        searchCar.setText("");
+                        process2.setText( "" );
+                        process3.setText( "" );
+                        people.setText("");
+                        process.setText( "" );
+                        process1.setText( "" );
+                        btnStatus.setEnabled(false);
+                    }
+                },1000
+                );
+               /*ggg = FirebaseDatabase.getInstance();
+                mmm = ggg.getReference("Заявки")
+                        .child(Map.getText().toString() )
+                        .child( Calend_Out.getText().toString() )
+                        //.child(road_number_out.getText().toString())
+                        .child(flight_number_Out.getText().toString()  )
+                        .child(road_number_out.getText().toString())
+                        .child(road_name_out.getText().toString())
+                        .child("Users");
+                mmm.child( userI ).removeValue();*/
+
+                /*mmm = ggg.getReference("Заявки")
+                        .child(Map.getText().toString() )
+                        .child( Calend_Out.getText().toString() )
+                        //.child(road_number_out.getText().toString())
+                        .child(flight_number_Out.getText().toString()  )
+                        .child(road_number_out.getText().toString())
+                        .child(road_name_out.getText().toString())
+                        .child("notificationTokens");
+                mmm.child( token ).removeValue();*/
+
+                /*mmm = ggg.getReference("Пользователи")
                         .child(userID)
                         .child("Status");
-                mmm.child( userI ).removeValue();
+                mmm.child( userI ).removeValue();*/
+                //Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
 
-
-
-
-
-
-
-
-                Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
-
-                Calend_Out.setText( "" );
+                /*Calend_Out.setText( "" );
                 Map.setText( "" );
                 road_number_out.setText( "" );
                 road_name_out.setText( "" );
@@ -468,42 +509,22 @@ public void btnStatus(View view){
                 people.setText("");
                 process.setText( "" );
                 process1.setText( "" );
-                btnStatus.setEnabled(false);
-
-
-
-
-
-
+                btnStatus.setEnabled(false);*/
             }
-
-
         } );
 
         builder.setNeutralButton("Назад", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
             }
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-
-
-
         /*Intent sss = new Intent(this,Main4Activity.class );
         startActivity( sss );*/
-
-
-
-
     }
-
     public void backMainList (View view){
         Intent qwe= new Intent(this,Choose_direction.class);
         startActivity(qwe);
     }
-
-
-
 }

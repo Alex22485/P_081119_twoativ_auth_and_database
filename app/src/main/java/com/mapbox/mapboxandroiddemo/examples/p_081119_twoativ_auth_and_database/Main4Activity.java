@@ -39,6 +39,8 @@ import java.util.Calendar;
 
 public class Main4Activity extends AppCompatActivity {
 
+    //!!!!!!!!!!!!!25.02.2020 не используется. Вместо этого активити используется Main3Activity
+
     FirebaseAuth mAuth;
     String userID;
     String userI;

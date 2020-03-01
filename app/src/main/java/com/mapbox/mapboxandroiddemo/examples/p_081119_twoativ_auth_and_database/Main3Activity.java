@@ -230,7 +230,7 @@ public class Main3Activity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         } );
-//25.02.2020 Задержка записи в БД нужна для правильного подсчетаколичества токенов программой NODE js
+//25.02.2020 Задержка записи в БД нужна для правильного подсчета количества токенов программой NODE js
         Handler handler = new Handler();
         handler.postDelayed( new Runnable() {
             @Override
@@ -374,7 +374,7 @@ public class Main3Activity extends AppCompatActivity {
                                               }
                 );
             }
-        },10000
+        },1000
         );
 
 
