@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.storage.StorageManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -43,14 +44,17 @@ public class Main3Activity extends AppCompatActivity {
     FirebaseAuth mAuth;
     String userID;
     String userI;
-    String token;
+
+
 
     Button btnInsert,btnStatus,btn_number_Flight;
     TextView Flight;
     FirebaseDatabase database;
     FirebaseDatabase database01;
+    FirebaseDatabase database02;
     DatabaseReference ref;
     DatabaseReference ref01;
+    DatabaseReference ref02;
 
     FirebaseDatabase ddd;
     FirebaseDatabase ddd01;
@@ -59,6 +63,10 @@ public class Main3Activity extends AppCompatActivity {
 
     FirebaseDatabase nextdatabase;
     DatabaseReference nextref;
+
+    FirebaseDatabase new2;
+    DatabaseReference new23;
+
 
 
 
@@ -85,6 +93,16 @@ public class Main3Activity extends AppCompatActivity {
     String TVchoiseMap;
     String TVchoise_pointMap;
     String MapTop;
+
+    String data;
+    String map;
+    String roar_number;
+    String flidht_number;
+    String TVchoise_pointMap2;
+    String token;
+
+    String userPhone;
+    String userid;
 
 
     @Override
@@ -205,11 +223,19 @@ public class Main3Activity extends AppCompatActivity {
 
     public void btnInsert (View view){
 
+        mAuth= FirebaseAuth.getInstance(  );
+        FirebaseUser ghg=mAuth.getCurrentUser();
+
+        //полуаем номер телефона пользователя
+        userPhone=ghg.getPhoneNumber();
+        userid=ghg.getUid();
+
         Intent nextList = getIntent();
         TVchoiseMap = nextList.getStringExtra( "TVchoiseMap" );
         TVchoise_pointMap = nextList.getStringExtra( "TVchoise_pointMap" );
         MapTop = nextList.getStringExtra( "mapTop" );
 
+        //030320 Запись токена в БД ЗАЯВКИ
         database01 = FirebaseDatabase.getInstance();
         ref01 = database01.getReference( "Заявки" )
                 .child( MapTop )
@@ -221,161 +247,17 @@ public class Main3Activity extends AppCompatActivity {
         ref01.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ref01.child( newToken ).setValue( "true" );
+                ref01.child( newToken ).setValue( userid );
                 // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "newToken
                 ref01.removeEventListener( this );
+                Toast.makeText( Main3Activity.this, "Заявка принята....", Toast.LENGTH_LONG ).show();
+                //Видимость кнопки Проверить статус
+                btnStatus.setEnabled( true );
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         } );
-//25.02.2020 Задержка записи в БД нужна для правильного подсчета количества токенов программой NODE js
-        Handler handler = new Handler();
-        handler.postDelayed( new Runnable() {
-            @Override
-            public void run() {
-                mAuth= FirebaseAuth.getInstance(  );
-                FirebaseUser ghg=mAuth.getCurrentUser();
-
-                //полуаем номер телефона пользователя
-                userID=ghg.getPhoneNumber();
-                userI=ghg.getUid();
-
-                Query aaa=FirebaseDatabase.getInstance().getReference("Пользователи").child( userID ).child("Status")
-                        .orderByChild( userI );
-                aaa.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        String data=dataSnapshot.child( "дата" ).getValue(String.class);
-                        String map=dataSnapshot.child( "направление" ).getValue(String.class);
-                        String roar_number=dataSnapshot.child( "маршрут_номер" ).getValue(String.class);
-                        String flidht_number=dataSnapshot.child( "рейс_самолета" ).getValue(String.class);
-                        String TVchoise_pointMap2=dataSnapshot.child( "маршрут_точкаСбора" ).getValue(String.class);
-                        token=dataSnapshot.child( "token" ).getValue(String.class);
-                        ddd = FirebaseDatabase.getInstance();
-                        ggg = ddd.getReference("Заявки")
-                                .child(map)
-                                .child(data)
-                                .child(flidht_number)
-                                .child(roar_number)
-                                .child( TVchoise_pointMap2 )
-                                .child("Users");
-                        // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Заявки"
-                        ggg.removeEventListener( this );
-                        // Для удаления токена в пустых заявках
-                        ddd01 = FirebaseDatabase.getInstance();
-                        ggg01 = ddd01.getReference("Заявки")
-                                .child(map)
-                                .child(data)
-                                .child(flidht_number)
-                                .child(roar_number)
-                                .child( TVchoise_pointMap2 )
-                                .child("notificationTokens");
-                        // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Заявки-Notification"
-                        ggg01.removeEventListener( this );
-                    }
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        /*Удаление старых заявок, чтобы не было запараллеливания*/
-                        ggg.child( userI ).removeValue();
-                        ggg01.child( token ).removeValue();
-                    }
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                    }
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                }
-                );
-                database = FirebaseDatabase.getInstance();
-                ref = database.getReference("Заявки")
-                        .child(MapTop)
-                        .child( Calend.getText().toString() )
-                        .child(Flight.getText().toString()  )
-                        .child(TVchoiseMap)
-                        .child(TVchoise_pointMap)
-                        .child("Users");
-                ref.addValueEventListener( new ValueEventListener() {
-                                               @Override
-                                               public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                   getValues();
-
-                                                   FirebaseUser mmm = FirebaseAuth.getInstance().getCurrentUser();
-                                                   // база данных во главе ID пользователя далее дата и номер рейса
-                                                   String user_id = mmm.getUid();
-                                                   // база данных во главе телефон далее дата и номер рейса
-                                                   //String user_id = mmm.getPhoneNumber();
-
-                                                   //ref.child( user_id ).setValue( user );
-                                                   //ref.child( userI ).setValue( user_id );
-                                                   // 23/02/2020 Добавлено в БД вкладка Заявки
-                                                   ref.child( userI ).setValue( user );
-                                                   Toast.makeText( Main3Activity.this, "Заявка принята....", Toast.LENGTH_LONG ).show();
-                                                   //Видимость кнопки Проверить статус
-                                                   btnStatus.setEnabled( true );
-
-
-                                                   // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Заявки"
-                                                   ref.removeEventListener( this );
-                                               }
-
-                                               @Override
-                                               public void onCancelled(@NonNull DatabaseError databaseError) {
-                                               }
-                }
-                );
-                FirebaseUser mmm = FirebaseAuth.getInstance().getCurrentUser();
-
-                // база данных во главе ID пользователя далее дата и номер рейса
-                String user_i = mmm.getPhoneNumber();
-
-                //Новая ветка в базе Пользователи
-                nextdatabase = FirebaseDatabase.getInstance();
-                nextref = nextdatabase.getReference("Пользователи").child(user_i);
-                nextref.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        getValues();
-
-                        //вызов
-                        FirebaseUser ccc = FirebaseAuth.getInstance().getCurrentUser();
-                        String nextuser_id = ccc.getUid();
-                        nextref.child("Status").child(nextuser_id).setValue(userTwo);
-                        //Toast.makeText(Main4Activity.this,"Заявка принята....",Toast.LENGTH_LONG).show();
-
-                        // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Пользователи"
-                        nextref.removeEventListener( this );
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-                //Добавить вкладку История Поездок
-                nextref = nextdatabase.getReference("Пользователи").child(user_i);
-                nextref.addValueEventListener(new ValueEventListener() {
-                                                  @Override
-                                                  public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                      nextref.child("History").setValue("Исторя поездок");
-
-                                                      // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "History
-                                                      nextref.removeEventListener( this );
-
-                                                  }
-
-                                                  @Override
-                                                  public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                                  }
-                                              }
-                );
-            }
-        },1000
-        );
 
 
 

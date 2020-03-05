@@ -117,8 +117,8 @@ public void btnStatus(View view){
         //ВАЖНО УБРАТЬ КОМЕНТЫ!!! очистка массива для обновления количества пользователей по заявке
    // num.clear();
 
-    Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userID ).child("Status")
-            .orderByChild( userI );
+    Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userI )
+            .orderByChild( "Status" );
     aaa.addChildEventListener( new ChildEventListener() {
         @Override
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -151,7 +151,7 @@ public void btnStatus(View view){
 
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         int xxx=0;
-                        int flight = ds.child("число").getValue(Integer.class);
+                        int flight = ds.child("Человек").getValue(Integer.class);
                         int a=xxx+flight;
                         num.add( a );
                         int sum=0;
@@ -443,9 +443,8 @@ public void btnStatus(View view){
                         mmm.child( userI ).removeValue();
 
                         mmm = ggg.getReference("Пользователи")
-                                .child(userID)
-                                .child("Status");
-                        mmm.child( userI ).removeValue();
+                                .child(userI);
+                        mmm.child( "Status" ).removeValue();
                         Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
 
                         Calend_Out.setText( "" );
