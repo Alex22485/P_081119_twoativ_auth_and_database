@@ -38,43 +38,17 @@ import java.util.Calendar;
 
 public class Main3Activity extends AppCompatActivity {
 
-    FirebaseDatabase proba;
-    DatabaseReference proba2;
+
 
     FirebaseAuth mAuth;
-    String userID;
-    String userI;
-
-
-
     Button btnInsert,btnStatus,btn_number_Flight;
     TextView Flight;
-    FirebaseDatabase database;
     FirebaseDatabase database01;
-    FirebaseDatabase database02;
-    DatabaseReference ref;
     DatabaseReference ref01;
-    DatabaseReference ref02;
-
-    FirebaseDatabase ddd;
-    FirebaseDatabase ddd01;
-    DatabaseReference ggg;
-    DatabaseReference ggg01;
-
-    FirebaseDatabase nextdatabase;
-    DatabaseReference nextref;
-
-    FirebaseDatabase new2;
-    DatabaseReference new23;
-
-
-
-
     User user;
 
     //Новая ветка в базе Пользователи
     UserTwo userTwo;
-
 
     // ADD Calendar
     Button choisData;
@@ -93,18 +67,8 @@ public class Main3Activity extends AppCompatActivity {
     String TVchoiseMap;
     String TVchoise_pointMap;
     String MapTop;
-
-    String data;
-    String map;
-    String roar_number;
-    String flidht_number;
-    String TVchoise_pointMap2;
-    String token;
-
     String userPhone;
     String userid;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -202,16 +166,10 @@ public class Main3Activity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void  getValues(){
 
-        // с 23.02.2020  используется Запись во первую ветку БД Заявки
-        //user.setPhone(userID);
-        //user.setUserI(userI);
-        //user.setРейс(Flight.getText().toString());
-        //user.setДата(Calend.getText().toString());
+    // C 05032020 не используется вся работа идет в node js
+    /*private void  getValues(){ // C 05032020 не используется
         user.setЧисло( 1 );
-        //user.setToken( newToken );
-
         // Запись во вторую ветку БД Пользователи
         userTwo.setДата(Calend.getText().toString());
         userTwo.setНаправление(MapTop);
@@ -219,14 +177,14 @@ public class Main3Activity extends AppCompatActivity {
         userTwo.setМаршрут_точкаСбора(TVchoise_pointMap);
         userTwo.setРейс_самолета(Flight.getText().toString());
         userTwo.setToken( newToken );
-    }
+    }*/
 
     public void btnInsert (View view){
 
         mAuth= FirebaseAuth.getInstance(  );
         FirebaseUser ghg=mAuth.getCurrentUser();
 
-        //полуаем номер телефона пользователя
+        //полуачем номер телефона пользователя
         userPhone=ghg.getPhoneNumber();
         userid=ghg.getUid();
 
@@ -258,13 +216,6 @@ public class Main3Activity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         } );
-
-
-
-
-
-
-
     }
     public void btnStatus(View view){
         Intent zxz = new Intent( this,Main6Activity.class );

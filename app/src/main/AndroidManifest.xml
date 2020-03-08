@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Choose_direction"></activity>
+        <activity android:name=".ServApp_1"></activity>
+        <activity android:name=".Choose_direction" />
         <activity android:name=".InAir_choise_routes" />
 
         <service android:name=".GettingDeviceTokenService">

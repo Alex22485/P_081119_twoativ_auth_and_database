@@ -23,6 +23,7 @@ public class Main2Activity extends AppCompatActivity {
     Button three_window;
     //Button inAirport,inCity;
     Button start_order;
+    Button ServApp1_window;
     private static final int RC_SIGN_IN = 101;
 
     @Override
@@ -31,6 +32,7 @@ public class Main2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
 
         three_window = (Button) findViewById(R.id.three_window);
+        ServApp1_window =findViewById( R.id.ServApp1_window );
         //three_window.setOnClickListener(this);
         //inAirport = (Button) findViewById(R.id.inAirport);
         //inCity = (Button) findViewById(R.id.inCity);
@@ -104,6 +106,12 @@ public class Main2Activity extends AppCompatActivity {
     public void ПробаGETChild (View view){
         Intent ПробаGETChild= new Intent(this,Main5Activity.class);
         startActivity(ПробаGETChild);
+    }
+
+    public void ServApp1_window (View view){
+        Intent ServApp1_window=new Intent( this,ServApp_1.class );
+        startActivity(ServApp1_window  );
+
     }
 
     /*@Override

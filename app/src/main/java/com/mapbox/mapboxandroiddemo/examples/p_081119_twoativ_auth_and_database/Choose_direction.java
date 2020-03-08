@@ -34,7 +34,6 @@ public class Choose_direction extends AppCompatActivity {
         Intent nextListInAir_choise_routes = new Intent( this,InAir_choise_routes.class );
 
         nextListInAir_choise_routes.putExtra( "Маршрут", "Красноярск-Аэропорт" );
-        nextListInAir_choise_routes.putExtra( "fourMap", "Ветлужанка-Аэропорт" );
         nextListInAir_choise_routes.putExtra( "oneMap", "КрасТэц-Аэропорт" );
         nextListInAir_choise_routes.putExtra( "twoMap", "Щорса-Аэропорт" );
         nextListInAir_choise_routes.putExtra( "treeMap", "Северный-Аэропорт" );
