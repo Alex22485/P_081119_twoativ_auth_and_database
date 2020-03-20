@@ -15,6 +15,8 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -41,6 +44,7 @@ public class ServApp_1 extends AppCompatActivity {
     TextView treeMen;
     TextView fourPoint;
     TextView fourMen;
+
 
     Button choiseD;
     Button choiseF;
@@ -67,6 +71,15 @@ public class ServApp_1 extends AppCompatActivity {
     String[] listMap2 = {"Аэропорт-КрасТэц","Аэропорт-Щорса","Аэропорт-Северный","Аэропорт-Ветлужанка"};
     String[] pointOneMap = {"ДК КрасТЭЦ","Аэрокосмическая академия","Торговый центр","Предмостная пл"};
     String[] pointTwoMap = {"Кинотеатр Металлург","Автобусный пер","Пикра","Мебельная фабрика"};
+
+    // 20.03.2020 Для выбора водителя
+    ArrayList<String> driver=new ArrayList<String>(  );
+    String[] array={};
+    String  key;
+    TextView driverNew;
+
+    //20.03.2020 для отправки заявки в БД Водителя
+    ServApp_2 servApp_2;
 
     FirebaseDatabase database01;
     DatabaseReference ref01;
@@ -98,6 +111,10 @@ public class ServApp_1 extends AppCompatActivity {
         BtnTwo = findViewById( R.id. BtnTwo );
         BtnTree = findViewById( R.id. BtnTree );
         BtnFour = findViewById( R.id. BtnFour );
+        driverNew = findViewById( R.id. driverNew );
+
+        //20.03.2020 для отправки заявки в БД Водителя
+        servApp_2= new ServApp_2();
 
 
 
@@ -118,6 +135,28 @@ public class ServApp_1 extends AppCompatActivity {
                 datePickerDialog.show();
             }
         } );
+
+        //30 03 2020 Получить все ключи объекта по его значению "Водила" записать их в ArrayList и преобразовать в строковый массив array
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child( "Proba" );
+        ref.orderByValue().equalTo( "Водила" ).addListenerForSingleValueEvent( new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap: dataSnapshot.getChildren()){
+
+                    //Преобразовываем ArrayList в обычный массив чтобы вставить его в AlertDialog
+                    key = snap.getKey(); //получить все ключи значения
+                    driver.add( key );
+                    array = driver.toArray(new String[driver.size()]);
+
+                    //String value = snap.getValue(String.class); //получить все значения, так побаловаться
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        } );
+
     }
 // определениие точек сбора в зависимости от выбранного маршрута
     public void getPoint(){
@@ -227,6 +266,7 @@ public class ServApp_1 extends AppCompatActivity {
                     int data=dataSnapshot.child( "Человек" ).getValue(Integer.class);
                     // чтобы отображалось прибавляем к числу пустую строчку ""
                     oneMen.setText(data+"" );
+                    Toast.makeText( ServApp_1.this, "точка 1 считана", Toast.LENGTH_SHORT ).show();
                 }
                 @Override
                 public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -256,6 +296,7 @@ public class ServApp_1 extends AppCompatActivity {
                     int data=dataSnapshot.child( "Человек" ).getValue(Integer.class);
                     // чтобы отображалось прибавляем к числу пустую строчку ""
                     twoMen.setText(data+"" );
+                    Toast.makeText( ServApp_1.this, "точка 2 считана", Toast.LENGTH_SHORT ).show();
                 }
                 @Override
                 public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -286,6 +327,7 @@ public class ServApp_1 extends AppCompatActivity {
                     int data=dataSnapshot.child( "Человек" ).getValue(Integer.class);
                     // чтобы отображалось прибавляем к числу пустую строчку ""
                     treeMen.setText(data+"" );
+                    Toast.makeText( ServApp_1.this, "точка 3 считана", Toast.LENGTH_SHORT ).show();
                 }
                 @Override
                 public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -315,6 +357,7 @@ public class ServApp_1 extends AppCompatActivity {
                     int data=dataSnapshot.child( "Человек" ).getValue(Integer.class);
                     // чтобы отображалось прибавляем к числу пустую строчку ""
                     fourMen.setText(data+"" );
+                    Toast.makeText( ServApp_1.this, "точка 4 считана", Toast.LENGTH_SHORT ).show();
                 }
                 @Override
                 public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -448,6 +491,89 @@ public class ServApp_1 extends AppCompatActivity {
                 }
             };usersdRef.addListenerForSingleValueEvent(valueEventListener);*/
         }
+        // 20.03.2020 Очищаем количество человек в строке
+        public void BtnOne (View view) {
+            oneMen.setText("");
+            onePoint.setText("");
+
+        }
+    // 20.03.2020 Очищаем количество человек в строке
+    public void BtnTwo (View view) {
+        twoMen.setText("");
+        twoPoint.setText("");
+    }
+    // 20.03.2020 Очищаем количество человек в строке
+    public void BtnTree (View view) {
+        treeMen.setText("");
+        treePoint.setText("");
+    }
+    // 20.03.2020 Очищаем количество человек в строке
+    public void BtnFour (View view) {
+        fourMen.setText("");
+        fourPoint.setText("");
+    }
+
+    //20.03.2020 Выбрать Водителя
+    public void choise_Driver (View view) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder( ServApp_1.this );
+        builder.setTitle( "Выберите Водителя" );
+        // Отображает Водителей загруженных из БД
+        builder.setItems( array, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+
+                        driverNew.setText( array[which] );
+                    }
+                }
+        );
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void  getServApp_2(){
+
+        servApp_2.setДата(Дата.getText().toString());
+        servApp_2.setВремя("4:00");
+        servApp_2.setНаправление(Направление.getText().toString());
+        servApp_2.setМаршрут(Маршрут.getText().toString());
+        servApp_2.setТочкаСбора1(onePoint.getText().toString());
+        servApp_2.setТочкаСбора1Чел(oneMen.getText().toString());
+        servApp_2.setТочкаСбора2(twoPoint.getText().toString());
+        servApp_2.setТочкаСбора2Чел(twoMen.getText().toString());
+        servApp_2.setТочкаСбора3(treePoint.getText().toString());
+        servApp_2.setТочкаСбора3Чел(treeMen.getText().toString());
+        servApp_2.setТочкаСбора4(fourPoint.getText().toString());
+        servApp_2.setТочкаСбора4Чел(fourMen.getText().toString());
+
+    }
+
+    //20.03.2020 Отправить заявку водителю
+    public void sendToDriver(View view){
+
+        database01=FirebaseDatabase.getInstance();
+        ref01 = database01.getReference("Drivers").child(driverNew.getText().toString());
+        ref01.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                getServApp_2();
+                ref01.child("Заявка").setValue(servApp_2);
+                Toast.makeText(ServApp_1.this,"Заявка отправлена....",Toast.LENGTH_LONG).show();
+
+                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Пользователи"
+                ref01.removeEventListener( this );
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+    }
 }
 
 
