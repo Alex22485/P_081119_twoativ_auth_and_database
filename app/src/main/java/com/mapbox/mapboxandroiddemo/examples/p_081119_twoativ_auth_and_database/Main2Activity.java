@@ -111,7 +111,11 @@ public class Main2Activity extends AppCompatActivity {
     public void ServApp1_window (View view){
         Intent ServApp1_window=new Intent( this,ServApp_1.class );
         startActivity(ServApp1_window  );
+    }
 
+    public void DriversApp_1(View view){
+        Intent DriversApp_1=new Intent( this,DriversApp_1.class);
+        startActivity(DriversApp_1);
     }
 
     /*@Override

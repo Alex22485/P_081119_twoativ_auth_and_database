@@ -493,24 +493,24 @@ public class ServApp_1 extends AppCompatActivity {
         }
         // 20.03.2020 Очищаем количество человек в строке
         public void BtnOne (View view) {
-            oneMen.setText("");
-            onePoint.setText("");
+            oneMen.setText("0");
+            onePoint.setText("Нет остановки");
 
         }
     // 20.03.2020 Очищаем количество человек в строке
     public void BtnTwo (View view) {
-        twoMen.setText("");
-        twoPoint.setText("");
+        twoMen.setText("0");
+        twoPoint.setText("Нет остановки");
     }
     // 20.03.2020 Очищаем количество человек в строке
     public void BtnTree (View view) {
-        treeMen.setText("");
-        treePoint.setText("");
+        treeMen.setText("0");
+        treePoint.setText("Нет остановки");
     }
     // 20.03.2020 Очищаем количество человек в строке
     public void BtnFour (View view) {
-        fourMen.setText("");
-        fourPoint.setText("");
+        fourMen.setText("0");
+        fourPoint.setText("Нет остановки");
     }
 
     //20.03.2020 Выбрать Водителя
