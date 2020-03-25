@@ -18,7 +18,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Дата"
-            android:textSize="25sp"></TextView>
+            android:textSize="25sp">
+
+        </TextView>
 
         <Button
             android:id="@+id/choiseD"
@@ -26,7 +28,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:text="Д"
-            android:textSize="20sp"></Button>
+            android:textSize="20sp">
+        </Button>
     </LinearLayout>
 
     <LinearLayout

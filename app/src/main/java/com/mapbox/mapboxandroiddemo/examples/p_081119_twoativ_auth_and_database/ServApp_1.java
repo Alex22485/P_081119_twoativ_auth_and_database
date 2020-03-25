@@ -239,9 +239,10 @@ public class ServApp_1 extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int which) {
                             Маршрут.setText( listMap2[which] );
+                            onePoint.setText( "Парковка Р3" );
 
                             //запускаем выполнение метода
-                            getPoint();
+                            //getPoint();
                         }
                     }
             );

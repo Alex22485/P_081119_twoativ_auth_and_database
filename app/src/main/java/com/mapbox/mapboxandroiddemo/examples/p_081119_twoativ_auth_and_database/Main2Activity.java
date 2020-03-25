@@ -20,7 +20,7 @@ public class Main2Activity extends AppCompatActivity {
 
 
     Button btn_sign_out;
-    Button three_window;
+    //Button three_window;
     //Button inAirport,inCity;
     Button start_order;
     Button ServApp1_window;
@@ -31,7 +31,7 @@ public class Main2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        three_window = (Button) findViewById(R.id.three_window);
+        //three_window = (Button) findViewById(R.id.three_window);
         ServApp1_window =findViewById( R.id.ServApp1_window );
         //three_window.setOnClickListener(this);
         //inAirport = (Button) findViewById(R.id.inAirport);
@@ -66,7 +66,7 @@ public class Main2Activity extends AppCompatActivity {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 showAlertDialog(user);
                 btn_sign_out.setEnabled(true);
-                three_window.setEnabled(true);
+                //three_window.setEnabled(true);
 
                 start_order.setEnabled( true );
                 //inAirport.setEnabled(true);
@@ -112,6 +112,11 @@ public class Main2Activity extends AppCompatActivity {
         Intent ServApp1_window=new Intent( this,ServApp_1.class );
         startActivity(ServApp1_window  );
 
+    }
+
+    public void DriversApp_1(View view){
+        Intent DriversApp_1=new Intent( this,DriversApp_1.class);
+        startActivity(DriversApp_1);
     }
 
     /*@Override

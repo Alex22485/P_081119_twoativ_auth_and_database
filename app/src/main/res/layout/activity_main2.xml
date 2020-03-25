@@ -69,13 +69,12 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/three_window"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:enabled="false"
-        android:text="ServApp1_window" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="DriversApp_1"
+            android:onClick="DriversApp_1"/>
 
         <Button
             android:id="@+id/ServApp1_window"

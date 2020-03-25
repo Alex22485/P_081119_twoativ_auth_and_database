@@ -72,20 +72,31 @@ public class InAir_choise_routes extends AppCompatActivity {
 
     //Выбрать выбрать пункт Сбора Маршрута КрасТэц-Аэропорт-КрасТэц
 public  void oneChoose(View view) {
-    AlertDialog.Builder builder=new AlertDialog.Builder( InAir_choise_routes.this );
-    builder.setTitle( oneMap.getText().toString());
-    builder.setCancelable( true );
-    builder.setItems( pointOneMap, new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialogInterface, int which) {
 
-            TVchoiseMap.setText( oneMap.getText().toString() );
-            TVchoise_pointMap.setText(pointOneMap[which]);
+    String one=oneMap.getText().toString();
+    String ref="КрасТэц-Аэропорт";
+    if (one==ref) {
 
-        }
-    } );
-    AlertDialog dialog = builder.create();
-    dialog.show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(InAir_choise_routes.this);
+        builder.setTitle(oneMap.getText().toString());
+        builder.setCancelable(true);
+        builder.setItems(pointOneMap, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+
+                TVchoiseMap.setText(oneMap.getText().toString());
+                TVchoise_pointMap.setText(pointOneMap[which]);
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    else{
+        TVchoiseMap.setText(oneMap.getText().toString());
+        TVchoise_pointMap.setText("Аэропорт, Парковка Р3");
+
+    }
 
 }
 
