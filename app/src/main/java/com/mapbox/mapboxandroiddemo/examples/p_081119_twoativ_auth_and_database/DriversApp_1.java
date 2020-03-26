@@ -11,8 +11,10 @@ import android.widget.TextView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class DriversApp_1 extends AppCompatActivity {
 
@@ -28,6 +30,9 @@ public class DriversApp_1 extends AppCompatActivity {
     TextView MenpOrder3;
     TextView StopOrder4;
     TextView MenpOrder4;
+
+    FirebaseDatabase database01;
+    DatabaseReference ref01;
 
 
     @Override
@@ -55,8 +60,7 @@ public class DriversApp_1 extends AppCompatActivity {
         aaa.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                String time=dataSnapshot.child( "время" ).getValue(String.class);
+                String time=dataSnapshot.child( "рейс" ).getValue(String.class);
                 String date=dataSnapshot.child( "дата" ).getValue(String.class);
                 String направление=dataSnapshot.child( "направление" ).getValue(String.class);
                 String маршрут=dataSnapshot.child( "маршрут" ).getValue(String.class);
@@ -68,9 +72,6 @@ public class DriversApp_1 extends AppCompatActivity {
                 String point3Men=dataSnapshot.child( "точкаСбора3Чел" ).getValue(String.class);
                 String point4=dataSnapshot.child( "точкаСбора4" ).getValue(String.class);
                 String point4Men=dataSnapshot.child( "точкаСбора4Чел" ).getValue(String.class);
-
-
-
 
                 DataOrder.setText(date);
                 TimeOrder.setText(time);
@@ -84,26 +85,38 @@ public class DriversApp_1 extends AppCompatActivity {
                 MenpOrder3.setText(point3Men);
                 StopOrder4.setText(point4);
                 MenpOrder4.setText(point4Men);
-
-
-
-
-
             }
-
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
             }
-
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
             }
-
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
 
+    //Принять заявку НЕ ДОДЕЛАНА 26 03 2020
+    public void BtnYes (View view){
+
+        //260320 Запись в БД Заявки--...--Users-Заявки водителя принявшего заявку
+        database01 = FirebaseDatabase.getInstance();
+        ref01 = database01.getReference( "Заявки" )
+                .child( MapOrder.getText().toString()  )
+                .child( DataOrder.getText().toString() )
+                .child( TimeOrder.getText().toString() )
+                .child( RoutepOrder.getText().toString() )
+                .child( StopOrder1.getText().toString() )
+                .child( "Заявка" );
+        ref01.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ref01.child( "123Lexus" ).setValue( "Принята" );
             }
 
             @Override
@@ -111,5 +124,6 @@ public class DriversApp_1 extends AppCompatActivity {
 
             }
         });
+
     }
 }

@@ -87,10 +87,10 @@
         android:id="@+id/btnInsert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Зарегистрировать Заявку"
         android:enabled="false"
-        android:textSize="20sp"
-        android:onClick="btnInsert"/>
+        android:onClick="btnInsert"
+        android:text="Зарегистрировать Заявку"
+        android:textSize="20sp" />
 
     <TextView
         android:layout_width="match_parent"

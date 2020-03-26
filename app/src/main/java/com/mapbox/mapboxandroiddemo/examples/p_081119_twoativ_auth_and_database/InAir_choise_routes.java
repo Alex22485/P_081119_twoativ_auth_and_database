@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,11 +20,18 @@ public class InAir_choise_routes extends AppCompatActivity {
 
     Button nextList;
 
+
     //Выбрать выбрать пункт Сбора Маршрута №1 КрасТэц-Аэропорт-КрасТэц
     String[] pointOneMap = {"ДК КрасТЭЦ","Аэрокосмическая академия","Торговый центр","Предмостная пл"};
 
     //Выбрать выбрать пункт Сбора Маршрута №2 Щорса-Аэропорт-Щорса
     String[] pointTwoMap={"Кинотеатр Металлург","Автобусный пер","Пикра","Мебельная фабрика"};
+
+    //Выбрать выбрать пункт Сбора Маршрута №3 Северный-Аэропорт-Северный
+    String[] pointTreeMap={"xxx","xxx","xxx","xxx"};
+
+    //Выбрать выбрать пункт Сбора Маршрута №4 Ветлужанка-Аэропорт-Ветлужанка
+    String[] pointFourMap={"zzz","zzz","zzz","zzz"};
 
 
     TextView mapTop,oneMap,twoMap,treeMap,fourMap;
@@ -66,16 +74,14 @@ public class InAir_choise_routes extends AppCompatActivity {
         treeMap.setText( sTreeMap );
         fourMap.setText( sFourMap );
 
-
-
     }
 
     //Выбрать выбрать пункт Сбора Маршрута КрасТэц-Аэропорт-КрасТэц
 public  void oneChoose(View view) {
 
     String one=oneMap.getText().toString();
-    String ref="КрасТэц-Аэропорт";
-    if (one==ref) {
+    String oneRef="КрасТэц-Аэропорт";
+    if (one.equals(oneRef)){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(InAir_choise_routes.this);
         builder.setTitle(oneMap.getText().toString());
@@ -94,7 +100,7 @@ public  void oneChoose(View view) {
     }
     else{
         TVchoiseMap.setText(oneMap.getText().toString());
-        TVchoise_pointMap.setText("Аэропорт, Парковка Р3");
+        TVchoise_pointMap.setText("Парковка Р3");
 
     }
 
@@ -102,6 +108,11 @@ public  void oneChoose(View view) {
 
     //Выбрать выбрать пункт Сбора Маршрута Щорса-Аэропорт-Щорса
     public  void twoChoose(View view) {
+
+        String two=twoMap.getText().toString();
+        String twoRef="Щорса-Аэропорт";
+
+        if (two.equals(twoRef)){
         AlertDialog.Builder builder=new AlertDialog.Builder( InAir_choise_routes.this );
         builder.setTitle(twoMap.getText().toString());
         builder.setCancelable( true );
@@ -115,7 +126,70 @@ public  void oneChoose(View view) {
         } );
         AlertDialog dialog = builder.create();
         dialog.show();
+        }
+        else{
+            TVchoiseMap.setText(twoMap.getText().toString());
+            TVchoise_pointMap.setText("Парковка Р3");
+
+        }
     }
+
+    //Выбрать выбрать пункт Сбора Маршрута Северный-Аэропорт-Северный
+    public  void threeChoose(View view) {
+
+        String tree=treeMap.getText().toString();
+        String treeRef="Северный-Аэропорт";
+
+        if (tree.equals(treeRef)){
+            AlertDialog.Builder builder=new AlertDialog.Builder( InAir_choise_routes.this );
+            builder.setTitle(treeMap.getText().toString());
+            builder.setCancelable( true );
+            builder.setItems( pointTreeMap, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int which) {
+
+                    TVchoiseMap.setText( treeMap.getText().toString() );
+                    TVchoise_pointMap.setText(pointTreeMap[which]);
+                }
+            } );
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+        else{
+            TVchoiseMap.setText(treeMap.getText().toString());
+            TVchoise_pointMap.setText("Парковка Р3");
+
+        }
+    }
+
+    //Выбрать выбрать пункт Сбора Маршрута Ветлужанка-Аэропорт-Ветлужанка
+    public  void fourChoose(View view) {
+
+        String four=fourMap.getText().toString();
+        String fourRef="Ветлужанка-Аэропорт";
+
+        if (four.equals(fourRef)){
+            AlertDialog.Builder builder=new AlertDialog.Builder( InAir_choise_routes.this );
+            builder.setTitle(fourMap.getText().toString());
+            builder.setCancelable( true );
+            builder.setItems( pointFourMap, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int which) {
+
+                    TVchoiseMap.setText( fourMap.getText().toString() );
+                    TVchoise_pointMap.setText(pointFourMap[which]);
+                }
+            } );
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+        else{
+            TVchoiseMap.setText(fourMap.getText().toString());
+            TVchoise_pointMap.setText("Парковка Р3");
+
+        }
+    }
+
     // 1.2 Disable Button if Text is Empty
     private TextWatcher loginTextWather = new TextWatcher() {
         @Override

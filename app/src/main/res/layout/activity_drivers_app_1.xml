@@ -66,7 +66,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Время:"
+            android:text="Рейс:"
             android:textSize="20sp">
         </TextView>
         <TextView
@@ -79,7 +79,7 @@
             android:id="@+id/TimeOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Часы:Минуты"
+            android:text="Номер рейса"
             android:textSize="20sp">
         </TextView>
         <Button
@@ -376,8 +376,8 @@
             android:layout_height="wrap_content"
             android:text="Принять заявку"
             android:layout_weight="1"
-            android:textSize="20sp">
-
+            android:textSize="20sp"
+            android:onClick="BtnYes">
         </Button>
         <Button
             android:layout_width="wrap_content"

@@ -2,7 +2,7 @@ package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database
 
 public class ServApp_2 {
     private String Дата;
-    private String Время;
+    private String Рейс;
     private String Направление;
     private String Маршрут;
     private String ТочкаСбора1;
@@ -17,9 +17,9 @@ public class ServApp_2 {
     public ServApp_2() {
     }
 
-    public ServApp_2(String дата, String время, String направление, String маршрут, String точкаСбора1, String точкаСбора1Чел, String точкаСбора2, String точкаСбора2Чел, String точкаСбора3, String точкаСбора3Чел, String точкаСбора4, String точкаСбора4Чел) {
+    public ServApp_2(String дата, String рейс, String направление, String маршрут, String точкаСбора1, String точкаСбора1Чел, String точкаСбора2, String точкаСбора2Чел, String точкаСбора3, String точкаСбора3Чел, String точкаСбора4, String точкаСбора4Чел) {
         Дата = дата;
-        Время = время;
+        Рейс = рейс;
         Направление = направление;
         Маршрут = маршрут;
         ТочкаСбора1 = точкаСбора1;
@@ -40,12 +40,12 @@ public class ServApp_2 {
         Дата = дата;
     }
 
-    public String getВремя() {
-        return Время;
+    public String getРейс() {
+        return Рейс;
     }
 
-    public void setВремя(String время) {
-        Время = время;
+    public void setРейс(String рейс) {
+        Рейс = рейс;
     }
 
     public String getНаправление() {

@@ -83,7 +83,7 @@ public class ServApp_1 extends AppCompatActivity {
 
     FirebaseDatabase database01;
     DatabaseReference ref01;
-    DatabaseReference dbRef;
+
 
 
     @Override
@@ -168,12 +168,12 @@ public class ServApp_1 extends AppCompatActivity {
         String map3=listMap1[1];
         String map4=listMap2[1];
 // если маршрут Краснояск-Аэропорт или Аэропорт-Красноярск то устанавливаем точки сбора из массива pointOneMap
-        if (map==map1||map==map2){
+        if (map.equals(map1) || map.equals(map2)){
             onePoint.setText( pointOneMap[0] );
             twoPoint.setText( pointOneMap[1] );
             treePoint.setText( pointOneMap[2] );
             fourPoint.setText( pointOneMap[3] );
-        }else if(map==map3||map==map4){
+        }else if(map.equals(map3)||map.equals(map4)){
             onePoint.setText( pointTwoMap[0] );
             twoPoint.setText( pointTwoMap[1] );
             treePoint.setText( pointTwoMap[2] );
@@ -535,7 +535,7 @@ public class ServApp_1 extends AppCompatActivity {
     private void  getServApp_2(){
 
         servApp_2.setДата(Дата.getText().toString());
-        servApp_2.setВремя("4:00");
+        servApp_2.setРейс(Рейс.getText().toString());
         servApp_2.setНаправление(Направление.getText().toString());
         servApp_2.setМаршрут(Маршрут.getText().toString());
         servApp_2.setТочкаСбора1(onePoint.getText().toString());

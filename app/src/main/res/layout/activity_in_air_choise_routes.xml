@@ -28,7 +28,7 @@
         android:id="@+id/oneMap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
+        android:text=" "
         android:textSize="20sp"/>
 
     <LinearLayout
@@ -110,7 +110,8 @@
             android:id="@+id/threeChoose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Выбратьмаршрут"/>
+            android:text="@string/Выбратьмаршрут"
+            android:onClick="threeChoose"/>
     </LinearLayout>
 
     <TextView
@@ -118,7 +119,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:textSize="15sp"/>
+        android:textSize="20sp"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -138,7 +139,8 @@
             android:id="@+id/fourChoose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Выбратьмаршрут"/>
+            android:text="@string/Выбратьмаршрут"
+            android:onClick="fourChoose"/>
     </LinearLayout>
 
     <LinearLayout
