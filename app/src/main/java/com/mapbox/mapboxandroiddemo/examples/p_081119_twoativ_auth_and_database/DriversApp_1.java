@@ -33,6 +33,12 @@ public class DriversApp_1 extends AppCompatActivity {
 
     FirebaseDatabase database01;
     DatabaseReference ref01;
+    FirebaseDatabase database02;
+    DatabaseReference ref02;
+    FirebaseDatabase database03;
+    DatabaseReference ref03;
+    FirebaseDatabase database04;
+    DatabaseReference ref04;
 
 
     @Override
@@ -52,8 +58,9 @@ public class DriversApp_1 extends AppCompatActivity {
         MenpOrder3=findViewById(R.id.MenpOrder3);
         StopOrder4=findViewById(R.id.StopOrder4);
         MenpOrder4=findViewById(R.id.MenpOrder4);
-
     }
+
+    // Проверить заказ нужно изменить путь child( "123Lexus" ) для любого водителя чтобы работал Н-р id
     public void checkOder (View view){
         Query aaa= FirebaseDatabase.getInstance().getReference("Drivers").child( "123Lexus" )
                 .orderByChild( "Заявки" );
@@ -101,29 +108,117 @@ public class DriversApp_1 extends AppCompatActivity {
         });
     }
 
-    //Принять заявку НЕ ДОДЕЛАНА 26 03 2020
+    //Принять заявку 26 03 2020 c записью в БД в нужную ветку заявки
+    // нужно изменить путь child( "123Lexus" ) для любого водителя чтобы работал Н-р id
     public void BtnYes (View view){
 
-        //260320 Запись в БД Заявки--...--Users-Заявки водителя принявшего заявку
-        database01 = FirebaseDatabase.getInstance();
-        ref01 = database01.getReference( "Заявки" )
-                .child( MapOrder.getText().toString()  )
-                .child( DataOrder.getText().toString() )
-                .child( TimeOrder.getText().toString() )
-                .child( RoutepOrder.getText().toString() )
-                .child( StopOrder1.getText().toString() )
-                .child( "Заявка" );
-        ref01.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ref01.child( "123Lexus" ).setValue( "Принята" );
-            }
+        String a =  StopOrder1.getText().toString();
+        String b =  StopOrder2.getText().toString();
+        String c =  StopOrder3.getText().toString();
+        String d =  StopOrder4.getText().toString();
+        // если строка пусатя то запись в БД не будет
+        String abcdRef =  "";
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+        if (a.equals(abcdRef)){}
+        else {
 
-            }
-        });
+            //260320 Запись в БД Заявки--...--Users-Заявки водителя принявшего заявку
+            database01 = FirebaseDatabase.getInstance();
+            ref01 = database01.getReference("Заявки")
+                    .child(MapOrder.getText().toString())
+                    .child(DataOrder.getText().toString())
+                    .child(TimeOrder.getText().toString())
+                    .child(RoutepOrder.getText().toString())
+                    .child(StopOrder1.getText().toString())
+                    .child("Заявка");
+            ref01.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    ref01.child("123Lexus").setValue("Принята");
+                    ref01.removeEventListener(this);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        // запись пустой точки номер два ПРОБА
+        if (b.equals(abcdRef)){}
+        else {
+            database02 = FirebaseDatabase.getInstance();
+            ref02 = database02.getReference("Заявки")
+                    .child(MapOrder.getText().toString())
+                    .child(DataOrder.getText().toString())
+                    .child(TimeOrder.getText().toString())
+                    .child(RoutepOrder.getText().toString())
+                    .child(StopOrder2.getText().toString())
+                    .child("Заявка");
+            ref02.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    ref02.child("123Lexus").setValue("Принята");
+                    ref02.removeEventListener(this);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        // запись пустой точки номер три ПРОБА
+        if (c.equals(abcdRef)){}
+        else {
+            database03 = FirebaseDatabase.getInstance();
+            ref03 = database03.getReference("Заявки")
+                    .child(MapOrder.getText().toString())
+                    .child(DataOrder.getText().toString())
+                    .child(TimeOrder.getText().toString())
+                    .child(RoutepOrder.getText().toString())
+                    .child(StopOrder3.getText().toString())
+                    .child("Заявка");
+            ref03.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    ref03.child("123Lexus").setValue("Принята");
+                    ref03.removeEventListener(this);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        // запись пустой точки номер четыре ПРОБА
+        if (d.equals(abcdRef)){}
+        else {
+            database04 = FirebaseDatabase.getInstance();
+            ref04 = database04.getReference("Заявки")
+                    .child(MapOrder.getText().toString())
+                    .child(DataOrder.getText().toString())
+                    .child(TimeOrder.getText().toString())
+                    .child(RoutepOrder.getText().toString())
+                    .child(StopOrder4.getText().toString())
+                    .child("Заявка");
+            ref04.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    ref04.child("123Lexus").setValue("Принята");
+                    ref04.removeEventListener(this);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
 
     }
 }
