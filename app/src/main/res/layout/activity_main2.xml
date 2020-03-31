@@ -87,6 +87,14 @@
     </LinearLayout>
 
     <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Статус Заказа"
+        android:onClick="MyStatusOder">
+
+    </Button>
+
+    <Button
         android:id="@+id/buttonPhoneAuth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

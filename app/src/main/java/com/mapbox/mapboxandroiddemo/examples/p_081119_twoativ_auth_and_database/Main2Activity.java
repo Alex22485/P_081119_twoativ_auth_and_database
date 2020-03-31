@@ -119,6 +119,11 @@ public class Main2Activity extends AppCompatActivity {
         startActivity(DriversApp_1);
     }
 
+    public void MyStatusOder(View view){
+        Intent MyStatusOder = new Intent(this,Main6Activity.class);
+        startActivity(MyStatusOder);
+    }
+
     /*@Override
     public void onClick(View v) {
         switch (v.getId()) {

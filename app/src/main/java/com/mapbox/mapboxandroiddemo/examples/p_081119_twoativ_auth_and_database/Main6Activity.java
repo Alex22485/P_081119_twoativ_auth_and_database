@@ -51,13 +51,9 @@ public class Main6Activity extends AppCompatActivity {
     String[] CancelOderWhy ={"Самолет отменён","Передумал", };
 
     FirebaseAuth mAuth;
-    // создание ListView
-    /*ListView listwiew;
-    List<String> basa=new ArrayList<String>(  );
-    ArrayAdapter ad;
-    String[] array={};*/
+
     TextView Calend_Out,flight_number_Out,Map,road_number_out,road_name_out;
-    TextView number,information,information2,people,people2,process,process1,process2,process3,searchCar;
+    TextView number,information2,people,people2,process,process1,process2,process3,searchCar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -70,7 +66,7 @@ public class Main6Activity extends AppCompatActivity {
         Map=findViewById( R.id.Map );
         road_number_out=findViewById( R.id.road_number_out );
         road_name_out=findViewById( R.id.road_name_out );
-        information=findViewById( R.id.information );
+        //information=findViewById( R.id.information );
         information2=findViewById( R.id.information2 );
         people=findViewById( R.id.people );
         people2=findViewById( R.id.people2 );
@@ -92,7 +88,7 @@ public class Main6Activity extends AppCompatActivity {
         userI=user.getUid();
         //полуаем номер ID пользователя
         //userID=user.getUid();
-        Log.d("TAG", userID);
+        //Log.d("TAG", userID);
 // прослушивание listwiew
         /*listwiew=findViewById( R.id.listwiew );
         basa=new ArrayList<String>( Arrays.asList( array ) );
@@ -115,7 +111,7 @@ public void btnStatus(View view){
 
 
         //ВАЖНО УБРАТЬ КОМЕНТЫ!!! очистка массива для обновления количества пользователей по заявке
-   // num.clear();
+   num.clear();
 
     Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userI )
             .orderByChild( "Status" );
@@ -129,15 +125,24 @@ public void btnStatus(View view){
             String road_name=dataSnapshot.child( "маршрут_точкаСбора" ).getValue(String.class);
             String flidht_number=dataSnapshot.child( "рейс_самолета" ).getValue(String.class);
             token=dataSnapshot.child( "token" ).getValue(String.class);
+            Integer peopleOder=dataSnapshot.child("Человек_в_Заявке").getValue(Integer.class);
+            String сarDrive=dataSnapshot.child("Автомобиль").getValue(String.class);
+            Log.d("TAG", ""+сarDrive);
 
             Calend_Out.setText( data );
             Map.setText( map );
             road_number_out.setText( roar_number );
             road_name_out.setText( road_name );
             flight_number_Out.setText( flidht_number );
+            people.setText(""+peopleOder);
 
-// Получение текущего количества людей зарегистрированных на данный маршрут
-            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Заявки")
+            if (сarDrive == null){}
+            else {
+                searchCar.setText("Найден автомобиль"+сarDrive);
+            }
+
+//c 31/03/20 Не испльзуется. но код рабочий Получение текущего количества людей зарегистрированных на данный маршрут
+            /*DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Заявки")
                     .child( Map.getText().toString() )
                     .child( Calend_Out.getText().toString() )
                     .child(flight_number_Out.getText().toString())
@@ -162,12 +167,11 @@ public void btnStatus(View view){
                         people.setText(""+sum);
 
                         if(sum>=5){
-                            information.setText( "маршрут сформирован V" );
-                            information.setTextColor( getResources().getColor( R.color.colorRed ) );
+                            //information.setText( "маршрут сформирован V" );
+                            //information.setTextColor( getResources().getColor( R.color.colorRed ) );
                             searchCar.setText("поиск автомобиля...");
                             process2.setText( "|" );
                             process3.setText( "V" );
-
                     }
                     }
                 }
@@ -175,27 +179,6 @@ public void btnStatus(View view){
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                }
-            };usersdRef.addListenerForSingleValueEvent(valueEventListener);
-// ПРОБА
-            /*DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Заявки")
-                    .child("Аэропорт-Красноярск")
-                    .child( data )
-                    .child( roar_number );
-            DatabaseReference usersdRef = rootRef.child( flidht_number );
-            ValueEventListener valueEventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-
-
-                        String flight = ds.child("рейс").getValue(String.class);
-                        number.setText(flight);
-                    }
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
                 }
             };usersdRef.addListenerForSingleValueEvent(valueEventListener);*/
         }
@@ -212,162 +195,7 @@ public void btnStatus(View view){
         public void onCancelled(@NonNull DatabaseError databaseError) {
         }
     } );
-   /*number.setText( " заявка оформлена   V" );
-    number.setTextColor(getResources().getColor( R.color.colorRed ));
-    information.setText( "формирование маршрута..." );
-    process.setText( "|" );
-    process1.setText( "V" );
-    information2.setText( "уже зарегистрировано" );
-    people2.setText( "человек(а)" );*/
 
-// рабочий код возвращает правда всех юзеров
-    //DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Пользователи");
-    /*rootRef.orderByChild( userID ).addChildEventListener( new ChildEventListener() {
-        @Override
-        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            String data=dataSnapshot.child( "дата" ).getValue(String.class);
-            String map=dataSnapshot.child( "направление" ).getValue(String.class);
-            String roar_number=dataSnapshot.child( "маршрут_номер" ).getValue(String.class);
-            String road_name=dataSnapshot.child( "маршрут_название" ).getValue(String.class);
-            String flidht_number=dataSnapshot.child( "рейс_самолета" ).getValue(String.class);
-
-
-            basa.add( "Дата:"+" "+data+"  "+map+" "+roar_number+":"+" "+road_name+" "+"Рейс самолета №"+" "+flidht_number );
-            ad.notifyDataSetChanged();
-
-
-        }
-
-        @Override
-        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-        }
-
-        @Override
-        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-        }
-
-        @Override
-        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    } );*/
-// ВАЖНЫЙ ПРИМЕР!!! извлечение конкретных данных из CHILD
-   /* DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Заявки")
-            .child("Аэропорт-Красноярск")
-            .child( "8 12 2019" )
-            .child( "Маршрут 1")
-            .child( "Рейс номер 1" );
-    rootRef.orderByChild( userID ).addChildEventListener( new ChildEventListener() {
-        @Override
-        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-
-            String data=dataSnapshot.child( "дата" ).getValue(String.class);
-            String phone=dataSnapshot.child( "phone" ).getValue(String.class);
-            basa.add( data+""+phone );
-            ad.notifyDataSetChanged();
-
-
-
-        }
-
-        @Override
-        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-        }
-
-        @Override
-        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-        }
-
-        @Override
-        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    } );*/
-    // ВАЖНЫЙ ПРИМЕР!!! извлечение ВСЕХ данных из всех CHILDs КОНКРЕТНОГО ПОЛЬЗОВАТЕЛЯ
-   /* DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Заявки")
-            .child("Аэропорт-Красноярск")
-            .child( "8 12 2019" )
-            .child( "Маршрут 1")
-            .child( "Рейс номер 1" )
-            .child( userID );
-    // слово "photo" может быть вообще любым даже не совпадать с названием child. В listView получается каждое значение child в новой строке!!!!
-    rootRef.orderByChild( "photo" ).addChildEventListener( new ChildEventListener() {
-        @Override
-        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-
-            String data=dataSnapshot.getValue(String.class);
-
-            basa.add( data );
-            ad.notifyDataSetChanged();
-
-
-
-        }
-
-        @Override
-        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-        }
-
-        @Override
-        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-        }
-
-        @Override
-        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    } );*/
-   /* Старье не работает !!!!!DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Заявки")
-            .child("Аэропорт-Красноярск")
-            .child( "8 12 2019" )
-            .child( "Маршрут 1")
-            ;
-    DatabaseReference usersdRef = rootRef.child( "Рейс номер 1" );
-    ValueEventListener valueEventListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-
-            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-
-                String data = ds.child("дата").getValue(String.class);
-                String flight = ds.child("рейс").getValue(String.class);
-                String phone  = ds.child("phone").getValue(String.class);
-
-                Log.d("TAG", data+"  "+"Рейс номер"+""+flight+"  "+phone);
-                basa.add("Рейс №"+flight+"  "+"Дата"+"  "+data+"  "+phone );
-                Collections.sort(basa);
-                ad.notifyDataSetChanged();
-            }
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-        }
-    };usersdRef.addListenerForSingleValueEvent(valueEventListener);*/
         }
 
     // Disable Button "Отменить заявку" if Text is Empty
@@ -391,12 +219,12 @@ public void btnStatus(View view){
 
 
             //если база данных НЕ Пуста (а именно параметры loginTextWather НЕ пусты!!! ) то вступают в силу эти изменения
-            number.setText( " заявка оформлена   V" );
+            number.setText( " заявка оформлена" );
             number.setTextColor(getResources().getColor( R.color.colorRed ));
-            information.setText( "формирование маршрута..." );
+            //information.setText( "формирование маршрута..." );
             process.setText( "|" );
             process1.setText( "V" );
-            information2.setText( "уже зарегистрировано" );
+            information2.setText( "зарегистрировано" );
             people2.setText( "человек(а)" );
         }
 
@@ -452,10 +280,10 @@ public void btnStatus(View view){
                         road_number_out.setText( "" );
                         road_name_out.setText( "" );
                         flight_number_Out.setText( "" );
-                        number.setText( " заявка НЕ оформлена   Х" );
+                        number.setText( " заявка НЕ оформлена" );
                         number.setTextColor(getResources().getColor( R.color.colorNew ));
 
-                        information.setText( "" );
+                        //information.setText( "" );
                         searchCar.setText("");
                         process2.setText( "" );
                         process3.setText( "" );
@@ -466,51 +294,10 @@ public void btnStatus(View view){
                     }
                 },1000
                 );
-               /*ggg = FirebaseDatabase.getInstance();
-                mmm = ggg.getReference("Заявки")
-                        .child(Map.getText().toString() )
-                        .child( Calend_Out.getText().toString() )
-                        //.child(road_number_out.getText().toString())
-                        .child(flight_number_Out.getText().toString()  )
-                        .child(road_number_out.getText().toString())
-                        .child(road_name_out.getText().toString())
-                        .child("Users");
-                mmm.child( userI ).removeValue();*/
 
-                /*mmm = ggg.getReference("Заявки")
-                        .child(Map.getText().toString() )
-                        .child( Calend_Out.getText().toString() )
-                        //.child(road_number_out.getText().toString())
-                        .child(flight_number_Out.getText().toString()  )
-                        .child(road_number_out.getText().toString())
-                        .child(road_name_out.getText().toString())
-                        .child("notificationTokens");
-                mmm.child( token ).removeValue();*/
-
-                /*mmm = ggg.getReference("Пользователи")
-                        .child(userID)
-                        .child("Status");
-                mmm.child( userI ).removeValue();*/
-                //Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
-
-                /*Calend_Out.setText( "" );
-                Map.setText( "" );
-                road_number_out.setText( "" );
-                road_name_out.setText( "" );
-                flight_number_Out.setText( "" );
-                number.setText( " заявка НЕ оформлена   Х" );
-                number.setTextColor(getResources().getColor( R.color.colorNew ));
-
-                information.setText( "" );
-                searchCar.setText("");
-                process2.setText( "" );
-                process3.setText( "" );
-                people.setText("");
-                process.setText( "" );
-                process1.setText( "" );
-                btnStatus.setEnabled(false);*/
             }
-        } );
+        }
+        );
 
         builder.setNeutralButton("Назад", new DialogInterface.OnClickListener() {
             @Override
@@ -519,8 +306,6 @@ public void btnStatus(View view){
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-        /*Intent sss = new Intent(this,Main4Activity.class );
-        startActivity( sss );*/
     }
     public void backMainList (View view){
         Intent qwe= new Intent(this,Choose_direction.class);

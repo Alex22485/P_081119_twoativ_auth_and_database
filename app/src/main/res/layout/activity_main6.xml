@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:text="Статус Заказа"
+            android:text="Ваш статус:"
             android:textSize="25sp" />
 
         <TextView
@@ -29,7 +29,30 @@
             android:layout_height="match_parent"
             android:text=""
             android:layout_weight="1" />
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="заявка НЕ оформлена"
+            android:textColor="@color/colorNew"
+            android:textSize="25sp" />
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
     </LinearLayout>
 
 
@@ -51,10 +74,11 @@
             android:id="@+id/btnStatus"
             android:layout_width="0sp"
             android:layout_height="match_parent"
-            android:text="Обновить данные"
             android:layout_weight="5"
-            android:textSize="15sp"
-            android:onClick="btnStatus"/>
+            android:onClick="btnStatus"
+            android:text="Обновить данные"
+            android:textSize="15sp" />
+
         <TextView
             android:layout_width="0sp"
             android:layout_height="match_parent"
@@ -115,12 +139,14 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/Map"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="направление   "
+            android:hint="Направление:"
             android:textColor="@color/colorNew"
             android:textSize="20sp"
-            android:id="@+id/Map"/>
+            android:visibility="gone"/>
+
     </LinearLayout>
 
     <TextView
@@ -131,65 +157,55 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="название маршрута"
-            android:textSize="20sp"
-            android:textColor="@color/colorNew"
-            android:id="@+id/road_number_out"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=":"
-            android:textColor="@color/colorNew"
-            android:textSize="20sp" />
-
-    </LinearLayout>
-
-
-        <TextView
-        android:layout_width="match_parent"
-        android:layout_height="5sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="пункт назначения"
-            android:textColor="@color/colorNew"
-            android:textSize="20sp"
-            android:id="@+id/road_name_out"/>
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="20sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
         <TextView
             android:layout_width="0sp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
-
         <TextView
-            android:id="@+id/number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:text="заявка НЕ оформлена  Х"
+            android:hint="Маршрут"
+            android:textSize="20sp"
             android:textColor="@color/colorNew"
-            android:textSize="25sp" />
+            android:id="@+id/road_number_out"/>
         <TextView
             android:layout_width="0sp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
     </LinearLayout>
+
+
+        <TextView
+        android:layout_width="match_parent"
+        android:layout_height="5sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+        <TextView
+            android:id="@+id/road_name_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:hint="Место сбора"
+            android:textColor="@color/colorNew"
+            android:textSize="20sp"/>
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="5sp" />
 
 
     <LinearLayout
@@ -239,32 +255,6 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/information"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:hint="формирование маршрута..."
-            android:textColor="@color/colorBlue"
-            android:textSize="25sp" />
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -278,7 +268,7 @@
             android:id="@+id/information2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="(уже зарегистрировано"
+            android:hint="(зарегистрировано"
             android:layout_weight="0"
             android:textSize="20sp" />
         <TextView
@@ -432,7 +422,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="В главное меню"
+        android:text="Оформить заявку"
         android:textSize="15sp"
         android:onClick="backMainList">
 
