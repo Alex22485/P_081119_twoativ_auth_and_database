@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.icu.text.CaseMap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.storage.StorageManager;
@@ -69,15 +71,15 @@ public class Main3Activity extends AppCompatActivity {
     String MapTop;
     String userPhone;
     String userid;
+
+    // Для запрета заиси заявок от servApp (типо прием заявок окончен маршрут сформирован)
+    String stopOder;
+    TextView StopFromServerApp;
+    TextView StopRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
-
-
-
-
-
 
         // Получить Токен!!!! Работает с показом на экане
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Main3Activity.this,new OnSuccessListener<InstanceIdResult>() {
@@ -93,8 +95,8 @@ public class Main3Activity extends AppCompatActivity {
         Flight = findViewById(R.id.Flight);
         btnStatus=findViewById( R.id.btnStatus );
         btn_number_Flight=findViewById( R.id.btn_number_Flight );
-
-
+        StopFromServerApp=findViewById( R.id.StopFromServerApp );
+        StopRef=findViewById( R.id.StopRef );
 // ADD Calendar
         choisData=(Button)findViewById(R.id.choisData);
         Calend=findViewById(R.id.Calend);
@@ -159,6 +161,8 @@ public class Main3Activity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int which) {
 
                 Flight.setText( listFlights[which] );
+                StopRef.setText("");
+                StopFromServerApp.setText("");
             }
         }
         );
@@ -179,14 +183,75 @@ public class Main3Activity extends AppCompatActivity {
         userTwo.setToken( newToken );
     }*/
 
-    public void btnInsert (View view){
+    public void btnInsert (View view) {
 
-        mAuth= FirebaseAuth.getInstance(  );
-        FirebaseUser ghg=mAuth.getCurrentUser();
+        getPoint1();
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {getPoint();
+
+            }
+        },2000);
+
+    }
+        //31 03 2020 Проба
+public void getPoint1(){
+        Intent nextList = getIntent();
+        TVchoiseMap = nextList.getStringExtra("TVchoiseMap");
+        TVchoise_pointMap = nextList.getStringExtra("TVchoise_pointMap");
+        MapTop = nextList.getStringExtra("mapTop");
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Заявки")
+                .child(MapTop)
+                .child(Calend.getText().toString())
+                .child(Flight.getText().toString())
+                .child(TVchoiseMap)
+                .child(TVchoise_pointMap);
+        ref.orderByValue().equalTo("Stop").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                    //Toast.makeText( Main3Activity.this, " начало", Toast.LENGTH_SHORT ).show();
+                    stopOder = snap.getKey();//получить все ключи значения
+                    //Toast.makeText( Main3Activity.this, " середина", Toast.LENGTH_SHORT ).show();
+                    StopRef.setText(stopOder);
+                    Toast.makeText( Main3Activity.this, "Запрет есть", Toast.LENGTH_SHORT ).show();
+                    Log.d("TAG", "32332" + stopOder);
+                    //getPoint();
+                    //Toast.makeText( Main3Activity.this, "Метод запущен", Toast.LENGTH_SHORT ).show();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+}
+
+    public void getPoint(){
+
+        String a=StopRef.getText().toString();
+        String b="StopOder";
+
+        if (a.equals(b)){
+
+            showAlertDialog();
+            Toast.makeText( Main3Activity.this, "Запрет", Toast.LENGTH_SHORT ).show();
+            StopFromServerApp.setText("Заявка Отклонена");
+
+        }
+        else{
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser ghg = mAuth.getCurrentUser();
 
         //полуачем номер телефона пользователя
-        userPhone=ghg.getPhoneNumber();
-        userid=ghg.getUid();
+        userPhone = ghg.getPhoneNumber();
+        userid = ghg.getUid();
 
         Intent nextList = getIntent();
         TVchoiseMap = nextList.getStringExtra( "TVchoiseMap" );
@@ -195,35 +260,82 @@ public class Main3Activity extends AppCompatActivity {
 
         //030320 Запись токена в БД ЗАЯВКИ
         database01 = FirebaseDatabase.getInstance();
-        ref01 = database01.getReference( "Заявки" )
-                .child( MapTop )
-                .child( Calend.getText().toString() )
-                .child( Flight.getText().toString() )
-                .child( TVchoiseMap )
-                .child( TVchoise_pointMap )
-                .child( "notificationTokens" );
-        ref01.addValueEventListener( new ValueEventListener() {
+        ref01 = database01.getReference("Заявки")
+                .child(MapTop)
+                .child(Calend.getText().toString())
+                .child(Flight.getText().toString())
+                .child(TVchoiseMap)
+                .child(TVchoise_pointMap)
+                .child("notificationTokens");
+        ref01.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ref01.child( newToken ).setValue( userid );
+                ref01.child(newToken).setValue(userid);
                 // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "newToken
-                ref01.removeEventListener( this );
-                Toast.makeText( Main3Activity.this, "Заявка принята....", Toast.LENGTH_LONG ).show();
+                ref01.removeEventListener(this);
+                Toast.makeText(Main3Activity.this, "Заявка принята....", Toast.LENGTH_LONG).show();
                 //Видимость кнопки Проверить статус
-                btnStatus.setEnabled( true );
+                btnStatus.setEnabled(true);
+                showAlertDialog2();
+                StopFromServerApp.setText("Заявка принята!");
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
-        } );
+        });
+
+        }
     }
+
+    // Всплывающая информация "Заявка отклонена!!!"
+    public void showAlertDialog() {
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
+                Main3Activity.this);
+        // Set Title
+        mAlertDialog.setTitle("Заявка отклонена!!!");
+        // Set Message
+        mAlertDialog
+                .setMessage("Маршрут"+" "+TVchoiseMap+"."+" "+"Выбранная вами точка сбора"+" "+TVchoise_pointMap+" "+"уже сформирована. Попробуйте другие варианты")
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+        mAlertDialog.create();
+        // Showing Alert Message
+        mAlertDialog.show();
+    }
+
+    // Всплывающая информация "Заявка отклонена!!!"
+    public void showAlertDialog2() {
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
+                Main3Activity.this);
+        // Set Title
+        mAlertDialog.setTitle("Спасибо, заявка принята!!!");
+        // Set Message
+        mAlertDialog
+                .setMessage("Ищем автомобиль..."+" "+"Вам придет уведомление о результате поиска")
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+        mAlertDialog.create();
+        // Showing Alert Message
+        mAlertDialog.show();
+    }
+
+
+
+
     public void btnStatus(View view){
         Intent zxz = new Intent( this,Main6Activity.class );
         startActivity( zxz);
     }
 
     // Блокировка кнопки Back!!!! :)))
-    @Override
-    public void onBackPressed(){
-    }
+//    @Override
+//    public void onBackPressed(){
+//    }
 }

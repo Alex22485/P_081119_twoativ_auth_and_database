@@ -103,9 +103,12 @@ public class Main6Activity extends AppCompatActivity {
         flight_number_Out.addTextChangedListener( loginTextWather );
     }
 // Блокировка кнопки Back!!!! (Иначе в БД Будет Задвоение! :)))
-    @Override
-    public void onBackPressed(){
+  @Override
+   public void onBackPressed(){
+     this.moveTaskToBack(true);
     }
+
+
 // Вызов Личного статуса заказа вкладка пользователи "Пользователи"
 public void btnStatus(View view){
 
