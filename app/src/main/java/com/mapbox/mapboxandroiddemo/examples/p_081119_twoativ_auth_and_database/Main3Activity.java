@@ -185,66 +185,6 @@ public class Main3Activity extends AppCompatActivity {
 
     public void btnInsert (View view) {
 
-        getPoint1();
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {getPoint();
-
-            }
-        },2000);
-
-    }
-        //31 03 2020 Проба
-public void getPoint1(){
-        Intent nextList = getIntent();
-        TVchoiseMap = nextList.getStringExtra("TVchoiseMap");
-        TVchoise_pointMap = nextList.getStringExtra("TVchoise_pointMap");
-        MapTop = nextList.getStringExtra("mapTop");
-
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Заявки")
-                .child(MapTop)
-                .child(Calend.getText().toString())
-                .child(Flight.getText().toString())
-                .child(TVchoiseMap)
-                .child(TVchoise_pointMap);
-        ref.orderByValue().equalTo("Stop").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                    //Toast.makeText( Main3Activity.this, " начало", Toast.LENGTH_SHORT ).show();
-                    stopOder = snap.getKey();//получить все ключи значения
-                    //Toast.makeText( Main3Activity.this, " середина", Toast.LENGTH_SHORT ).show();
-                    StopRef.setText(stopOder);
-                    Toast.makeText( Main3Activity.this, "Запрет есть", Toast.LENGTH_SHORT ).show();
-                    Log.d("TAG", "32332" + stopOder);
-                    //getPoint();
-                    //Toast.makeText( Main3Activity.this, "Метод запущен", Toast.LENGTH_SHORT ).show();
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-}
-
-    public void getPoint(){
-
-        String a=StopRef.getText().toString();
-        String b="StopOder";
-
-        if (a.equals(b)){
-
-            showAlertDialog();
-            Toast.makeText( Main3Activity.this, "Запрет", Toast.LENGTH_SHORT ).show();
-            StopFromServerApp.setText("Заявка Отклонена");
-
-        }
-        else{
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser ghg = mAuth.getCurrentUser();
@@ -258,7 +198,7 @@ public void getPoint1(){
         TVchoise_pointMap = nextList.getStringExtra( "TVchoise_pointMap" );
         MapTop = nextList.getStringExtra( "mapTop" );
 
-        //030320 Запись токена в БД ЗАЯВКИ
+        //030320 Запись токена для проверки Разрешения на запись заявки в БД ЗАЯВКИ...-...-...-"CheckStopOder"...
         database01 = FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Заявки")
                 .child(MapTop)
@@ -266,26 +206,25 @@ public void getPoint1(){
                 .child(Flight.getText().toString())
                 .child(TVchoiseMap)
                 .child(TVchoise_pointMap)
-                .child("notificationTokens");
+                .child("CheckStopOder")
+                .child(userid);
         ref01.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ref01.child(newToken).setValue(userid);
-                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "newToken
-                ref01.removeEventListener(this);
-                Toast.makeText(Main3Activity.this, "Заявка принята....", Toast.LENGTH_LONG).show();
-                //Видимость кнопки Проверить статус
-                btnStatus.setEnabled(true);
-                showAlertDialog2();
-                StopFromServerApp.setText("Заявка принята!");
-            }
 
+                ref01.child(newToken).setValue(userid);
+
+                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+                ref01.removeEventListener(this);
+
+                //запускаем метод
+                Qwery();
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
-        });
-
         }
+        );
     }
 
     // Всплывающая информация "Заявка отклонена!!!"
@@ -293,10 +232,10 @@ public void getPoint1(){
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
                 Main3Activity.this);
         // Set Title
-        mAlertDialog.setTitle("Заявка отклонена!!!");
+        mAlertDialog.setTitle("Заявка отклонена :(");
         // Set Message
         mAlertDialog
-                .setMessage("Маршрут"+" "+TVchoiseMap+"."+" "+"Выбранная вами точка сбора"+" "+TVchoise_pointMap+" "+"уже сформирована. Попробуйте другие варианты")
+                .setMessage("Маршрут"+" "+TVchoiseMap+"."+" "+"Точка сбора"+" "+TVchoise_pointMap+" "+"уже сформирована. Проверьте другие точки сбора данного маршрута")
                 .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
@@ -307,7 +246,7 @@ public void getPoint1(){
         mAlertDialog.show();
     }
 
-    // Всплывающая информация "Заявка отклонена!!!"
+    // Всплывающая информация "Заявка принята!!!"
     public void showAlertDialog2() {
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
                 Main3Activity.this);
@@ -315,7 +254,7 @@ public void getPoint1(){
         mAlertDialog.setTitle("Спасибо, заявка принята!!!");
         // Set Message
         mAlertDialog
-                .setMessage("Ищем автомобиль..."+" "+"Вам придет уведомление о результате поиска")
+                .setMessage("Ищем автомобиль..."+" "+"Вы получите уведомление о результате поиска")
                 .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
@@ -326,8 +265,53 @@ public void getPoint1(){
         mAlertDialog.show();
     }
 
+    public void Qwery(){
+        // проверяем какое слово написано в объекте РазрешениеНаЗапись. Если Разрешено то запись заявки оформляется, если нет то заявка отклонена (процесс записи и отклонения выполнен в nod js function OderCheck)
+         final Query aaa1= FirebaseDatabase.getInstance().getReference("Заявки")
+                .child(MapTop)
+                .child(Calend.getText().toString())
+                .child(Flight.getText().toString())
+                .child(TVchoiseMap)
+                .child(TVchoise_pointMap)
+                .child("Разрешение")
+                .child(userid)
+                .orderByChild("Разрешение");
+        aaa1.addChildEventListener( new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
+                String data=dataSnapshot.child( "РазрешениеНаЗапись" ).getValue(String.class);
+                Log.d("TAG", "РазрешениеНаЗапись" + data);
+                Toast.makeText( Main3Activity.this, "РазрешениеНаЗапись"+data, Toast.LENGTH_SHORT ).show();
 
+                if(data.equals("Разрешено")){
+                    showAlertDialog2();
+                    StopFromServerApp.setText("Заявка Принята");
+                    btnStatus.setEnabled(true);
+
+                }
+                else if (data.equals("Запрещено")){
+                    showAlertDialog();
+                    StopFromServerApp.setText("Заявка отклонена");
+                }
+                //Останавливаем прослушивание, чтобы не в приложении у другого пользователя не появлялась информация когда другой пользоваьель регистрирует заявку
+                aaa1.removeEventListener(this);
+
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        } );
+    }
 
     public void btnStatus(View view){
         Intent zxz = new Intent( this,Main6Activity.class );

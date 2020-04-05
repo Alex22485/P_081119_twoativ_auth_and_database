@@ -265,6 +265,7 @@ public class ServApp_1 extends AppCompatActivity {
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     //в БД стоит число поэтому считываем число
                     int data=dataSnapshot.child( "Человек" ).getValue(Integer.class);
+                    Log.d("TAG", "первая точка добавлена" + data);
                     // чтобы отображалось прибавляем к числу пустую строчку ""
                     oneMen.setText(data+"" );
                     Toast.makeText( ServApp_1.this, "точка 1 считана", Toast.LENGTH_SHORT ).show();
@@ -277,6 +278,7 @@ public class ServApp_1 extends AppCompatActivity {
                 }
                 @Override
                 public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -295,6 +297,7 @@ public class ServApp_1 extends AppCompatActivity {
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     //в БД стоит число поэтому считываем число
                     int data=dataSnapshot.child( "Человек" ).getValue(Integer.class);
+                    Log.d("TAG", "вторая точка" + data);
                     // чтобы отображалось прибавляем к числу пустую строчку ""
                     twoMen.setText(data+"" );
                     Toast.makeText( ServApp_1.this, "точка 2 считана", Toast.LENGTH_SHORT ).show();
@@ -326,6 +329,7 @@ public class ServApp_1 extends AppCompatActivity {
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     //в БД стоит число поэтому считываем число
                     int data=dataSnapshot.child( "Человек" ).getValue(Integer.class);
+                    Log.d("TAG", "третья точка" + data);
                     // чтобы отображалось прибавляем к числу пустую строчку ""
                     treeMen.setText(data+"" );
                     Toast.makeText( ServApp_1.this, "точка 3 считана", Toast.LENGTH_SHORT ).show();

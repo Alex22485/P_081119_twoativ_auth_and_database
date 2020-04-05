@@ -154,28 +154,38 @@
 
         <TextView
             android:id="@+id/onePoint"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="10"
             android:textSize="20sp"
             android:text="точка сбора">
         </TextView>
 
         <TextView
             android:id="@+id/oneMen"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
+            android:layout_weight="2
+"
             android:textSize="25sp"
             android:text="XX ">
         </TextView>
 
         <Button
             android:id="@+id/BtnOne"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
+            android:layout_weight="1.5"
             android:text="+"
+            android:textSize="25sp"
+            android:onClick="BtnOne">
+        </Button>
+        <Button
+            android:id="@+id/BtnOneStop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:text="S"
             android:textSize="25sp"
             android:onClick="BtnOne">
         </Button>
@@ -333,6 +343,13 @@
             android:text="">
         </TextView>
     </LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="StopOder"
+        android:text="Остановить заявки"
+        android:textSize="15sp">
+    </Button>
 
     <LinearLayout
         android:layout_width="match_parent"
