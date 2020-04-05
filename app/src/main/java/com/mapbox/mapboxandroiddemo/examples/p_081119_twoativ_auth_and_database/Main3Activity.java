@@ -235,7 +235,7 @@ public class Main3Activity extends AppCompatActivity {
         mAlertDialog.setTitle("Заявка отклонена :(");
         // Set Message
         mAlertDialog
-                .setMessage("Маршрут"+" "+TVchoiseMap+"."+" "+"Точка сбора"+" "+TVchoise_pointMap+" "+"уже сформирована. Проверьте другие точки сбора данного маршрута")
+                .setMessage("По Маршруту"+" "+TVchoiseMap+"."+" "+"точка сбора:"+" "+TVchoise_pointMap+" "+"уже сформирована. Проверьте другие точки сбора данного маршрута")
                 .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
@@ -248,21 +248,27 @@ public class Main3Activity extends AppCompatActivity {
 
     // Всплывающая информация "Заявка принята!!!"
     public void showAlertDialog2() {
-        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
-                Main3Activity.this);
-        // Set Title
-        mAlertDialog.setTitle("Спасибо, заявка принята!!!");
-        // Set Message
-        mAlertDialog
-                .setMessage("Ищем автомобиль..."+" "+"Вы получите уведомление о результате поиска")
-                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
-        mAlertDialog.create();
-        // Showing Alert Message
-        mAlertDialog.show();
+//        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
+//                Main3Activity.this);
+//        // Set Title
+//        mAlertDialog.setTitle("Спасибо, заявка принята!!!");
+//        // Set Message
+//        mAlertDialog
+//                .setMessage("Ищем автомобиль..."+" "+"Вы получите уведомление о результате поиска")
+//                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//        mAlertDialog.create();
+//        // Showing Alert Message
+//        mAlertDialog.show();
+
+        //Переход на лист Статуса
+        Intent zxz = new Intent( this,Main6Activity.class );
+        startActivity( zxz);
+
+
     }
 
     public void Qwery(){
@@ -282,11 +288,11 @@ public class Main3Activity extends AppCompatActivity {
 
                 String data=dataSnapshot.child( "РазрешениеНаЗапись" ).getValue(String.class);
                 Log.d("TAG", "РазрешениеНаЗапись" + data);
-                Toast.makeText( Main3Activity.this, "РазрешениеНаЗапись"+data, Toast.LENGTH_SHORT ).show();
+                //Toast.makeText( Main3Activity.this, "РазрешениеНаЗапись"+data, Toast.LENGTH_SHORT ).show();
 
                 if(data.equals("Разрешено")){
                     showAlertDialog2();
-                    StopFromServerApp.setText("Заявка Принята");
+                    //StopFromServerApp.setText("Заявка Принята");
                     btnStatus.setEnabled(true);
 
                 }

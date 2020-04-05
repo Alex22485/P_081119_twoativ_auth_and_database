@@ -101,6 +101,67 @@ public class Main6Activity extends AppCompatActivity {
         road_number_out.addTextChangedListener( loginTextWather );
         road_name_out.addTextChangedListener( loginTextWather );
         flight_number_Out.addTextChangedListener( loginTextWather );
+
+
+        Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userI )
+                .orderByChild( "Status" );
+        aaa.addChildEventListener( new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                String data=dataSnapshot.child( "дата" ).getValue(String.class);
+                String map=dataSnapshot.child( "направление" ).getValue(String.class);
+                String roar_number=dataSnapshot.child( "маршрут_номер" ).getValue(String.class);
+                String road_name=dataSnapshot.child( "маршрут_точкаСбора" ).getValue(String.class);
+                String flidht_number=dataSnapshot.child( "рейс_самолета" ).getValue(String.class);
+                token=dataSnapshot.child( "token" ).getValue(String.class);
+                Integer peopleOder=dataSnapshot.child("Человек_в_Заявке").getValue(Integer.class);
+                String сarDrive=dataSnapshot.child("Автомобиль").getValue(String.class);
+                Log.d("TAG", ""+сarDrive);
+
+                Calend_Out.setText( data );
+                Map.setText( map );
+                road_number_out.setText( roar_number );
+                road_name_out.setText( road_name );
+                flight_number_Out.setText( flidht_number );
+                people.setText(""+peopleOder);
+
+
+                AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Main6Activity.this);
+                // Set Title
+                mAlertDialog.setTitle("Спасибо, заявка оформлена!!!");
+                // Set Message
+                mAlertDialog
+                        .setMessage("Ищем автомобиль..."+" "+"Вы получите уведомление о результате поиска")
+                        .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+                mAlertDialog.create();
+                // Showing Alert Message
+                mAlertDialog.show();
+
+
+                if (сarDrive == null){}
+                else {
+                    searchCar.setText("Найден автомобиль"+сarDrive);
+                }
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        } );
+
     }
 // Блокировка кнопки Back!!!! (Иначе в БД Будет Задвоение! :)))
   @Override
@@ -113,8 +174,8 @@ public class Main6Activity extends AppCompatActivity {
 public void btnStatus(View view){
 
 
-        //ВАЖНО УБРАТЬ КОМЕНТЫ!!! очистка массива для обновления количества пользователей по заявке
-   num.clear();
+        //ВАЖНО УБРАТЬ КОМЕНТЫ!!! очистка массива для обновления количества пользователей по заявке для старого метода расчета человек в заявке
+   //num.clear();
 
     Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userI )
             .orderByChild( "Status" );
