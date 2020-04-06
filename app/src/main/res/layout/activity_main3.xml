@@ -133,7 +133,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Проверить статус"
-        android:enabled="false"
+        android:visibility="invisible"
         android:textSize="20sp"
         android:onClick="btnStatus"/>
 

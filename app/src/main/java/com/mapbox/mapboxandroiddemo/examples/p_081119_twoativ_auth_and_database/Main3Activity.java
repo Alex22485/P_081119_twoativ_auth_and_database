@@ -75,7 +75,7 @@ public class Main3Activity extends AppCompatActivity {
     // Для запрета заиси заявок от servApp (типо прием заявок окончен маршрут сформирован)
     String stopOder;
     TextView StopFromServerApp;
-    TextView StopRef;
+    //TextView StopRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +96,7 @@ public class Main3Activity extends AppCompatActivity {
         btnStatus=findViewById( R.id.btnStatus );
         btn_number_Flight=findViewById( R.id.btn_number_Flight );
         StopFromServerApp=findViewById( R.id.StopFromServerApp );
-        StopRef=findViewById( R.id.StopRef );
+        //StopRef=findViewById( R.id.StopRef );
 // ADD Calendar
         choisData=(Button)findViewById(R.id.choisData);
         Calend=findViewById(R.id.Calend);
@@ -161,27 +161,20 @@ public class Main3Activity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int which) {
 
                 Flight.setText( listFlights[which] );
-                StopRef.setText("");
+                //StopRef.setText("");
                 StopFromServerApp.setText("");
+
+
+
+
+
+
             }
         }
         );
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-
-    // C 05032020 не используется вся работа идет в node js
-    /*private void  getValues(){ // C 05032020 не используется
-        user.setЧисло( 1 );
-        // Запись во вторую ветку БД Пользователи
-        userTwo.setДата(Calend.getText().toString());
-        userTwo.setНаправление(MapTop);
-        userTwo.setМаршрут_номер(TVchoiseMap);
-        userTwo.setМаршрут_точкаСбора(TVchoise_pointMap);
-        userTwo.setРейс_самолета(Flight.getText().toString());
-        userTwo.setToken( newToken );
-    }*/
 
     public void btnInsert (View view) {
 
@@ -233,12 +226,13 @@ public class Main3Activity extends AppCompatActivity {
                 Main3Activity.this);
         // Set Title
         mAlertDialog.setTitle("Заявка отклонена :(");
+        mAlertDialog.setCancelable(false);
         // Set Message
         mAlertDialog
-                .setMessage("По Маршруту"+" "+TVchoiseMap+"."+" "+"точка сбора:"+" "+TVchoise_pointMap+" "+"уже сформирована. Проверьте другие точки сбора данного маршрута")
+                .setMessage("Точка сбора"+" "+TVchoise_pointMap+" "+"уже сформирована. Проверьте другие, ближайшие к вам точки сбора данного маршрута")
                 .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
+                        onBackList();
                     }
                 });
         mAlertDialog.create();
@@ -246,29 +240,57 @@ public class Main3Activity extends AppCompatActivity {
         mAlertDialog.show();
     }
 
-    // Всплывающая информация "Заявка принята!!!"
-    public void showAlertDialog2() {
-//        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
-//                Main3Activity.this);
-//        // Set Title
-//        mAlertDialog.setTitle("Спасибо, заявка принята!!!");
-//        // Set Message
-//        mAlertDialog
-//                .setMessage("Ищем автомобиль..."+" "+"Вы получите уведомление о результате поиска")
-//                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//        mAlertDialog.create();
-//        // Showing Alert Message
-//        mAlertDialog.show();
+    private void showAlertDialog1() {
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Main3Activity.this);
+        // Set Title
+        mAlertDialog.setTitle("Спасибо, заявка оформлена!!!");
+        mAlertDialog.setCancelable(false);
+        // Set Message
+        mAlertDialog
+                .setMessage("Ищем автомобиль..."+" "+"Вы получите уведомление о результате поиска")
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
 
+                        //переход в окно статуса лист 6
+                        onStatusList();
+                    }
+                });
+        mAlertDialog.create();
+        // Showing Alert Message
+        mAlertDialog.show();
+    }
+
+    private void showAlertDialog3() {
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
+                Main3Activity.this);
+        // Set Title
+        mAlertDialog.setTitle("По этому направлению вы уже зарегистрированы ранее!!!");
+        mAlertDialog.setCancelable(false);
+        // Set Message
+        mAlertDialog
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //переход в окно статуса лист 6
+                        onStatusList();
+                    }
+                });
+        mAlertDialog.create();
+        // Showing Alert Message
+        mAlertDialog.show();
+    }
+
+    // Переход на лист Статуса
+    public void onStatusList() {
         //Переход на лист Статуса
         Intent zxz = new Intent( this,Main6Activity.class );
         startActivity( zxz);
+    }
 
-
+    // Переход на лист выбора точки сбора
+    public void onBackList() {
+        //Переход на лист Статуса
+        Intent Choose_direction = new Intent( this,Choose_direction.class );
+        startActivity( Choose_direction);
     }
 
     public void Qwery(){
@@ -291,15 +313,19 @@ public class Main3Activity extends AppCompatActivity {
                 //Toast.makeText( Main3Activity.this, "РазрешениеНаЗапись"+data, Toast.LENGTH_SHORT ).show();
 
                 if(data.equals("Разрешено")){
-                    showAlertDialog2();
-                    //StopFromServerApp.setText("Заявка Принята");
-                    btnStatus.setEnabled(true);
+                    showAlertDialog1();
 
                 }
                 else if (data.equals("Запрещено")){
                     showAlertDialog();
-                    StopFromServerApp.setText("Заявка отклонена");
                 }
+                else if (data.equals("Повтор")){
+                    showAlertDialog3();
+//                    StopFromServerApp.setText("Заявка была Зарегистрирована Ранее");
+//                    btnStatus.setVisibility(View.VISIBLE);
+//                    btnInsert.setEnabled(false);
+                }
+
                 //Останавливаем прослушивание, чтобы не в приложении у другого пользователя не появлялась информация когда другой пользоваьель регистрирует заявку
                 aaa1.removeEventListener(this);
 

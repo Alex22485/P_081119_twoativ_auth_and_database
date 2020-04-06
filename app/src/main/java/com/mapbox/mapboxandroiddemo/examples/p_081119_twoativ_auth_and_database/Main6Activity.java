@@ -103,7 +103,7 @@ public class Main6Activity extends AppCompatActivity {
         flight_number_Out.addTextChangedListener( loginTextWather );
 
 
-        Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userI )
+        final Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userI )
                 .orderByChild( "Status" );
         aaa.addChildEventListener( new ChildEventListener() {
             @Override
@@ -126,22 +126,8 @@ public class Main6Activity extends AppCompatActivity {
                 flight_number_Out.setText( flidht_number );
                 people.setText(""+peopleOder);
 
-
-                AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Main6Activity.this);
-                // Set Title
-                mAlertDialog.setTitle("Спасибо, заявка оформлена!!!");
-                // Set Message
-                mAlertDialog
-                        .setMessage("Ищем автомобиль..."+" "+"Вы получите уведомление о результате поиска")
-                        .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                            }
-                        });
-                mAlertDialog.create();
-                // Showing Alert Message
-                mAlertDialog.show();
-
+                //Останавливаем прослушивание, чтобы обновилась информация (т.е. старая заявка не отображалась)
+                aaa.removeEventListener(this);
 
                 if (сarDrive == null){}
                 else {
