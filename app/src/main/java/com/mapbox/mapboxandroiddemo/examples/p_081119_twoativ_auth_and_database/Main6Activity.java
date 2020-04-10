@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,8 +17,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -27,33 +25,35 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Main6Activity extends AppCompatActivity {
 
     FirebaseDatabase ggg;
     DatabaseReference mmm;
 
-    List<Integer> num=new ArrayList<Integer>(  );
-    Integer[] ar={};
     Button btnStatus,cancelOder,detailsTrip;
     String userID;
     String userI;
-
     String token;
-
     String[] CancelOderWhy ={"Самолет отменён","Передумал", };
 
     FirebaseAuth mAuth;
 
     TextView Calend_Out,flight_number_Out,Map,road_number_out,road_name_out;
-    TextView number,information2,people,people2,process,process1,process2,process3,searchCar;
+    TextView number;
+    TextView information2;
+    TextView people;
+    TextView people2;
+    TextView process;
+    TextView process1;
+    TextView process2;
+    TextView process3;
+    TextView searchCar;
+    TextView TextData;
+    TextView TextFlight;
+    TextView TextMap;
+    TextView TextPoint;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -78,7 +78,10 @@ public class Main6Activity extends AppCompatActivity {
         cancelOder=findViewById( R.id.cancelOder );
         detailsTrip=findViewById( R.id.detailsTrip );
 
-        num=new ArrayList<Integer>( Arrays.asList( ar ) );
+        TextFlight=findViewById( R.id.TextFlight );
+        TextData=findViewById( R.id.TextData );
+        TextMap=findViewById( R.id.TextMap );
+        TextPoint=findViewById( R.id.TextPoint );
 
         mAuth= FirebaseAuth.getInstance(  );
         FirebaseUser user=mAuth.getCurrentUser();
@@ -86,14 +89,6 @@ public class Main6Activity extends AppCompatActivity {
         //полуаем номер телефона пользователя
         userID=user.getPhoneNumber();
         userI=user.getUid();
-        //полуаем номер ID пользователя
-        //userID=user.getUid();
-        //Log.d("TAG", userID);
-// прослушивание listwiew
-        /*listwiew=findViewById( R.id.listwiew );
-        basa=new ArrayList<String>( Arrays.asList( array ) );
-        ad= new ArrayAdapter<>( this,android.R.layout.simple_list_item_1,basa );
-        listwiew.setAdapter( ad );*/
 
         // Disable Button "Отменить заявку" if Text is Empty
         Calend_Out.addTextChangedListener( loginTextWather );
@@ -102,8 +97,17 @@ public class Main6Activity extends AppCompatActivity {
         road_name_out.addTextChangedListener( loginTextWather );
         flight_number_Out.addTextChangedListener( loginTextWather );
 
+        Handler handler0 = new Handler();
+        handler0.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getStatus();
+            }
+        },3000);
+    }
 
-        final Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userI )
+    public void getStatus(){
+        Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userI )
                 .orderByChild( "Status" );
         aaa.addChildEventListener( new ChildEventListener() {
             @Override
@@ -126,8 +130,17 @@ public class Main6Activity extends AppCompatActivity {
                 flight_number_Out.setText( flidht_number );
                 people.setText(""+peopleOder);
 
-                //Останавливаем прослушивание, чтобы обновилась информация (т.е. старая заявка не отображалась)
-                aaa.removeEventListener(this);
+                //делаем текст видимым
+                TextFlight.setVisibility(View.VISIBLE);
+                TextData.setVisibility(View.VISIBLE);
+                TextMap.setVisibility(View.VISIBLE);
+                TextPoint.setVisibility(View.VISIBLE);
+                searchCar.setVisibility(View.VISIBLE);
+                information2.setVisibility(View.VISIBLE);
+                people2.setVisibility(View.VISIBLE);
+
+//                //Останавливаем прослушивание, чтобы обновилась информация (т.е. старая заявка не отображалась)
+//                aaa.removeEventListener(this);
 
                 if (сarDrive == null){}
                 else {
@@ -159,11 +172,7 @@ public class Main6Activity extends AppCompatActivity {
 // Вызов Личного статуса заказа вкладка пользователи "Пользователи"
 public void btnStatus(View view){
 
-
-        //ВАЖНО УБРАТЬ КОМЕНТЫ!!! очистка массива для обновления количества пользователей по заявке для старого метода расчета человек в заявке
-   //num.clear();
-
-    Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userI )
+   Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userI )
             .orderByChild( "Status" );
     aaa.addChildEventListener( new ChildEventListener() {
         @Override
@@ -179,6 +188,9 @@ public void btnStatus(View view){
             String сarDrive=dataSnapshot.child("Автомобиль").getValue(String.class);
             Log.d("TAG", ""+сarDrive);
 
+//            //Останавливаем прослушивание, чтобы не в приложении у другого пользователя не появлялась информация когда другой пользоваьель регистрирует заявку
+//            aaa.removeEventListener(this);
+
             Calend_Out.setText( data );
             Map.setText( map );
             road_number_out.setText( roar_number );
@@ -186,51 +198,19 @@ public void btnStatus(View view){
             flight_number_Out.setText( flidht_number );
             people.setText(""+peopleOder);
 
+            //делаем текст видимым
+            TextFlight.setVisibility(View.VISIBLE);
+            TextData.setVisibility(View.VISIBLE);
+            TextMap.setVisibility(View.VISIBLE);
+            TextPoint.setVisibility(View.VISIBLE);
+            searchCar.setVisibility(View.VISIBLE);
+            information2.setVisibility(View.VISIBLE);
+            people2.setVisibility(View.VISIBLE);
+
             if (сarDrive == null){}
             else {
                 searchCar.setText("Найден автомобиль"+сarDrive);
             }
-
-//c 31/03/20 Не испльзуется. но код рабочий Получение текущего количества людей зарегистрированных на данный маршрут
-            /*DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Заявки")
-                    .child( Map.getText().toString() )
-                    .child( Calend_Out.getText().toString() )
-                    .child(flight_number_Out.getText().toString())
-                    .child( road_number_out.getText().toString() )
-                    .child( road_name_out.getText().toString() );
-
-            DatabaseReference usersdRef = rootRef.child( "Users" );
-            ValueEventListener valueEventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        int xxx=0;
-                        int flight = ds.child("Человек").getValue(Integer.class);
-                        int a=xxx+flight;
-                        num.add( a );
-                        int sum=0;
-
-                        for (int counter=0;counter<num.size();counter++){
-                            sum+= num.get(counter);
-                        }
-                        people.setText(""+sum);
-
-                        if(sum>=5){
-                            //information.setText( "маршрут сформирован V" );
-                            //information.setTextColor( getResources().getColor( R.color.colorRed ) );
-                            searchCar.setText("поиск автомобиля...");
-                            process2.setText( "|" );
-                            process3.setText( "V" );
-                    }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            };usersdRef.addListenerForSingleValueEvent(valueEventListener);*/
         }
         @Override
         public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -243,13 +223,14 @@ public void btnStatus(View view){
         }
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
-        }
-    } );
 
+        }
+    }
+    );
         }
 
     // Disable Button "Отменить заявку" if Text is Empty
-    private final TextWatcher loginTextWather = new TextWatcher() {
+    TextWatcher loginTextWather = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         }

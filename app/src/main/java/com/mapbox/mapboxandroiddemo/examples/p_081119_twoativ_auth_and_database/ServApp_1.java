@@ -55,6 +55,11 @@ public class ServApp_1 extends AppCompatActivity {
     Button BtnTree;
     Button BtnFour;
 
+    Button BtnOneStop;
+    Button BtnTwoStop;
+    Button BtnTreeStop;
+    Button BtnFourStop;
+
     //Calendar
     Calendar calendar;
     int year;
@@ -112,6 +117,12 @@ public class ServApp_1 extends AppCompatActivity {
         BtnTree = findViewById( R.id. BtnTree );
         BtnFour = findViewById( R.id. BtnFour );
         driverNew = findViewById( R.id. driverNew );
+
+        BtnOneStop = findViewById( R.id. BtnOneStop );
+        BtnTwoStop = findViewById( R.id. BtnTwoStop );
+        BtnTreeStop = findViewById( R.id. BtnTreeStop );
+        BtnFourStop = findViewById( R.id. BtnFourStop );
+
 
         //20.03.2020 для отправки заявки в БД Водителя
         servApp_2= new ServApp_2();
@@ -379,122 +390,6 @@ public class ServApp_1 extends AppCompatActivity {
             } );
 
 
-
-
-            //030320 Запись токена в БД ЗАЯВКИ
-            /*database01 = FirebaseDatabase.getInstance();
-            ref01 = database01.getReference( "ЗаявкиServerApp" )
-                    .child( Дата.getText().toString() )
-                    .child( Направление.getText().toString() )
-                    .child( Рейс.getText().toString()  )
-                    .child( Маршрут.getText().toString()  )
-                    .child(onePoint.getText().toString());
-
-            dbRef = database01.getReference( "ЗаявкиServerApp" )
-                    .child( Дата.getText().toString() )
-                    .child( Направление.getText().toString() )
-                    .child( Рейс.getText().toString()  )
-                    .child( Маршрут.getText().toString()  )
-                    .child(onePoint.getText().toString());
-            dbRef.addValueEventListener(changeListener);
-            String title = dataSnapshot.child("message1").child("title").getValue(String.class);*/
-            /*ref01.addValueEventListener( new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    ref01.child( onePoint.getText().toString() ).getV( "Человек");
-                    // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "newToken
-                    ref01.removeEventListener( this );
-
-                    //Видимость кнопки Проверить статус
-                    btnStatus.setEnabled( true );
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            } );*/
-
-
-            /*Query oneP= FirebaseDatabase.getInstance().getReference("ЗаявкиServerApp")
-                    .child(Дата.getText().toString() )
-                    .child(Направление.getText().toString()  )
-                    .child(Рейс.getText().toString()  )
-                    .child(Маршрут.getText().toString()   )
-                    .orderByChild("Аэрокосмическая академия" );
-            oneP.addChildEventListener( new ChildEventListener() {
-                @Override
-                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                    int dataone=dataSnapshot.child( "Человек" ).getValue(Integer.class);
-                    oneMen.setText( dataone+"" );
-
-                    Log.d("TAG", dataone+" ");
-                }
-                @Override
-                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                }
-                @Override
-                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                }
-                @Override
-                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            } );*/
-
-            /*Query twoP= FirebaseDatabase.getInstance().getReference("ЗаявкиServerApp")
-                    .child(Дата.getText().toString() )
-                    .child(Направление.getText().toString()  )
-                    .child(Рейс.getText().toString()  )
-                    .child(Маршрут.getText().toString()   )
-                    .orderByChild(twoPoint.getText().toString() );
-            twoP.addChildEventListener( new ChildEventListener() {
-                @Override
-                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                    int datatwo=dataSnapshot.child( "Человек" ).getValue(Integer.class);
-                    twoMen.setText( datatwo+"" );
-
-                    Log.d("TAG", datatwo+" ");
-                }
-                @Override
-                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                }
-                @Override
-                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                }
-                @Override
-                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            } );*/
-
-            /*DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("ЗаявкиServerApp")
-                    .child(Дата.getText().toString())
-                    .child( Направление.getText().toString() )
-                    .child( Рейс.getText().toString() );
-                    //.child( Маршрут.getText().toString() );
-            DatabaseReference usersdRef = rootRef.child( Маршрут.getText().toString() );
-            ValueEventListener valueEventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-
-                        //String data = ds.child("Человек").getValue(String.class);
-                        int flight = ds.child("Человек").getValue(Integer.class);
-
-
-                        Log.d("TAG", flight+" ");
-
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                }
-            };usersdRef.addListenerForSingleValueEvent(valueEventListener);*/
         }
         // 20.03.2020 Очищаем количество человек в строке
         public void BtnOne (View view) {
@@ -517,6 +412,114 @@ public class ServApp_1 extends AppCompatActivity {
         fourMen.setText("");
         fourPoint.setText("");
     }
+
+    public void BtnOneStop(View view){
+
+        //080420 Запись Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
+        database01 = FirebaseDatabase.getInstance();
+        ref01 = database01.getReference("Заявки")
+                .child(Направление.getText().toString())
+                .child(Дата.getText().toString())
+                .child(Рейс.getText().toString())
+                .child(Маршрут.getText().toString())
+                .child(onePoint.getText().toString());
+        ref01.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                            ref01.child("StopOder").setValue("Stop");
+
+                                            // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+                                            ref01.removeEventListener(this);
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        }
+                                    }
+        );
+
+    };
+
+    public void BtnTwoStop(View view){
+
+        //080420 Запись Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
+        database01 = FirebaseDatabase.getInstance();
+        ref01 = database01.getReference("Заявки")
+                .child(Направление.getText().toString())
+                .child(Дата.getText().toString())
+                .child(Рейс.getText().toString())
+                .child(Маршрут.getText().toString())
+                .child(twoPoint.getText().toString());
+        ref01.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                            ref01.child("StopOder").setValue("Stop");
+
+                                            // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+                                            ref01.removeEventListener(this);
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        }
+                                    }
+        );
+
+    };
+
+    public void BtnTreeStop(View view){
+
+        //080420 Запись Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
+        database01 = FirebaseDatabase.getInstance();
+        ref01 = database01.getReference("Заявки")
+                .child(Направление.getText().toString())
+                .child(Дата.getText().toString())
+                .child(Рейс.getText().toString())
+                .child(Маршрут.getText().toString())
+                .child(treePoint.getText().toString());
+        ref01.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                            ref01.child("StopOder").setValue("Stop");
+
+                                            // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+                                            ref01.removeEventListener(this);
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        }
+                                    }
+        );
+
+    };
+
+    public void BtnFourStop(View view){
+
+        //080420 Запись Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
+        database01 = FirebaseDatabase.getInstance();
+        ref01 = database01.getReference("Заявки")
+                .child(Направление.getText().toString())
+                .child(Дата.getText().toString())
+                .child(Рейс.getText().toString())
+                .child(Маршрут.getText().toString())
+                .child(fourPoint.getText().toString());
+        ref01.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                            ref01.child("StopOder").setValue("Stop");
+
+                                            // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+                                            ref01.removeEventListener(this);
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        }
+                                    }
+        );
+
+    };
 
     //20.03.2020 Выбрать Водителя
     public void choise_Driver (View view) {

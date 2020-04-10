@@ -163,10 +163,9 @@
 
         <TextView
             android:id="@+id/oneMen"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2
-"
+            android:layout_weight="0"
             android:textSize="25sp"
             android:text="XX ">
         </TextView>
@@ -187,7 +186,7 @@
             android:layout_weight="1.5"
             android:text="S"
             android:textSize="25sp"
-            android:onClick="BtnOne">
+            android:onClick="BtnOneStop">
         </Button>
     </LinearLayout>
 
@@ -206,9 +205,9 @@
 
         <TextView
             android:id="@+id/twoPoint"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="10"
             android:textSize="20sp"
             android:text="точка сбора">
         </TextView>
@@ -224,12 +223,21 @@
 
         <Button
             android:id="@+id/BtnTwo"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
+            android:layout_weight="1.5"
             android:text="+"
             android:textSize="25sp"
             android:onClick="BtnTwo">
+        </Button>
+        <Button
+            android:id="@+id/BtnTwoStop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:text="S"
+            android:textSize="25sp"
+            android:onClick="BtnTwoStop">
         </Button>
     </LinearLayout>
 
@@ -248,9 +256,9 @@
 
         <TextView
             android:id="@+id/treePoint"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="10"
             android:textSize="20sp"
             android:text="точка сбора">
         </TextView>
@@ -266,12 +274,21 @@
 
         <Button
             android:id="@+id/BtnTree"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
+            android:layout_weight="1.5"
             android:text="+"
             android:textSize="25sp"
             android:onClick="BtnTree">
+        </Button>
+        <Button
+            android:id="@+id/BtnTreeStop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:text="S"
+            android:textSize="25sp"
+            android:onClick="BtnTreeStop">
         </Button>
     </LinearLayout>
 
@@ -290,9 +307,9 @@
 
         <TextView
             android:id="@+id/fourPoint"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="10"
             android:textSize="20sp"
             android:text="точка сбора">
         </TextView>
@@ -308,12 +325,21 @@
 
         <Button
             android:id="@+id/BtnFour"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
+            android:layout_weight="1.5"
             android:text="+"
             android:textSize="25sp"
             android:onClick="BtnFour">
+        </Button>
+        <Button
+            android:id="@+id/BtnFourStop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:text="S"
+            android:textSize="25sp"
+            android:onClick="BtnFourStop">
         </Button>
     </LinearLayout>
 
@@ -343,14 +369,6 @@
             android:text="">
         </TextView>
     </LinearLayout>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="StopOder"
-        android:text="Остановить заявки"
-        android:textSize="15sp">
-    </Button>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

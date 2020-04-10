@@ -1,6 +1,7 @@
 package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database;
 
 public class UserTwo {
+    //Не используется
 
     private String Дата;
     private String Направление;
