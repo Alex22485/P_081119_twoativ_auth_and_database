@@ -32,7 +32,9 @@ public class Main6Activity extends AppCompatActivity {
     FirebaseDatabase ggg;
     DatabaseReference mmm;
 
-    Button btnStatus,cancelOder,detailsTrip;
+    Button btnStatus;
+    Button cancelOder;
+    Button detailsTrip;
     String userID;
     String userI;
     String token;
@@ -85,18 +87,16 @@ public class Main6Activity extends AppCompatActivity {
 
         mAuth= FirebaseAuth.getInstance(  );
         FirebaseUser user=mAuth.getCurrentUser();
-
-        //полуаем номер телефона пользователя
-        userID=user.getPhoneNumber();
+        //полуаем id пользователя
         userI=user.getUid();
 
         // Disable Button "Отменить заявку" if Text is Empty
-        Calend_Out.addTextChangedListener( loginTextWather );
-        Map.addTextChangedListener( loginTextWather );
-        road_number_out.addTextChangedListener( loginTextWather );
-        road_name_out.addTextChangedListener( loginTextWather );
-        flight_number_Out.addTextChangedListener( loginTextWather );
-
+//        Calend_Out.addTextChangedListener( loginTextWather );
+//        Map.addTextChangedListener( loginTextWather );
+//        road_number_out.addTextChangedListener( loginTextWather );
+//        road_name_out.addTextChangedListener( loginTextWather );
+//        flight_number_Out.addTextChangedListener( loginTextWather );
+        //задержка запроса из БД для полного завершения функций из nod js
         Handler handler0 = new Handler();
         handler0.postDelayed(new Runnable() {
             @Override
@@ -104,7 +104,26 @@ public class Main6Activity extends AppCompatActivity {
                 getStatus();
             }
         },3000);
+
+        //задержка запроса из БД для полного завершения функций из nod js
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getNull();
+            }
+        },10000);
     }
+
+    public void getNull(){
+        String numberChesk=number.getText().toString();
+        String Chrsk="заявка оформлена";
+
+        if(numberChesk.equals(Chrsk)){
+        }
+        else {number.setText( "заявка НЕ оформлена" );
+            number.setTextColor(getResources().getColor( R.color.colorNew ));}
+    };
 
     public void getStatus(){
         Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userI )
@@ -129,6 +148,7 @@ public class Main6Activity extends AppCompatActivity {
                 road_name_out.setText( road_name );
                 flight_number_Out.setText( flidht_number );
                 people.setText(""+peopleOder);
+                number.setText( "заявка оформлена" );
 
                 //делаем текст видимым
                 TextFlight.setVisibility(View.VISIBLE);
@@ -138,6 +158,15 @@ public class Main6Activity extends AppCompatActivity {
                 searchCar.setVisibility(View.VISIBLE);
                 information2.setVisibility(View.VISIBLE);
                 people2.setVisibility(View.VISIBLE);
+                //стрелочки
+                process.setVisibility(View.VISIBLE);
+                process1.setVisibility(View.VISIBLE);
+                process2.setVisibility(View.VISIBLE);
+                process3.setVisibility(View.VISIBLE);
+                //кнопка Обновить, Отменить заявку
+                btnStatus.setVisibility(View.VISIBLE);
+                cancelOder.setVisibility(View.VISIBLE);
+
 
 //                //Останавливаем прослушивание, чтобы обновилась информация (т.е. старая заявка не отображалась)
 //                aaa.removeEventListener(this);
@@ -160,9 +189,8 @@ public class Main6Activity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         } );
-
     }
-// Блокировка кнопки Back!!!! (Иначе в БД Будет Задвоение! :)))
+// кнопка Back сворачивает приложение
   @Override
    public void onBackPressed(){
      this.moveTaskToBack(true);
@@ -170,111 +198,17 @@ public class Main6Activity extends AppCompatActivity {
 
 
 // Вызов Личного статуса заказа вкладка пользователи "Пользователи"
-public void btnStatus(View view){
-
-   Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userI )
-            .orderByChild( "Status" );
-    aaa.addChildEventListener( new ChildEventListener() {
-        @Override
-        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            String data=dataSnapshot.child( "дата" ).getValue(String.class);
-            String map=dataSnapshot.child( "направление" ).getValue(String.class);
-            String roar_number=dataSnapshot.child( "маршрут_номер" ).getValue(String.class);
-            String road_name=dataSnapshot.child( "маршрут_точкаСбора" ).getValue(String.class);
-            String flidht_number=dataSnapshot.child( "рейс_самолета" ).getValue(String.class);
-            token=dataSnapshot.child( "token" ).getValue(String.class);
-            Integer peopleOder=dataSnapshot.child("Человек_в_Заявке").getValue(Integer.class);
-            String сarDrive=dataSnapshot.child("Автомобиль").getValue(String.class);
-            Log.d("TAG", ""+сarDrive);
-
-//            //Останавливаем прослушивание, чтобы не в приложении у другого пользователя не появлялась информация когда другой пользоваьель регистрирует заявку
-//            aaa.removeEventListener(this);
-
-            Calend_Out.setText( data );
-            Map.setText( map );
-            road_number_out.setText( roar_number );
-            road_name_out.setText( road_name );
-            flight_number_Out.setText( flidht_number );
-            people.setText(""+peopleOder);
-
-            //делаем текст видимым
-            TextFlight.setVisibility(View.VISIBLE);
-            TextData.setVisibility(View.VISIBLE);
-            TextMap.setVisibility(View.VISIBLE);
-            TextPoint.setVisibility(View.VISIBLE);
-            searchCar.setVisibility(View.VISIBLE);
-            information2.setVisibility(View.VISIBLE);
-            people2.setVisibility(View.VISIBLE);
-
-            if (сarDrive == null){}
-            else {
-                searchCar.setText("Найден автомобиль"+сarDrive);
-            }
-        }
-        @Override
-        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-        }
-        @Override
-        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-        }
-        @Override
-        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-        }
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    }
-    );
-        }
-
-    // Disable Button "Отменить заявку" if Text is Empty
-    TextWatcher loginTextWather = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            String calendInput = Calend_Out.getText().toString().trim();
-            String flightInput = Map.getText().toString().trim();
-            String road_number_ou = road_number_out.getText().toString().trim();
-            String road_name_ou = road_name_out.getText().toString().trim();
-            String flight_number_Ou = flight_number_Out.getText().toString().trim();
-
-            cancelOder.setEnabled(!calendInput.isEmpty() && !flightInput.isEmpty()
-                    && !road_number_ou.isEmpty() && !road_name_ou.isEmpty() && !flight_number_Ou.isEmpty());
-
-
-
-            //если база данных НЕ Пуста (а именно параметры loginTextWather НЕ пусты!!! ) то вступают в силу эти изменения
-            number.setText( " заявка оформлена" );
-            number.setTextColor(getResources().getColor( R.color.colorRed ));
-            //information.setText( "формирование маршрута..." );
-            process.setText( "|" );
-            process1.setText( "V" );
-            information2.setText( "зарегистрировано" );
-            people2.setText( "человек(а)" );
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-
-        }
-    };
-// Отмена текущей заявки нажимаем (УДАЛЕНИЕ ИЗ БД)
+public void btnStatus(View view) {
+    getStatus();
+}
+// Отмена заявки
     public void cancelOder (View view){
-
         AlertDialog.Builder builder=new AlertDialog.Builder( Main6Activity.this );
         builder.setTitle( "Укажите причину отмены");
         //builder.setCancelable( false );
-
         builder.setItems( CancelOderWhy, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
-
                 ggg = FirebaseDatabase.getInstance();
                 mmm = ggg.getReference("Заявки")
                         .child(Map.getText().toString() )
@@ -311,21 +245,30 @@ public void btnStatus(View view){
                         road_number_out.setText( "" );
                         road_name_out.setText( "" );
                         flight_number_Out.setText( "" );
-                        number.setText( " заявка НЕ оформлена" );
+                        people.setText("");
+                        number.setText( "заявка НЕ оформлена" );
                         number.setTextColor(getResources().getColor( R.color.colorNew ));
 
-                        //information.setText( "" );
-                        searchCar.setText("");
-                        process2.setText( "" );
-                        process3.setText( "" );
-                        people.setText("");
-                        process.setText( "" );
-                        process1.setText( "" );
-                        btnStatus.setEnabled(false);
+                        //делаем текст видимым
+                        TextFlight.setVisibility(View.INVISIBLE);
+                        TextData.setVisibility(View.INVISIBLE);
+                        TextMap.setVisibility(View.INVISIBLE);
+                        TextPoint.setVisibility(View.INVISIBLE);
+                        searchCar.setVisibility(View.INVISIBLE);
+                        information2.setVisibility(View.INVISIBLE);
+                        people2.setVisibility(View.INVISIBLE);
+                        //стрелочки
+                        process.setVisibility(View.INVISIBLE);
+                        process1.setVisibility(View.INVISIBLE);
+                        process2.setVisibility(View.INVISIBLE);
+                        process3.setVisibility(View.INVISIBLE);
+                        //кнопка Обновить, Отменить заявку
+                        btnStatus.setVisibility(View.INVISIBLE);
+                        cancelOder.setVisibility(View.INVISIBLE);
+
                     }
                 },1000
                 );
-
             }
         }
         );

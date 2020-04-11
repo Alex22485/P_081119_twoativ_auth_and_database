@@ -8,6 +8,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -40,6 +41,8 @@ public class Main3Activity extends AppCompatActivity {
     // ADD Calendar
     Button choisData;
     TextView Calend;
+
+    TextView TextProcess;
     int year;
     int month;
     int dayOfmonth;
@@ -60,6 +63,10 @@ public class Main3Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
 
+        Flight = findViewById(R.id.Flight);
+        btn_number_Flight=findViewById( R.id.btn_number_Flight );
+        TextProcess=findViewById( R.id.TextProcess );
+
         // Получить Токен!!!!
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Main3Activity.this,new OnSuccessListener<InstanceIdResult>() {
             @Override
@@ -68,13 +75,11 @@ public class Main3Activity extends AppCompatActivity {
             }
         });
 
-        Flight = findViewById(R.id.Flight);
-        btn_number_Flight=findViewById( R.id.btn_number_Flight );
+
 // ADD Calendar
         choisData=(Button)findViewById(R.id.choisData);
         Calend=findViewById(R.id.Calend);
         btnInsert = findViewById(R.id.btnInsert);
-
         choisData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,6 +103,8 @@ public class Main3Activity extends AppCompatActivity {
         Calend.addTextChangedListener( loginTextWather );
         Flight.addTextChangedListener( loginTextWather );
     }
+
+    // Disable Button if Text is Empty
     TextWatcher loginTextWather = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -114,7 +121,7 @@ public class Main3Activity extends AppCompatActivity {
         }
     };
 
-    //Выбрать номер рейса Новый вариант
+    //Выбрать номер рейса
     public void btn_number_Flight (View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder( Main3Activity.this );
         builder.setTitle( "Выберите Номер рейса" );
@@ -130,7 +137,14 @@ public class Main3Activity extends AppCompatActivity {
         dialog.show();
     }
 
+    // кнопка регистрация
     public void btnInsert (View view) {
+        btnInsert.setVisibility(View.INVISIBLE);
+        TextProcess.setVisibility(View.VISIBLE);
+
+        //запуск метода выдачи ошибки если через 15 секунд не придет ответ от БД
+        getInternetCheck();
+
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser ghg = mAuth.getCurrentUser();
         //полуачем номер телефона пользователя
@@ -168,6 +182,24 @@ public class Main3Activity extends AppCompatActivity {
         );
     }
 
+    public void   getInternetCheck(){
+        //задержка запроса из БД для полного завершения функций из nod js
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                String a=TextProcess.getText().toString();
+                String b="";
+                if(a.equals(b)){}
+                else{
+                TextProcess.setText("Ошибка регистрации...");
+                showAlertDialog4();}
+            }
+        },15000);
+
+
+    }
+
     // Всплывающая информация "Заявка отклонена!!!"
     public void showAlertDialog() {
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Main3Activity.this);
@@ -186,7 +218,7 @@ public class Main3Activity extends AppCompatActivity {
         // Showing Alert Message
         mAlertDialog.show();
     }
-
+    // Всплывающая информация "Заявка оформлена!!!"
     public void showAlertDialog1() {
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Main3Activity.this);
         // Set Title
@@ -205,7 +237,7 @@ public class Main3Activity extends AppCompatActivity {
         // Showing Alert Message
         mAlertDialog.show();
     }
-
+    // Всплывающая информация "Повтор!!!"
     public void showAlertDialog3() {
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
                 Main3Activity.this);
@@ -219,6 +251,35 @@ public class Main3Activity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         //переход в окно статуса лист 6
                         onStatusList();
+                    }
+                });
+        mAlertDialog.create();
+        // Showing Alert Message
+        mAlertDialog.show();
+    }
+
+    // Всплывающая информация "ошибка регистрации Нет Интернета!!!"
+    public void showAlertDialog4() {
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
+                Main3Activity.this);
+        // Set Title
+        mAlertDialog.setTitle("Ошибка");
+        mAlertDialog.setCancelable(false);
+        // Set Message
+        mAlertDialog
+                .setMessage("Проверьте соединение интернета")
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        //задержка
+                        Handler handler1 = new Handler();
+                        handler1.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                onBackList();
+                            }
+                        },10);
+
                     }
                 });
         mAlertDialog.create();
@@ -260,13 +321,15 @@ public class Main3Activity extends AppCompatActivity {
                 //Toast.makeText( Main3Activity.this, "РазрешениеНаЗапись"+data, Toast.LENGTH_SHORT ).show();
 
                 if(data.equals("Разрешено")){
+                    TextProcess.setText("");
                     showAlertDialog1();
-
                 }
                 else if (data.equals("Запрещено")){
+                    TextProcess.setText("");
                     showAlertDialog();
                 }
                 else if (data.equals("Повтор")){
+                    TextProcess.setText("");
                     showAlertDialog3();
                 }
                 //Останавливаем прослушивание, чтобы в приложении у другого пользователя не появлялась информация когда другой пользоваьель регистрирует заявку

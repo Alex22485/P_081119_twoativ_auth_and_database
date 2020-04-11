@@ -88,18 +88,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:enabled="false"
+        android:visibility="visible"
         android:onClick="btnInsert"
         android:text="Зарегистрировать Заявку"
         android:textSize="20sp" />
-    <Button
-        android:id="@+id/btnStatus"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Проверить статус"
-        android:visibility="invisible"
-        android:textSize="20sp"
-        android:onClick="btnStatus"/>
+        android:orientation="horizontal">
 
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
+        <TextView
+            android:id="@+id/TextProcess"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:text="процесс регистрации..."
+            android:textColor="#D51E1E"
+            android:visibility="invisible"
+            android:textSize="25dp" />
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
 </LinearLayout>
+
 
