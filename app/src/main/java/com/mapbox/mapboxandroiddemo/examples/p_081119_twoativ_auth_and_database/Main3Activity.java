@@ -5,8 +5,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -75,6 +78,24 @@ public class Main3Activity extends AppCompatActivity {
             }
         });
 
+        //Проверка интернета
+//        ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+//
+//        if (networkInfo != null && networkInfo.isConnected()) {
+//            // fetch data
+//        } else {
+//            new AlertDialog.Builder(this)
+//                    .setTitle("Connection Failure")
+//                    .setMessage("Please Connect to the Internet")
+//                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int which) {
+//                        }
+//                    })
+//                    .setIcon(android.R.drawable.ic_dialog_alert)
+//                    .show();
+//        }
+
 
 // ADD Calendar
         choisData=(Button)findViewById(R.id.choisData);
@@ -139,47 +160,70 @@ public class Main3Activity extends AppCompatActivity {
 
     // кнопка регистрация
     public void btnInsert (View view) {
-        btnInsert.setVisibility(View.INVISIBLE);
-        TextProcess.setVisibility(View.VISIBLE);
 
-        //запуск метода выдачи ошибки если через 15 секунд не придет ответ от БД
-        getInternetCheck();
+        //проверка есть ли интернет
+        ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
 
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser ghg = mAuth.getCurrentUser();
-        //полуачем номер телефона пользователя
-        userPhone = ghg.getPhoneNumber();
-        userid = ghg.getUid();
-        //Экспорт данных из др активити
-        Intent nextList = getIntent();
-        TVchoiseMap = nextList.getStringExtra( "TVchoiseMap" );
-        TVchoise_pointMap = nextList.getStringExtra( "TVchoise_pointMap" );
-        MapTop = nextList.getStringExtra( "mapTop" );
+            btnInsert.setVisibility(View.INVISIBLE);
+            TextProcess.setText("процесс регистрации...");
+            mAuth = FirebaseAuth.getInstance();
+            FirebaseUser ghg = mAuth.getCurrentUser();
+            //полуачем номер телефона пользователя
+            userPhone = ghg.getPhoneNumber();
+            userid = ghg.getUid();
+            //Экспорт данных из др активити
+            Intent nextList = getIntent();
+            TVchoiseMap = nextList.getStringExtra( "TVchoiseMap" );
+            TVchoise_pointMap = nextList.getStringExtra( "TVchoise_pointMap" );
+            MapTop = nextList.getStringExtra( "mapTop" );
 
-        //030320 Запись токена для проверки Разрешения на запись заявки в БД ЗАЯВКИ...-...-...-"CheckStopOder"...
-        database01 = FirebaseDatabase.getInstance();
-        ref01 = database01.getReference("Заявки")
-                .child(MapTop)
-                .child(Calend.getText().toString())
-                .child(Flight.getText().toString())
-                .child(TVchoiseMap)
-                .child(TVchoise_pointMap)
-                .child("CheckStopOder")
-                .child(userid);
-        ref01.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ref01.child(newToken).setValue(userid);
-                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
-                ref01.removeEventListener(this);
-                //запускаем метод
-                Qwery();
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
+            //030320 Запись токена для проверки Разрешения на запись заявки в БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+            database01 = FirebaseDatabase.getInstance();
+            ref01 = database01.getReference("Заявки")
+                    .child(MapTop)
+                    .child(Calend.getText().toString())
+                    .child(Flight.getText().toString())
+                    .child(TVchoiseMap)
+                    .child(TVchoise_pointMap)
+                    .child("CheckStopOder")
+                    .child(userid);
+            ref01.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                ref01.child(newToken).setValue(userid);
+                                                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+                                                ref01.removeEventListener(this);
+                                                //запускаем метод
+                                                Qwery();
+                                            }
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                            }
+                                        }
+            );
+
+
+        } else {
+            new AlertDialog.Builder(this)
+                    .setTitle("Ошибка!!!")
+                    .setMessage("Пожалуйста, проверьте соединение с сетью")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            TextProcess.setText("ошибка загрузки данных");
+                            btnInsert.setVisibility(View.VISIBLE);
+                            //запуск метода выдачи ошибки если через 5 секунд не придет ответ от БД
+                            //getInternetCheck();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
         }
-        );
+
+
+
     }
 
     public void   getInternetCheck(){
@@ -194,8 +238,9 @@ public class Main3Activity extends AppCompatActivity {
                 else{
                 TextProcess.setText("Ошибка регистрации...");
                 showAlertDialog4();}
+                btnInsert.setVisibility(View.VISIBLE);
             }
-        },15000);
+        },5000);
 
 
     }
@@ -354,6 +399,26 @@ public class Main3Activity extends AppCompatActivity {
         Intent zxz = new Intent( this,Main6Activity.class );
         startActivity( zxz);
     }
+
+//    public void checkConnection()
+//    {
+//        ConnectivityManager connectivityManager=(ConnectivityManager)
+//                this.getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo wifi=connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+//        NetworkInfo  network=connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+//        if (wifi.isConnected())
+//        {
+//            //Internet available
+//        }
+//        else if(network.isConnected())
+//        {
+//            //Internet available
+//        }
+//        else
+//        {
+//            //Internet is not available
+//        }
+//    }
 
     // Блокировка кнопки Back!!!! :)))
 //    @Override

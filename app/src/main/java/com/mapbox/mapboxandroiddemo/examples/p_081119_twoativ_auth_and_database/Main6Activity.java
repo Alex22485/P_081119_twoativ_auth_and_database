@@ -6,8 +6,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -96,23 +99,48 @@ public class Main6Activity extends AppCompatActivity {
 //        road_number_out.addTextChangedListener( loginTextWather );
 //        road_name_out.addTextChangedListener( loginTextWather );
 //        flight_number_Out.addTextChangedListener( loginTextWather );
-        //задержка запроса из БД для полного завершения функций из nod js
-        Handler handler0 = new Handler();
-        handler0.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                getStatus();
-            }
-        },3000);
 
-        //задержка запроса из БД для полного завершения функций из nod js
-        Handler handler1 = new Handler();
-        handler1.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                getNull();
-            }
-        },10000);
+        // Проверка есть ли интернет
+                ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            number.setText("Поиск Заявок...");
+
+            //задержка запроса из БД для полного завершения функций из nod js
+            Handler handler0 = new Handler();
+            handler0.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getStatus();
+
+                }
+            },3000);
+
+            //задержка запроса из БД для полного завершения функций из nod js
+            Handler handler1 = new Handler();
+            handler1.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getNull();
+                }
+            },10000);
+
+        }
+        else {
+            new AlertDialog.Builder(this)
+                    .setTitle("Ошибка!!!")
+                    .setMessage("Пожалуйста, проверьте соединение с сетью")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            number.setText("ошибка загрузки данных");
+                            btnStatus.setVisibility(View.VISIBLE);
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+
     }
 
     public void getNull(){
@@ -197,10 +225,18 @@ public class Main6Activity extends AppCompatActivity {
     }
 
 
-// Вызов Личного статуса заказа вкладка пользователи "Пользователи"
+// Кнопка обновить информацию
 public void btnStatus(View view) {
-    getStatus();
+        //перезапуск активити
+        restartActivity();
 }
+
+    public void restartActivity(){
+        Intent mIntent = getIntent();
+        finish();
+        startActivity(mIntent);
+    }
+
 // Отмена заявки
     public void cancelOder (View view){
         AlertDialog.Builder builder=new AlertDialog.Builder( Main6Activity.this );
