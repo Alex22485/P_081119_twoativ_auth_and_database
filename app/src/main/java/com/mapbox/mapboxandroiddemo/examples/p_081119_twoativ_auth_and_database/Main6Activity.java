@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,8 +12,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -38,7 +35,6 @@ public class Main6Activity extends AppCompatActivity {
     Button btnStatus;
     Button cancelOder;
     Button detailsTrip;
-    String userID;
     String userI;
     String token;
     String[] CancelOderWhy ={"Самолет отменён","Передумал", };
@@ -101,7 +97,7 @@ public class Main6Activity extends AppCompatActivity {
 //        flight_number_Out.addTextChangedListener( loginTextWather );
 
         // Проверка есть ли интернет
-                ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
         if (networkInfo != null && networkInfo.isConnected()) {
@@ -151,7 +147,7 @@ public class Main6Activity extends AppCompatActivity {
         }
         else {number.setText( "заявка НЕ оформлена" );
             number.setTextColor(getResources().getColor( R.color.colorNew ));}
-    };
+    }
 
     public void getStatus(){
         Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userI )
