@@ -63,10 +63,6 @@ public class Main3Activity extends AppCompatActivity {
     String userPhone;
     String userid;
 
-    TextView txtDate;
-    Integer peopleOder;
-    String dateTime;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,8 +71,6 @@ public class Main3Activity extends AppCompatActivity {
         Flight = findViewById(R.id.Flight);
         btn_number_Flight=findViewById( R.id.btn_number_Flight );
         TextProcess=findViewById( R.id.TextProcess );
-
-        txtDate=findViewById( R.id.txtDate );
 
         // Получить Токен!!!!
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Main3Activity.this,new OnSuccessListener<InstanceIdResult>() {
