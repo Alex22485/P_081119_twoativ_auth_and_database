@@ -32,13 +32,8 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-
-import java.math.BigInteger;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Map;
 
-import static java.sql.Types.TIMESTAMP;
 
 public class Main3Activity extends AppCompatActivity {
 
@@ -173,39 +168,6 @@ public class Main3Activity extends AppCompatActivity {
 
     // кнопка регистрация
     public void btnInsert (View view) {
-
-
-//        Query aaa= FirebaseDatabase.getInstance().getReference("Заявки").child("Время").orderByChild( "Метка" );
-//        aaa.addChildEventListener( new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//                peopleOder=dataSnapshot.child("штамп").getValue(Integer.class);
-//
-//                Log.d("TAG", ""+peopleOder);
-//            }
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//            }
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//            }
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//            }
-//        } );
-
-//       // double num = 1586971235.464;
-//        double num = 1586971235;
-//        //double num = peopleOder;
-//        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy/HH/mm/ss");
-//        String dateString = formatter.format(num*1000);
-//        txtDate.setText(dateString);
-
-
 
         //проверка есть ли интернет
         ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
