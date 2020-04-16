@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,366 +10,901 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="33sp"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/choiseD"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="10sp"
+            android:text="дата">
+        </Button>
+        <Button
+            android:id="@+id/choiseF"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="10sp"
+            android:text="рейс"
+            android:onClick="choiseF">
+        </Button>
+        <Button
+            android:id="@+id/choiseN"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="10sp"
+            android:text="напр"
+            android:onClick="choiseN">
+        </Button>
+        <Button
+            android:id="@+id/choiseM"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="10sp"
+            android:onClick="choiseM"
+            android:text="маршрут">
+        </Button>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
         <TextView
             android:id="@+id/Дата"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Дата"
-            android:textSize="25sp">
-
-        </TextView>
-
-        <Button
-            android:id="@+id/choiseD"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="Д"
-            android:textSize="20sp">
-        </Button>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
+            android:text="xx xx xx"
+            android:textSize="15sp" />
         <TextView
             android:id="@+id/Рейс"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
+            android:layout_weight="1"
             android:text="Рейс"
-            android:textSize="25sp">
-        </TextView>
-
-        <Button
-            android:id="@+id/choiseF"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:textSize="20sp"
-            android:onClick="choiseF"
-            android:text="Р">
-        </Button>
+            android:textSize="15sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
         <TextView
             android:id="@+id/Направление"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
+            android:layout_weight="1"
             android:text="Направление"
-            android:textSize="25sp">
-        </TextView>
-
-        <Button
-            android:id="@+id/choiseN"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:textSize="20sp"
-            android:onClick="choiseN"
-            android:text="Н">
-        </Button>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/Маршрут"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
+            android:layout_weight="1"
             android:text="Маршрут"
-            android:textSize="25sp">
-        </TextView>
-
-        <Button
-            android:id="@+id/choiseM"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:textSize="20sp"
-            android:onClick="choiseM"
-            android:text="М">
-        </Button>
+            android:textSize="15sp" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/read"
+        android:layout_width="match_parent"
+        android:layout_height="31dp"
+        android:onClick="reada"
+        android:text="Считать"
+        android:textSize="10sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text=""
-            android:textSize="25sp">
-        </TextView>
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/read"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="20sp"
-            android:onClick="reada"
-            android:text="Считать">
-        </Button>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text=""
-            android:textSize="25sp">
-        </TextView>
-    </LinearLayout>
+                <Button
+                    android:id="@+id/BtnOneStop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33sp"
+                    android:layout_weight="1"
+                    android:text="Стоп Заказ"
+                    android:textSize="10sp"
+                    android:enabled="false"
+                    android:onClick="BtnOneStop">
+                </Button>
+                <Button
+                    android:id="@+id/DelBtnOneStop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33sp"
+                    android:layout_weight="1"
+                    android:text="Отмена Стоп"
+                    android:textSize="10sp"
+                    android:onClick="DelBtnOneStop">
+                </Button>
+            </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="1. "
-            android:textSize="20sp">
-        </TextView>
+                <Button
+                    android:id="@+id/BtnOneDriver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33sp"
+                    android:layout_weight="1"
+                    android:onClick="choise_Driver"
+                    android:text="Driver"
+                    android:textSize="10sp">
+                </Button>
+                <Button
+                    android:id="@+id/sendToDriver1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33sp"
+                    android:layout_weight="1"
+                    android:onClick="sendToDriver1"
+                    android:text="Send Oder"
+                    android:textSize="10sp">
+                </Button>
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/onePoint"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:textSize="20sp"
-            android:text="точка сбора">
-        </TextView>
-
-        <TextView
-            android:id="@+id/oneMen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:textSize="25sp"
-            android:text="XX ">
-        </TextView>
-
-        <Button
-            android:id="@+id/BtnOne"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:text="+"
-            android:textSize="25sp"
-            android:onClick="BtnOne">
-        </Button>
-        <Button
-            android:id="@+id/BtnOneStop"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:text="S"
-            android:textSize="25sp"
-            android:onClick="BtnOneStop">
-        </Button>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="2. "
-            android:textSize="20sp">
-        </TextView>
-
-        <TextView
-            android:id="@+id/twoPoint"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:textSize="20sp"
-            android:text="точка сбора">
-        </TextView>
-
-        <TextView
-            android:id="@+id/twoMen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:textSize="25sp"
-            android:text="XX ">
-        </TextView>
-
-        <Button
-            android:id="@+id/BtnTwo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:text="+"
-            android:textSize="25sp"
-            android:onClick="BtnTwo">
-        </Button>
-        <Button
-            android:id="@+id/BtnTwoStop"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:text="S"
-            android:textSize="25sp"
-            android:onClick="BtnTwoStop">
-        </Button>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="3. "
-            android:textSize="20sp">
-        </TextView>
-
-        <TextView
-            android:id="@+id/treePoint"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:textSize="20sp"
-            android:text="точка сбора">
-        </TextView>
-
-        <TextView
-            android:id="@+id/treeMen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:textSize="25sp"
-            android:text="XX ">
-        </TextView>
-
-        <Button
-            android:id="@+id/BtnTree"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:text="+"
-            android:textSize="25sp"
-            android:onClick="BtnTree">
-        </Button>
-        <Button
-            android:id="@+id/BtnTreeStop"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:text="S"
-            android:textSize="25sp"
-            android:onClick="BtnTreeStop">
-        </Button>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="4. "
-            android:textSize="20sp">
-        </TextView>
-
-        <TextView
-            android:id="@+id/fourPoint"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:textSize="20sp"
-            android:text="точка сбора">
-        </TextView>
-
-        <TextView
-            android:id="@+id/fourMen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:textSize="25sp"
-            android:text="XX ">
-        </TextView>
-
-        <Button
-            android:id="@+id/BtnFour"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:text="+"
-            android:textSize="25sp"
-            android:onClick="BtnFour">
-        </Button>
-        <Button
-            android:id="@+id/BtnFourStop"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:text="S"
-            android:textSize="25sp"
-            android:onClick="BtnFourStop">
-        </Button>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="choise_Driver"
-            android:text="Выбрать водителя"
-            android:textSize="15sp">
-    </Button>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:text=" ">
-        </TextView>
         <TextView
             android:id="@+id/driverNew"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:text="">
+            android:text="Driver"
+            android:textSize="15sp">
         </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/onePoint"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:textSize="15sp"
+                android:text="точка сбора:">
+            </TextView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="человек:">
+            </TextView>
+            <TextView
+                android:id="@+id/oneMen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="">
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/oneTextStop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="Остановлена:">
+            </TextView>
+            <TextView
+                android:id="@+id/oneTimeStop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="">
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/oneTextSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="Отправлена:">
+            </TextView>
+            <TextView
+                android:id="@+id/oneTimeSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="">
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/oneTextAccepted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="Принята:">
+            </TextView>
+            <TextView
+                android:id="@+id/oneTimeAccepted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="">
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/oneTextDriver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="Водитель:">
+            </TextView>
+            <TextView
+                android:id="@+id/oneNameDriver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="">
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/oneTextdelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="Удалена:">
+            </TextView>
+            <TextView
+                android:id="@+id/oneTimedelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="">
+            </TextView>
+        </LinearLayout>
     </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/BtnTwoStop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33sp"
+                    android:layout_weight="1"
+                    android:text="Стоп Заказ"
+                    android:textSize="10sp"
+                    android:enabled="false"
+                    android:onClick="BtnTwoStop">
+                </Button>
+                <Button
+                    android:id="@+id/DelBtnTwoStop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33sp"
+                    android:layout_weight="1"
+                    android:text="Отмена Стоп"
+                    android:textSize="10sp"
+                    android:onClick="DelBtnTwoStop">
+                </Button>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/BtnTwoDriver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33sp"
+                    android:layout_weight="1"
+                    android:onClick="choise_Driver"
+                    android:text="Driver"
+                    android:textSize="10sp">
+                </Button>
+                <Button
+                    android:id="@+id/sendToDriver2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33sp"
+                    android:layout_weight="1"
+                    android:onClick="sendToDriver2"
+                    android:text="Send Oder"
+                    android:textSize="10sp">
+                </Button>
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Driver"
+                android:textSize="15sp">
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/twoPoint"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:textSize="15sp"
+                    android:text="точка сбора:">
+                </TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="человек:">
+                </TextView>
+                <TextView
+                    android:id="@+id/twoMen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/twoTextStop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="Остановлена:">
+                </TextView>
+                <TextView
+                    android:id="@+id/twoTimeStop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/twoTextSend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="Отправлена:">
+                </TextView>
+                <TextView
+                    android:id="@+id/twoTimeSend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/twoTextAccepted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="Принята:">
+                </TextView>
+                <TextView
+                    android:id="@+id/twoTimeAccepted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/twoTextDriver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="Водитель:">
+                </TextView>
+                <TextView
+                    android:id="@+id/twoNameDriver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/twoTextdelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="Удалена:">
+                </TextView>
+                <TextView
+                    android:id="@+id/twoTimedelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="">
+                </TextView>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="10sp">
+    </TextView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/BtnTreeStop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33sp"
+                    android:layout_weight="1"
+                    android:text="Стоп Заказ"
+                    android:textSize="10sp"
+                    android:enabled="false"
+                    android:onClick="BtnTreeStop">
+                </Button>
+                <Button
+                    android:id="@+id/DelBtnTreeStop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33sp"
+                    android:layout_weight="1"
+                    android:text="Отмена Стоп"
+                    android:textSize="10sp"
+                    android:onClick="DelBtnTreeStop">
+                </Button>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/BtnTreeDriver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33sp"
+                    android:layout_weight="1"
+                    android:onClick="choise_Driver"
+                    android:text="Driver"
+                    android:textSize="10sp">
+                </Button>
+                <Button
+                    android:id="@+id/sendToDriver3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33sp"
+                    android:layout_weight="1"
+                    android:onClick="sendToDriver3"
+                    android:text="Send Oder"
+                    android:textSize="10sp">
+                </Button>
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Driver"
+                android:textSize="15sp">
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/treePoint"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:textSize="15sp"
+                    android:text="точка сбора:">
+                </TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="человек:">
+                </TextView>
+                <TextView
+                    android:id="@+id/treeMen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/treeTextStop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="Остановлена:">
+                </TextView>
+                <TextView
+                    android:id="@+id/treeTimeStop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/treeTextSend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="Отправлена:">
+                </TextView>
+                <TextView
+                    android:id="@+id/treeTimeSend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/treeTextAccepted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="Принята:">
+                </TextView>
+                <TextView
+                    android:id="@+id/treeTimeAccepted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/treeTextDriver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="Водитель:">
+                </TextView>
+                <TextView
+                    android:id="@+id/treeNameDriver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/treeTextdelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="Удалена:">
+                </TextView>
+                <TextView
+                    android:id="@+id/treeTimedelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="">
+                </TextView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/BtnFourStop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33sp"
+                    android:layout_weight="1"
+                    android:text="Стоп Заказ"
+                    android:textSize="10sp"
+                    android:enabled="false"
+                    android:onClick="BtnFourStop">
+                </Button>
+                <Button
+                    android:id="@+id/DelBtnFourStop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33sp"
+                    android:layout_weight="1"
+                    android:text="Отмена Стоп"
+                    android:textSize="10sp"
+                    android:onClick="DelBtnFourStop">
+                </Button>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/BtnFourDriver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33sp"
+                    android:layout_weight="1"
+                    android:onClick="choise_Driver"
+                    android:text="Driver"
+                    android:textSize="10sp">
+                </Button>
+                <Button
+                    android:id="@+id/sendToDriver4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33sp"
+                    android:layout_weight="1"
+                    android:onClick="sendToDriver4"
+                    android:text="Send Oder"
+                    android:textSize="10sp">
+                </Button>
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Driver"
+                android:textSize="15sp">
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/fourPoint"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:textSize="15sp"
+                    android:text="точка сбора:">
+                </TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="человек:">
+                </TextView>
+                <TextView
+                    android:id="@+id/fourMen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/fourTextStop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="Остановлена:">
+                </TextView>
+                <TextView
+                    android:id="@+id/fourTimeStop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/fourTextSend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="Отправлена:">
+                </TextView>
+                <TextView
+                    android:id="@+id/fourTimeSend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/fourTextAccepted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="Принята:">
+                </TextView>
+                <TextView
+                    android:id="@+id/fourTimeAccepted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/fourTextDriver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="Водитель:">
+                </TextView>
+                <TextView
+                    android:id="@+id/fourNameDriver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/fourTextdelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="Удалена:">
+                </TextView>
+                <TextView
+                    android:id="@+id/fourTimedelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="">
+                </TextView>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

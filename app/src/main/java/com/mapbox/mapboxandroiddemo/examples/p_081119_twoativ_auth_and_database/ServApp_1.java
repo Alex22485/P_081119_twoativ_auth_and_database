@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -45,6 +46,11 @@ public class ServApp_1 extends AppCompatActivity {
     TextView fourPoint;
     TextView fourMen;
 
+    TextView oneTimeStop;
+    TextView twoTimeStop;
+    TextView treeTimeStop;
+    TextView fourTimeStop;
+
 
     Button choiseD;
     Button choiseF;
@@ -60,6 +66,8 @@ public class ServApp_1 extends AppCompatActivity {
     Button BtnTreeStop;
     Button BtnFourStop;
 
+    String dateTime;
+
     //Calendar
     Calendar calendar;
     int year;
@@ -71,7 +79,6 @@ public class ServApp_1 extends AppCompatActivity {
     String[] listFlights = {"1","2","3"};
     //Номер Направления
     String[] listMap = {"Красноярск-Аэропорт","Аэропорт-Красноярск"};
-
     String[] listMap1 = {"КрасТэц-Аэропорт","Щорса-Аэропорт","Северный-Аэропорт","Ветлужанка-Аэропорт"};
     String[] listMap2 = {"Аэропорт-КрасТэц","Аэропорт-Щорса","Аэропорт-Северный","Аэропорт-Ветлужанка"};
     String[] pointOneMap = {"ДК КрасТЭЦ","Аэрокосмическая академия","Торговый центр","Предмостная пл"};
@@ -112,16 +119,21 @@ public class ServApp_1 extends AppCompatActivity {
         choiseF = findViewById( R.id. choiseF );
         choiseN = findViewById( R.id. choiseN );
         read = findViewById( R.id. read );
-        BtnOne = findViewById( R.id. BtnOne );
-        BtnTwo = findViewById( R.id. BtnTwo );
-        BtnTree = findViewById( R.id. BtnTree );
-        BtnFour = findViewById( R.id. BtnFour );
+        //BtnOne = findViewById( R.id. BtnOne );
+        //BtnTwo = findViewById( R.id. BtnTwo );
+        //BtnTree = findViewById( R.id. BtnTree );
+        //BtnFour = findViewById( R.id. BtnFour );
         driverNew = findViewById( R.id. driverNew );
 
         BtnOneStop = findViewById( R.id. BtnOneStop );
         BtnTwoStop = findViewById( R.id. BtnTwoStop );
         BtnTreeStop = findViewById( R.id. BtnTreeStop );
         BtnFourStop = findViewById( R.id. BtnFourStop );
+
+        oneTimeStop = findViewById( R.id. oneTimeStop );
+        twoTimeStop = findViewById( R.id. twoTimeStop );
+        treeTimeStop = findViewById( R.id. treeTimeStop );
+        fourTimeStop = findViewById( R.id. fourTimeStop );
 
 
         //20.03.2020 для отправки заявки в БД Водителя
@@ -276,9 +288,12 @@ public class ServApp_1 extends AppCompatActivity {
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     //в БД стоит число поэтому считываем число
                     int data=dataSnapshot.child( "Человек" ).getValue(Integer.class);
+                    String StopOder1=dataSnapshot.child("Остановлена").getValue(String.class);
                     Log.d("TAG", "первая точка добавлена" + data);
                     // чтобы отображалось прибавляем к числу пустую строчку ""
                     oneMen.setText(data+"" );
+                    oneTimeStop.setText(StopOder1);
+                    BtnOneStop.setEnabled(true);
                     Toast.makeText( ServApp_1.this, "точка 1 считана", Toast.LENGTH_SHORT ).show();
                 }
                 @Override
@@ -308,9 +323,12 @@ public class ServApp_1 extends AppCompatActivity {
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     //в БД стоит число поэтому считываем число
                     int data=dataSnapshot.child( "Человек" ).getValue(Integer.class);
+                    String StopOder2=dataSnapshot.child("Остановлена").getValue(String.class);
                     Log.d("TAG", "вторая точка" + data);
                     // чтобы отображалось прибавляем к числу пустую строчку ""
                     twoMen.setText(data+"" );
+                    twoTimeStop.setText(StopOder2);
+                    BtnTwoStop.setEnabled(true);
                     Toast.makeText( ServApp_1.this, "точка 2 считана", Toast.LENGTH_SHORT ).show();
                 }
                 @Override
@@ -340,9 +358,12 @@ public class ServApp_1 extends AppCompatActivity {
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     //в БД стоит число поэтому считываем число
                     int data=dataSnapshot.child( "Человек" ).getValue(Integer.class);
+                    String StopOder3=dataSnapshot.child("Остановлена").getValue(String.class);
                     Log.d("TAG", "третья точка" + data);
                     // чтобы отображалось прибавляем к числу пустую строчку ""
                     treeMen.setText(data+"" );
+                    treeTimeStop.setText(StopOder3);
+                    BtnTreeStop.setEnabled(true);
                     Toast.makeText( ServApp_1.this, "точка 3 считана", Toast.LENGTH_SHORT ).show();
                 }
                 @Override
@@ -371,8 +392,11 @@ public class ServApp_1 extends AppCompatActivity {
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     //в БД стоит число поэтому считываем число
                     int data=dataSnapshot.child( "Человек" ).getValue(Integer.class);
+                    String StopOder4=dataSnapshot.child("Остановлена").getValue(String.class);
                     // чтобы отображалось прибавляем к числу пустую строчку ""
                     fourMen.setText(data+"" );
+                    fourTimeStop.setText(StopOder4);
+                    BtnFourStop.setEnabled(true);
                     Toast.makeText( ServApp_1.this, "точка 4 считана", Toast.LENGTH_SHORT ).show();
                 }
                 @Override
@@ -415,6 +439,10 @@ public class ServApp_1 extends AppCompatActivity {
 
     public void BtnOneStop(View view){
 
+        BtnOneStop.setEnabled(false);
+        // получение текущего времени
+        getTimNow();
+
         //080420 Запись Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
         database01 = FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Заявки")
@@ -427,7 +455,7 @@ public class ServApp_1 extends AppCompatActivity {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                            ref01.child("StopOder").setValue("Stop");
+                                            ref01.child("StopOder").setValue(dateTime);
 
                                             // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
                                             ref01.removeEventListener(this);
@@ -438,9 +466,36 @@ public class ServApp_1 extends AppCompatActivity {
                                     }
         );
 
-    };
+    }
+
+    public void DelBtnOneStop(View view){
+        database01 = FirebaseDatabase.getInstance();
+        ref01 = database01.getReference("Заявки")
+                .child(Направление.getText().toString())
+                .child(Дата.getText().toString())
+                .child(Рейс.getText().toString())
+                .child(Маршрут.getText().toString())
+                .child(onePoint.getText().toString());
+        ref01.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                            ref01.child("StopOder").setValue(null);
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        }
+                                    }
+        );
+    }
+
+
 
     public void BtnTwoStop(View view){
+
+        BtnTwoStop.setEnabled(false);
+        // получение текущего времени
+        getTimNow();
 
         //080420 Запись Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
         database01 = FirebaseDatabase.getInstance();
@@ -454,10 +509,7 @@ public class ServApp_1 extends AppCompatActivity {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                            ref01.child("StopOder").setValue("Stop");
-
-                                            // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
-                                            ref01.removeEventListener(this);
+                                            ref01.child("StopOder").setValue(dateTime);
                                         }
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -465,9 +517,36 @@ public class ServApp_1 extends AppCompatActivity {
                                     }
         );
 
-    };
+    }
+
+    public void DelBtnTwoStop(View view){
+        database01 = FirebaseDatabase.getInstance();
+        ref01 = database01.getReference("Заявки")
+                .child(Направление.getText().toString())
+                .child(Дата.getText().toString())
+                .child(Рейс.getText().toString())
+                .child(Маршрут.getText().toString())
+                .child(twoPoint.getText().toString());
+        ref01.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                            ref01.child("StopOder").setValue(null);
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        }
+                                    }
+        );
+
+    }
 
     public void BtnTreeStop(View view){
+
+        BtnTreeStop.setEnabled(false);
+
+        // получение текущего времени
+        getTimNow();
 
         //080420 Запись Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
         database01 = FirebaseDatabase.getInstance();
@@ -481,7 +560,7 @@ public class ServApp_1 extends AppCompatActivity {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                            ref01.child("StopOder").setValue("Stop");
+                                            ref01.child("StopOder").setValue(dateTime);
 
                                             // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
                                             ref01.removeEventListener(this);
@@ -492,9 +571,40 @@ public class ServApp_1 extends AppCompatActivity {
                                     }
         );
 
-    };
+    }
+
+    public void DelBtnTreeStop(View view){
+
+        database01 = FirebaseDatabase.getInstance();
+        ref01 = database01.getReference("Заявки")
+                .child(Направление.getText().toString())
+                .child(Дата.getText().toString())
+                .child(Рейс.getText().toString())
+                .child(Маршрут.getText().toString())
+                .child(treePoint.getText().toString());
+        ref01.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                            ref01.child("StopOder").setValue(null);
+
+                                            // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+                                            ref01.removeEventListener(this);
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        }
+                                    }
+        );
+
+    }
 
     public void BtnFourStop(View view){
+
+        BtnFourStop.setEnabled(false);
+
+        // получение текущего времени
+        getTimNow();
 
         //080420 Запись Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
         database01 = FirebaseDatabase.getInstance();
@@ -508,7 +618,7 @@ public class ServApp_1 extends AppCompatActivity {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                            ref01.child("StopOder").setValue("Stop");
+                                            ref01.child("StopOder").setValue(dateTime);
 
                                             // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
                                             ref01.removeEventListener(this);
@@ -519,7 +629,34 @@ public class ServApp_1 extends AppCompatActivity {
                                     }
         );
 
-    };
+    }
+
+    public void DelBtnFourStop(View view){
+
+        //080420 Запись Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
+        database01 = FirebaseDatabase.getInstance();
+        ref01 = database01.getReference("Заявки")
+                .child(Направление.getText().toString())
+                .child(Дата.getText().toString())
+                .child(Рейс.getText().toString())
+                .child(Маршрут.getText().toString())
+                .child(fourPoint.getText().toString());
+        ref01.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                            ref01.child("StopOder").setValue(null);
+
+                                            // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+                                            ref01.removeEventListener(this);
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        }
+                                    }
+        );
+
+    }
 
     //20.03.2020 Выбрать Водителя
     public void choise_Driver (View view) {
@@ -555,6 +692,16 @@ public class ServApp_1 extends AppCompatActivity {
         servApp_2.setТочкаСбора4Чел(fourMen.getText().toString());
 
     }
+
+    public void  getTimNow(){
+        //ПОЛУЧЕНИЕ ТЕКУЩЕГО ВРЕМЕНИ
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM hh:mm a");
+        dateTime= simpleDateFormat.format(calendar.getTime());
+
+    }
+
+
 
     //20.03.2020 Отправить заявку водителю
     public void sendToDriver(View view){
