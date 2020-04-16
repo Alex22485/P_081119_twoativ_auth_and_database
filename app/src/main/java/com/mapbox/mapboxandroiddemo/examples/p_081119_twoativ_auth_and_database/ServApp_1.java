@@ -437,6 +437,7 @@ public class ServApp_1 extends AppCompatActivity {
         fourPoint.setText("");
     }
 
+
     public void BtnOneStop(View view){
 
         BtnOneStop.setEnabled(false);
@@ -469,6 +470,7 @@ public class ServApp_1 extends AppCompatActivity {
     }
 
     public void DelBtnOneStop(View view){
+        //Удаление Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
         database01 = FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Заявки")
                 .child(Направление.getText().toString())
@@ -520,6 +522,7 @@ public class ServApp_1 extends AppCompatActivity {
     }
 
     public void DelBtnTwoStop(View view){
+        //Удаление Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
         database01 = FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Заявки")
                 .child(Направление.getText().toString())
@@ -574,7 +577,7 @@ public class ServApp_1 extends AppCompatActivity {
     }
 
     public void DelBtnTreeStop(View view){
-
+        //Удаление Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
         database01 = FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Заявки")
                 .child(Направление.getText().toString())
@@ -633,7 +636,7 @@ public class ServApp_1 extends AppCompatActivity {
 
     public void DelBtnFourStop(View view){
 
-        //080420 Запись Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
+        //Удаление Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
         database01 = FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Заявки")
                 .child(Направление.getText().toString())
