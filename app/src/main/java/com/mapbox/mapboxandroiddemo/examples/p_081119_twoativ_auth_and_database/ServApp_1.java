@@ -288,12 +288,13 @@ public class ServApp_1 extends AppCompatActivity {
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     //в БД стоит число поэтому считываем число
                     int data=dataSnapshot.child( "Человек" ).getValue(Integer.class);
-                    String StopOder1=dataSnapshot.child("Остановлена").getValue(String.class);
-                    Log.d("TAG", "первая точка добавлена" + data);
                     // чтобы отображалось прибавляем к числу пустую строчку ""
                     oneMen.setText(data+"" );
+
+                    String StopOder1=dataSnapshot.child("Остановлена").getValue(String.class);
                     oneTimeStop.setText(StopOder1);
                     BtnOneStop.setEnabled(true);
+                    
                     Toast.makeText( ServApp_1.this, "точка 1 считана", Toast.LENGTH_SHORT ).show();
                 }
                 @Override
@@ -324,7 +325,6 @@ public class ServApp_1 extends AppCompatActivity {
                     //в БД стоит число поэтому считываем число
                     int data=dataSnapshot.child( "Человек" ).getValue(Integer.class);
                     String StopOder2=dataSnapshot.child("Остановлена").getValue(String.class);
-                    Log.d("TAG", "вторая точка" + data);
                     // чтобы отображалось прибавляем к числу пустую строчку ""
                     twoMen.setText(data+"" );
                     twoTimeStop.setText(StopOder2);
@@ -359,7 +359,6 @@ public class ServApp_1 extends AppCompatActivity {
                     //в БД стоит число поэтому считываем число
                     int data=dataSnapshot.child( "Человек" ).getValue(Integer.class);
                     String StopOder3=dataSnapshot.child("Остановлена").getValue(String.class);
-                    Log.d("TAG", "третья точка" + data);
                     // чтобы отображалось прибавляем к числу пустую строчку ""
                     treeMen.setText(data+"" );
                     treeTimeStop.setText(StopOder3);

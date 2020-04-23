@@ -196,6 +196,7 @@
                 android:id="@+id/oneMen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#ED0606"
                 android:textSize="15sp"
                 android:text="">
             </TextView>
@@ -236,7 +237,8 @@
                 android:id="@+id/oneTimeSend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
+                android:textColor="#ED0606"
+                android:textSize="10sp"
                 android:text="">
             </TextView>
         </LinearLayout>
@@ -392,6 +394,7 @@
                     android:id="@+id/twoMen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="#ED0606"
                     android:textSize="15sp"
                     android:text="">
                 </TextView>
@@ -432,7 +435,8 @@
                     android:id="@+id/twoTimeSend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:textColor="#ED0606"
+                    android:textSize="10sp"
                     android:text="">
                 </TextView>
             </LinearLayout>
@@ -601,6 +605,7 @@
                     android:id="@+id/treeMen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="#ED0606"
                     android:textSize="15sp"
                     android:text="">
                 </TextView>
@@ -617,13 +622,14 @@
                     android:textSize="15sp"
                     android:text="Остановлена:">
                 </TextView>
+
                 <TextView
                     android:id="@+id/treeTimeStop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:text="">
-                </TextView>
+                    android:text=""
+                    android:textColor="#ED0606"
+                    android:textSize="10sp"></TextView>
             </LinearLayout>
 
             <LinearLayout
@@ -797,6 +803,7 @@
                     android:id="@+id/fourMen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="#ED0606"
                     android:textSize="15sp"
                     android:text="">
                 </TextView>
@@ -817,7 +824,8 @@
                     android:id="@+id/fourTimeStop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:textColor="#ED0606"
+                    android:textSize="10sp"
                     android:text="">
                 </TextView>
             </LinearLayout>
