@@ -473,13 +473,20 @@
             android:enabled="false"
             />
     </LinearLayout>
-    <Button
+      <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Оформить заявку"
         android:textSize="15sp"
         android:onClick="backMainList">
+    </Button>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Временно переход на лист регистрации"
+        android:textSize="15sp"
+        android:onClick="backMain2List">
     </Button>
 
 
