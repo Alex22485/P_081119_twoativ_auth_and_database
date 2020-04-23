@@ -294,7 +294,7 @@ public class ServApp_1 extends AppCompatActivity {
                     String StopOder1=dataSnapshot.child("Остановлена").getValue(String.class);
                     oneTimeStop.setText(StopOder1);
                     BtnOneStop.setEnabled(true);
-                    
+
                     Toast.makeText( ServApp_1.this, "точка 1 считана", Toast.LENGTH_SHORT ).show();
                 }
                 @Override
