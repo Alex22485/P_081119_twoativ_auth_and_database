@@ -40,10 +40,10 @@ public class ServApp_1 extends AppCompatActivity {
     TextView Направление;
     TextView Маршрут;
 
-    TextView driverNew1;
-    TextView driverNew2;
-    TextView driverNew3;
-    TextView driverNew4;
+//    TextView driverNew1;
+//    TextView driverNew2;
+//    TextView driverNew3;
+//    TextView driverNew4;
 
     TextView onePoint;
     TextView twoPoint;
@@ -100,6 +100,11 @@ public class ServApp_1 extends AppCompatActivity {
     Button BtnTreeDriver;
     Button BtnFourDriver;
 
+    Button sendToDriver1;
+    Button sendToDriver2;
+    Button sendToDriver3;
+    Button sendToDriver4;
+
     String dateTime;
 
     //Calendar
@@ -131,8 +136,6 @@ public class ServApp_1 extends AppCompatActivity {
     DatabaseReference ref01;
     DatabaseReference ref02;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -148,10 +151,10 @@ public class ServApp_1 extends AppCompatActivity {
         choiseN = findViewById( R.id. choiseN );
         read = findViewById( R.id. read );
 
-        driverNew1 = findViewById( R.id. driverNew1 );
-        driverNew2 = findViewById( R.id. driverNew2 );
-        driverNew3 = findViewById( R.id. driverNew3 );
-        driverNew4 = findViewById( R.id. driverNew4 );
+//        driverNew1 = findViewById( R.id. driverNew1 );
+//        driverNew2 = findViewById( R.id. driverNew2 );
+//        driverNew3 = findViewById( R.id. driverNew3 );
+//        driverNew4 = findViewById( R.id. driverNew4 );
 
         onePoint = findViewById( R.id. onePoint );
         twoPoint = findViewById( R.id. twoPoint );
@@ -181,6 +184,11 @@ public class ServApp_1 extends AppCompatActivity {
         BtnTwoDriver= findViewById( R.id. BtnTwoDriver );
         BtnTreeDriver= findViewById( R.id. BtnTreeDriver );
         BtnFourDriver= findViewById( R.id. BtnFourDriver );
+
+        sendToDriver1= findViewById( R.id. sendToDriver1 );
+        sendToDriver2= findViewById( R.id. sendToDriver2 );
+        sendToDriver3= findViewById( R.id. sendToDriver3 );
+        sendToDriver4= findViewById( R.id. sendToDriver4 );
 
         oneTimeStop = findViewById( R.id. oneTimeStop );
         twoTimeStop = findViewById( R.id. twoTimeStop );
@@ -252,25 +260,27 @@ public class ServApp_1 extends AppCompatActivity {
             }
         } );
 
-        // Невидимость кнопки Стоп Заказ и Отмена Стоп 1 точки
+        // Прослушивание текста для Видимости кнопок 1 точки
        oneMen.addTextChangedListener( loginTextWather1 );
        oneTimeStop.addTextChangedListener( loginTextWather1 );
+//       driverNew1.addTextChangedListener( loginTextWather1 );
 
-       // Невидимость кнопки Стоп Заказ и Отмена Стоп 2 точки
+        // Прослушивание текста для Видимости кнопок 2 точки
        twoMen.addTextChangedListener( loginTextWather2 );
        twoTimeStop.addTextChangedListener( loginTextWather2 );
+//       driverNew2.addTextChangedListener( loginTextWather2 );
 
-        // Невидимость кнопки Стоп Заказ и Отмена Стоп 3 точки
+        // Прослушивание текста для Видимости кнопок 3 точки
        treeMen.addTextChangedListener( loginTextWather3 );
        treeTimeStop.addTextChangedListener( loginTextWather3 );
-
-        // Невидимость кнопки Стоп Заказ и Отмена Стоп 4 точки
+//       driverNew3.addTextChangedListener( loginTextWather3 );
+        // Прослушивание текста для Видимости кнопок 4 точки
         fourMen.addTextChangedListener( loginTextWather4 );
         fourTimeStop.addTextChangedListener( loginTextWather4 );
-
+//        driverNew4.addTextChangedListener( loginTextWather4 );
     }
 
-    // Невидимость кнопки Стоп Заказ 1 точки
+    // Невидимость кнопки Стоп Заказ, Отмена Стоп, Driver,Send Oder 1 точки
     TextWatcher loginTextWather1=new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -280,11 +290,14 @@ public class ServApp_1 extends AppCompatActivity {
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             String oneMenInput =oneMen.getText().toString().trim();
             String oneTimeStopInput =oneTimeStop.getText().toString().trim();
-            // кнопка Стоп Заказ активна если есть число человек заявке и нет записи "Остановлна"
+//            String  driverNew1Input = driverNew1.getText().toString().trim();
+            // кнопка Стоп Заказ активна если есть число человек заявке и нет записи "Остановлена"
             BtnOneStop.setEnabled(!oneMenInput.isEmpty()&& oneTimeStopInput.isEmpty());
-            // кнопка Отмена Стоп Заказ и  кнопка Выбора водителя Driver  активна если есть запись "Остановлна"
+            // кнопка Отмена Стоп Заказ и  кнопка Выбора водителя Driver  активна если есть запись "Остановлена"
             DelBtnOneStop.setEnabled(!oneTimeStopInput.isEmpty());
             BtnOneDriver.setEnabled(!oneTimeStopInput.isEmpty());
+            // кнопка Send Oder  активна если есть запись водителя в строке
+//            sendToDriver1.setEnabled(!driverNew1Input.isEmpty());
         }
         @Override
         public void afterTextChanged(Editable s) {
@@ -301,11 +314,14 @@ public class ServApp_1 extends AppCompatActivity {
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             String twoMenInput =twoMen.getText().toString().trim();
             String twoTimeStopInput =twoTimeStop.getText().toString().trim();
+//            String  driverNew2Input = driverNew2.getText().toString().trim();
             // кнопка Стоп Заказ активна если есть число человек заявке и нет записи "Остановлна"
             BtnTwoStop.setEnabled(!twoMenInput.isEmpty()&& twoTimeStopInput.isEmpty());
             // кнопка Отмена Стоп Заказ и  кнопка Выбора водителя Driver  активна если есть запись "Остановлна"
             DelBtnTwoStop.setEnabled(!twoTimeStopInput.isEmpty());
             BtnTwoDriver.setEnabled(!twoTimeStopInput.isEmpty());
+            // кнопка Send Oder  активна если есть запись водителя в строке
+//            sendToDriver2.setEnabled(!driverNew2Input.isEmpty());
         }
         @Override
         public void afterTextChanged(Editable s) {
@@ -322,18 +338,21 @@ public class ServApp_1 extends AppCompatActivity {
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             String treeMenInput =treeMen.getText().toString().trim();
             String treeTimeStopInput =treeTimeStop.getText().toString().trim();
+//            String  driverNew3Input = driverNew3.getText().toString().trim();
             // кнопка Стоп Заказ активна если есть число человек заявке и нет записи "Остановлна"
             BtnTreeStop.setEnabled(!treeMenInput.isEmpty()&& treeTimeStopInput.isEmpty());
             // кнопка Отмена Стоп Заказ и  кнопка Выбора водителя Driver  активна если есть запись "Остановлна"
             DelBtnTreeStop.setEnabled(!treeTimeStopInput.isEmpty());
             BtnTreeDriver.setEnabled(!treeTimeStopInput.isEmpty());
+            // кнопка Send Oder  активна если есть запись водителя в строке
+//            sendToDriver3.setEnabled(!driverNew3Input.isEmpty());
         }
         @Override
         public void afterTextChanged(Editable s) {
         }
     };
 
-    // Невидимость кнопки Стоп Заказ 3 точки
+    // Невидимость кнопки Стоп Заказ 4 точки
     TextWatcher loginTextWather4=new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -343,11 +362,14 @@ public class ServApp_1 extends AppCompatActivity {
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             String fourMenInput =fourMen.getText().toString().trim();
             String fourTimeStopInput =fourTimeStop.getText().toString().trim();
+//            String  driverNew4Input = driverNew4.getText().toString().trim();
             // кнопка Стоп Заказ активна если есть число человек заявке и нет записи "Остановлна"
             BtnFourStop.setEnabled(!fourMenInput.isEmpty()&& fourTimeStopInput.isEmpty());
             // кнопка Отмена Стоп Заказ и  кнопка Выбора водителя Driver  активна если есть запись "Остановлна"
             DelBtnFourStop.setEnabled(!fourTimeStopInput.isEmpty());
             BtnFourDriver.setEnabled(!fourTimeStopInput.isEmpty());
+            // кнопка Send Oder  активна если есть запись водителя в строке
+//            sendToDriver4.setEnabled(!driverNew4Input.isEmpty());
         }
         @Override
         public void afterTextChanged(Editable s) {
@@ -475,11 +497,17 @@ public class ServApp_1 extends AppCompatActivity {
                     int data=dataSnapshot.child( "Человек" ).getValue(Integer.class);
                     String StopOder1=dataSnapshot.child("Остановлена").getValue(String.class);
                     String oneTimeSend1=dataSnapshot.child("Отправлена").getValue(String.class);
-                    Log.d("TAG", "первая точка добавлена" + data);
-                    // чтобы отображалось прибавляем к числу пустую строчку ""
+                    String oneNameDriver1=dataSnapshot.child("Водитель").getValue(String.class);
+                    String oneTimeAccepted1=dataSnapshot.child("Принята").getValue(String.class);
+
+                    //Log.d("TAG", "первая точка добавлена" + data);
+
+                    // чтобы отображалось число прибавляем к числу пустую строчку ""
                     oneMen.setText(data+"" );
                     oneTimeStop.setText(StopOder1);
                     oneTimeSend.setText(oneTimeSend1);
+                    oneNameDriver.setText(oneNameDriver1);
+                    oneTimeAccepted.setText(oneTimeAccepted1);
                     Toast.makeText( ServApp_1.this, "точка 1 считана", Toast.LENGTH_SHORT ).show();
 
                     //Останавливаем прослушивание, чтобы обновилась информация (т.е. старая заявка не отображалась)
@@ -514,11 +542,16 @@ public class ServApp_1 extends AppCompatActivity {
                     int data=dataSnapshot.child( "Человек" ).getValue(Integer.class);
                     String StopOder2=dataSnapshot.child("Остановлена").getValue(String.class);
                     String twoTimeSend2=dataSnapshot.child("Отправлена").getValue(String.class);
+                    String oneNameDriver2=dataSnapshot.child("Водитель").getValue(String.class);
+                    String twoTimeAccepted2=dataSnapshot.child("Принята").getValue(String.class);
                     Log.d("TAG", "вторая точка" + data);
+
                     // чтобы отображалось прибавляем к числу пустую строчку ""
                     twoMen.setText(data+"" );
                     twoTimeStop.setText(StopOder2);
                     twoTimeSend.setText(twoTimeSend2);
+                    twoNameDriver.setText(oneNameDriver2);
+                    twoTimeAccepted.setText(twoTimeAccepted2);
                     Toast.makeText( ServApp_1.this, "точка 2 считана", Toast.LENGTH_SHORT ).show();
 
                     //Останавливаем прослушивание, чтобы обновилась информация (т.е. старая заявка не отображалась)
@@ -553,11 +586,15 @@ public class ServApp_1 extends AppCompatActivity {
                     int data=dataSnapshot.child( "Человек" ).getValue(Integer.class);
                     String StopOder3=dataSnapshot.child("Остановлена").getValue(String.class);
                     String treeTimeSend3=dataSnapshot.child("Отправлена").getValue(String.class);
+                    String oneNameDriver3=dataSnapshot.child("Водитель").getValue(String.class);
+                    String treeTimeAccepted3=dataSnapshot.child("Принята").getValue(String.class);
                     Log.d("TAG", "третья точка" + StopOder3);
                     // чтобы отображалось прибавляем к числу пустую строчку ""
                     treeMen.setText(data+"" );
                     treeTimeStop.setText(StopOder3);
                     treeTimeSend.setText(treeTimeSend3);
+                    treeNameDriver.setText(oneNameDriver3);
+                    treeTimeAccepted.setText(treeTimeAccepted3);
                     Toast.makeText( ServApp_1.this, "точка 3 считана", Toast.LENGTH_SHORT ).show();
 
                     //Останавливаем прослушивание, чтобы обновилась информация (т.е. старая заявка не отображалась)
@@ -591,10 +628,14 @@ public class ServApp_1 extends AppCompatActivity {
                     int data=dataSnapshot.child( "Человек" ).getValue(Integer.class);
                     String StopOder4=dataSnapshot.child("Остановлена").getValue(String.class);
                     String fourTimeSend4=dataSnapshot.child("Отправлена").getValue(String.class);
+                    String oneNameDriver4=dataSnapshot.child("Водитель").getValue(String.class);
+                    String fourTimeAccepted4=dataSnapshot.child("Принята").getValue(String.class);
                     // чтобы отображалось прибавляем к числу пустую строчку ""
                     fourMen.setText(data+"" );
                     fourTimeStop.setText(StopOder4);
                     fourTimeSend.setText(fourTimeSend4);
+                    fourNameDriver.setText(oneNameDriver4);
+                    fourTimeAccepted.setText(fourTimeAccepted4);
                     Toast.makeText( ServApp_1.this, "точка 4 считана", Toast.LENGTH_SHORT ).show();
 
                     //Останавливаем прослушивание, чтобы обновилась информация (т.е. старая заявка не отображалась)
@@ -622,6 +663,7 @@ public class ServApp_1 extends AppCompatActivity {
             oneTimeStop.setText("");
             oneTimeSend.setText("");
             oneTimeAccepted.setText("");
+            oneNameDriver.setText("");
             oneTimedelete.setText("");
 
 
@@ -629,6 +671,7 @@ public class ServApp_1 extends AppCompatActivity {
     // 20.03.2020 Очищаем данные по второй точке перед считыванием
     public void BtnTwo () {
         twoMen.setText("");
+        twoTimeStop.setText("");
         twoTimeSend.setText("");
         twoTimeAccepted.setText("");
         twoNameDriver.setText("");
@@ -638,6 +681,7 @@ public class ServApp_1 extends AppCompatActivity {
     // 20.03.2020 Очищаем данные по третьей точке перед считыванием
     public void BtnTree () {
         treeMen.setText("");
+        treeTimeStop.setText("");
         treeTimeSend.setText("");
         treeTimeAccepted.setText("");
         treeNameDriver.setText("");
@@ -647,6 +691,7 @@ public class ServApp_1 extends AppCompatActivity {
     // 20.03.2020 Очищаем данные по четвертой точке перед считыванием
     public void BtnFour () {
         fourMen.setText("");
+        fourTimeStop.setText("");
         fourTimeSend.setText("");
         fourTimeAccepted.setText("");
         fourNameDriver.setText("");
@@ -654,7 +699,7 @@ public class ServApp_1 extends AppCompatActivity {
 
     }
 
-
+// Остановить запись заказов 1 точки StopOder
     public void BtnOneStop(View view){
 
         BtnOneStop.setEnabled(false);
@@ -670,22 +715,20 @@ public class ServApp_1 extends AppCompatActivity {
                 .child(Маршрут.getText().toString())
                 .child(onePoint.getText().toString());
         ref01.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                                            ref01.child("StopOder").setValue(dateTime);
-
-                                            // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
-                                            ref01.removeEventListener(this);
-                                        }
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                                        }
-                                    }
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ref01.child("StopOder").setValue(dateTime);
+                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+                ref01.removeEventListener(this);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        }
         );
 
     }
-
+    // ОТМЕНА StopOder записи заказов 1 точки
     public void DelBtnOneStop(View view){
 
         DelBtnOneStop.setEnabled(false);
@@ -714,7 +757,7 @@ public class ServApp_1 extends AppCompatActivity {
     }
 
 
-
+    // Остановить запись заказов 2 точки StopOder
     public void BtnTwoStop(View view){
 
         BtnTwoStop.setEnabled(false);
@@ -745,6 +788,7 @@ public class ServApp_1 extends AppCompatActivity {
 
     }
 
+    // ОТМЕНА StopOder записи заказов 2 точки
     public void DelBtnTwoStop(View view){
 
         DelBtnTwoStop.setEnabled(false);
@@ -770,9 +814,9 @@ public class ServApp_1 extends AppCompatActivity {
                                         }
                                     }
         );
-
     }
 
+    // Остановить запись заказов 3 точки StopOder
     public void BtnTreeStop(View view){
 
         BtnTreeStop.setEnabled(false);
@@ -805,6 +849,7 @@ public class ServApp_1 extends AppCompatActivity {
 
     }
 
+    // ОТМЕНА StopOder записи заказов 3 точки
     public void DelBtnTreeStop(View view){
 
         DelBtnTreeStop.setEnabled(false);
@@ -833,6 +878,7 @@ public class ServApp_1 extends AppCompatActivity {
 
     }
 
+    // Остановить запись заказов 4 точки StopOder
     public void BtnFourStop(View view){
 
         BtnFourStop.setEnabled(false);
@@ -862,9 +908,9 @@ public class ServApp_1 extends AppCompatActivity {
                                         }
                                     }
                                     );
-
     }
 
+    // ОТМЕНА StopOder записи заказов 3 точки
     public void DelBtnFourStop(View view){
 
         DelBtnFourStop.setEnabled(false);
@@ -912,8 +958,13 @@ public class ServApp_1 extends AppCompatActivity {
         builder.setItems( array, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
-                        driverNew1.setText( array[which] );
-                        driverNew1.setTextColor(getResources().getColor( R.color.colorBlue));
+//                        driverNew1.setText( array[which] );
+//                        driverNew1.setTextColor(getResources().getColor( R.color.colorBlue));
+                        BtnOneDriver.setText(array[which]);
+                        BtnOneDriver.setTextColor(getResources().getColor( R.color.colorBlue));
+                        sendToDriver1.setEnabled(true);
+
+
                     }
                 }
         );
@@ -929,15 +980,18 @@ public class ServApp_1 extends AppCompatActivity {
         builder.setItems( array, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
-                        driverNew2.setText( array[which] );
-                        driverNew2.setTextColor(getResources().getColor( R.color.colorBlue));
+//                        driverNew2.setText( array[which] );
+//                        driverNew2.setTextColor(getResources().getColor( R.color.colorBlue));
+                        BtnTwoDriver.setText(array[which]);
+                        BtnTwoDriver.setTextColor(getResources().getColor( R.color.colorBlue));
+                        sendToDriver2.setEnabled(true);
                     }
                 }
         );
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-    // Выбрать Водителя по 2 точке
+    // Выбрать Водителя по 3 точке
     public void choise_Driver3 (View view) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder( ServApp_1.this );
@@ -946,15 +1000,18 @@ public class ServApp_1 extends AppCompatActivity {
         builder.setItems( array, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
-                        driverNew3.setText( array[which] );
-                        driverNew3.setTextColor(getResources().getColor( R.color.colorBlue));
+//                        driverNew3.setText( array[which] );
+//                        driverNew3.setTextColor(getResources().getColor( R.color.colorBlue));
+                        BtnTreeDriver.setText(array[which]);
+                        BtnTreeDriver.setTextColor(getResources().getColor( R.color.colorBlue));
+                        sendToDriver3.setEnabled(true);
                     }
                 }
         );
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-    // Выбрать Водителя по 2 точке
+    // Выбрать Водителя по 4 точке
     public void choise_Driver4 (View view) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder( ServApp_1.this );
@@ -963,8 +1020,11 @@ public class ServApp_1 extends AppCompatActivity {
         builder.setItems( array, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
-                        driverNew4.setText( array[which] );
-                        driverNew4.setTextColor(getResources().getColor( R.color.colorBlue));
+//                        driverNew4.setText( array[which] );
+//                        driverNew4.setTextColor(getResources().getColor( R.color.colorBlue));
+                        BtnFourDriver.setText(array[which]);
+                        BtnFourDriver.setTextColor(getResources().getColor( R.color.colorBlue));
+                        sendToDriver4.setEnabled(true);
                     }
                 }
         );
@@ -982,7 +1042,7 @@ public class ServApp_1 extends AppCompatActivity {
     public void sendToDriver1(View view){
 
         database01=FirebaseDatabase.getInstance();
-        ref01 = database01.getReference("Drivers").child(driverNew1.getText().toString()).child("Заявка");
+        ref01 = database01.getReference("Drivers").child(BtnOneDriver.getText().toString()).child("Заявка");
         ref01.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -1019,6 +1079,7 @@ public class ServApp_1 extends AppCompatActivity {
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                                             ref02.child("Отправлена").setValue(dateTime);
+                                            ref02.child("Водитель").setValue(BtnOneDriver.getText().toString());
 
                                             // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
                                             ref02.removeEventListener(this);
@@ -1034,7 +1095,7 @@ public class ServApp_1 extends AppCompatActivity {
     public void sendToDriver2(View view){
 
         database01=FirebaseDatabase.getInstance();
-        ref01 = database01.getReference("Drivers").child(driverNew2.getText().toString()).child("Заявка");
+        ref01 = database01.getReference("Drivers").child(BtnTwoDriver.getText().toString()).child("Заявка");
         ref01.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -1071,6 +1132,7 @@ public class ServApp_1 extends AppCompatActivity {
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                                             ref02.child("Отправлена").setValue(dateTime);
+                                            ref02.child("Водитель").setValue(BtnTwoDriver.getText().toString());
 
                                             // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
                                             ref02.removeEventListener(this);
@@ -1087,7 +1149,7 @@ public class ServApp_1 extends AppCompatActivity {
     public void sendToDriver3(View view){
 
         database01=FirebaseDatabase.getInstance();
-        ref01 = database01.getReference("Drivers").child(driverNew3.getText().toString()).child("Заявка");
+        ref01 = database01.getReference("Drivers").child(BtnTreeDriver.getText().toString()).child("Заявка");
         ref01.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -1123,6 +1185,7 @@ public class ServApp_1 extends AppCompatActivity {
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                                             ref02.child("Отправлена").setValue(dateTime);
+                                            ref02.child("Водитель").setValue(BtnTreeDriver.getText().toString());
 
                                             // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
                                             ref02.removeEventListener(this);
@@ -1138,7 +1201,7 @@ public class ServApp_1 extends AppCompatActivity {
     public void sendToDriver4(View view){
 
         database01=FirebaseDatabase.getInstance();
-        ref01 = database01.getReference("Drivers").child(driverNew4.getText().toString()).child("Заявка");
+        ref01 = database01.getReference("Drivers").child(BtnFourDriver.getText().toString()).child("Заявка");
         ref01.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -1173,6 +1236,7 @@ public class ServApp_1 extends AppCompatActivity {
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                                             ref02.child("Отправлена").setValue(dateTime);
+                                            ref02.child("Водитель").setValue(BtnFourDriver.getText().toString());
 
                                             // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
                                             ref02.removeEventListener(this);

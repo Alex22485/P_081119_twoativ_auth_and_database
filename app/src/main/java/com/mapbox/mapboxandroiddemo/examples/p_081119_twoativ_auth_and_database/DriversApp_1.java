@@ -16,6 +16,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class DriversApp_1 extends AppCompatActivity {
 
     TextView DataOrder;
@@ -40,6 +43,8 @@ public class DriversApp_1 extends AppCompatActivity {
     FirebaseDatabase database04;
     DatabaseReference ref04;
 
+    String dateTime;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,8 @@ public class DriversApp_1 extends AppCompatActivity {
         MenpOrder3=findViewById(R.id.MenpOrder3);
         StopOrder4=findViewById(R.id.StopOrder4);
         MenpOrder4=findViewById(R.id.MenpOrder4);
+
+
     }
 
     // Проверить заказ нужно изменить путь child( "123Lexus" ) для любого водителя чтобы работал Н-р id
@@ -121,6 +128,8 @@ public class DriversApp_1 extends AppCompatActivity {
 
         if (a.equals(abcdRef)){}
         else {
+            //Получить текущую дату
+            getTimNow();
 
             //260320 Запись в БД Заявки--...--Users-Заявки водителя принявшего заявку
             database01 = FirebaseDatabase.getInstance();
@@ -134,7 +143,7 @@ public class DriversApp_1 extends AppCompatActivity {
             ref01.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    ref01.child("123Lexus").setValue("Принята");
+                    ref01.child("123Lexus").setValue(dateTime);
                     ref01.removeEventListener(this);
                 }
 
@@ -148,6 +157,9 @@ public class DriversApp_1 extends AppCompatActivity {
         // запись пустой точки номер два ПРОБА
         if (b.equals(abcdRef)){}
         else {
+            //Получить текущую дату
+            getTimNow();
+
             database02 = FirebaseDatabase.getInstance();
             ref02 = database02.getReference("Заявки")
                     .child(MapOrder.getText().toString())
@@ -159,7 +171,7 @@ public class DriversApp_1 extends AppCompatActivity {
             ref02.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    ref02.child("123Lexus").setValue("Принята");
+                    ref02.child("123Lexus").setValue(dateTime);
                     ref02.removeEventListener(this);
                 }
 
@@ -173,6 +185,10 @@ public class DriversApp_1 extends AppCompatActivity {
         // запись пустой точки номер три ПРОБА
         if (c.equals(abcdRef)){}
         else {
+
+            //Получить текущую дату
+            getTimNow();
+
             database03 = FirebaseDatabase.getInstance();
             ref03 = database03.getReference("Заявки")
                     .child(MapOrder.getText().toString())
@@ -184,7 +200,7 @@ public class DriversApp_1 extends AppCompatActivity {
             ref03.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    ref03.child("123Lexus").setValue("Принята");
+                    ref03.child("123Lexus").setValue(dateTime);
                     ref03.removeEventListener(this);
                 }
 
@@ -198,6 +214,9 @@ public class DriversApp_1 extends AppCompatActivity {
         // запись пустой точки номер четыре ПРОБА
         if (d.equals(abcdRef)){}
         else {
+            //Получить текущую дату
+            getTimNow();
+
             database04 = FirebaseDatabase.getInstance();
             ref04 = database04.getReference("Заявки")
                     .child(MapOrder.getText().toString())
@@ -209,7 +228,7 @@ public class DriversApp_1 extends AppCompatActivity {
             ref04.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    ref04.child("123Lexus").setValue("Принята");
+                    ref04.child("123Lexus").setValue(dateTime);
                     ref04.removeEventListener(this);
                 }
 
@@ -219,6 +238,14 @@ public class DriversApp_1 extends AppCompatActivity {
                 }
             });
         }
+
+    }
+
+    public void  getTimNow(){
+        //ПОЛУЧЕНИЕ ТЕКУЩЕГО ВРЕМЕНИ
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a dd-MM ");
+        dateTime= simpleDateFormat.format(calendar.getTime());
 
     }
 }
