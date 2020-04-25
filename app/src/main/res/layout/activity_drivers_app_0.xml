@@ -25,16 +25,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:visibility="invisible"
+            android:visibility="gone"
             android:textSize="25sp"/>
         <TextView
             android:id="@+id/TextHello2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:visibility="invisible"
+            android:visibility="gone"
             android:textSize="25sp"/>
     </LinearLayout>
+
+    <AutoCompleteTextView
+        android:id="@+id/editCar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Введите марку автомобиля"
+        android:completionThreshold="1"
+        android:completionHint="Введите марку автомобиля"
+        android:visibility="invisible" />
+
+    <AutoCompleteTextView
+        android:id="@+id/editNumberCar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Введите три цифры гос. номера"
+        android:completionThreshold="1"
+        android:completionHint="Введите три буквы гос. номера"
+        android:visibility="invisible"/>
+
 
 
 </LinearLayout>

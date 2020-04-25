@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 
 public class DriversApp_0 extends AppCompatActivity {
 
+    private static final String[] CARS= new String[]{"Alfa","Betta","Gamma",};
+
     FirebaseAuth mAuth;
     String driverPhone;
     String driverId;
@@ -31,10 +36,14 @@ public class DriversApp_0 extends AppCompatActivity {
 
     FirebaseDatabase database01;
     DatabaseReference ref01;
+    DatabaseReference ref02;
 
     TextView checkWord;
     TextView TextHello1;
     TextView TextHello2;
+
+    EditText editCar;
+    EditText editNumberCar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +53,10 @@ public class DriversApp_0 extends AppCompatActivity {
         checkWord=findViewById(R.id.checkWord);
         TextHello1=findViewById(R.id.TextHello1);
         TextHello2=findViewById(R.id.TextHello2);
+        editCar=findViewById(R.id.editCar);
+        editNumberCar=findViewById(R.id.editNumberCar);
+
+
 
         //полуачем номер телефона и ID водителя
         mAuth = FirebaseAuth.getInstance();
@@ -64,17 +77,7 @@ public class DriversApp_0 extends AppCompatActivity {
                 // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД
                 ref01.removeEventListener(this);
 
-                //задержка
-                Handler handler1 = new Handler();
-                handler1.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        chesk();
-                    }
-                },1000);
-
-
-
+                chesk();
             }
 
             @Override
@@ -121,13 +124,19 @@ public class DriversApp_0 extends AppCompatActivity {
         String aaa=checkWord.getText().toString();
         if (!aaa.isEmpty()){
 
-            TextHello1.setText("Здравствуй ");
+            TextHello1.setText("Здравствуй, ");
             TextHello1.setTextColor(getResources().getColor( R.color.colorNew ));
             TextHello1.setVisibility(View.VISIBLE);
 
             TextHello2.setText(aaa);
             TextHello2.setTextColor(getResources().getColor( R.color.colorNew ));
             TextHello2.setVisibility(View.VISIBLE);
+
+            //Удаление временной записи
+            dellTemporaryRecord();
+
+
+
         }
         else {
             TextHello1.setText("Пожалуйста, ");
@@ -137,7 +146,26 @@ public class DriversApp_0 extends AppCompatActivity {
             TextHello2.setText("зарегистируйтесь!");
             TextHello2.setTextColor(getResources().getColor( R.color.colorNew ));
             TextHello2.setVisibility(View.VISIBLE);
+
+            //Удаление временной записи
+            dellTemporaryRecord();
+
+            editCar.setVisibility(View.VISIBLE);
+            editNumberCar.setVisibility(View.VISIBLE);
+
+            AutoCompleteTextView editText=findViewById(R.id.editCar);
+            ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,
+                    android.R.layout.simple_list_item_1, CARS);
+            editText.setAdapter(adapter);
+
         }
 
+    }
+    //Удаление временной записи
+    public void dellTemporaryRecord(){
+        ref02 = database01.getReference("Водители")
+                .child("ID")
+                .child("ID");
+        ref02.child(driverPhone).removeValue();
     }
 }
