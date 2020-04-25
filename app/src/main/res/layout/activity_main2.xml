@@ -69,12 +69,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="DriversApp_1"
-            android:onClick="DriversApp_1"/>
+
 
         <Button
             android:id="@+id/ServApp1_window"
@@ -91,8 +86,18 @@
         android:layout_height="wrap_content"
         android:text="Статус Заказа"
         android:onClick="MyStatusOder">
-
     </Button>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DriversApp_0"
+        android:onClick="DriversApp_0"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DriversApp_1"
+        android:onClick="DriversApp_1"/>
 
     <Button
         android:id="@+id/buttonPhoneAuth"
