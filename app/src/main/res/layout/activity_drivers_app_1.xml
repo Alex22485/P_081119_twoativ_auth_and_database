@@ -21,7 +21,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Проверить заявку"
+            android:text="Найти заявку"
             android:textSize="20sp"
             android:onClick="checkOder">
         </Button>
@@ -39,22 +39,20 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/TextDataOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Дата:"
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" "
-            android:textSize="20sp">
-        </TextView>
+
         <TextView
             android:id="@+id/DataOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="День.Месяц.Год"
+            android:text=""
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
     </LinearLayout>
@@ -64,22 +62,20 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/TextTimeOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Рейс:"
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" "
-            android:textSize="20sp">
-        </TextView>
+
         <TextView
             android:id="@+id/TimeOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Номер рейса"
+            android:text=""
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
         <Button
@@ -88,65 +84,43 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Пояснение"
+            android:visibility="gone"
             android:textSize="20sp">
         </Button>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Направление:"
-            android:textSize="20sp">
-        </TextView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" "
-            android:textSize="20sp">
-        </TextView>
-        <TextView
-            android:id="@+id/MapOrder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="20sp">
-        </TextView>
-    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/TextRoutepOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Маршрут:"
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" "
-            android:textSize="20sp">
-        </TextView>
+
         <TextView
             android:id="@+id/RoutepOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
     </LinearLayout>
 
     <Button
+        android:id="@+id/MapSee"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Карта маршрута"
+        android:visibility="gone"
         android:textSize="15sp">
     </Button>
 
@@ -155,22 +129,19 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/TextStopOder1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Точка Сбора1: "
-            android:textSize="20sp">
-        </TextView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
+            android:text="1: "
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
         <TextView
             android:id="@+id/StopOrder1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Нет остановки"
+            android:text=""
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
     </LinearLayout>
@@ -180,22 +151,20 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/TextMenpOrder1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Кол-во человек: "
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="20sp">
-        </TextView>
+
         <TextView
             android:id="@+id/MenpOrder1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ХХХ"
+            android:text=""
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
     </LinearLayout>
@@ -212,22 +181,20 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/TextStopOder2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Точка Сбора2: "
+            android:text="2: "
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="20sp">
-        </TextView>
+
         <TextView
             android:id="@+id/StopOrder2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Нет остановок"
+            android:text=""
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
     </LinearLayout>
@@ -236,22 +203,20 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/TextMenpOrder2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Кол-во человек: "
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="20sp">
-        </TextView>
+
         <TextView
             android:id="@+id/MenpOrder2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ХХХ"
+            android:text=""
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
     </LinearLayout>
@@ -267,22 +232,20 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/TextStopOder3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Точка Сбора3: "
+            android:text="3: "
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="20sp">
-        </TextView>
+
         <TextView
             android:id="@+id/StopOrder3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Нет остановок"
+            android:text=""
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
     </LinearLayout>
@@ -292,22 +255,20 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/TextMenpOrder3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Кол-во человек: "
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="20sp">
-        </TextView>
+
         <TextView
             android:id="@+id/MenpOrder3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ХХХ"
+            android:text=""
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
     </LinearLayout>
@@ -322,22 +283,20 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/TextStopOder4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Точка Сбора4: "
+            android:text="4: "
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="20sp">
-        </TextView>
+
         <TextView
             android:id="@+id/StopOrder4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Нет остановок"
+            android:text=""
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
     </LinearLayout>
@@ -346,22 +305,20 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/TextMenpOrder4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Кол-во человек: "
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="20sp">
-        </TextView>
+
         <TextView
             android:id="@+id/MenpOrder4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ХХХ"
+            android:text=""
+            android:visibility="gone"
             android:textSize="20sp">
         </TextView>
     </LinearLayout>
@@ -372,19 +329,23 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/BtnYes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Принять заявку"
             android:layout_weight="1"
             android:textSize="20sp"
+            android:visibility="gone"
             android:onClick="BtnYes">
         </Button>
         <Button
+            android:id="@+id/BtnNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Отменить заявку"
             android:layout_weight="1"
-            android:textSize="20sp">
+            android:textSize="20sp"
+            android:visibility="gone">
 
         </Button>
     </LinearLayout>
