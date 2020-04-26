@@ -36,23 +36,43 @@
             android:textSize="25sp"/>
     </LinearLayout>
 
+    <EditText
+        android:id="@+id/editDriverName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Введите ваше Имя"
+        android:visibility="invisible"
+        android:maxLength="15"
+        android:inputType="textPersonName"
+        android:maxLines="1"/>
+
     <AutoCompleteTextView
         android:id="@+id/editCar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Введите марку автомобиля"
         android:completionThreshold="1"
-        android:completionHint="Введите марку автомобиля"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:maxLength="15"
+        android:maxLines="1"/>
 
-    <AutoCompleteTextView
+    <EditText
         android:id="@+id/editNumberCar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Введите три цифры гос. номера"
+        android:visibility="invisible"
+        android:inputType="number"
+        android:maxLength="3"/>
+    <AutoCompleteTextView
+        android:id="@+id/editColorCar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Введите цвет автомобиля"
         android:completionThreshold="1"
-        android:completionHint="Введите три буквы гос. номера"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        android:maxLength="15"
+        android:maxLines="1"/>
 
 
 
