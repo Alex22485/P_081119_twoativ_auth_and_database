@@ -10,7 +10,7 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="150sp"
+        android:layout_height="50sp"
         />
 
     <Button
@@ -21,5 +21,21 @@
         android:text="Пройдите Авторизацию по телефону"
         android:textSize="20sp"
         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="150sp"
+        android:text=""
+        android:textColor="@color/colorPrimary"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:text="Здесь будет Заставка"
+        android:textColor="@color/colorPrimary"
+        android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

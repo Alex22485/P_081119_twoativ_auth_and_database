@@ -40,11 +40,6 @@ public class ServApp_1 extends AppCompatActivity {
     TextView Направление;
     TextView Маршрут;
 
-//    TextView driverNew1;
-//    TextView driverNew2;
-//    TextView driverNew3;
-//    TextView driverNew4;
-
     TextView onePoint;
     TextView twoPoint;
     TextView treePoint;
@@ -151,11 +146,6 @@ public class ServApp_1 extends AppCompatActivity {
         choiseN = findViewById( R.id. choiseN );
         read = findViewById( R.id. read );
 
-//        driverNew1 = findViewById( R.id. driverNew1 );
-//        driverNew2 = findViewById( R.id. driverNew2 );
-//        driverNew3 = findViewById( R.id. driverNew3 );
-//        driverNew4 = findViewById( R.id. driverNew4 );
-
         onePoint = findViewById( R.id. onePoint );
         twoPoint = findViewById( R.id. twoPoint );
         treePoint = findViewById( R.id. treePoint );
@@ -165,10 +155,6 @@ public class ServApp_1 extends AppCompatActivity {
         twoMen = findViewById( R.id. twoMen );
         treeMen = findViewById( R.id. treeMen );
         fourMen = findViewById( R.id. fourMen );
-
-
-
-
 
         BtnOneStop = findViewById( R.id. BtnOneStop );
         BtnTwoStop = findViewById( R.id. BtnTwoStop );
@@ -290,14 +276,13 @@ public class ServApp_1 extends AppCompatActivity {
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             String oneMenInput =oneMen.getText().toString().trim();
             String oneTimeStopInput =oneTimeStop.getText().toString().trim();
-//            String  driverNew1Input = driverNew1.getText().toString().trim();
+
             // кнопка Стоп Заказ активна если есть число человек заявке и нет записи "Остановлена"
             BtnOneStop.setEnabled(!oneMenInput.isEmpty()&& oneTimeStopInput.isEmpty());
             // кнопка Отмена Стоп Заказ и  кнопка Выбора водителя Driver  активна если есть запись "Остановлена"
             DelBtnOneStop.setEnabled(!oneTimeStopInput.isEmpty());
             BtnOneDriver.setEnabled(!oneTimeStopInput.isEmpty());
-            // кнопка Send Oder  активна если есть запись водителя в строке
-//            sendToDriver1.setEnabled(!driverNew1Input.isEmpty());
+
         }
         @Override
         public void afterTextChanged(Editable s) {
@@ -1055,7 +1040,7 @@ public class ServApp_1 extends AppCompatActivity {
                 ref01.child("точкаСбора1").setValue(onePoint.getText().toString());
                 ref01.child("точкаСбора1Чел").setValue(oneMen.getText().toString());
                 Toast.makeText(ServApp_1.this,"Заявка отправлена....",Toast.LENGTH_LONG).show();
-                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Пользователи"
+                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка
                 ref01.removeEventListener( this );
             }
             @Override

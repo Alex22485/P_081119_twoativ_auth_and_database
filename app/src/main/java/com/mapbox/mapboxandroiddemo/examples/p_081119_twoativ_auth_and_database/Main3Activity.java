@@ -125,6 +125,7 @@ public class Main3Activity extends AppCompatActivity {
 // Disable Button if Text is Empty
         Calend.addTextChangedListener( loginTextWather );
         Flight.addTextChangedListener( loginTextWather );
+
     }
 
     // Disable Button if Text is Empty

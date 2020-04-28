@@ -66,11 +66,10 @@ public class Main2Activity extends AppCompatActivity {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 showAlertDialog(user);
                 btn_sign_out.setEnabled(true);
-                //three_window.setEnabled(true);
+
 
                 start_order.setEnabled( true );
-                //inAirport.setEnabled(true);
-                //inCity.setEnabled(true);
+
             }
             else {
                 Toast.makeText(getBaseContext(), "Ошибка Авторизации", Toast.LENGTH_LONG).show();

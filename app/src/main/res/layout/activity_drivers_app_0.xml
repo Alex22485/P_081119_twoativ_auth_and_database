@@ -51,10 +51,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Введите марку автомобиля"
+        android:completionHint="Введите марку автомобиля"
         android:completionThreshold="1"
         android:visibility="invisible"
         android:maxLength="15"
-        android:maxLines="1"/>
+        android:inputType = "text"/>
 
     <EditText
         android:id="@+id/editNumberCar"
@@ -69,10 +70,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Введите цвет автомобиля"
+        android:completionHint="Введите цвет автомобиля"
         android:completionThreshold="1"
         android:visibility="invisible"
         android:maxLength="15"
-        android:maxLines="1"/>
+        android:inputType = "text"/>
+    <EditText
+        android:id="@+id/editQuantiatyOfPackages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Введите количество мест"
+        android:visibility="invisible"
+        android:inputType="number"
+        android:maxLength="2"/>
+
+    <Button
+        android:id="@+id/saveEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Сохранить"
+        android:enabled="false"
+        android:layout_gravity="center_horizontal"
+        android:visibility="invisible"
+        android:onClick="saveEdit"/>
 
 
 

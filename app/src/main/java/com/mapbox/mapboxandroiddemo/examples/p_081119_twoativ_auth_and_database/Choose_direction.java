@@ -1,8 +1,12 @@
 package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +22,9 @@ public class Choose_direction extends AppCompatActivity {
 
         inAirport = findViewById(R.id.inAirport);
         inCity = findViewById(R.id.inCity);
+
     }
+
     public void inCity(View view){
         Intent nextListInAir_choise_routes = new Intent( this,InAir_choise_routes.class );
 
@@ -42,4 +48,11 @@ public class Choose_direction extends AppCompatActivity {
 
         startActivity( nextListInAir_choise_routes);
     }
+
+    // кнопка Back сворачивает приложение
+    @Override
+    public void onBackPressed(){
+        this.moveTaskToBack(true);
+    }
+
 }
