@@ -15,7 +15,6 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".InternetNotDriver"></activity>
-        <activity android:name=".InternetNot" />
         <activity android:name=".DriversApp_0" />
         <activity android:name=".DriversApp_1" />
         <activity android:name=".ServApp_1" />
