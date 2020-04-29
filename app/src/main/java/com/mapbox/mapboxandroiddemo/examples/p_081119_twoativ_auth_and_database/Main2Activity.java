@@ -6,17 +6,32 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
 import java.util.Collections;
 
 public class Main2Activity extends AppCompatActivity {
+
+
+    FirebaseDatabase database01;
+    DatabaseReference ref01;
+    String UserToken;
 
 
     Button btn_sign_out;
@@ -38,6 +53,9 @@ public class Main2Activity extends AppCompatActivity {
         //inCity = (Button) findViewById(R.id.inCity);
 
         start_order = (Button) findViewById(R.id.start_order);
+
+
+
 
         doPhoneLogin();
     }
@@ -66,9 +84,10 @@ public class Main2Activity extends AppCompatActivity {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 showAlertDialog(user);
                 btn_sign_out.setEnabled(true);
-
-
                 start_order.setEnabled( true );
+
+                //29.04.20 запись регистрации в БД Chesh-CheskUser
+                writeMyToken();
 
             }
             else {
@@ -127,6 +146,37 @@ public class Main2Activity extends AppCompatActivity {
         Intent MyStatusOder = new Intent(this,Main6Activity.class);
         startActivity(MyStatusOder);
     }
+
+    public void writeMyToken(){
+
+        //получение токена
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Main2Activity.this,new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                UserToken = instanceIdResult.getToken();
+            }
+        });
+
+        //030320 Запись токена для проверки Разрешения на запись заявки в БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+        database01 = FirebaseDatabase.getInstance();
+        ref01 = database01.getReference("Check")
+                .child("CheckUsers")
+                .child("Token");
+        ref01.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            ref01.child(UserToken).setValue("Hello");
+                                            // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+                                            ref01.removeEventListener(this);
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        }
+                                    }
+        );
+    }
+
+
 
     /*@Override
     public void onClick(View v) {

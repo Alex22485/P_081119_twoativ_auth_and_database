@@ -50,12 +50,12 @@ public class InternetNot extends AppCompatActivity {
     }
 
 
-
-    // кнопка Back сворачивает приложение
-    @Override
-    public void onBackPressed(){
-        this.moveTaskToBack(true);
-    }
+//
+//    // кнопка Back сворачивает приложение
+//    @Override
+//    public void onBackPressed(){
+//        this.moveTaskToBack(true);
+//    }
 
 
     // Кнопка обновить
@@ -63,6 +63,11 @@ public class InternetNot extends AppCompatActivity {
 
         Intent ddd=new Intent(this,MainActivity.class);
         startActivity(ddd);
+    }
+
+    // Блокировка кнопки Back!!!! :)))
+    @Override
+    public void onBackPressed(){
     }
 //    public void check(){
 //        if (key.isEmpty()){

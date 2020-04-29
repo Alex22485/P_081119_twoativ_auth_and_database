@@ -38,17 +38,14 @@ public class Main5Activity extends AppCompatActivity {
     //List<String> basa=new ArrayList<String>(  );//можно так 1*
     ArrayList<String>driver=new ArrayList<String>(  );
     String[] array={};
-    String  key;
+
     TextView proba;
 
-    FirebaseAuth mAuth;
-    String driverPhone;
-    String driverId;
-    String driverToken;
+    String UserToken;
+    String  keyReg;
 
-
-    FirebaseDatabase database01;
-    DatabaseReference ref01;
+    FirebaseDatabase database02;
+    DatabaseReference ref02;
 
       @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +54,26 @@ public class Main5Activity extends AppCompatActivity {
         proba = findViewById( R.id.proba );
           Log.d(TAG, "onCreate");
 
+          //получение токена
+          FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Main5Activity.this,new OnSuccessListener<InstanceIdResult>() {
+              @Override
+              public void onSuccess(InstanceIdResult instanceIdResult) {
+                  UserToken = instanceIdResult.getToken();
+
+                  //задержка запроса
+                  Handler handler1 = new Handler();
+                  handler1.postDelayed(new Runnable() {
+                      @Override
+                      public void run() {
+                          //временно для проверки
+                          Toast.makeText( Main5Activity.this, "Токен считан  "+UserToken, Toast.LENGTH_SHORT ).show();
+                          Log.d(TAG, "токен"+UserToken);
+
+                          CheckRegistration();
+                      }
+                  },10);
+              }
+          });
 
 ////28 02 2020 Получить все ключи объекта по его значению "Водила" записать их в ArrayList и преобразовать в строковый массив array
 //          DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child( "Proba" );
@@ -80,13 +97,87 @@ public class Main5Activity extends AppCompatActivity {
 //          } );
         }
 
-    @Override
-    protected void onStart (){
-        super.onStart();
-        Log.d(TAG, "onStart");
-        cheskInternet();
+    //проверка регистрации
+    public void CheckRegistration(){
+
+        keyReg="";
+
+        //задержка запроса
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                // Проверка регистрации токена
+                checkHaveToken();
+
+            }
+        },600);
+
+
+        //чтение в БД с правилом для любых пользователей
+        database02 = FirebaseDatabase.getInstance();
+        ref02 = database02.getReference("Check")
+                .child("CheckUsers")
+                .child("Token")
+//                .child("Internet")
+//                .child("Work");
+                .child(UserToken);
+        ref02.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                // Чтение
+                keyReg=dataSnapshot.getValue(String.class);
+
+                //временно для проверки
+                Toast.makeText( Main5Activity.this, "Токен зарегестрирован?  "+keyReg, Toast.LENGTH_SHORT ).show();
+
+                // с этой записью makeText появляется только один раз!!!!! ХОРОШО
+                ref02.removeEventListener(this);
+
+
+
+
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
 
     }
+
+    //проверка зарегестрированного токена
+    public void checkHaveToken(){
+        // переход на Активити InternetNot
+        if (keyReg==null){
+
+            //переход к авторизации по телефону от firebase
+            Intent AuthList = new Intent(this,Main2Activity.class);
+            startActivity(AuthList);
+        }
+        else if(keyReg.isEmpty()) {
+
+            //Если keyReg пусто, значит пропал интернет и переходим на  InternetNot
+            Intent aaa = new Intent(this,InternetNot.class);
+            startActivity(aaa);
+            Toast.makeText( Main5Activity.this, "опять нет интернета  "+keyReg, Toast.LENGTH_SHORT ).show();
+        }
+        else if (keyReg.equals("Hello")){
+            goMainList();}
+
+    }
+
+    //Переход в главное меню заказов
+    public void goMainList(){
+        Intent mainList = new Intent(this,Choose_direction.class);
+        startActivity(mainList);
+    }
+
+
 
     //Выберите Водителя
     public void btn_number_Flight (View view) {
@@ -107,28 +198,27 @@ public class Main5Activity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart (){
+        super.onStart();
+        Log.d(TAG, "onStart");
+    }
+    @Override
     protected void onDestroy(){
         super.onDestroy();
         Log.d(TAG, "onDestroy");
-
-        // 1.1не выдает всплывающее сообщение в другом активити когда нет интернета. Работает в паре с finish() в onPause
-        database01.goOffline();
-
-
     }
     @Override
     protected void onPause(){
         super.onPause();
         Log.d(TAG, "onPause");
 
-        // 1.2не выдает всплывающее сообщение в другом активити когда нет интернета. Работает в паре с  database01.goOffline() в onDestroy
-        finish();
+
     }
     @Override
     protected void onResume(){
         super.onResume();
         Log.d(TAG, "onResume");
-        //Toast.makeText( DriversApp_0.this, "token"+driverToken, Toast.LENGTH_SHORT ).show();
+
     }
     @Override
     protected void onRestart(){
@@ -138,72 +228,7 @@ public class Main5Activity extends AppCompatActivity {
 
 
 
-    //Проверка интернета
-    public void cheskInternet(){
 
-        key="";
-
-        //задержка запроса
-        Handler handler1 = new Handler();
-        handler1.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                check();
-            }
-        },5000);
-
-        //чтение в БД с правилом для любых пользователей
-        database01 = FirebaseDatabase.getInstance();
-        ref01 = database01.getReference("Check")
-                .child("Internet")
-                .child("Work");
-        ref01.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-
-                // Чтение
-                key=dataSnapshot.getValue(String.class);
-                Toast.makeText( Main5Activity.this, "Интернет есть?  "+key, Toast.LENGTH_SHORT ).show();
-
-                // с этой записью makeText появляется только один раз!!!!! ХОРОШО
-                ref01.removeEventListener(this);
-
-                proba();
-
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-    }
-
-    public void check(){
-        if (key.isEmpty()){
-            getActivityError();
-        }
-    }
-
-    public void getActivityError(){
-        Intent aaa = new Intent(this,InternetNot.class);
-        startActivity(aaa);
-    }
-
-    public void proba(){
-        Intent aaa = new Intent(this,ServApp_1.class);
-        startActivity(aaa);
-
-    }
-
-    //работает в паре с классом ExampleBroadcastReceiver для проверки интернета
-    @Override
-    protected void onStop (){
-        super.onStop();
-        Log.d(TAG, "onStop");
-        //finish();
-//        unregisterReceiver(exampleBroadcastReceiver);
-    }
 
 }
 
