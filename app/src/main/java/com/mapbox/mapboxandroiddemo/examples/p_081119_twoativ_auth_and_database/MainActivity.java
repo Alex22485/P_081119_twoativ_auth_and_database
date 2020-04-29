@@ -2,25 +2,19 @@ package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database
 
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.ConnectivityManager;
+
 import android.os.Bundle;
-import android.os.CountDownTimer;
+
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,7 +24,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
-import java.net.URL;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -57,48 +50,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_sign_out = (Button) findViewById(R.id.btn_sign_out);
         btn_sign_out.setOnClickListener(this);
 
-        //можно запихать этот метод в OnStart
-        cheskInternet();
-
-//        //получение токена
-//        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(MainActivity.this,new OnSuccessListener<InstanceIdResult>() {
-//            @Override
-//            public void onSuccess(InstanceIdResult instanceIdResult) {
-//                UserToken = instanceIdResult.getToken();
-//                //задержка запроса
-//                Handler handler1 = new Handler();
-//                handler1.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        //временно для проверки
-//                        Toast.makeText( MainActivity.this, "Токен считан  "+UserToken, Toast.LENGTH_SHORT ).show();
-//                        Log.d(TAG, "токен"+UserToken);
-//                    }
-//                },2000);
-//            }
-//        });
-
-//        //задержка запроса
-//        Handler handler1 = new Handler();
-//        handler1.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                //временно для проверки
-//                Toast.makeText( MainActivity.this, "Токен считан  "+UserToken, Toast.LENGTH_SHORT ).show();
-//                Log.d(TAG, "токен"+UserToken);
-//            }
-//        },1000);
-
-
-
-
+        // Получить Токен!!!!
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(MainActivity.this,new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                UserToken = instanceIdResult.getToken();
+                Log.d(TAG, "токен"+UserToken);
+            }
+        });
     }
 
     @Override
     protected void onStart (){
         super.onStart();
         Log.d(TAG, "onStart");
-
+//Проверка интернета
+        cheskInternet();
 // Проверка интернета
         //cheskInternet();
 
@@ -186,9 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //
 //            }
 //        } );
-
     }
-
     @Override
     protected void onDestroy(){
         super.onDestroy();
@@ -203,7 +168,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onPause(){
         super.onPause();
         Log.d(TAG, "onPause");
-
         // 1.2не выдает всплывающее сообщение в другом активити когда нет интернета. Работает в паре с  database01.goOffline() в onDestroy
         //finish();
     }
@@ -227,14 +191,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onStop (){
         super.onStop();
         Log.d(TAG, "onStop");
-
     }
-
-
 
     //Проверка интернета
     public void cheskInternet(){
-
         key="";
 
                 //задержка запроса
@@ -244,10 +204,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void run() {
                check();
             }
-        },2000);
+        },4000);
 
 
-        //чтение в БД с правилом для любых пользователей
+        //чтение из БД с правилом для любых пользователей
         database01 = FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Check")
                 .child("Internet")
@@ -266,15 +226,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 // с этой записью makeText появляется только один раз!!!!! ХОРОШО, блин не всегда :(((
                 ref01.removeEventListener(this);
-
-                // проверка регистрации Users
-                //CheckRegistration();
-
-
-
-
-
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -288,7 +239,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent aaa = new Intent(this,InternetNot.class);
             startActivity(aaa);
         }
-        else {goCheckReg();}
+        else if(key.equals("Yes")) {
+
+            //проверка регистрации
+            CheckRegistration();
+        }
     }
 
     public void onClick(View v) {
@@ -309,8 +264,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         keyReg="";
 
+        //задержка запроса
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
-        //чтение в БД с правилом для любых пользователей
+                // Проверка регистрации токена
+                checkHaveToken();
+
+            }
+        },600);
+
+
+        //чтение из БД с правилом для любых пользователей
         database02 = FirebaseDatabase.getInstance();
         ref02 = database02.getReference("Check")
                 .child("CheckUsers")
@@ -330,12 +297,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 // с этой записью makeText появляется только один раз!!!!! ХОРОШО
                 ref02.removeEventListener(this);
-
-                //Переход в главное меню заказов
-                //goMainList();
-                checkHaveToken();
-
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -347,14 +308,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //проверка зарегестрированного токена
     public void checkHaveToken(){
         // переход на Активити InternetNot
-        //if (keyReg.isEmpty()){
-            if (keyReg == null){
+        if (keyReg==null){
 
             //переход к авторизации по телефону от firebase
             Intent AuthList = new Intent(this,Main2Activity.class);
             startActivity(AuthList);
         }
+        else if(keyReg.isEmpty()) {
 
+            //Если keyReg пусто, значит пропал интернет и переходим на  InternetNot
+            Intent aaa = new Intent(this,InternetNot.class);
+            startActivity(aaa);
+            Toast.makeText( MainActivity.this, "опять нет интернета  "+keyReg, Toast.LENGTH_SHORT ).show();
+        }
+        else if (keyReg.equals("Hello")){
+            goMainList();}
     }
 
     //Переход в главное меню заказов
@@ -363,18 +331,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(mainList);
     }
 
-
     // Блокировка кнопки Back!!!! :)))
     @Override
     public void onBackPressed(){
     }
-
-
-    //Переход в главное меню заказов
-    public void goCheckReg(){
-        Intent goCheckReg = new Intent(this,Main5Activity.class);
-        startActivity(goCheckReg);
-    }
-
-
 }

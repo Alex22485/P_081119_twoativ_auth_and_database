@@ -54,9 +54,6 @@ public class Main2Activity extends AppCompatActivity {
 
         start_order = (Button) findViewById(R.id.start_order);
 
-
-
-
         doPhoneLogin();
     }
     private void doPhoneLogin() {
@@ -176,42 +173,4 @@ public class Main2Activity extends AppCompatActivity {
         );
     }
 
-
-
-    /*@Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.three_window:
-                Intent intent = new Intent(this,Main4Activity.class);
-                startActivity(intent);
-                // TODO Call second activity
-                break;
-            default:
-                break;
-        }
-    }*/
-        /*public void inCity(View view){
-            Intent nextListInAir_choise_routes = new Intent( this,InAir_choise_routes.class );
-
-            nextListInAir_choise_routes.putExtra( "Маршрут", "Аэропорт-Красноярск" );
-            nextListInAir_choise_routes.putExtra( "oneMap", "Аэропорт-КрасТэц" );
-            nextListInAir_choise_routes.putExtra( "twoMap", "Аэропорт-Щорса" );
-            nextListInAir_choise_routes.putExtra( "treeMap", "Аэропорт-Северный" );
-            nextListInAir_choise_routes.putExtra( "fourMap", "Аэропорт-Ветлужанка" );
-            startActivity( nextListInAir_choise_routes);
-        }
-
-    public void inAirport(View view){
-        Intent nextListInAir_choise_routes = new Intent( this,InAir_choise_routes.class );
-
-        nextListInAir_choise_routes.putExtra( "Маршрут", "Красноярск-Аэропорт" );
-        nextListInAir_choise_routes.putExtra( "fourMap", "Ветлужанка-Аэропорт" );
-        nextListInAir_choise_routes.putExtra( "oneMap", "КрасТэц-Аэропорт" );
-        nextListInAir_choise_routes.putExtra( "twoMap", "Щорса-Аэропорт" );
-        nextListInAir_choise_routes.putExtra( "treeMap", "Северный-Аэропорт" );
-        nextListInAir_choise_routes.putExtra( "fourMap", "Ветлужанка-Аэропорт" );
-
-
-        startActivity( nextListInAir_choise_routes);
-    }*/
     }

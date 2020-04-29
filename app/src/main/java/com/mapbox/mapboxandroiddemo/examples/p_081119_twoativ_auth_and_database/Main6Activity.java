@@ -221,7 +221,7 @@ public class Main6Activity extends AppCompatActivity {
     }
 
 
-// Кнопка обновить информацию
+// Кнопка обновить информацию перезапуск активити
 public void btnStatus(View view) {
         //перезапуск активити
         restartActivity();

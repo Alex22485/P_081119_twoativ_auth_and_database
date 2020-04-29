@@ -54,26 +54,6 @@ public class Main5Activity extends AppCompatActivity {
         proba = findViewById( R.id.proba );
           Log.d(TAG, "onCreate");
 
-          //получение токена
-          FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Main5Activity.this,new OnSuccessListener<InstanceIdResult>() {
-              @Override
-              public void onSuccess(InstanceIdResult instanceIdResult) {
-                  UserToken = instanceIdResult.getToken();
-
-                  //задержка запроса
-                  Handler handler1 = new Handler();
-                  handler1.postDelayed(new Runnable() {
-                      @Override
-                      public void run() {
-                          //временно для проверки
-                          Toast.makeText( Main5Activity.this, "Токен считан  "+UserToken, Toast.LENGTH_SHORT ).show();
-                          Log.d(TAG, "токен"+UserToken);
-
-                          CheckRegistration();
-                      }
-                  },10);
-              }
-          });
 
 ////28 02 2020 Получить все ключи объекта по его значению "Водила" записать их в ArrayList и преобразовать в строковый массив array
 //          DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child( "Proba" );
@@ -97,85 +77,6 @@ public class Main5Activity extends AppCompatActivity {
 //          } );
         }
 
-    //проверка регистрации
-    public void CheckRegistration(){
-
-        keyReg="";
-
-        //задержка запроса
-        Handler handler1 = new Handler();
-        handler1.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                // Проверка регистрации токена
-                checkHaveToken();
-
-            }
-        },600);
-
-
-        //чтение в БД с правилом для любых пользователей
-        database02 = FirebaseDatabase.getInstance();
-        ref02 = database02.getReference("Check")
-                .child("CheckUsers")
-                .child("Token")
-//                .child("Internet")
-//                .child("Work");
-                .child(UserToken);
-        ref02.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-
-                // Чтение
-                keyReg=dataSnapshot.getValue(String.class);
-
-                //временно для проверки
-                Toast.makeText( Main5Activity.this, "Токен зарегестрирован?  "+keyReg, Toast.LENGTH_SHORT ).show();
-
-                // с этой записью makeText появляется только один раз!!!!! ХОРОШО
-                ref02.removeEventListener(this);
-
-
-
-
-
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-
-    }
-
-    //проверка зарегестрированного токена
-    public void checkHaveToken(){
-        // переход на Активити InternetNot
-        if (keyReg==null){
-
-            //переход к авторизации по телефону от firebase
-            Intent AuthList = new Intent(this,Main2Activity.class);
-            startActivity(AuthList);
-        }
-        else if(keyReg.isEmpty()) {
-
-            //Если keyReg пусто, значит пропал интернет и переходим на  InternetNot
-            Intent aaa = new Intent(this,InternetNot.class);
-            startActivity(aaa);
-            Toast.makeText( Main5Activity.this, "опять нет интернета  "+keyReg, Toast.LENGTH_SHORT ).show();
-        }
-        else if (keyReg.equals("Hello")){
-            goMainList();}
-
-    }
-
-    //Переход в главное меню заказов
-    public void goMainList(){
-        Intent mainList = new Intent(this,Choose_direction.class);
-        startActivity(mainList);
-    }
 
 
 
@@ -225,10 +126,6 @@ public class Main5Activity extends AppCompatActivity {
         super.onRestart();
         Log.d(TAG, "onRestart");
     }
-
-
-
-
 
 }
 
