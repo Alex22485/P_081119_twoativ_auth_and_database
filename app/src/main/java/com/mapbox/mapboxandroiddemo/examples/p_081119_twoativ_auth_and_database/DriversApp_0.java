@@ -151,7 +151,6 @@ public class DriversApp_0 extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
         Log.d(TAG, "onResume");
-        //Toast.makeText( DriversApp_0.this, "token"+driverToken, Toast.LENGTH_SHORT ).show();
     }
 
     @Override
@@ -160,14 +159,10 @@ public class DriversApp_0 extends AppCompatActivity {
         Log.d(TAG, "onRestart");
     }
 
-
-
-
     @Override
     protected void onStart (){
         super.onStart();
         Log.d(TAG, "onStart");
-        Toast.makeText( DriversApp_0.this, "token"+driverToken, Toast.LENGTH_SHORT ).show();
 
 
         //ПРОВЕРКА ИНТЕРНЕТА

@@ -22,14 +22,11 @@ import com.google.firebase.database.ValueEventListener;
 
 public class InternetNot extends AppCompatActivity {
 
-    String key;
     TextView TextUpdate;
     TextView TextMessage1;
     TextView TextMessage2;
     Button BtnUpdate;
 
-    FirebaseDatabase database01;
-    DatabaseReference ref01;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,30 +42,25 @@ public class InternetNot extends AppCompatActivity {
         TextMessage1.setVisibility(View.VISIBLE);
         TextMessage2.setVisibility(View.VISIBLE);
         BtnUpdate.setVisibility(View.VISIBLE);
-
-
     }
 
-
-//
-//    // кнопка Back сворачивает приложение
-//    @Override
-//    public void onBackPressed(){
-//        this.moveTaskToBack(true);
-//    }
+    // кнопка Back сворачивает приложение
+    @Override
+    public void onBackPressed(){
+        this.moveTaskToBack(true);
+    }
 
 
     // Кнопка обновить
     public void Update(View view){
-
         Intent ddd=new Intent(this,MainActivity.class);
         startActivity(ddd);
     }
 
-    // Блокировка кнопки Back!!!! :)))
-    @Override
-    public void onBackPressed(){
-    }
+//    // Блокировка кнопки Back!!!! :)))
+//    @Override
+//    public void onBackPressed(){
+//    }
 //    public void check(){
 //        if (key.isEmpty()){
 //            TextMessage1.setVisibility(View.VISIBLE);
