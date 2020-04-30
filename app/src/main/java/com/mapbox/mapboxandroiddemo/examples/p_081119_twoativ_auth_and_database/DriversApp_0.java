@@ -48,7 +48,8 @@ public class DriversApp_0 extends AppCompatActivity {
     private static final int RC_SIGN_IN = 101;
     FirebaseDatabase database01;
     DatabaseReference ref01;
-    String UserToken;
+    TextView TextLoad;
+
 
 
     //Проверка интернета
@@ -63,7 +64,6 @@ public class DriversApp_0 extends AppCompatActivity {
     FirebaseAuth mAuth;
     String driverPhone;
     String driverId;
-    String tokenID;
     String driverToken;
 
 
@@ -75,7 +75,6 @@ public class DriversApp_0 extends AppCompatActivity {
 
     TextView checkWord;
     TextView TextHello1;
-    TextView TextHello2;
 
     EditText editDriverName;
     EditText editCar;
@@ -84,6 +83,7 @@ public class DriversApp_0 extends AppCompatActivity {
     EditText editQuantiatyOfPackages;
 
     Button saveEdit;
+    Button DriversApp_Start;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,15 +93,17 @@ public class DriversApp_0 extends AppCompatActivity {
 
         checkWord=findViewById(R.id.checkWord);
         TextHello1=findViewById(R.id.TextHello1);
-        TextHello2=findViewById(R.id.TextHello2);
+
 
         editDriverName=findViewById(R.id.editDriverName);
         editCar=findViewById(R.id.editCar);
         editNumberCar=findViewById(R.id.editNumberCar);
         editColorCar=findViewById(R.id.editColorCar);
         editQuantiatyOfPackages=findViewById(R.id.editQuantiatyOfPackages);
+        TextLoad=findViewById(R.id.TextLoad);
 
         saveEdit=findViewById(R.id.saveEdit);
+        DriversApp_Start=findViewById(R.id.DriversApp_Start);
 
 
         // Прослушивание текста для Видимости кнопки Сохранить данные
@@ -110,6 +112,8 @@ public class DriversApp_0 extends AppCompatActivity {
         editColorCar.addTextChangedListener( loginTextWather1 );
         editDriverName.addTextChangedListener( loginTextWather1 );
         editQuantiatyOfPackages.addTextChangedListener( loginTextWather1 );
+
+
 
 
 
@@ -149,6 +153,7 @@ public class DriversApp_0 extends AppCompatActivity {
 
             }
             else {
+
                 Toast.makeText(getBaseContext(), "Ошибка Авторизации", Toast.LENGTH_LONG).show();
                 visibleNo();
             }
@@ -173,36 +178,6 @@ public class DriversApp_0 extends AppCompatActivity {
         // Showing Alert Message
         mAlertDialog.show();
     }
-
-    public void writeMyToken(){
-
-        //получение токена
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(DriversApp_0.this,new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                UserToken = instanceIdResult.getToken();
-            }
-        });
-
-        //030320 Запись токена для проверки Разрешения на запись заявки в БД ЗАЯВКИ...-...-...-"CheckStopOder"...
-        database01 = FirebaseDatabase.getInstance();
-        ref01 = database01.getReference("Check")
-                .child("CheckDrivers")
-                .child("Token");
-        ref01.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            ref01.child(UserToken).setValue("Hello");
-                                            // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
-                                            ref01.removeEventListener(this);
-                                        }
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                                        }
-                                    }
-        );
-    }
-
 
 //    public void visible(){
 //        //ааа это название марки и три цифры гос номера
@@ -229,25 +204,23 @@ public class DriversApp_0 extends AppCompatActivity {
 //    }
 
     public void visibleYes(){
-        TextHello1.setText("Пожалуйста, ");
+        TextHello1.setText("Пожалуйста, заполните данные ");
         TextHello1.setTextColor(getResources().getColor( R.color.colorNew ));
         TextHello1.setVisibility(View.VISIBLE);
 
-        TextHello2.setText("заполните данные!");
-        TextHello2.setTextColor(getResources().getColor( R.color.colorNew ));
-        TextHello2.setVisibility(View.VISIBLE);
+
         registration();
 
     }
 
     public void visibleNo(){
-        TextHello1.setText("Авторизация ");
+        TextHello1.setText("Авторизация не выполнена ");
         TextHello1.setTextColor(getResources().getColor( R.color.colorNew ));
         TextHello1.setVisibility(View.VISIBLE);
 
-        TextHello2.setText("не выполнена!");
-        TextHello2.setTextColor(getResources().getColor( R.color.colorNew ));
-        TextHello2.setVisibility(View.VISIBLE);
+        DriversApp_Start.setVisibility(View.VISIBLE);
+
+
 
     };
 
@@ -282,12 +255,13 @@ public class DriversApp_0 extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser ghg = mAuth.getCurrentUser();
         driverId = ghg.getUid();
+        driverPhone=ghg.getPhoneNumber();
 
         //получение токена
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(DriversApp_0.this,new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
-                UserToken = instanceIdResult.getToken();
+                driverToken = instanceIdResult.getToken();
             }
         });
 
@@ -298,19 +272,98 @@ public class DriversApp_0 extends AppCompatActivity {
     //регистрация в БД
     public void saveEdit(View view){
 
+        //однократное нажатие кнопки сохранить
+        saveEdit.setVisibility(View.INVISIBLE);
+
+        TextLoad.setVisibility(View.VISIBLE);
+
+        //Сначала Проверка интернета
+        cheskInternet();
+    }
+
+    //Проверка интернета
+    public void cheskInternet(){
+        key="";
+
+        //задержка запроса
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                check();
+            }
+        },4000);
 
 
-        writeMyToken();
+        //чтение из БД с правилом для любых пользователей
+        database01 = FirebaseDatabase.getInstance();
+        ref01 = database01.getReference("Check")
+                .child("Internet")
+                .child("Work");
+        ref01.addValueEventListener(new ValueEventListener() {
 
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Чтение результата из БД
+                key=dataSnapshot.getValue(String.class);
+                ref01.removeEventListener(this);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+    public void check(){
+        // переход на Активити InternetNot
+        if (key.isEmpty()){
+            Intent aaa = new Intent(this,DriversApp_InternetNot_forDriverApp_0.class);
+            startActivity(aaa);
+        }
+        else if(key.equals("Yes")) {
+            // Запись в БД для проверки регистрации
+            writeMyToken();
+            //Регистрация личных данных
+            writePrivetData();
+        }
+    }
+
+    public void writeMyToken(){
+
+        //030320 Запись токена для проверки Разрешения на запись заявки в БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+        database01 = FirebaseDatabase.getInstance();
+        ref01 = database01.getReference("Check")
+                .child("CheckDrivers")
+                .child("Token");
+        ref01.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            ref01.child(driverToken).setValue("Hello");
+                                            // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+                                            ref01.removeEventListener(this);
+
+                                            getMainList();
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        }
+                                    }
+        );
+    }
+
+    public void writePrivetData(){
 
         databaseCheckInternet1 = FirebaseDatabase.getInstance();
         ref03 = databaseCheckInternet1.getReference("Водители")
                 .child("Personal")
-                .child(driverId)
+                .child(driverPhone)
                 .child("Private");
         ref03.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //две первые строки нужны для правильного добавления/удаления данных в БД через nod js
+                ref03.child(editNumberCar.getText().toString()+editCar.getText().toString()+editQuantiatyOfPackages.getText().toString()+"M").child("REF").setValue("ref");
+                ref03.child("NCP").setValue(editNumberCar.getText().toString()+editCar.getText().toString()+editQuantiatyOfPackages.getText().toString()+"M");
                 ref03.child("name").setValue(editDriverName.getText().toString());
                 ref03.child("phone").setValue(driverPhone);
                 ref03.child("token").setValue(driverToken);
@@ -322,51 +375,27 @@ public class DriversApp_0 extends AppCompatActivity {
                 // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД
                 ref03.removeEventListener(this);
                 Toast.makeText( DriversApp_0.this, "Сохранить удалось ", Toast.LENGTH_SHORT ).show();
-
-                //запись в ID
-                //writeIDID();
-                //DriversApp_0.this.finish();
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-
-    }
-
-    public void writeIDID(){
-
-        databaseCheckInternet2 = FirebaseDatabase.getInstance();
-        ref04=databaseCheckInternet2.getReference("Водители")
-                .child("ID")
-                .child("ID");
-        ref04.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ref04.child(driverId).setValue(editCar.getText().toString());
-                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД
-                ref04.removeEventListener(this);
-                Toast.makeText( DriversApp_0.this, "ID зарегистрирован "+editDriverName.getText().toString(), Toast.LENGTH_SHORT ).show();
-                //DriversApp_0.this.finish();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }
+    public void getMainList(){
+        Intent getMainList=new Intent(this,DriversApp_1.class);
+        startActivity(getMainList);
+    }
+
+    public void DriversApp_Start(View view){
+        Intent DriversApp_Start = new Intent(this,DriversApp_Start.class);
+        startActivity(DriversApp_Start);
+    }
+
 
     TextWatcher loginTextWather1=new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
         }
-
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             String editCarInput =editCar.getText().toString().trim();

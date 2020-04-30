@@ -23,4 +23,9 @@ public class MainList extends AppCompatActivity {
         Intent IamUser= new Intent(this,MainActivity.class);
         startActivity(IamUser);
     }
+
+    public void ServAppList(View view){
+        Intent ServAppList= new Intent(this,ServApp_0.class);
+        startActivity(ServAppList);
+    }
 }

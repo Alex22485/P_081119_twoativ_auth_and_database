@@ -6,13 +6,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Main2Activity"
-    >
+    tools:context=".Main2Activity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+        <TextView
+            android:id="@+id/TextHello1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Авторизация не выполнена"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:textSize="25sp"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/GoMainActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Попробуйте еще раз"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:onClick="GoMainActivity"/>
+
+    <LinearLayout
+        android:id="@+id/Layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="0sp"
@@ -20,10 +45,10 @@
             android:layout_weight="1" />
 
         <TextView
-            android:layout_width="0sp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:text="Направление"
+            android:text="Заполните профиль"
             android:textSize="30dp">
         </TextView>
 
@@ -33,97 +58,27 @@
             android:layout_weight="1"/>
 
     </LinearLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="7sp" />
 
     <LinearLayout
+        android:id="@+id/Layout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
+
 
         <Button
-            android:id="@+id/start_order"
+            android:id="@+id/GoMainOder"
             android:layout_width="0sp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:text="Подать заявку"
-            android:enabled="false"
+            android:text="Пропустить"
             android:textSize="15sp"
-            android:onClick="start_order">
-        </Button>
-
-        <Button
-            android:id="@+id/inCity"
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:text="ПробаGETChild"
-            android:textSize="15sp"
-            android:onClick="ПробаGETChild">
+            android:onClick="GoMainOder">
         </Button>
 
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-
-
-        <Button
-            android:id="@+id/ServApp1_window"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="ServApp1_window"
-            android:onClick="ServApp1_window"/>
-
-    </LinearLayout>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Статус Заказа"
-        android:onClick="MyStatusOder">
-    </Button>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="DriversApp_0"
-        android:onClick="DriversApp_0"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="DriversApp_1"
-        android:onClick="DriversApp_1"/>
-
-    <Button
-        android:id="@+id/buttonPhoneAuth"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:text="Login with Phone "
-        android:textAllCaps="false"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-    <Button
-        android:id="@+id/btn_sign_out"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:enabled="false"
-        android:text="Выход"
-        />
-
 
 
 </LinearLayout>
+

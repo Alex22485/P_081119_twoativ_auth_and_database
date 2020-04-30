@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ServApp_0"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/ServApp1_window"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ServApp1_window"
+        android:onClick="ServApp1_window"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Статус Заказа"
+        android:onClick="MyStatusOder"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DriversApp_1"
+        android:onClick="DriversApp_1"/>
+
+
+
+
+</LinearLayout>

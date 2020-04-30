@@ -19,18 +19,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
-
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    public class MainActivity extends AppCompatActivity {
 
     private static final String TAG ="MainActivity" ;
 
-
-    Button btn_sign_out;
     String  key;
     String keyReg;
     String UserToken;
@@ -46,9 +42,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate");
-
-        btn_sign_out = (Button) findViewById(R.id.btn_sign_out);
-        btn_sign_out.setOnClickListener(this);
 
         // Получить Токен!!!!
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(MainActivity.this,new OnSuccessListener<InstanceIdResult>() {
@@ -243,19 +236,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             //проверка регистрации
             CheckRegistration();
-        }
-    }
-
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_sign_out:
-                Intent intent = new Intent(this,Main2Activity.class);
-                startActivity(intent);
-
-                // TODO Call second activity
-                break;
-            default:
-                break;
         }
     }
 

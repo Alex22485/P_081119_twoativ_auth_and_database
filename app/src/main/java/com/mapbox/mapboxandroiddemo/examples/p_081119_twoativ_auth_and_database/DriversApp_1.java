@@ -377,4 +377,12 @@ public class DriversApp_1 extends AppCompatActivity {
         dateTime= simpleDateFormat.format(calendar.getTime());
 
     }
+
+    // кнопка Back сворачивает приложение
+    @Override
+    public void onBackPressed(){
+        this.moveTaskToBack(true);
+    }
+
+
 }

@@ -38,10 +38,18 @@
             android:textSize="20sp"
             android:onClick="IamUser"
             android:layout_weight="1"/>
-
-
-
     </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="250sp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Server"
+        android:textSize="20sp"
+        android:onClick="ServAppList"/>
 
 
 

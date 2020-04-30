@@ -27,14 +27,16 @@
             android:text=""
             android:visibility="gone"
             android:textSize="25sp"/>
-        <TextView
-            android:id="@+id/TextHello2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:visibility="gone"
-            android:textSize="25sp"/>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/DriversApp_Start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Попробуйте еще раз"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:onClick="DriversApp_Start"/>
 
     <EditText
         android:id="@+id/editDriverName"
@@ -93,6 +95,16 @@
         android:layout_gravity="center_horizontal"
         android:visibility="invisible"
         android:onClick="saveEdit"/>
+
+    <TextView
+       android:id="@+id/TextLoad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="загрузка данных..."
+        android:enabled="false"
+        android:textSize="25sp"
+        android:layout_gravity="center_horizontal"
+        android:visibility="invisible"/>
 
 
 

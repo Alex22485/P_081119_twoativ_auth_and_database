@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,12 +35,12 @@ public class Main2Activity extends AppCompatActivity {
     DatabaseReference ref01;
     String UserToken;
 
+    TextView TextHello1;
+    Button GoMainActivity;
 
-    Button btn_sign_out;
-    //Button three_window;
-    //Button inAirport,inCity;
-    Button start_order;
-    Button ServApp1_window;
+    LinearLayout Layout1;
+    LinearLayout Layout2;
+
     private static final int RC_SIGN_IN = 101;
 
     @Override
@@ -46,13 +48,10 @@ public class Main2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        //three_window = (Button) findViewById(R.id.three_window);
-        ServApp1_window =findViewById( R.id.ServApp1_window );
-        //three_window.setOnClickListener(this);
-        //inAirport = (Button) findViewById(R.id.inAirport);
-        //inCity = (Button) findViewById(R.id.inCity);
-
-        start_order = (Button) findViewById(R.id.start_order);
+        TextHello1=findViewById(R.id.TextHello1);
+        GoMainActivity=findViewById(R.id.GoMainActivity);
+        Layout1=findViewById(R.id.Layout1);
+        Layout2=findViewById(R.id.Layout2);
 
         doPhoneLogin();
     }
@@ -71,7 +70,6 @@ public class Main2Activity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        btn_sign_out =(Button)findViewById(R.id.btn_sign_out);
 
         if (requestCode == RC_SIGN_IN) {
             IdpResponse idpResponse = IdpResponse.fromResultIntent(data);
@@ -80,15 +78,23 @@ public class Main2Activity extends AppCompatActivity {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 showAlertDialog(user);
-                btn_sign_out.setEnabled(true);
-                start_order.setEnabled( true );
 
                 //29.04.20 запись регистрации в БД Chesh-CheskUser
                 writeMyToken();
 
+                Layout1.setVisibility(View.VISIBLE);
+                Layout2.setVisibility(View.VISIBLE);
+
             }
             else {
-                Toast.makeText(getBaseContext(), "Ошибка Авторизации", Toast.LENGTH_LONG).show();
+                TextHello1.setText("Авторизация не выполнена ");
+                TextHello1.setTextColor(getResources().getColor( R.color.colorNew ));
+                TextHello1.setVisibility(View.VISIBLE);
+
+                GoMainActivity.setVisibility(View.VISIBLE);
+                GoMainActivity.setVisibility(View.VISIBLE);
+
+                //Toast.makeText(getBaseContext(), "Ошибка Авторизации", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -113,36 +119,12 @@ public class Main2Activity extends AppCompatActivity {
         mAlertDialog.show();
     }
 
-    public void  start_order (View view){
-        Intent List_Choose_direction =new Intent( this,Choose_direction.class );
-        startActivity( List_Choose_direction );
+    public void GoMainActivity(View view){
+        Intent GoMainActivity= new Intent(this,MainActivity.class);
+        startActivity(GoMainActivity);
     }
 
-    public void ПробаGETChild (View view){
-        Intent ПробаGETChild= new Intent(this,Main5Activity.class);
-        startActivity(ПробаGETChild);
-    }
 
-    public void ServApp1_window (View view){
-        Intent ServApp1_window=new Intent( this,ServApp_1.class );
-        startActivity(ServApp1_window  );
-
-    }
-
-    public void DriversApp_0(View view){
-        Intent DriversApp_0=new Intent( this,DriversApp_0.class);
-        startActivity(DriversApp_0);
-    }
-
-    public void DriversApp_1(View view){
-        Intent DriversApp_1=new Intent( this,DriversApp_1.class);
-        startActivity(DriversApp_1);
-    }
-
-    public void MyStatusOder(View view){
-        Intent MyStatusOder = new Intent(this,Main6Activity.class);
-        startActivity(MyStatusOder);
-    }
 
     public void writeMyToken(){
 
@@ -172,5 +154,13 @@ public class Main2Activity extends AppCompatActivity {
                                     }
         );
     }
+
+    public void GoMainOder(View view){
+        Intent GoMainOder = new Intent( this,Choose_direction.class );
+        startActivity( GoMainOder);
+    }
+
+
+
 
     }

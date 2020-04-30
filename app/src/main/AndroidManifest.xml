@@ -14,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".DriversApp_InternetNot"></activity>
+        <activity android:name=".ServApp_0"></activity>
+        <activity android:name=".DriversApp_InternetNot_forDriverApp_0" />
+        <activity android:name=".DriversApp_InternetNot" />
         <activity android:name=".DriversApp_Start" />
         <activity android:name=".MainList">
             <intent-filter>
