@@ -39,6 +39,7 @@ public class DriversApp_Start extends AppCompatActivity {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
                 UserToken = instanceIdResult.getToken();
+                //Toast.makeText( DriversApp_Start.this, "токен"+UserToken, Toast.LENGTH_SHORT ).show();
             }
         });
     }
@@ -74,6 +75,8 @@ public class DriversApp_Start extends AppCompatActivity {
                 // Чтение результата из БД
                 key=dataSnapshot.getValue(String.class);
                 ref01.removeEventListener(this);
+
+                //Toast.makeText( DriversApp_Start.this, "Интернет есть"+key, Toast.LENGTH_SHORT ).show();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -91,6 +94,7 @@ public class DriversApp_Start extends AppCompatActivity {
 
             //проверка регистрации
             CheckRegistration();
+            //Toast.makeText( DriversApp_Start.this, "Проверка регистрации", Toast.LENGTH_SHORT ).show();
         }
     }
 
@@ -104,10 +108,8 @@ public class DriversApp_Start extends AppCompatActivity {
         handler1.postDelayed(new Runnable() {
             @Override
             public void run() {
-
                 // Проверка регистрации токена
                 checkHaveToken();
-
             }
         },600);
 
@@ -125,6 +127,9 @@ public class DriversApp_Start extends AppCompatActivity {
                 // Чтение
                 keyReg=dataSnapshot.getValue(String.class);
                 ref02.removeEventListener(this);
+
+                //Toast.makeText( DriversApp_Start.this, "Регистрация есть"+keyReg, Toast.LENGTH_SHORT ).show();
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

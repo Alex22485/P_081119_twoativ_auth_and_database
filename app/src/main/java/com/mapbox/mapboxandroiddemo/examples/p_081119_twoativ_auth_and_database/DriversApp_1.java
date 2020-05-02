@@ -9,7 +9,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,6 +25,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class DriversApp_1 extends AppCompatActivity {
+
+    TextView yourCar;
+    TextView yourNumber;
 
     TextView DataOrder;
     TextView TimeOrder;
@@ -51,6 +57,8 @@ public class DriversApp_1 extends AppCompatActivity {
     TextView TextDataOrder;
     TextView TextTimeOrder;
 
+
+
     Button BtnYes;
     Button BtnNo;
     Button timeExpl;
@@ -66,12 +74,23 @@ public class DriversApp_1 extends AppCompatActivity {
     DatabaseReference ref04;
 
     String dateTime;
+    String driverPhone;
+    String carNumber;
+    String car;
+    String carPlases;
+
+
+    FirebaseAuth mAuth;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drivers_app_1);
+
+        yourCar=findViewById(R.id.yourCar);
+        yourNumber=findViewById(R.id.yourNumber);
 
         TextDataOrder=findViewById(R.id.TextDataOrder);
         TextTimeOrder=findViewById(R.id.TextTimeOrder);
@@ -101,26 +120,31 @@ public class DriversApp_1 extends AppCompatActivity {
         TextRoutepOrder=findViewById(R.id.TextRoutepOrder);
         //TextMapOrder=findViewById(R.id.TextMapOrder);
 
-
-
-
         BtnYes=findViewById(R.id.BtnYes);
         BtnNo=findViewById(R.id.BtnNo);
         timeExpl=findViewById(R.id.timeExpl);
         MapSee=findViewById(R.id.MapSee);
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser ghg = mAuth.getCurrentUser();
+        driverPhone=ghg.getPhoneNumber();
+        Toast.makeText( DriversApp_1.this, "Телефон  "+driverPhone, Toast.LENGTH_SHORT ).show();
+
+        getNCP();
 
 
     }
 
     // Проверить заказ нужно изменить путь child( "123Lexus" ) для любого водителя чтобы работал Н-р id
     public void checkOder (View view){
-        Query aaa= FirebaseDatabase.getInstance().getReference("Drivers").child( "123Lexus" )
-                .orderByChild( "Заявки" );
+        final Query aaa= FirebaseDatabase.getInstance().getReference("Водители").child( "Personal" ).child( driverPhone )
+                .orderByChild( "Заявка" );
         aaa.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String time=dataSnapshot.child( "рейс" ).getValue(String.class);
                 String date=dataSnapshot.child( "дата" ).getValue(String.class);
+                //не отображается но используется для дальнейшего кода чтобы принять заявку
                 MapOrder=dataSnapshot.child( "направление" ).getValue(String.class);
                 String маршрут=dataSnapshot.child( "маршрут" ).getValue(String.class);
                 String point1=dataSnapshot.child( "точкаСбора1" ).getValue(String.class);
@@ -132,8 +156,11 @@ public class DriversApp_1 extends AppCompatActivity {
                 String point4=dataSnapshot.child( "точкаСбора4" ).getValue(String.class);
                 String point4Men=dataSnapshot.child( "точкаСбора4Чел" ).getValue(String.class);
 
+
+
                 DataOrder.setText(date);
                 TimeOrder.setText(time);
+
                 //MapOrder.setText(направление);
                 RoutepOrder.setText(маршрут);
                 StopOrder1.setText(point1);
@@ -144,6 +171,13 @@ public class DriversApp_1 extends AppCompatActivity {
                 MenpOrder3.setText(point3Men);
                 StopOrder4.setText(point4);
                 MenpOrder4.setText(point4Men);
+
+                Toast.makeText( DriversApp_1.this, "Заказ считан "+time+date+маршрут+point1+point1Men+point2+point2Men+point3+point3Men+point4+point4Men, Toast.LENGTH_LONG ).show();
+
+                //останов прослушивания
+                //без нее считывает дважды (сужу по  Toast.makeText )
+                //ХУЙНЯ какая-то с остановкой прослушиания читает один раз но показывает в makeText null
+                //aaa.removeEventListener(this);
 
                 visability ();
             }
@@ -274,7 +308,7 @@ public class DriversApp_1 extends AppCompatActivity {
             ref01.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    ref01.child("123Lexus").setValue(dateTime);
+                    ref01.child(carNumber+car+carPlases).setValue(dateTime);
                     ref01.removeEventListener(this);
                 }
 
@@ -302,7 +336,7 @@ public class DriversApp_1 extends AppCompatActivity {
             ref02.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    ref02.child("123Lexus").setValue(dateTime);
+                    ref02.child(carNumber+car+carPlases).setValue(dateTime);
                     ref02.removeEventListener(this);
                 }
 
@@ -330,7 +364,7 @@ public class DriversApp_1 extends AppCompatActivity {
             ref03.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    ref03.child("123Lexus").setValue(dateTime);
+                    ref03.child(carNumber+car+carPlases).setValue(dateTime);
                     ref03.removeEventListener(this);
                 }
 
@@ -357,7 +391,7 @@ public class DriversApp_1 extends AppCompatActivity {
             ref04.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    ref04.child("123Lexus").setValue(dateTime);
+                    ref04.child(carNumber+car+carPlases).setValue(dateTime);
                     ref04.removeEventListener(this);
                 }
 
@@ -375,8 +409,49 @@ public class DriversApp_1 extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a dd-MM ");
         dateTime= simpleDateFormat.format(calendar.getTime());
+    }
+
+    public void getNCP(){
+        Toast.makeText( DriversApp_1.this, "Запуск метода  "+driverPhone, Toast.LENGTH_SHORT ).show();
+
+        final Query aaa= FirebaseDatabase.getInstance().getReference("Водители").child( "Personal" ).child(driverPhone)
+                .orderByChild("Private");
+        aaa.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                carNumber=dataSnapshot.child( "carNumber" ).getValue(String.class);
+                car=dataSnapshot.child( "car" ).getValue(String.class);
+                carPlases=dataSnapshot.child( "carPlases" ).getValue(String.class);
+
+                //останов прослушивания
+                //без нее считывает дважды (сужу по  Toast.makeText )
+                aaa.removeEventListener(this);
+
+                Toast.makeText( DriversApp_1.this, "Метод выполнен"+carNumber+car, Toast.LENGTH_SHORT ).show();
+
+
+                yourCar.setText(car);
+                yourNumber.setText(carNumber);
+                //yourPlases.setText(carPlases);
+
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
 
     }
+
+
 
     // кнопка Back сворачивает приложение
     @Override

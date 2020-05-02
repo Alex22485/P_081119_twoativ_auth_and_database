@@ -215,7 +215,7 @@ import com.google.firebase.iid.InstanceIdResult;
                 key=dataSnapshot.getValue(String.class);
 
                 //временно для проверки
-                Toast.makeText( MainActivity.this, "Интернет есть?  "+key, Toast.LENGTH_SHORT ).show();
+                //Toast.makeText( MainActivity.this, "Интернет есть?  "+key, Toast.LENGTH_SHORT ).show();
 
                 // с этой записью makeText появляется только один раз!!!!! ХОРОШО, блин не всегда :(((
                 ref01.removeEventListener(this);
@@ -273,7 +273,7 @@ import com.google.firebase.iid.InstanceIdResult;
                 keyReg=dataSnapshot.getValue(String.class);
 
                 //временно для проверки
-                Toast.makeText( MainActivity.this, "Мой Токен найден?  "+keyReg, Toast.LENGTH_SHORT ).show();
+                //Toast.makeText( MainActivity.this, "Мой Токен найден?  "+keyReg, Toast.LENGTH_SHORT ).show();
 
                 // с этой записью makeText появляется только один раз!!!!! ХОРОШО
                 ref02.removeEventListener(this);
