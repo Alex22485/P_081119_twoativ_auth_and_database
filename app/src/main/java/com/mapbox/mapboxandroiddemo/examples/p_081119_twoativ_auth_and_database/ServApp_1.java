@@ -123,13 +123,27 @@ public class ServApp_1 extends AppCompatActivity {
     String[] array={};
     String  key;
 
+    String Dr1PhRef;
+    String Dr2PhRef;
+    String Dr3PhRef;
+    String Dr4PhRef;
 
-    //20.03.2020 для отправки заявки в БД Водителя
-    ServApp_2 servApp_2;
+
+    // НЕ Используется 20.03.2020 для отправки заявки в БД Водителя
+    //ServApp_2 servApp_2;
 
     FirebaseDatabase database01;
+    FirebaseDatabase databaseGetPhDR1;
+    FirebaseDatabase databaseGetPhDR2;
+    FirebaseDatabase databaseGetPhDR3;
+    FirebaseDatabase databaseGetPhDR4;
+
     DatabaseReference ref01;
     DatabaseReference ref02;
+    DatabaseReference refGetPhDR1;
+    DatabaseReference refGetPhDR2;
+    DatabaseReference refGetPhDR3;
+    DatabaseReference refGetPhDR4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,7 +216,7 @@ public class ServApp_1 extends AppCompatActivity {
         fourTimedelete=findViewById(R.id.fourTimedelete);
 
         //20.03.2020 для отправки заявки в БД Водителя
-        servApp_2= new ServApp_2();
+        //Не используется servApp_2= new ServApp_2();
 
 
 
@@ -226,7 +240,7 @@ public class ServApp_1 extends AppCompatActivity {
         } );
 
         //30 03 2020 Получить все ключи объекта по его значению "Водила" записать их в ArrayList и преобразовать в строковый массив array
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child( "Proba" );
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child( "Водители" ).child("DriverForOder");
         ref.orderByValue().equalTo( "Водила" ).addListenerForSingleValueEvent( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -236,8 +250,6 @@ public class ServApp_1 extends AppCompatActivity {
                     key = snap.getKey(); //получить все ключи значения
                     driver.add( key );
                     array = driver.toArray(new String[driver.size()]);
-
-                    //String value = snap.getValue(String.class); //получить все значения, так побаловаться
                 }
             }
             @Override
@@ -289,7 +301,7 @@ public class ServApp_1 extends AppCompatActivity {
         }
     };
 
-    // Невидимость кнопки Стоп Заказ 2 точки
+    // Невидимость кнопки Стоп Заказ , Отмена Стоп, Driver,Send Oder 2 точки
     TextWatcher loginTextWather2=new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -313,7 +325,7 @@ public class ServApp_1 extends AppCompatActivity {
         }
     };
 
-    // Невидимость кнопки Стоп Заказ 3 точки
+    // Невидимость кнопки Стоп Заказ , Отмена Стоп, Driver,Send Oder 3 точки
     TextWatcher loginTextWather3=new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -337,7 +349,7 @@ public class ServApp_1 extends AppCompatActivity {
         }
     };
 
-    // Невидимость кнопки Стоп Заказ 4 точки
+    // Невидимость кнопки Стоп Заказ , Отмена Стоп, Driver,Send Oder 4 точки
     TextWatcher loginTextWather4=new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -421,7 +433,7 @@ public class ServApp_1 extends AppCompatActivity {
     public void choiseM (View view){
         String one=Направление.getText().toString();
         String ref="Красноярск-Аэропорт";
-        if (one==ref){
+        if (one.equals(ref)){
                 AlertDialog.Builder builder = new AlertDialog.Builder( ServApp_1.this );
                 builder.setTitle( "Выберите Маршрут" );
                 builder.setCancelable( false );
@@ -947,7 +959,10 @@ public class ServApp_1 extends AppCompatActivity {
 //                        driverNew1.setTextColor(getResources().getColor( R.color.colorBlue));
                         BtnOneDriver.setText(array[which]);
                         BtnOneDriver.setTextColor(getResources().getColor( R.color.colorBlue));
-                        sendToDriver1.setEnabled(true);
+
+
+                        //Запускаем метод считывание телефона выбранного водителя
+                        getWriteDriver1Point();
 
 
                     }
@@ -956,6 +971,36 @@ public class ServApp_1 extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    //метод считывание телефона выбранного водителя 1 точки
+    public void getWriteDriver1Point(){
+
+        //чтение из БД с правилом для любых пользователей
+        databaseGetPhDR1 = FirebaseDatabase.getInstance();
+        refGetPhDR1 = databaseGetPhDR1.getReference("Водители")
+                .child("DriverPhone")
+                .child(BtnOneDriver.getText().toString());
+        refGetPhDR1.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Чтение результата из БД
+                Dr1PhRef=dataSnapshot.getValue(String.class);
+                refGetPhDR1.removeEventListener(this);
+
+                //Активность кнопки отправить заявку
+                sendToDriver1.setEnabled(true);
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+    }
+
+
+
     // Выбрать Водителя по 2 точке
     public void choise_Driver2 (View view) {
 
@@ -969,13 +1014,44 @@ public class ServApp_1 extends AppCompatActivity {
 //                        driverNew2.setTextColor(getResources().getColor( R.color.colorBlue));
                         BtnTwoDriver.setText(array[which]);
                         BtnTwoDriver.setTextColor(getResources().getColor( R.color.colorBlue));
-                        sendToDriver2.setEnabled(true);
+
+                        //Запускаем метод считывание телефона выбранного водителя
+                        getWriteDriver2Point();
+
                     }
                 }
         );
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    //метод считывание телефона выбранного водителя 2 точки
+    public void getWriteDriver2Point(){
+
+        //чтение из БД с правилом для любых пользователей
+        databaseGetPhDR2 = FirebaseDatabase.getInstance();
+        refGetPhDR2 = databaseGetPhDR2.getReference("Водители")
+                .child("DriverPhone")
+                .child(BtnTwoDriver.getText().toString());
+        refGetPhDR2.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Чтение результата из БД
+                Dr2PhRef=dataSnapshot.getValue(String.class);
+                refGetPhDR2.removeEventListener(this);
+
+                //Активность кнопки отправить заявку
+                sendToDriver2.setEnabled(true);
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+    }
+
     // Выбрать Водителя по 3 точке
     public void choise_Driver3 (View view) {
 
@@ -989,13 +1065,43 @@ public class ServApp_1 extends AppCompatActivity {
 //                        driverNew3.setTextColor(getResources().getColor( R.color.colorBlue));
                         BtnTreeDriver.setText(array[which]);
                         BtnTreeDriver.setTextColor(getResources().getColor( R.color.colorBlue));
-                        sendToDriver3.setEnabled(true);
+
+                        //Запускаем метод считывание телефона выбранного водителя
+                        getWriteDriver3Point();
+
                     }
                 }
         );
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    //метод считывание телефона выбранного водителя 3 точки
+    public void getWriteDriver3Point(){
+
+        //чтение из БД с правилом для любых пользователей
+        databaseGetPhDR3 = FirebaseDatabase.getInstance();
+        refGetPhDR3 = databaseGetPhDR3.getReference("Водители")
+                .child("DriverPhone")
+                .child(BtnTreeDriver.getText().toString());
+        refGetPhDR3.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Чтение результата из БД
+                Dr3PhRef=dataSnapshot.getValue(String.class);
+                refGetPhDR3.removeEventListener(this);
+
+                //Активность кнопки отправить заявку
+                sendToDriver3.setEnabled(true);
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
     // Выбрать Водителя по 4 точке
     public void choise_Driver4 (View view) {
 
@@ -1009,7 +1115,9 @@ public class ServApp_1 extends AppCompatActivity {
 //                        driverNew4.setTextColor(getResources().getColor( R.color.colorBlue));
                         BtnFourDriver.setText(array[which]);
                         BtnFourDriver.setTextColor(getResources().getColor( R.color.colorBlue));
-                        sendToDriver4.setEnabled(true);
+
+                        //Запускаем метод считывание телефона выбранного водителя
+                        getWriteDriver4Point();
                     }
                 }
         );
@@ -1017,6 +1125,31 @@ public class ServApp_1 extends AppCompatActivity {
         dialog.show();
     }
 
+    //метод считывание телефона выбранного водителя 4 точки
+    public void getWriteDriver4Point(){
+
+        //чтение из БД с правилом для любых пользователей
+        databaseGetPhDR4 = FirebaseDatabase.getInstance();
+        refGetPhDR4 = databaseGetPhDR4.getReference("Водители")
+                .child("DriverPhone")
+                .child(BtnFourDriver.getText().toString());
+        refGetPhDR4.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Чтение результата из БД
+                Dr4PhRef=dataSnapshot.getValue(String.class);
+                refGetPhDR4.removeEventListener(this);
+
+                //Активность кнопки отправить заявку
+                sendToDriver4.setEnabled(true);
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
 
 
 
@@ -1027,7 +1160,7 @@ public class ServApp_1 extends AppCompatActivity {
     public void sendToDriver1(View view){
 
         database01=FirebaseDatabase.getInstance();
-        ref01 = database01.getReference("Drivers").child(BtnOneDriver.getText().toString()).child("Заявка");
+        ref01 = database01.getReference("Водители").child("Personal").child(Dr1PhRef).child("Заявка");
         ref01.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -1039,15 +1172,20 @@ public class ServApp_1 extends AppCompatActivity {
                 ref01.child("маршрут").setValue(Маршрут.getText().toString());
                 ref01.child("точкаСбора1").setValue(onePoint.getText().toString());
                 ref01.child("точкаСбора1Чел").setValue(oneMen.getText().toString());
-                Toast.makeText(ServApp_1.this,"Заявка отправлена....",Toast.LENGTH_LONG).show();
-                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка
                 ref01.removeEventListener( this );
+
+                //Отправляем время "Заказ отправлен" в БД ServerApp по 1-ой точке
+                sendTimeToServerApp1Point();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
 
+    }
+
+    //Отправляем время "Заказ отправлен" в БД ServerApp по 1-ой точке
+    public void sendTimeToServerApp1Point(){
         // получение текущего времени
         getTimNow();
 
@@ -1068,19 +1206,22 @@ public class ServApp_1 extends AppCompatActivity {
 
                                             // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
                                             ref02.removeEventListener(this);
+
+                                            Toast.makeText(ServApp_1.this,"Заявка отправлена....",Toast.LENGTH_LONG).show();
                                         }
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError databaseError) {
                                         }
                                     }
         );
+
     }
 
     // Отправить заявку водителю по второй точке
     public void sendToDriver2(View view){
 
         database01=FirebaseDatabase.getInstance();
-        ref01 = database01.getReference("Drivers").child(BtnTwoDriver.getText().toString()).child("Заявка");
+        ref01 = database01.getReference("Водители").child("Personal").child(Dr2PhRef).child("Заявка");
         ref01.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -1092,14 +1233,22 @@ public class ServApp_1 extends AppCompatActivity {
                 ref01.child("маршрут").setValue(Маршрут.getText().toString());
                 ref01.child("точкаСбора2").setValue(twoPoint.getText().toString());
                 ref01.child("точкаСбора2Чел").setValue(twoMen.getText().toString());
-                Toast.makeText(ServApp_1.this,"Заявка отправлена....",Toast.LENGTH_LONG).show();
+
                 // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Пользователи"
                 ref01.removeEventListener( this );
+
+                //Отправляем время "Заказ отправлен" в БД ServerApp по 1-ой точке
+                sendTimeToServerApp2Point();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
+
+    }
+
+    //Отправляем время "Заказ отправлен" в БД ServerApp по 2-ой точке
+    public void sendTimeToServerApp2Point(){
 
         // получение текущего времени
         getTimNow();
@@ -1121,6 +1270,8 @@ public class ServApp_1 extends AppCompatActivity {
 
                                             // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
                                             ref02.removeEventListener(this);
+
+                                            Toast.makeText(ServApp_1.this,"Заявка отправлена....",Toast.LENGTH_LONG).show();
                                         }
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -1128,13 +1279,13 @@ public class ServApp_1 extends AppCompatActivity {
                                     }
         );
 
-    }
+    };
 
     // Отправить заявку водителю по третьей точке
     public void sendToDriver3(View view){
 
         database01=FirebaseDatabase.getInstance();
-        ref01 = database01.getReference("Drivers").child(BtnTreeDriver.getText().toString()).child("Заявка");
+        ref01 = database01.getReference("Водители").child("Personal").child(Dr3PhRef).child("Заявка");
         ref01.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -1144,9 +1295,12 @@ public class ServApp_1 extends AppCompatActivity {
                 ref01.child("маршрут").setValue(Маршрут.getText().toString());
                 ref01.child("точкаСбора3").setValue(treePoint.getText().toString());
                 ref01.child("точкаСбора3Чел").setValue(treeMen.getText().toString());
-                Toast.makeText(ServApp_1.this,"Заявка отправлена....",Toast.LENGTH_LONG).show();
+
                 // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Пользователи"
                 ref01.removeEventListener( this );
+
+                //Отправляем время "Заказ отправлен" в БД ServerApp по 1-ой точке
+                sendTimeToServerApp3Point();
             }
 
             @Override
@@ -1154,6 +1308,10 @@ public class ServApp_1 extends AppCompatActivity {
             }
         });
 
+    }
+
+    //Отправляем время "Заказ отправлен" в БД ServerApp по 3-ой точке
+    public void sendTimeToServerApp3Point(){
         // получение текущего времени
         getTimNow();
 
@@ -1174,6 +1332,8 @@ public class ServApp_1 extends AppCompatActivity {
 
                                             // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
                                             ref02.removeEventListener(this);
+
+                                            Toast.makeText(ServApp_1.this,"Заявка отправлена....",Toast.LENGTH_LONG).show();
                                         }
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -1186,7 +1346,7 @@ public class ServApp_1 extends AppCompatActivity {
     public void sendToDriver4(View view){
 
         database01=FirebaseDatabase.getInstance();
-        ref01 = database01.getReference("Drivers").child(BtnFourDriver.getText().toString()).child("Заявка");
+        ref01 = database01.getReference("Водители").child("Personal").child(Dr4PhRef).child("Заявка");
         ref01.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -1196,15 +1356,23 @@ public class ServApp_1 extends AppCompatActivity {
                 ref01.child("маршрут").setValue(Маршрут.getText().toString());
                 ref01.child("точкаСбора4").setValue(fourPoint.getText().toString());
                 ref01.child("точкаСбора4Чел").setValue(fourMen.getText().toString());
-                Toast.makeText(ServApp_1.this,"Заявка отправлена....",Toast.LENGTH_LONG).show();
+
                 // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Пользователи"
                 ref01.removeEventListener( this );
+
+                //Отправляем время "Заказ отправлен" в БД ServerApp по 1-ой точке
+                sendTimeToServerApp4Point();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
 
+
+    }
+
+    //Отправляем время "Заказ отправлен" в БД ServerApp по 4-ой точке
+    public void sendTimeToServerApp4Point(){
         // получение текущего времени
         getTimNow();
 
@@ -1225,28 +1393,31 @@ public class ServApp_1 extends AppCompatActivity {
 
                                             // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
                                             ref02.removeEventListener(this);
+
+                                            Toast.makeText(ServApp_1.this,"Заявка отправлена....",Toast.LENGTH_LONG).show();
                                         }
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError databaseError) {
                                         }
                                     }
         );
+
     }
 
     private void  getServApp_2(){
 
-        servApp_2.setДата(Дата.getText().toString());
-        servApp_2.setРейс(Рейс.getText().toString());
-        servApp_2.setНаправление(Направление.getText().toString());
-        servApp_2.setМаршрут(Маршрут.getText().toString());
-        servApp_2.setТочкаСбора1(onePoint.getText().toString());
-        servApp_2.setТочкаСбора1Чел(oneMen.getText().toString());
-        servApp_2.setТочкаСбора2(twoPoint.getText().toString());
-        servApp_2.setТочкаСбора2Чел(twoMen.getText().toString());
-        servApp_2.setТочкаСбора3(treePoint.getText().toString());
-        servApp_2.setТочкаСбора3Чел(treeMen.getText().toString());
-        servApp_2.setТочкаСбора4(fourPoint.getText().toString());
-        servApp_2.setТочкаСбора4Чел(fourMen.getText().toString());
+//        servApp_2.setДата(Дата.getText().toString());
+//        servApp_2.setРейс(Рейс.getText().toString());
+//        servApp_2.setНаправление(Направление.getText().toString());
+//        servApp_2.setМаршрут(Маршрут.getText().toString());
+//        servApp_2.setТочкаСбора1(onePoint.getText().toString());
+//        servApp_2.setТочкаСбора1Чел(oneMen.getText().toString());
+//        servApp_2.setТочкаСбора2(twoPoint.getText().toString());
+//        servApp_2.setТочкаСбора2Чел(twoMen.getText().toString());
+//        servApp_2.setТочкаСбора3(treePoint.getText().toString());
+//        servApp_2.setТочкаСбора3Чел(treeMen.getText().toString());
+//        servApp_2.setТочкаСбора4(fourPoint.getText().toString());
+//        servApp_2.setТочкаСбора4Чел(fourMen.getText().toString());
 
     }
 

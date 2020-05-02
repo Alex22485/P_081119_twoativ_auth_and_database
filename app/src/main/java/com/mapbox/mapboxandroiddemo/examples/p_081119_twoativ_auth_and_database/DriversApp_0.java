@@ -321,34 +321,9 @@ public class DriversApp_0 extends AppCompatActivity {
             startActivity(aaa);
         }
         else if(key.equals("Yes")) {
-            // Запись в БД для проверки регистрации
-            writeMyToken();
-            //Регистрация личных данных
+            //Регистрация личных данных (Остальные ветки: 1.Водители-DriverPhone;2.Водители-DriverForOder;3.Check-CheckDrivers-Token записываются через nodJS)
             writePrivetData();
         }
-    }
-
-    public void writeMyToken(){
-
-        //030320 Запись токена для проверки Разрешения на запись заявки в БД ЗАЯВКИ...-...-...-"CheckStopOder"...
-        database01 = FirebaseDatabase.getInstance();
-        ref01 = database01.getReference("Check")
-                .child("CheckDrivers")
-                .child("Token");
-        ref01.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            ref01.child(driverToken).setValue("Hello");
-                                            // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
-                                            ref01.removeEventListener(this);
-
-                                            getMainList();
-                                        }
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                                        }
-                                    }
-        );
     }
 
     public void writePrivetData(){
@@ -361,8 +336,7 @@ public class DriversApp_0 extends AppCompatActivity {
         ref03.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //две первые строки нужны для правильного добавления/удаления данных в БД через nod js
-                ref03.child(editNumberCar.getText().toString()+editCar.getText().toString()+editQuantiatyOfPackages.getText().toString()+"M").child("REF").setValue("ref");
+                // первая строки нужна для правильного добавления/удаления данных в БД через nod js
                 ref03.child("NCP").setValue(editNumberCar.getText().toString()+editCar.getText().toString()+editQuantiatyOfPackages.getText().toString()+"M");
                 ref03.child("name").setValue(editDriverName.getText().toString());
                 ref03.child("phone").setValue(driverPhone);
@@ -375,6 +349,8 @@ public class DriversApp_0 extends AppCompatActivity {
                 // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД
                 ref03.removeEventListener(this);
                 Toast.makeText( DriversApp_0.this, "Сохранить удалось ", Toast.LENGTH_SHORT ).show();
+
+                getMainList();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

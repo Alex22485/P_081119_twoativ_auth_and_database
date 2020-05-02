@@ -44,10 +44,15 @@ public class Choose_direction extends AppCompatActivity {
         nextListInAir_choise_routes.putExtra( "twoMap", "Щорса-Аэропорт" );
         nextListInAir_choise_routes.putExtra( "treeMap", "Северный-Аэропорт" );
         nextListInAir_choise_routes.putExtra( "fourMap", "Ветлужанка-Аэропорт" );
-
-
         startActivity( nextListInAir_choise_routes);
     }
+
+    public void MyStatus(View view){
+        Intent MyStatus= new Intent(this,Main6Activity.class);
+        startActivity(MyStatus);
+    }
+
+
 
     // кнопка Back сворачивает приложение
     @Override

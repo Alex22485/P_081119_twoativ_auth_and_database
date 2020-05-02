@@ -317,9 +317,4 @@ public void btnStatus(View view) {
         Intent qwe= new Intent(this,Choose_direction.class);
         startActivity(qwe);
     }
-    //временная кнопка переход на лист регистрации
-    public void backMain2List (View view){
-        Intent backMain2List= new Intent(this,Main2Activity.class);
-        startActivity(backMain2List);
-    }
 }
