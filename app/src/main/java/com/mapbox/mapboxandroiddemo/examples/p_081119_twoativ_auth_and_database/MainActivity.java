@@ -299,7 +299,7 @@ import com.google.firebase.iid.InstanceIdResult;
             //Если keyReg пусто, значит пропал интернет и переходим на  InternetNot
             Intent aaa = new Intent(this,InternetNot.class);
             startActivity(aaa);
-            Toast.makeText( MainActivity.this, "опять нет интернета  "+keyReg, Toast.LENGTH_SHORT ).show();
+            //Toast.makeText( MainActivity.this, "опять нет интернета  "+keyReg, Toast.LENGTH_SHORT ).show();
         }
         else if (keyReg.equals("Hello")){
             goMainList();}

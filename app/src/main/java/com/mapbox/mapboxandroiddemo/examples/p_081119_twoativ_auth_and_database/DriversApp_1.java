@@ -128,7 +128,7 @@ public class DriversApp_1 extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser ghg = mAuth.getCurrentUser();
         driverPhone=ghg.getPhoneNumber();
-        Toast.makeText( DriversApp_1.this, "Телефон  "+driverPhone, Toast.LENGTH_SHORT ).show();
+        //Toast.makeText( DriversApp_1.this, "Телефон  "+driverPhone, Toast.LENGTH_SHORT ).show();
 
         getNCP();
 
@@ -172,7 +172,7 @@ public class DriversApp_1 extends AppCompatActivity {
                 StopOrder4.setText(point4);
                 MenpOrder4.setText(point4Men);
 
-                Toast.makeText( DriversApp_1.this, "Заказ считан "+time+date+маршрут+point1+point1Men+point2+point2Men+point3+point3Men+point4+point4Men, Toast.LENGTH_LONG ).show();
+                //Toast.makeText( DriversApp_1.this, "Заказ считан "+time+date+маршрут+point1+point1Men+point2+point2Men+point3+point3Men+point4+point4Men, Toast.LENGTH_LONG ).show();
 
                 //останов прослушивания
                 //без нее считывает дважды (сужу по  Toast.makeText )
@@ -412,7 +412,7 @@ public class DriversApp_1 extends AppCompatActivity {
     }
 
     public void getNCP(){
-        Toast.makeText( DriversApp_1.this, "Запуск метода  "+driverPhone, Toast.LENGTH_SHORT ).show();
+        //Toast.makeText( DriversApp_1.this, "Запуск метода  "+driverPhone, Toast.LENGTH_SHORT ).show();
 
         final Query aaa= FirebaseDatabase.getInstance().getReference("Водители").child( "Personal" ).child(driverPhone)
                 .orderByChild("Private");
@@ -427,7 +427,7 @@ public class DriversApp_1 extends AppCompatActivity {
                 //без нее считывает дважды (сужу по  Toast.makeText )
                 aaa.removeEventListener(this);
 
-                Toast.makeText( DriversApp_1.this, "Метод выполнен"+carNumber+car, Toast.LENGTH_SHORT ).show();
+                //Toast.makeText( DriversApp_1.this, "Метод выполнен"+carNumber+car, Toast.LENGTH_SHORT ).show();
 
 
                 yourCar.setText(car);
