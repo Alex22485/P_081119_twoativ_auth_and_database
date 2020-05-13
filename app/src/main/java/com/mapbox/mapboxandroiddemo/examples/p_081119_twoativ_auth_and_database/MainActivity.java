@@ -31,6 +31,9 @@ import com.google.firebase.iid.InstanceIdResult;
     String keyReg;
     String UserToken;
 
+    String internet;
+    String timeOut;
+
     FirebaseDatabase database01;
     FirebaseDatabase database02;
     DatabaseReference ref01;
@@ -189,15 +192,19 @@ import com.google.firebase.iid.InstanceIdResult;
     //Проверка интернета
     public void cheskInternet(){
         key="";
+        internet="";
+        timeOut="";
 
                 //задержка запроса
         Handler handler1 = new Handler();
         handler1.postDelayed(new Runnable() {
             @Override
             public void run() {
-               check();
+               //check();
+               inetNot();
+               timeOut="Out";
             }
-        },4000);
+        },6000);
 
 
         //чтение из БД с правилом для любых пользователей
@@ -213,6 +220,8 @@ import com.google.firebase.iid.InstanceIdResult;
 
                 // Чтение
                 key=dataSnapshot.getValue(String.class);
+                internet="Yes";
+                cheskProba();
 
                 //временно для проверки
                 //Toast.makeText( MainActivity.this, "Интернет есть?  "+key, Toast.LENGTH_SHORT ).show();
@@ -237,6 +246,21 @@ import com.google.firebase.iid.InstanceIdResult;
             //проверка регистрации
             CheckRegistration();
         }
+    }
+
+        public void cheskProba(){
+
+        if(timeOut.equals("Out")){}
+        else {CheckRegistration();}
+        }
+
+    public void  inetNot(){
+        if (internet.equals("Yes")){ }
+        else {
+            Intent aaa = new Intent(this,InternetNot.class);
+            startActivity(aaa);
+        }
+
     }
 
     //проверка регистрации

@@ -5,6 +5,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -14,7 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ServApp_0"></activity>
+        <activity android:name=".Website1"></activity>
+        <activity android:name=".Website" />
+        <activity android:name=".ProbaTime" />
+        <activity android:name=".ServApp_0" />
         <activity android:name=".DriversApp_InternetNot_forDriverApp_0" />
         <activity android:name=".DriversApp_InternetNot" />
         <activity android:name=".DriversApp_Start" />

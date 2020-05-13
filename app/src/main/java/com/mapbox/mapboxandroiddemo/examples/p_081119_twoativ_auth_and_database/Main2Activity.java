@@ -56,6 +56,7 @@ public class Main2Activity extends AppCompatActivity {
         doPhoneLogin();
     }
     private void doPhoneLogin() {
+//        Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
         Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
                 .setIsSmartLockEnabled(!BuildConfig.DEBUG)
                 .setAvailableProviders(Collections.singletonList(

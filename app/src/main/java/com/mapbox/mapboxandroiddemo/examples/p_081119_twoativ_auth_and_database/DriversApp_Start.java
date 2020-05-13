@@ -51,6 +51,7 @@ public class DriversApp_Start extends AppCompatActivity {
     }
     //Проверка интернета
     public void cheskInternet(){
+
         key="";
 
         //задержка запроса
@@ -60,7 +61,7 @@ public class DriversApp_Start extends AppCompatActivity {
             public void run() {
                 check();
             }
-        },4000);
+        },10000);
 
 
         //чтение из БД с правилом для любых пользователей
@@ -76,7 +77,16 @@ public class DriversApp_Start extends AppCompatActivity {
                 key=dataSnapshot.getValue(String.class);
                 ref01.removeEventListener(this);
 
-                //Toast.makeText( DriversApp_Start.this, "Интернет есть"+key, Toast.LENGTH_SHORT ).show();
+//                //задержка запроса
+//                Handler handler1 = new Handler();
+//                handler1.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        check();
+//                    }
+//                },1000);
+
+                Toast.makeText( DriversApp_Start.this, "Интернет есть"+key, Toast.LENGTH_SHORT ).show();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

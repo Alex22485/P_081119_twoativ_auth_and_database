@@ -28,4 +28,14 @@ public class MainList extends AppCompatActivity {
         Intent ServAppList= new Intent(this,ServApp_0.class);
         startActivity(ServAppList);
     }
+
+    public void ProbaTime(View view){
+        Intent ProbaTime= new Intent(this,ProbaTime.class);
+        startActivity(ProbaTime);
+    }
+
+    public void Website1(View view){
+        Intent Website1= new Intent(this,Website1.class);
+        startActivity(Website1);
+    }
 }
