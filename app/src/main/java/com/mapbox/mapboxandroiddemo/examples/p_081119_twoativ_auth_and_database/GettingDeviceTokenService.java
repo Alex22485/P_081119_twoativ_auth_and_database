@@ -8,6 +8,8 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 
 public class GettingDeviceTokenService extends FirebaseMessagingService {
 
+    //Не используется
+
     @Override
     public void onNewToken(String s) {
         super.onNewToken(s);

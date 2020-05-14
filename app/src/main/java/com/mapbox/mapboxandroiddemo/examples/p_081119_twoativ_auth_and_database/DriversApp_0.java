@@ -68,10 +68,8 @@ public class DriversApp_0 extends AppCompatActivity {
 
 
     FirebaseDatabase databaseCheckInternet1;
-    FirebaseDatabase databaseCheckInternet2;
 
     DatabaseReference ref03;
-    DatabaseReference ref04;
 
     TextView checkWord;
     TextView TextHello1;
@@ -217,12 +215,8 @@ public class DriversApp_0 extends AppCompatActivity {
         TextHello1.setText("Авторизация не выполнена ");
         TextHello1.setTextColor(getResources().getColor( R.color.colorNew ));
         TextHello1.setVisibility(View.VISIBLE);
-
         DriversApp_Start.setVisibility(View.VISIBLE);
-
-
-
-    };
+    }
 
 
 
@@ -240,12 +234,12 @@ public class DriversApp_0 extends AppCompatActivity {
 
         // Выпадающий массив для марок авто
         AutoCompleteTextView editText=findViewById(R.id.editCar);
-        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, CARS);
+        ArrayAdapter<String> adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, CARS);
         editText.setAdapter(adapter);
 
         // Выпадающий массив для цвета авто
         AutoCompleteTextView editText1=findViewById(R.id.editColorCar);
-        ArrayAdapter<String> adapter1=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, CARSCOLOR);
+        ArrayAdapter<String> adapter1=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, CARSCOLOR);
         editText1.setAdapter(adapter1);
 
     }

@@ -22,6 +22,8 @@ import com.google.firebase.database.ValueEventListener;
 
 public class InternetNot extends AppCompatActivity {
 
+    //Используется для MainActivity
+
     String key;
     TextView TextUpdate;
     TextView TextMessage1;
