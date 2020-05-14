@@ -9,14 +9,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.sip.SipSession;
 import android.os.Bundle;
 
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -31,12 +29,10 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -63,7 +59,6 @@ public class DriversApp_0 extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     String driverPhone;
-    String driverId;
     String driverToken;
 
 
@@ -248,7 +243,6 @@ public class DriversApp_0 extends AppCompatActivity {
     public void getIdTokenDriver(){
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser ghg = mAuth.getCurrentUser();
-        driverId = ghg.getUid();
         driverPhone=ghg.getPhoneNumber();
 
         //получение токена
@@ -330,7 +324,7 @@ public class DriversApp_0 extends AppCompatActivity {
         ref03.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // первая строки нужна для правильного добавления/удаления данных в БД через nod js
+                // первая строка нужна для правильного добавления/удаления данных в БД через nod js
                 ref03.child("NCP").setValue(editNumberCar.getText().toString()+editCar.getText().toString()+editQuantiatyOfPackages.getText().toString()+"M");
                 ref03.child("name").setValue(editDriverName.getText().toString());
                 ref03.child("phone").setValue(driverPhone);

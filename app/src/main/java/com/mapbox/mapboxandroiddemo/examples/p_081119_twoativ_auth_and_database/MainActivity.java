@@ -57,8 +57,17 @@ import com.google.firebase.iid.InstanceIdResult;
         super.onStart();
         Log.d(TAG, "onStart");
 
-//СТАРТ Проверка интернета
-        cheskInternet();
+
+        //cheskInternet();
+        //CheckRegistration();
+        //СТАРТ Проверка интернета+регистрации
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                CheckRegistration();
+            }
+        },700);
 
     }
     @Override
@@ -100,73 +109,74 @@ import com.google.firebase.iid.InstanceIdResult;
         Log.d(TAG, "onStop");
     }
 
-    //Проверка интернета
-    public void cheskInternet(){
-
-        key="";
-        internet="";
-        internetTimeOut="";
-
-        //ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА-1
-        Handler handler1 = new Handler();
-        handler1.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                // Завершен ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА-1
-               inetNot();
-               internetTimeOut="Out";
-            }
-        },7000);
-
-
-        //чтение из БД с правилом для любых пользователей
-        database01 = FirebaseDatabase.getInstance();
-        ref01 = database01.getReference("Check")
-                .child("Internet")
-                .child("Work");
-        ref01.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                key=dataSnapshot.getValue(String.class);
-                internet=key;
-                Log.d(TAG, "интернет 1 есть");
-
-                //Проверка time-Out
-                timeOutInternet();
-
-
-                // с этой записью makeText появляется только один раз!!!!! ХОРОШО, блин не всегда :(((
-                ref01.removeEventListener(this);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-    }
-
-        public void  inetNot(){
-            if (internet.equals("Yes")){
-                Log.d(TAG, "таймер-1 остановлен");/*специально пусто*/}
-            else {
-                Log.d(TAG, "Интернета нет при первом запросе");/*специально пусто*/
-                Intent aaa = new Intent(this,InternetNot.class);
-                startActivity(aaa);
-            }
-            }
-
-        //Проверка time-Out
-        public void timeOutInternet (){
-        if(internetTimeOut.equals("Out")){
-            Log.d(TAG, "проверка интернета1 время вышло");/*специально пусто*/}
-
-        else {
-            // Проверка регистрации
-            CheckRegistration();
-        }
-        }
+//    //Проверка интернета
+//    public void cheskInternet(){
+//
+//        key="";
+//        internet="";
+//        internetTimeOut="";
+//
+//        //ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА-1
+//        Handler handler1 = new Handler();
+//        handler1.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                // Завершен ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА-1
+//               inetNot();
+//               internetTimeOut="Out";
+//            }
+//        },7000);
+//
+//
+//        //чтение из БД с правилом для любых пользователей
+//        database01 = FirebaseDatabase.getInstance();
+//        ref01 = database01.getReference("Check")
+//                .child("Internet")
+//                .child("Work");
+//        ref01.addValueEventListener(new ValueEventListener() {
+//
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                key=dataSnapshot.getValue(String.class);
+//                internet=key;
+//                //Log.d(TAG, "интернет 1 есть");
+//                Log.d(TAG, "интернет 1 есть"+key);
+//
+//                //Проверка time-Out
+//                timeOutInternet();
+//
+//
+//                // с этой записью makeText появляется только один раз!!!!! ХОРОШО, блин не всегда :(((
+//                ref01.removeEventListener(this);
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            }
+//        });
+//    }
+//
+//        public void  inetNot(){
+//            if (internet.equals("Yes")){
+//                Log.d(TAG, "таймер-1 остановлен");/*специально пусто*/}
+//            else {
+//                Log.d(TAG, "Интернета нет при первом запросе");/*специально пусто*/
+//                Intent aaa = new Intent(this,InternetNot.class);
+//                startActivity(aaa);
+//            }
+//            }
+//
+//        //Проверка time-Out
+//        public void timeOutInternet (){
+//        if(internetTimeOut.equals("Out")){
+//            Log.d(TAG, "проверка интернета1 время вышло");/*специально пусто*/}
+//
+//        else {
+//            // Проверка регистрации
+//            CheckRegistration();
+//        }
+//        }
 
     //проверка регистрации
     public void CheckRegistration(){
@@ -202,6 +212,7 @@ import com.google.firebase.iid.InstanceIdResult;
                 keyReg=dataSnapshot.getValue(String.class);
                 registration=""+keyReg; /* так как может получить null*/
                 Log.d(TAG, "запрос регистрации получен");
+
 
                 // с этой записью makeText появляется только один раз!!!!! ХОРОШО
                 ref02.removeEventListener(this);
@@ -239,21 +250,26 @@ import com.google.firebase.iid.InstanceIdResult;
         else{
         if (keyReg==null){
 
+            Log.d(TAG, "Переход на лист регистрации");/*специально пусто*/
             //переход к авторизации по телефону от firebase
             Intent AuthList = new Intent(this,Main2Activity.class);
             startActivity(AuthList);
         }
         else if (keyReg.equals("Hello")){
-            goMainList();}
+            Log.d(TAG, "Переход на лист заказов");/*специально пусто*/
+            //goMainList();
+            //Переход в главное меню заказов
+            Intent mainList = new Intent(this,Choose_direction.class);
+            startActivity(mainList);
+        }
     }
     }
 
-
-    //Переход в главное меню заказов
-    public void goMainList(){
-        Intent mainList = new Intent(this,Choose_direction.class);
-        startActivity(mainList);
-    }
+//    //Переход в главное меню заказов
+//    public void goMainList(){
+//        Intent mainList = new Intent(this,Choose_direction.class);
+//        startActivity(mainList);
+//    }
 
     // Блокировка кнопки Back!!!! :)))
     @Override
