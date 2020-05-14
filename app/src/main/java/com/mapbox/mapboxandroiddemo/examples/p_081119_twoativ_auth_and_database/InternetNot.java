@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 public class InternetNot extends AppCompatActivity {
 
     //Используется для MainActivity
+    //Используется для Main2activity
 
     String key;
     TextView TextUpdate;
@@ -50,15 +51,6 @@ public class InternetNot extends AppCompatActivity {
 
 
     }
-
-
-//
-//    // кнопка Back сворачивает приложение
-//    @Override
-//    public void onBackPressed(){
-//        this.moveTaskToBack(true);
-//    }
-
 
     // Кнопка обновить
     public void Update(View view){

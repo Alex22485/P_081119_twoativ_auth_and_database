@@ -37,6 +37,8 @@ import java.util.Calendar;
 
 public class Main3Activity extends AppCompatActivity {
 
+    private static final String TAG ="Main3Activity" ;
+
     FirebaseAuth mAuth;
     Button btnInsert;
     Button btn_number_Flight;
@@ -100,7 +102,7 @@ public class Main3Activity extends AppCompatActivity {
 
 
 // ADD Calendar
-        choisData=(Button)findViewById(R.id.choisData);
+        choisData=findViewById(R.id.choisData);
         Calend=findViewById(R.id.Calend);
         btnInsert = findViewById(R.id.btnInsert);
         choisData.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +120,7 @@ public class Main3Activity extends AppCompatActivity {
                     }
                     }, year,month,dayOfmonth);
                 datePickerDialog.show();
-            };
+            }
         }
         );
 
@@ -191,11 +193,11 @@ public class Main3Activity extends AppCompatActivity {
                     .child(TVchoiseMap)
                     .child(TVchoise_pointMap)
                     .child("CheckStopOder")
-                    .child(userid);
+                    .child(userPhone);
             ref01.addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                ref01.child(newToken).setValue(userid);
+                                                ref01.child(newToken).setValue(userPhone);
                                                 // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
                                                 ref01.removeEventListener(this);
                                                 //запускаем метод
@@ -229,24 +231,24 @@ public class Main3Activity extends AppCompatActivity {
 
     }
 
-    public void   getInternetCheck(){
-        //задержка запроса из БД для полного завершения функций из nod js
-        Handler handler1 = new Handler();
-        handler1.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                String a=TextProcess.getText().toString();
-                String b="";
-                if(a.equals(b)){}
-                else{
-                TextProcess.setText("Ошибка регистрации...");
-                showAlertDialog4();}
-                btnInsert.setVisibility(View.VISIBLE);
-            }
-        },5000);
-
-
-    }
+//    public void   getInternetCheck(){
+//        //задержка запроса из БД для полного завершения функций из nod js
+//        Handler handler1 = new Handler();
+//        handler1.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                String a=TextProcess.getText().toString();
+//                String b="";
+//                if(a.equals(b)){}
+//                else{
+//                TextProcess.setText("Ошибка регистрации...");
+//                showAlertDialog4();}
+//                btnInsert.setVisibility(View.VISIBLE);
+//            }
+//        },5000);
+//
+//
+//    }
 
     // Всплывающая информация "Заявка отклонена!!!"
     public void showAlertDialog() {
@@ -306,34 +308,34 @@ public class Main3Activity extends AppCompatActivity {
         mAlertDialog.show();
     }
 
-    // Всплывающая информация "ошибка регистрации Нет Интернета!!!"
-    public void showAlertDialog4() {
-        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
-                Main3Activity.this);
-        // Set Title
-        mAlertDialog.setTitle("Ошибка");
-        mAlertDialog.setCancelable(false);
-        // Set Message
-        mAlertDialog
-                .setMessage("Проверьте соединение интернета")
-                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        //задержка
-                        Handler handler1 = new Handler();
-                        handler1.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                onBackList();
-                            }
-                        },10);
-
-                    }
-                });
-        mAlertDialog.create();
-        // Showing Alert Message
-        mAlertDialog.show();
-    }
+//    // Всплывающая информация "ошибка регистрации Нет Интернета!!!"
+//    public void showAlertDialog4() {
+//        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
+//                Main3Activity.this);
+//        // Set Title
+//        mAlertDialog.setTitle("Ошибка");
+//        mAlertDialog.setCancelable(false);
+//        // Set Message
+//        mAlertDialog
+//                .setMessage("Проверьте соединение интернета")
+//                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//
+//                        //задержка
+//                        Handler handler1 = new Handler();
+//                        handler1.postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                onBackList();
+//                            }
+//                        },10);
+//
+//                    }
+//                });
+//        mAlertDialog.create();
+//        // Showing Alert Message
+//        mAlertDialog.show();
+//    }
 
     // Переход на лист Статуса
     public void onStatusList() {
@@ -358,15 +360,14 @@ public class Main3Activity extends AppCompatActivity {
                 .child(TVchoiseMap)
                 .child(TVchoise_pointMap)
                 .child("Разрешение")
-                .child(userid)
+                .child(userPhone)
                 .orderByChild("Разрешение");
         aaa1.addChildEventListener( new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
                 String data=dataSnapshot.child( "РазрешениеНаЗапись" ).getValue(String.class);
-                Log.d("TAG", "РазрешениеНаЗапись" + data);
-                //Toast.makeText( Main3Activity.this, "РазрешениеНаЗапись"+data, Toast.LENGTH_SHORT ).show();
+                Log.d(TAG, "РазрешениеНаЗапись"+data);/*специально пусто*/
 
                 if(data.equals("Разрешено")){
                     TextProcess.setText("");

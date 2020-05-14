@@ -182,7 +182,7 @@ public class DriversApp_Start extends AppCompatActivity {
         else {
             //пропал интернет во время проверки наличия регистрации
             Log.d(TAG, "Интернета пропал при проверке регистрации");
-            Intent aaa = new Intent(this,DriversApp_InternetNot_forDriverApp_0.class);
+            Intent aaa = new Intent(this,DriversApp_InternetNot.class);
             startActivity(aaa);
         }
     }

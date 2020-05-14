@@ -35,7 +35,7 @@ public class Main6Activity extends AppCompatActivity {
     Button btnStatus;
     Button cancelOder;
     Button detailsTrip;
-    String userI;
+    String userPhone;
     String token;
     String[] CancelOderWhy ={"Самолет отменён","Передумал", };
 
@@ -87,7 +87,7 @@ public class Main6Activity extends AppCompatActivity {
         mAuth= FirebaseAuth.getInstance(  );
         FirebaseUser user=mAuth.getCurrentUser();
         //полуаем id пользователя
-        userI=user.getUid();
+        userPhone = user.getPhoneNumber();
 
         // Disable Button "Отменить заявку" if Text is Empty
 //        Calend_Out.addTextChangedListener( loginTextWather );
@@ -150,7 +150,7 @@ public class Main6Activity extends AppCompatActivity {
     }
 
     public void getStatus(){
-        Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child( userI )
+        Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child("Personal").child( userPhone )
                 .orderByChild( "Status" );
         aaa.addChildEventListener( new ChildEventListener() {
             @Override
@@ -257,18 +257,19 @@ public void btnStatus(View view) {
                 handler.postDelayed( new Runnable() {
                     @Override
                     public void run() {
-                        mmm = ggg.getReference("Заявки")
-                                .child(Map.getText().toString() )
-                                .child( Calend_Out.getText().toString() )
-                                //.child(road_number_out.getText().toString())
-                                .child(flight_number_Out.getText().toString()  )
-                                .child(road_number_out.getText().toString())
-                                .child(road_name_out.getText().toString())
-                                .child("Users");
-                        mmm.child( userI ).removeValue();
+//                        mmm = ggg.getReference("Заявки")
+//                                .child(Map.getText().toString() )
+//                                .child( Calend_Out.getText().toString() )
+//                                //.child(road_number_out.getText().toString())
+//                                .child(flight_number_Out.getText().toString()  )
+//                                .child(road_number_out.getText().toString())
+//                                .child(road_name_out.getText().toString())
+//                                .child("Users");
+//                        mmm.child( userI ).removeValue();
 
                         mmm = ggg.getReference("Пользователи")
-                                .child(userI);
+                                .child("Personal")
+                                .child(userPhone);
                         mmm.child( "Status" ).removeValue();
                         Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
 

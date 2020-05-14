@@ -38,4 +38,8 @@ public class MainList extends AppCompatActivity {
         Intent Website1= new Intent(this,Website1.class);
         startActivity(Website1);
     }
+    public void probaRegDriver(View view){
+        Intent probaRegDriver= new Intent(this,DriversApp_0.class);
+        startActivity(probaRegDriver);
+    }
 }

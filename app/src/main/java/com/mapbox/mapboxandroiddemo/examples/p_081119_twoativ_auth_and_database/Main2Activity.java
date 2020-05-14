@@ -2,6 +2,8 @@ package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -30,16 +32,26 @@ import java.util.Collections;
 
 public class Main2Activity extends AppCompatActivity {
 
+    private static final String TAG ="Main2activity" ;
+
 
     FirebaseDatabase database01;
     DatabaseReference ref01;
     String UserToken;
+    String phoneUser;
 
     TextView TextHello1;
     Button GoMainActivity;
 
     LinearLayout Layout1;
     LinearLayout Layout2;
+
+    FirebaseAuth mAuth;
+
+    //Проверка интернета
+    String keyReg;
+    String checkInternet;
+    String writeData;
 
     private static final int RC_SIGN_IN = 101;
 
@@ -80,8 +92,8 @@ public class Main2Activity extends AppCompatActivity {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 showAlertDialog(user);
 
-                //29.04.20 запись регистрации в БД Chesh-CheskUser
-                writeMyToken();
+                //29.04.20 получить токен и телефон
+                getMyToken();
 
                 Layout1.setVisibility(View.VISIBLE);
                 Layout2.setVisibility(View.VISIBLE);
@@ -120,6 +132,7 @@ public class Main2Activity extends AppCompatActivity {
         mAlertDialog.show();
     }
 
+
     public void GoMainActivity(View view){
         Intent GoMainActivity= new Intent(this,MainActivity.class);
         startActivity(GoMainActivity);
@@ -127,39 +140,125 @@ public class Main2Activity extends AppCompatActivity {
 
 
 
-    public void writeMyToken(){
+    public void getMyToken(){
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser ghg = mAuth.getCurrentUser();
+        phoneUser=ghg.getPhoneNumber();
 
         //получение токена
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Main2Activity.this,new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
                 UserToken = instanceIdResult.getToken();
+
             }
         });
+    }
+
+//    public void writePrivateData(){
+//        //030320 Запись токена для проверки Разрешения на запись заявки в БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+//        database01 = FirebaseDatabase.getInstance();
+//        ref01 = database01.getReference("Check")
+//                .child("CheckUsers")
+//                .child("Token");
+//        ref01.addValueEventListener(new ValueEventListener() {
+//                                        @Override
+//                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                            ref01.child(UserToken).setValue("Hello");
+//                                            // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+//                                            ref01.removeEventListener(this);
+//                                        }
+//                                        @Override
+//                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+//                                        }
+//                                    }
+//        );
+//    }
+
+    //Кнопка пропустить c в БД персональные данные
+    public void GoMainOder(View view){
+
+        keyReg="";
+        checkInternet="";
+        writeData="";
+
+        //ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                // Завершен ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА при записи данных в БД
+                checkInternet="Out";
+                Log.d(TAG, "Записан checkInternet=Out");/*специально пусто*/
+                inetNotWhenGoCheckRegistration();
+            }
+        },15000);
+
 
         //030320 Запись токена для проверки Разрешения на запись заявки в БД ЗАЯВКИ...-...-...-"CheckStopOder"...
         database01 = FirebaseDatabase.getInstance();
-        ref01 = database01.getReference("Check")
-                .child("CheckUsers")
-                .child("Token");
+        ref01 = database01.getReference("Пользователи")
+                .child("Personal")
+                .child(phoneUser)
+                .child("Private");
         ref01.addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            ref01.child(UserToken).setValue("Hello");
+                                            ref01.child("token").setValue(UserToken);
                                             // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
                                             ref01.removeEventListener(this);
+
+                                            writeData="Yes";
+                                            getMainList();
                                         }
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError databaseError) {
                                         }
                                     }
         );
+
+
+
+
+
+//        Intent GoMainOder = new Intent( this,Choose_direction.class );
+//        startActivity( GoMainOder);
     }
 
-    public void GoMainOder(View view){
-        Intent GoMainOder = new Intent( this,Choose_direction.class );
-        startActivity( GoMainOder);
+    public void inetNotWhenGoCheckRegistration(){
+        if(writeData.equals("Yes")){
+            Log.d(TAG, "таймер остановлен");/*специально пусто*/}
+
+        else {
+            //пропал интернет во время проверки наличия регистрации
+            Log.d(TAG, "Интернета пропал при записи данных");
+            Intent aaa = new Intent(this,InternetNot.class);
+            startActivity(aaa);
+        }
+
     }
+
+    public void getMainList(){
+        Log.d(TAG, "вход в проверку getMainList");/*специально пусто*/
+
+        if(checkInternet.equals("Out")){
+            Log.d(TAG, "getMainList остановлен");/*специально пусто*/
+
+            //return нужен чтобы при возобноблении интернета автоматически не переходило на лист с заявками
+            return;
+        }
+        Intent Choose_direction=new Intent(this,Choose_direction.class);
+        startActivity(Choose_direction);
+    }
+
+    // кнопка Back сворачивает приложение
+    @Override
+    public void onBackPressed(){
+        this.moveTaskToBack(true);
+    }
+
 
 
 

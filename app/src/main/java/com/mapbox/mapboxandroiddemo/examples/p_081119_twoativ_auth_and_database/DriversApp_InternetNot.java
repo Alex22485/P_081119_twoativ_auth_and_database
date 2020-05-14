@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 public class DriversApp_InternetNot extends AppCompatActivity {
 
+    //Используется для DriversApp_Start и для DriversApp_0
+
     TextView TextUpdate;
     TextView TextMessage1;
     TextView TextMessage2;
@@ -39,7 +41,7 @@ public class DriversApp_InternetNot extends AppCompatActivity {
 
     // Кнопка обновить
     public void Update(View view){
-        Intent ddd=new Intent(this,MainActivity.class);
+        Intent ddd=new Intent(this,DriversApp_Start.class);
         startActivity(ddd);
     }
 }
