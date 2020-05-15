@@ -70,16 +70,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-        <Button
-            android:id="@+id/btnStatus"
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:onClick="btnStatus"
-            android:text="Обновить данные"
-            android:visibility="invisible"
-            android:textSize="15sp" />
-
         <TextView
             android:layout_width="0sp"
             android:layout_height="match_parent"

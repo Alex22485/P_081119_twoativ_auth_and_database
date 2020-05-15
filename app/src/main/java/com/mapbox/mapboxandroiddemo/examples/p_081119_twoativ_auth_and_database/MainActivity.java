@@ -195,7 +195,7 @@ import com.google.firebase.iid.InstanceIdResult;
                 checkregistrationTimeOut="Out";
                 inetNotWhenGoCheckRegistration();
             }
-        },7000);
+        },15000);
 
         Log.d(TAG, "запрос регистрации начат");
         //чтение из БД с правилом для любых пользователей

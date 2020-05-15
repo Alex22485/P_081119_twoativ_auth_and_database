@@ -25,19 +25,45 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.NotNull;
 
 
 public class Main6Activity extends AppCompatActivity {
 
+    private static final String TAG ="Main6Activity" ;
+
+    FirebaseDatabase database02;
+    DatabaseReference ref02;
+
+    String checkregistrationTimeOut;
+
     FirebaseDatabase ggg;
     DatabaseReference mmm;
 
-    Button btnStatus;
     Button cancelOder;
     Button detailsTrip;
     String userPhone;
-    String token;
+
     String[] CancelOderWhy ={"Самолет отменён","Передумал", };
+
+    String data;
+    String map;
+    String roar_number;
+    String road_name;
+    String flidht_number;
+    Integer peopleOder;
+    String сarDrive;
+    String token;
+
+    String data1;
+    String map1;
+    String roar_number1;
+    String road_name1;
+    String flidht_number1;
+    String peopleOder1;
+    String сarDrive1;
+    String token1;
 
     FirebaseAuth mAuth;
 
@@ -60,14 +86,14 @@ public class Main6Activity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main6 );
 
-        btnStatus = findViewById( R.id.btnStatus );
+        Log.d(TAG, "onCreate");/*специально пусто*/
+
         number = findViewById( R.id.number );
         Calend_Out=findViewById( R.id.Calend_Out );
         flight_number_Out=findViewById( R.id.flight_number_Out );
         Map=findViewById( R.id.Map );
         road_number_out=findViewById( R.id.road_number_out );
         road_name_out=findViewById( R.id.road_name_out );
-        //information=findViewById( R.id.information );
         information2=findViewById( R.id.information2 );
         people=findViewById( R.id.people );
         people2=findViewById( R.id.people2 );
@@ -84,121 +110,120 @@ public class Main6Activity extends AppCompatActivity {
         TextMap=findViewById( R.id.TextMap );
         TextPoint=findViewById( R.id.TextPoint );
 
+        data1="";
+
+        //полуаем phone пользователя
         mAuth= FirebaseAuth.getInstance(  );
         FirebaseUser user=mAuth.getCurrentUser();
-        //полуаем id пользователя
         userPhone = user.getPhoneNumber();
+        Log.d(TAG, "получен телефон"+userPhone);/*специально пусто*/
 
-        // Disable Button "Отменить заявку" if Text is Empty
-//        Calend_Out.addTextChangedListener( loginTextWather );
-//        Map.addTextChangedListener( loginTextWather );
-//        road_number_out.addTextChangedListener( loginTextWather );
-//        road_name_out.addTextChangedListener( loginTextWather );
-//        flight_number_Out.addTextChangedListener( loginTextWather );
+        number.setText("Поиск Заявок...");
 
-        // Проверка есть ли интернет
-        ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
-        if (networkInfo != null && networkInfo.isConnected()) {
-            number.setText("Поиск Заявок...");
-
-            //задержка запроса из БД для полного завершения функций из nod js
-            Handler handler0 = new Handler();
-            handler0.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    getStatus();
-
-                }
-            },3000);
-
-            //задержка запроса из БД для полного завершения функций из nod js
-            Handler handler1 = new Handler();
-            handler1.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    getNull();
-                }
-            },10000);
-
-        }
-        else {
-            new AlertDialog.Builder(this)
-                    .setTitle("Ошибка!!!")
-                    .setMessage("Пожалуйста, проверьте соединение с сетью")
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            number.setText("ошибка загрузки данных");
-                            btnStatus.setVisibility(View.VISIBLE);
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
-        }
-
+//        //Старт Проверка интернета+статус заявок
+//        Handler handler1 = new Handler();
+//        handler1.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                getStatus();
+//                Log.d(TAG, "Считывание СТАТУСА");/*специально пусто*/
+//            }
+//        },700);
     }
 
-    public void getNull(){
-        String numberChesk=number.getText().toString();
-        String Chrsk="заявка оформлена";
+    @Override
+    protected void onStart (){
+        super.onStart();
+        Log.d(TAG, "onStart");
 
-        if(numberChesk.equals(Chrsk)){
-        }
-        else {number.setText( "заявка НЕ оформлена" );
-            number.setTextColor(getResources().getColor( R.color.colorNew ));}
+        //Старт Проверка интернета+статус заявок
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getStatus();
+                Log.d(TAG, "Считывание СТАТУСА");/*специально пусто*/
+            }
+        },700);
+
     }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        Log.d(TAG, "onDestroy");
+    }
+    @Override
+    protected void onPause(){
+        super.onPause();
+        Log.d(TAG, "onPause");
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Log.d(TAG, "onResume");
+    }
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        Log.d(TAG, "onRestart");
+    }
+    @Override
+    protected void onStop (){
+        super.onStop();
+        Log.d(TAG, "onStop");
+
+                //Intent mIntent = getIntent();
+                finish();
+                //startActivity(mIntent);
+    }
+
+
 
     public void getStatus(){
-        Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи").child("Personal").child( userPhone )
-                .orderByChild( "Status" );
+
+        //registration="";
+        checkregistrationTimeOut="";
+
+        //ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                // Завершен ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА
+                checkregistrationTimeOut="Out";
+                inetNotWhenGoCheckRegistration();
+            }
+        },15000);
+
+
+        final Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи")
+                .child("Personal")
+                .child( userPhone )
+                .orderByChild("Status");
         aaa.addChildEventListener( new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                String data=dataSnapshot.child( "дата" ).getValue(String.class);
-                String map=dataSnapshot.child( "направление" ).getValue(String.class);
-                String roar_number=dataSnapshot.child( "маршрут_номер" ).getValue(String.class);
-                String road_name=dataSnapshot.child( "маршрут_точкаСбора" ).getValue(String.class);
-                String flidht_number=dataSnapshot.child( "рейс_самолета" ).getValue(String.class);
-                token=dataSnapshot.child( "token" ).getValue(String.class);
-                Integer peopleOder=dataSnapshot.child("Человек_в_Заявке").getValue(Integer.class);
-                String сarDrive=dataSnapshot.child("Автомобиль").getValue(String.class);
-                Log.d("TAG", ""+сarDrive);
+                 data=dataSnapshot.child( "дата" ).getValue(String.class);
+                 map=dataSnapshot.child( "направление" ).getValue(String.class);
+                 roar_number=dataSnapshot.child( "маршрут_номер" ).getValue(String.class);
+                 road_name=dataSnapshot.child( "маршрут_точкаСбора" ).getValue(String.class);
+                 flidht_number=dataSnapshot.child( "рейс_самолета" ).getValue(String.class);
+                 token=dataSnapshot.child( "token" ).getValue(String.class);
+                 peopleOder=dataSnapshot.child("Человек_в_Заявке").getValue(Integer.class);
+                 сarDrive=dataSnapshot.child("Автомобиль").getValue(String.class);
 
-                Calend_Out.setText( data );
-                Map.setText( map );
-                road_number_out.setText( roar_number );
-                road_name_out.setText( road_name );
-                flight_number_Out.setText( flidht_number );
-                people.setText(""+peopleOder);
-                number.setText( "заявка оформлена" );
+                 //ТАЙМ-АУТ чтобы данные успели считаться
+                Handler handler1 = new Handler();
+                handler1.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
 
-                //делаем текст видимым
-                TextFlight.setVisibility(View.VISIBLE);
-                TextData.setVisibility(View.VISIBLE);
-                TextMap.setVisibility(View.VISIBLE);
-                TextPoint.setVisibility(View.VISIBLE);
-                searchCar.setVisibility(View.VISIBLE);
-                information2.setVisibility(View.VISIBLE);
-                people2.setVisibility(View.VISIBLE);
-                //стрелочки
-                process.setVisibility(View.VISIBLE);
-                process1.setVisibility(View.VISIBLE);
-                process2.setVisibility(View.VISIBLE);
-                process3.setVisibility(View.VISIBLE);
-                //кнопка Обновить, Отменить заявку
-                btnStatus.setVisibility(View.VISIBLE);
-                cancelOder.setVisibility(View.VISIBLE);
+                        writeString();
+                    }
+                },100);
 
-
-//                //Останавливаем прослушивание, чтобы обновилась информация (т.е. старая заявка не отображалась)
-//                aaa.removeEventListener(this);
-
-                if (сarDrive == null){}
-                else {
-                    searchCar.setText("Найден автомобиль"+сarDrive);
-                }
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -214,23 +239,100 @@ public class Main6Activity extends AppCompatActivity {
             }
         } );
     }
+
+    public void writeString(){
+        data1=""+data;
+        map1=""+map;
+        roar_number1=""+roar_number;
+        road_name1=""+road_name;
+        flidht_number1=""+flidht_number;
+        token1=""+token;
+        peopleOder1=""+peopleOder;
+        сarDrive1=""+сarDrive;
+
+        CheckNullStatus();
+
+                Log.d(TAG, "дата"+data1);/*специально пусто*/
+                Log.d(TAG, "направление"+map1);/*специально пусто*/
+                Log.d(TAG, "маршрут"+roar_number1);/*специально пусто*/
+                Log.d(TAG, "точка сбора"+road_name1);/*специально пусто*/
+                Log.d(TAG, "рейс"+flidht_number1);/*специально пусто*/
+                Log.d(TAG, "токен"+token1);/*специально пусто*/
+                Log.d(TAG, "кол-во человек"+peopleOder1);/*специально пусто*/
+                Log.d(TAG, "автомобиль"+сarDrive1);/*специально пусто*/
+
+    }
+
+    //Проверка интернета во время проверки регистрации
+    public void inetNotWhenGoCheckRegistration (){
+
+            if(!data1.isEmpty()){
+            Log.d(TAG, "таймер остановлен");/*специально пусто*/}
+
+        else {
+            //пропал интернет при считывании Статуса
+            Log.d(TAG, "Интернета пропал при считывании статуса");
+            Intent aaa = new Intent(this,Main6ActivityNotInternet.class);
+            startActivity(aaa);
+        }
+    }
+
+
+
+    public void CheckNullStatus(){
+
+        Log.d(TAG, "Метод CheckNullStatus ");/*специально пусто*/
+
+        if (checkregistrationTimeOut.equals("Out")){
+            Log.d(TAG, "проверка интернета время вышло");/*специально пусто*/
+        }
+        else{
+            if(data1.equals("null")){
+            number.setText( "заявка НЕ оформлена" );
+            number.setTextColor(getResources().getColor( R.color.colorNew ));
+
+            Log.d(TAG, "Заявок нет");/*специально пусто*/
+                }
+                else if(!data1.isEmpty()) {
+                    Log.d(TAG, "Заявка оформлена");/*специально пусто*/
+
+                    number.setText( "заявка оформлена" );
+                    Calend_Out.setText( data1 );
+                    Map.setText( map1 );
+                    road_number_out.setText( roar_number1 );
+                    road_name_out.setText( road_name1 );
+                    flight_number_Out.setText( flidht_number1 );
+                    people.setText(""+peopleOder1);
+
+            //делаем текст видимым
+            TextFlight.setVisibility(View.VISIBLE);
+            TextData.setVisibility(View.VISIBLE);
+            TextMap.setVisibility(View.VISIBLE);
+            TextPoint.setVisibility(View.VISIBLE);
+            searchCar.setVisibility(View.VISIBLE);
+            information2.setVisibility(View.VISIBLE);
+            people2.setVisibility(View.VISIBLE);
+            //стрелочки
+            process.setVisibility(View.VISIBLE);
+            process1.setVisibility(View.VISIBLE);
+            process2.setVisibility(View.VISIBLE);
+            process3.setVisibility(View.VISIBLE);
+            //кнопка Отменить заявку
+            cancelOder.setVisibility(View.VISIBLE);
+
+            if (сarDrive1.equals("null")){
+                Log.d(TAG, "Автомобиль не найден");/*специально пусто*/
+            }
+            else {
+                searchCar.setText("Найден автомобиль"+сarDrive1);
+            }
+        }
+        }
+        }
 // кнопка Back сворачивает приложение
   @Override
    public void onBackPressed(){
      this.moveTaskToBack(true);
-    }
-
-
-// Кнопка обновить информацию перезапуск активити
-public void btnStatus(View view) {
-        //перезапуск активити
-        restartActivity();
-}
-
-    public void restartActivity(){
-        Intent mIntent = getIntent();
-        finish();
-        startActivity(mIntent);
     }
 
 // Отмена заявки
@@ -250,23 +352,13 @@ public void btnStatus(View view) {
                         .child(road_number_out.getText().toString())
                         .child(road_name_out.getText().toString())
                         .child("notificationTokens");
-                mmm.child( token ).removeValue();
+                mmm.child( token1 ).removeValue();
 
                 //28 02 2020  задержка на удаление из БД, нужна для правильного подсчета человек в БД ЗАявкиServerApp
                 Handler handler = new Handler();
                 handler.postDelayed( new Runnable() {
                     @Override
                     public void run() {
-//                        mmm = ggg.getReference("Заявки")
-//                                .child(Map.getText().toString() )
-//                                .child( Calend_Out.getText().toString() )
-//                                //.child(road_number_out.getText().toString())
-//                                .child(flight_number_Out.getText().toString()  )
-//                                .child(road_number_out.getText().toString())
-//                                .child(road_name_out.getText().toString())
-//                                .child("Users");
-//                        mmm.child( userI ).removeValue();
-
                         mmm = ggg.getReference("Пользователи")
                                 .child("Personal")
                                 .child(userPhone);
@@ -295,10 +387,8 @@ public void btnStatus(View view) {
                         process1.setVisibility(View.INVISIBLE);
                         process2.setVisibility(View.INVISIBLE);
                         process3.setVisibility(View.INVISIBLE);
-                        //кнопка Обновить, Отменить заявку
-                        btnStatus.setVisibility(View.INVISIBLE);
+                        //кнопка  Отменить заявку
                         cancelOder.setVisibility(View.INVISIBLE);
-
                     }
                 },1000
                 );
@@ -319,3 +409,16 @@ public void btnStatus(View view) {
         startActivity(qwe);
     }
 }
+
+
+//// Кнопка обновить информацию перезапуск активити
+//public void btnStatus(View view) {
+//        //перезапуск активити
+//        restartActivity();
+//}
+//
+//    public void restartActivity(){
+//        Intent mIntent = getIntent();
+//        finish();
+//        startActivity(mIntent);
+//    }
