@@ -38,6 +38,11 @@ public class Main6Activity extends AppCompatActivity {
 
     String checkregistrationTimeOut;
 
+
+    String DellYes;
+    String DellYesRef;
+    String refOut;
+
     FirebaseDatabase ggg;
     DatabaseReference mmm;
 
@@ -120,6 +125,56 @@ public class Main6Activity extends AppCompatActivity {
 
         number.setText("Поиск Заявок...");
 
+//        data="";
+//        map="";
+//        roar_number="";
+//        road_name="";
+//        flidht_number="";
+//        token="";
+//        //peopleOder="";
+//        сarDrive="";
+//
+//        data1="";
+//        map1="";
+//        roar_number1="";
+//        road_name1="";
+//        flidht_number1="";
+//        token1="";
+//        peopleOder1="";
+//        сarDrive1="";
+//
+//        number.setText("");
+//        Calend_Out.setText("");
+//        Map.setText("");
+//        road_number_out.setText("");
+//        road_name_out.setText("");
+//        flight_number_Out.setText("");
+//        people.setText("");
+
+
+//        number.setText("");
+//        Calend_Out.setText("");
+//        Map.setText("");
+//        road_number_out.setText("");
+//        road_name_out.setText("");
+//        flight_number_Out.setText("");
+//        people.setText("");
+//
+//        TextFlight.setVisibility(View.INVISIBLE);
+//        TextData.setVisibility(View.INVISIBLE);
+//        TextMap.setVisibility(View.INVISIBLE);
+//        TextPoint.setVisibility(View.INVISIBLE);
+//        searchCar.setVisibility(View.INVISIBLE);
+//        information2.setVisibility(View.INVISIBLE);
+//        people2.setVisibility(View.INVISIBLE);
+//        //стрелочки
+//        process.setVisibility(View.INVISIBLE);
+//        process1.setVisibility(View.INVISIBLE);
+//        process2.setVisibility(View.INVISIBLE);
+//        process3.setVisibility(View.INVISIBLE);
+//        //кнопка Отменить заявку
+//        cancelOder.setVisibility(View.INVISIBLE);
+
 //        //Старт Проверка интернета+статус заявок
 //        Handler handler1 = new Handler();
 //        handler1.postDelayed(new Runnable() {
@@ -136,6 +191,7 @@ public class Main6Activity extends AppCompatActivity {
         super.onStart();
         Log.d(TAG, "onStart");
 
+
         //Старт Проверка интернета+статус заявок
         Handler handler1 = new Handler();
         handler1.postDelayed(new Runnable() {
@@ -147,10 +203,33 @@ public class Main6Activity extends AppCompatActivity {
         },700);
 
     }
+
+    @Override
+    protected void onStop (){
+        super.onStop();
+        Log.d(TAG, "onStop");
+
+        //Main6Activity.this.finish();
+        //System.exit(0);
+
+
+        //Intent mIntent = getIntent();
+
+        //Main6Activity.this.finish();
+//        Intent i = new Intent(Main6Activity.this, Choose_direction.class);
+//// set the new task and clear flags
+//        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        startActivity(i);
+        //startActivity(mIntent);
+    }
+
     @Override
     protected void onDestroy(){
         super.onDestroy();
         Log.d(TAG, "onDestroy");
+
+
+
     }
     @Override
     protected void onPause(){
@@ -167,17 +246,6 @@ public class Main6Activity extends AppCompatActivity {
         super.onRestart();
         Log.d(TAG, "onRestart");
     }
-    @Override
-    protected void onStop (){
-        super.onStop();
-        Log.d(TAG, "onStop");
-
-                //Intent mIntent = getIntent();
-                finish();
-                //startActivity(mIntent);
-    }
-
-
 
     public void getStatus(){
 
@@ -197,7 +265,7 @@ public class Main6Activity extends AppCompatActivity {
         },15000);
 
 
-        final Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи")
+        Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи")
                 .child("Personal")
                 .child( userPhone )
                 .orderByChild("Status");
@@ -223,6 +291,8 @@ public class Main6Activity extends AppCompatActivity {
                         writeString();
                     }
                 },100);
+
+                //aaa.removeEventListener(this);
 
             }
             @Override
@@ -363,32 +433,11 @@ public class Main6Activity extends AppCompatActivity {
                                 .child("Personal")
                                 .child(userPhone);
                         mmm.child( "Status" ).removeValue();
-                        Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
 
-                        Calend_Out.setText( "" );
-                        Map.setText( "" );
-                        road_number_out.setText( "" );
-                        road_name_out.setText( "" );
-                        flight_number_Out.setText( "" );
-                        people.setText("");
-                        number.setText( "заявка НЕ оформлена" );
-                        number.setTextColor(getResources().getColor( R.color.colorNew ));
+                        CheckDelOder();
 
-                        //делаем текст видимым
-                        TextFlight.setVisibility(View.INVISIBLE);
-                        TextData.setVisibility(View.INVISIBLE);
-                        TextMap.setVisibility(View.INVISIBLE);
-                        TextPoint.setVisibility(View.INVISIBLE);
-                        searchCar.setVisibility(View.INVISIBLE);
-                        information2.setVisibility(View.INVISIBLE);
-                        people2.setVisibility(View.INVISIBLE);
-                        //стрелочки
-                        process.setVisibility(View.INVISIBLE);
-                        process1.setVisibility(View.INVISIBLE);
-                        process2.setVisibility(View.INVISIBLE);
-                        process3.setVisibility(View.INVISIBLE);
-                        //кнопка  Отменить заявку
-                        cancelOder.setVisibility(View.INVISIBLE);
+                        //Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
+
                     }
                 },1000
                 );
@@ -404,10 +453,139 @@ public class Main6Activity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    public void CheckDelOder(){
+
+        DellYes="";
+        DellYesRef="";
+        refOut="";
+
+        //ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                // Завершен ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА-2 при проверке регистрации
+                refOut="Out";
+                inetNot();
+            }
+        },15000);
+
+
+        Log.d(TAG, "запрос статуса ");
+        //чтение из БД с правилом для любых пользователей
+        database02 = FirebaseDatabase.getInstance();
+        ref02 = database02.getReference("Пользователи")
+                .child("Personal")
+                .child(userPhone)
+                .child("Status");
+        ref02.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                DellYes=dataSnapshot.getValue(String.class);
+                DellYesRef=""+DellYes; /* так как может получить null*/
+                Log.d(TAG, "запрос статуса получен"+DellYes);
+
+
+                // с этой записью makeText появляется только один раз!!!!! ХОРОШО
+                ref02.removeEventListener(this);
+
+                //Проверка токена
+                //checkHaveToken();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+    }
+
+    //Проверка интернета во время проверки удаления
+    public void inetNot (){
+
+        if(DellYes==null){
+            Log.d(TAG, "запрос в базу был успешен");/*специально пусто*/}
+
+        else {
+            //пропал интернет во время проверки наличия регистрации
+            Log.d(TAG, "Ошибка удаления Нет интернета ");
+            Toast.makeText(Main6Activity.this, "Ошибка удаления нет интернета", Toast.LENGTH_SHORT).show();
+            //Intent aaa = new Intent(this,Choose_direction.class);
+            //startActivity(aaa);
+        }
+    }
+
+    //Проверка токена
+    public void checkHaveToken(){
+
+        if (refOut.equals("Out")){
+            Log.d(TAG, "проверка интернета время вышло");/*специально пусто*/
+        }
+
+        else{
+            if (DellYes==null){
+
+                Log.d(TAG, "Удаление Успешно");/*специально пусто*/
+                //переход к авторизации по телефону от firebase
+                Intent AuthList = new Intent(this,Choose_direction.class);
+                startActivity(AuthList);
+//                Calend_Out.setText( "" );
+//                Map.setText( "" );
+//                road_number_out.setText( "" );
+//                road_name_out.setText( "" );
+//                flight_number_Out.setText( "" );
+//                people.setText("");
+//                number.setText( "заявка НЕ оформлена" );
+//                number.setTextColor(getResources().getColor( R.color.colorNew ));
+//
+//                //делаем текст невидимым
+//                TextFlight.setVisibility(View.INVISIBLE);
+//                TextData.setVisibility(View.INVISIBLE);
+//                TextMap.setVisibility(View.INVISIBLE);
+//                TextPoint.setVisibility(View.INVISIBLE);
+//                searchCar.setVisibility(View.INVISIBLE);
+//                information2.setVisibility(View.INVISIBLE);
+//                people2.setVisibility(View.INVISIBLE);
+//                //стрелочки
+//                process.setVisibility(View.INVISIBLE);
+//                process1.setVisibility(View.INVISIBLE);
+//                process2.setVisibility(View.INVISIBLE);
+//                process3.setVisibility(View.INVISIBLE);
+//                //кнопка  Отменить заявку
+//                cancelOder.setVisibility(View.INVISIBLE);
+            }
+            else {
+                Log.d(TAG, "Ошибка удаления ИЗ БАЗЫ ");
+                Toast.makeText(Main6Activity.this, "Ошибка удаления ИЗ БАЗЫ", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public void backMainList (View view){
+
         Intent qwe= new Intent(this,Choose_direction.class);
         startActivity(qwe);
+
+
     }
+
 }
 
 
