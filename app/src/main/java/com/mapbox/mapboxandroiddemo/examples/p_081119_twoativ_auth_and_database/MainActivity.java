@@ -57,9 +57,6 @@ import com.google.firebase.iid.InstanceIdResult;
         super.onStart();
         Log.d(TAG, "onStart");
 
-
-        //cheskInternet();
-        //CheckRegistration();
         //СТАРТ Проверка интернета+регистрации
         Handler handler1 = new Handler();
         handler1.postDelayed(new Runnable() {

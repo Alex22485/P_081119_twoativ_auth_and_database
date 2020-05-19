@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -126,15 +127,6 @@ public class Main6Activity extends AppCompatActivity {
         number.setText("Поиск Заявок...");
         progressBar.setVisibility(View.VISIBLE);
 
-
-    }
-
-    @Override
-    protected void onStart (){
-        super.onStart();
-        Log.d(TAG, "onStart");
-
-
         //Старт Проверка интернета+статус заявок
         Handler handler1 = new Handler();
         handler1.postDelayed(new Runnable() {
@@ -145,7 +137,14 @@ public class Main6Activity extends AppCompatActivity {
             }
         },2000);
 
+
     }
+
+    @Override
+    protected void onStart (){
+        super.onStart();
+        Log.d(TAG, "onStart");
+        }
 
     @Override
     protected void onStop (){
@@ -217,30 +216,6 @@ public class Main6Activity extends AppCompatActivity {
             }
         });
     }
-
-
-//        database01 = FirebaseDatabase.getInstance();
-//        ref01 = database01.getReference("Пользователи")
-//                .child("Personal")
-//                .child(userPhone)
-//                .child("Proverka");
-//        ref01.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                proverka=dataSnapshot.getValue(String.class);
-//                Log.d(TAG, "запрос регистрации получен"+proverka);
-//
-//                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
-//                ref01.removeEventListener(this);
-//                checkWordProverka();
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError)
-//            {
-//            }
-//        }
-//        );
-//    }
 
     public void internetNot(){
         if (proverka.endsWith("Yes")){
@@ -375,6 +350,11 @@ public class Main6Activity extends AppCompatActivity {
      this.moveTaskToBack(true);
     }
 
+    public void backMainList(View view){
+        Intent Choose_direction =new Intent(this,Choose_direction.class);
+        startActivity(Choose_direction);
+    }
+
 // Отмена заявки
     public void cancelOder (View view){
         AlertDialog.Builder builder=new AlertDialog.Builder( Main6Activity.this );
@@ -394,24 +374,27 @@ public class Main6Activity extends AppCompatActivity {
                         .child("notificationTokens");
                 mmm.child( token ).removeValue();
 
-                //28 02 2020  задержка на удаление из БД, нужна для правильного подсчета человек в БД ЗАявкиServerApp
-                Handler handler = new Handler();
-                handler.postDelayed( new Runnable() {
-                    @Override
-                    public void run() {
-                        mmm = ggg.getReference("Пользователи")
-                                .child("Personal")
-                                .child(userPhone);
-                        mmm.child( "Status" ).removeValue();
+                Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
+                setNotText();
 
-                        //CheckDelOder();
-
-                        Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
-                        setNotText();
-
-                    }
-                },1000
-                );
+//                //28 02 2020  задержка на удаление из БД, нужна для правильного подсчета человек в БД ЗАявкиServerApp
+//                Handler handler = new Handler();
+//                handler.postDelayed( new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mmm = ggg.getReference("Пользователи")
+//                                .child("Personal")
+//                                .child(userPhone);
+//                        mmm.child( "Status" ).removeValue();
+//
+//                        //CheckDelOder();
+//
+//                        Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
+//                        setNotText();
+//
+//                    }
+//                },1000
+//                );
             }
         }
         );

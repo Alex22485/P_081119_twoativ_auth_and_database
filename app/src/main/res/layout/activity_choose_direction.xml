@@ -74,8 +74,10 @@
         android:id="@+id/MyStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Мои Заявки"
+        android:text=""
         android:textSize="15sp"
+        android:visibility="invisible"
+        android:enabled="false"
         android:onClick="MyStatus">
     </Button>
 
