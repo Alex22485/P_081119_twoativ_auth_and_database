@@ -55,6 +55,16 @@
             android:layout_weight="1" />
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"
+        android:indeterminate="false"
+        />
+
 
     <TextView
         android:layout_width="match_parent"
@@ -464,11 +474,13 @@
             />
     </LinearLayout>
       <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Оформить заявку"
-        android:textSize="15sp"
-        android:onClick="backMainList">
+          android:id="@+id/BtnNewOrder"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Оформить заявку"
+          android:textSize="15sp"
+          android:visibility="invisible"
+          android:onClick="backMainList">
     </Button>
 
 

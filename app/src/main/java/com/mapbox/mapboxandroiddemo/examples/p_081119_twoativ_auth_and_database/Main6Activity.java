@@ -5,18 +5,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -26,53 +26,39 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.annotations.NotNull;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 
 public class Main6Activity extends AppCompatActivity {
 
     private static final String TAG ="Main6Activity" ;
 
-    FirebaseDatabase database02;
-    DatabaseReference ref02;
+    String timeOut;
+    String proverka;
 
-    String checkregistrationTimeOut;
-
-
-    String DellYes;
-    String DellYesRef;
-    String refOut;
+    FirebaseDatabase database01;
+    DatabaseReference ref01;
 
     FirebaseDatabase ggg;
     DatabaseReference mmm;
 
     Button cancelOder;
     Button detailsTrip;
+    Button BtnNewOrder;
     String userPhone;
 
     String[] CancelOderWhy ={"Самолет отменён","Передумал", };
 
-    String data;
-    String map;
-    String roar_number;
-    String road_name;
-    String flidht_number;
-    Integer peopleOder;
-    String сarDrive;
     String token;
-
-    String data1;
-    String map1;
-    String roar_number1;
-    String road_name1;
-    String flidht_number1;
-    String peopleOder1;
-    String сarDrive1;
-    String token1;
 
     FirebaseAuth mAuth;
 
-    TextView Calend_Out,flight_number_Out,Map,road_number_out,road_name_out;
+    TextView Calend_Out;
+    TextView flight_number_Out;
+    TextView Map;
+    TextView road_number_out;
+    TextView road_name_out;
     TextView number;
     TextView information2;
     TextView people;
@@ -86,12 +72,16 @@ public class Main6Activity extends AppCompatActivity {
     TextView TextFlight;
     TextView TextMap;
     TextView TextPoint;
+
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main6 );
 
         Log.d(TAG, "onCreate");/*специально пусто*/
+
+        progressBar = findViewById( R.id.progressBar );
 
         number = findViewById( R.id.number );
         Calend_Out=findViewById( R.id.Calend_Out );
@@ -109,13 +99,14 @@ public class Main6Activity extends AppCompatActivity {
         searchCar=findViewById( R.id.searchCar );
         cancelOder=findViewById( R.id.cancelOder );
         detailsTrip=findViewById( R.id.detailsTrip );
+        BtnNewOrder=findViewById( R.id.BtnNewOrder );
+
 
         TextFlight=findViewById( R.id.TextFlight );
         TextData=findViewById( R.id.TextData );
         TextMap=findViewById( R.id.TextMap );
         TextPoint=findViewById( R.id.TextPoint );
 
-        data1="";
 
         //полуаем phone пользователя
         mAuth= FirebaseAuth.getInstance(  );
@@ -123,67 +114,19 @@ public class Main6Activity extends AppCompatActivity {
         userPhone = user.getPhoneNumber();
         Log.d(TAG, "получен телефон"+userPhone);/*специально пусто*/
 
+        // Получить Токен!!!!
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Main6Activity.this,new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                token = instanceIdResult.getToken();
+                Log.d(TAG, "получен токен: "+token);
+            }
+        });
+
         number.setText("Поиск Заявок...");
-
-//        data="";
-//        map="";
-//        roar_number="";
-//        road_name="";
-//        flidht_number="";
-//        token="";
-//        //peopleOder="";
-//        сarDrive="";
-//
-//        data1="";
-//        map1="";
-//        roar_number1="";
-//        road_name1="";
-//        flidht_number1="";
-//        token1="";
-//        peopleOder1="";
-//        сarDrive1="";
-//
-//        number.setText("");
-//        Calend_Out.setText("");
-//        Map.setText("");
-//        road_number_out.setText("");
-//        road_name_out.setText("");
-//        flight_number_Out.setText("");
-//        people.setText("");
+        progressBar.setVisibility(View.VISIBLE);
 
 
-//        number.setText("");
-//        Calend_Out.setText("");
-//        Map.setText("");
-//        road_number_out.setText("");
-//        road_name_out.setText("");
-//        flight_number_Out.setText("");
-//        people.setText("");
-//
-//        TextFlight.setVisibility(View.INVISIBLE);
-//        TextData.setVisibility(View.INVISIBLE);
-//        TextMap.setVisibility(View.INVISIBLE);
-//        TextPoint.setVisibility(View.INVISIBLE);
-//        searchCar.setVisibility(View.INVISIBLE);
-//        information2.setVisibility(View.INVISIBLE);
-//        people2.setVisibility(View.INVISIBLE);
-//        //стрелочки
-//        process.setVisibility(View.INVISIBLE);
-//        process1.setVisibility(View.INVISIBLE);
-//        process2.setVisibility(View.INVISIBLE);
-//        process3.setVisibility(View.INVISIBLE);
-//        //кнопка Отменить заявку
-//        cancelOder.setVisibility(View.INVISIBLE);
-
-//        //Старт Проверка интернета+статус заявок
-//        Handler handler1 = new Handler();
-//        handler1.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                getStatus();
-//                Log.d(TAG, "Считывание СТАТУСА");/*специально пусто*/
-//            }
-//        },700);
     }
 
     @Override
@@ -197,10 +140,10 @@ public class Main6Activity extends AppCompatActivity {
         handler1.postDelayed(new Runnable() {
             @Override
             public void run() {
-                getStatus();
-                Log.d(TAG, "Считывание СТАТУСА");/*специально пусто*/
+                readYesNoEmpty();
+                Log.d(TAG, "Считывание Yes/No/empty");/*специально пусто*/
             }
-        },700);
+        },2000);
 
     }
 
@@ -208,28 +151,12 @@ public class Main6Activity extends AppCompatActivity {
     protected void onStop (){
         super.onStop();
         Log.d(TAG, "onStop");
-
-        //Main6Activity.this.finish();
-        //System.exit(0);
-
-
-        //Intent mIntent = getIntent();
-
-        //Main6Activity.this.finish();
-//        Intent i = new Intent(Main6Activity.this, Choose_direction.class);
-//// set the new task and clear flags
-//        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        startActivity(i);
-        //startActivity(mIntent);
     }
 
     @Override
     protected void onDestroy(){
         super.onDestroy();
         Log.d(TAG, "onDestroy");
-
-
-
     }
     @Override
     protected void onPause(){
@@ -247,10 +174,11 @@ public class Main6Activity extends AppCompatActivity {
         Log.d(TAG, "onRestart");
     }
 
-    public void getStatus(){
+    public void readYesNoEmpty(){
 
-        //registration="";
-        checkregistrationTimeOut="";
+        timeOut="";
+        proverka="";
+
 
         //ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА
         Handler handler1 = new Handler();
@@ -258,42 +186,142 @@ public class Main6Activity extends AppCompatActivity {
             @Override
             public void run() {
 
-                // Завершен ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА
-                checkregistrationTimeOut="Out";
-                inetNotWhenGoCheckRegistration();
+                // Завершен ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА-2 при проверке регистрации
+                timeOut="Out";
+                internetNot();
             }
         },15000);
 
+        Log.d(TAG, "Чтение Yes/No из БД");
+        //Чтение Yes/No из БД
+        database01 = FirebaseDatabase.getInstance();
+        ref01 = database01.getReference("Пользователи")
+                .child("Personal")
+                .child(userPhone)
+                .child("Proverka")
+                .child("Заявка");
+        ref01.addValueEventListener(new ValueEventListener() {
 
-        Query aaa= FirebaseDatabase.getInstance().getReference("Пользователи")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                proverka=dataSnapshot.getValue(String.class);
+                Log.d(TAG, "запрос регистрации получен"+proverka);
+
+                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+                ref01.removeEventListener(this);
+                checkWordProverka();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+
+//        database01 = FirebaseDatabase.getInstance();
+//        ref01 = database01.getReference("Пользователи")
+//                .child("Personal")
+//                .child(userPhone)
+//                .child("Proverka");
+//        ref01.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                proverka=dataSnapshot.getValue(String.class);
+//                Log.d(TAG, "запрос регистрации получен"+proverka);
+//
+//                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+//                ref01.removeEventListener(this);
+//                checkWordProverka();
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError)
+//            {
+//            }
+//        }
+//        );
+//    }
+
+    public void internetNot(){
+        if (proverka.endsWith("Yes")){
+            Log.d(TAG, "proverka Yes");
+        }
+        else if (proverka.endsWith("No")){
+            Log.d(TAG, "proverka No");
+        }
+        else {
+            Log.d(TAG, "not internet");
+            Intent Main6ActivityNotInternet  = new Intent(this,Main6ActivityNotInternet.class);
+            startActivity(Main6ActivityNotInternet);
+        }
+    }
+
+    public void checkWordProverka(){
+
+        if (timeOut.equals("Out")){
+            Log.d(TAG, "time out");
+        }
+        else if(proverka.equals("Yes")){
+            Log.d(TAG, "Заявка есть");
+            readOder();
+        }
+        else if(proverka.equals("No")){
+            Log.d(TAG, "Заявок нет");
+            setNotText();
+        }
+        else{
+            Log.d(TAG, "в БД null");
+        }
+    }
+
+    public void readOder(){
+
+        Query aaa1= FirebaseDatabase.getInstance().getReference("Пользователи")
                 .child("Personal")
                 .child( userPhone )
                 .orderByChild("Status");
-        aaa.addChildEventListener( new ChildEventListener() {
+        aaa1.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String data=dataSnapshot.child( "дата" ).getValue(String.class);
+                String map=dataSnapshot.child( "направление" ).getValue(String.class);
+                String roar_number=dataSnapshot.child( "маршрут_номер" ).getValue(String.class);
+                String road_name=dataSnapshot.child( "маршрут_точкаСбора" ).getValue(String.class);
+                String flidht_number=dataSnapshot.child( "рейс_самолета" ).getValue(String.class);
+                Integer peopleOder=dataSnapshot.child("Человек_в_Заявке").getValue(Integer.class);
+                String сarDrive=dataSnapshot.child("Автомобиль").getValue(String.class);
 
-                 data=dataSnapshot.child( "дата" ).getValue(String.class);
-                 map=dataSnapshot.child( "направление" ).getValue(String.class);
-                 roar_number=dataSnapshot.child( "маршрут_номер" ).getValue(String.class);
-                 road_name=dataSnapshot.child( "маршрут_точкаСбора" ).getValue(String.class);
-                 flidht_number=dataSnapshot.child( "рейс_самолета" ).getValue(String.class);
-                 token=dataSnapshot.child( "token" ).getValue(String.class);
-                 peopleOder=dataSnapshot.child("Человек_в_Заявке").getValue(Integer.class);
-                 сarDrive=dataSnapshot.child("Автомобиль").getValue(String.class);
+                Calend_Out.setText( data );
+                Map.setText( map );
+                road_number_out.setText( roar_number );
+                road_name_out.setText( road_name );
+                flight_number_Out.setText( flidht_number );
+                people.setText(""+peopleOder);
 
-                 //ТАЙМ-АУТ чтобы данные успели считаться
-                Handler handler1 = new Handler();
-                handler1.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+                number.setText( "заявка оформлена" );
+                progressBar.setVisibility(View.INVISIBLE);
 
-                        writeString();
-                    }
-                },100);
-
-                //aaa.removeEventListener(this);
-
+                if (сarDrive==null){
+                    Log.d(TAG, "Автомобиль не найден");/*специально пусто*/
+                }
+                else {
+                    searchCar.setText("Найден автомобиль "+сarDrive);
+                }
+                //делаем текст видимым
+                TextFlight.setVisibility(View.VISIBLE);
+                TextData.setVisibility(View.VISIBLE);
+                TextMap.setVisibility(View.VISIBLE);
+                TextPoint.setVisibility(View.VISIBLE);
+                searchCar.setVisibility(View.VISIBLE);
+                information2.setVisibility(View.VISIBLE);
+                people2.setVisibility(View.VISIBLE);
+                //стрелочки
+                process.setVisibility(View.VISIBLE);
+                process1.setVisibility(View.VISIBLE);
+                process2.setVisibility(View.VISIBLE);
+                process3.setVisibility(View.VISIBLE);
+                //кнопка Отменить заявку
+                cancelOder.setVisibility(View.VISIBLE);
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -307,98 +335,40 @@ public class Main6Activity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
-        } );
+        });
     }
 
-    public void writeString(){
-        data1=""+data;
-        map1=""+map;
-        roar_number1=""+roar_number;
-        road_name1=""+road_name;
-        flidht_number1=""+flidht_number;
-        token1=""+token;
-        peopleOder1=""+peopleOder;
-        сarDrive1=""+сarDrive;
+    public void setNotText(){
+        Calend_Out.setText("");
+        Map.setText("");
+        road_number_out.setText("");
+        road_name_out.setText("");
+        flight_number_Out.setText("");
+        people.setText("");
+        number.setText( "заявка не оформлена" );
+        progressBar.setVisibility(View.INVISIBLE);
 
-        CheckNullStatus();
 
-                Log.d(TAG, "дата"+data1);/*специально пусто*/
-                Log.d(TAG, "направление"+map1);/*специально пусто*/
-                Log.d(TAG, "маршрут"+roar_number1);/*специально пусто*/
-                Log.d(TAG, "точка сбора"+road_name1);/*специально пусто*/
-                Log.d(TAG, "рейс"+flidht_number1);/*специально пусто*/
-                Log.d(TAG, "токен"+token1);/*специально пусто*/
-                Log.d(TAG, "кол-во человек"+peopleOder1);/*специально пусто*/
-                Log.d(TAG, "автомобиль"+сarDrive1);/*специально пусто*/
+        //делаем текст НЕ видимым
+        TextFlight.setVisibility(View.INVISIBLE);
+        TextData.setVisibility(View.INVISIBLE);
+        TextMap.setVisibility(View.INVISIBLE);
+        TextPoint.setVisibility(View.INVISIBLE);
+        searchCar.setVisibility(View.INVISIBLE);
+        information2.setVisibility(View.INVISIBLE);
+        people2.setVisibility(View.INVISIBLE);
+        //стрелочки
+        process.setVisibility(View.INVISIBLE);
+        process1.setVisibility(View.INVISIBLE);
+        process2.setVisibility(View.INVISIBLE);
+        process3.setVisibility(View.INVISIBLE);
+        //кнопка Отменить заявку
+        cancelOder.setVisibility(View.INVISIBLE);
+
+        BtnNewOrder.setVisibility(View.VISIBLE);
 
     }
 
-    //Проверка интернета во время проверки регистрации
-    public void inetNotWhenGoCheckRegistration (){
-
-            if(!data1.isEmpty()){
-            Log.d(TAG, "таймер остановлен");/*специально пусто*/}
-
-        else {
-            //пропал интернет при считывании Статуса
-            Log.d(TAG, "Интернета пропал при считывании статуса");
-            Intent aaa = new Intent(this,Main6ActivityNotInternet.class);
-            startActivity(aaa);
-        }
-    }
-
-
-
-    public void CheckNullStatus(){
-
-        Log.d(TAG, "Метод CheckNullStatus ");/*специально пусто*/
-
-        if (checkregistrationTimeOut.equals("Out")){
-            Log.d(TAG, "проверка интернета время вышло");/*специально пусто*/
-        }
-        else{
-            if(data1.equals("null")){
-            number.setText( "заявка НЕ оформлена" );
-            number.setTextColor(getResources().getColor( R.color.colorNew ));
-
-            Log.d(TAG, "Заявок нет");/*специально пусто*/
-                }
-                else if(!data1.isEmpty()) {
-                    Log.d(TAG, "Заявка оформлена");/*специально пусто*/
-
-                    number.setText( "заявка оформлена" );
-                    Calend_Out.setText( data1 );
-                    Map.setText( map1 );
-                    road_number_out.setText( roar_number1 );
-                    road_name_out.setText( road_name1 );
-                    flight_number_Out.setText( flidht_number1 );
-                    people.setText(""+peopleOder1);
-
-            //делаем текст видимым
-            TextFlight.setVisibility(View.VISIBLE);
-            TextData.setVisibility(View.VISIBLE);
-            TextMap.setVisibility(View.VISIBLE);
-            TextPoint.setVisibility(View.VISIBLE);
-            searchCar.setVisibility(View.VISIBLE);
-            information2.setVisibility(View.VISIBLE);
-            people2.setVisibility(View.VISIBLE);
-            //стрелочки
-            process.setVisibility(View.VISIBLE);
-            process1.setVisibility(View.VISIBLE);
-            process2.setVisibility(View.VISIBLE);
-            process3.setVisibility(View.VISIBLE);
-            //кнопка Отменить заявку
-            cancelOder.setVisibility(View.VISIBLE);
-
-            if (сarDrive1.equals("null")){
-                Log.d(TAG, "Автомобиль не найден");/*специально пусто*/
-            }
-            else {
-                searchCar.setText("Найден автомобиль"+сarDrive1);
-            }
-        }
-        }
-        }
 // кнопка Back сворачивает приложение
   @Override
    public void onBackPressed(){
@@ -422,7 +392,7 @@ public class Main6Activity extends AppCompatActivity {
                         .child(road_number_out.getText().toString())
                         .child(road_name_out.getText().toString())
                         .child("notificationTokens");
-                mmm.child( token1 ).removeValue();
+                mmm.child( token ).removeValue();
 
                 //28 02 2020  задержка на удаление из БД, нужна для правильного подсчета человек в БД ЗАявкиServerApp
                 Handler handler = new Handler();
@@ -434,9 +404,10 @@ public class Main6Activity extends AppCompatActivity {
                                 .child(userPhone);
                         mmm.child( "Status" ).removeValue();
 
-                        CheckDelOder();
+                        //CheckDelOder();
 
-                        //Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
+                        Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
+                        setNotText();
 
                     }
                 },1000
@@ -454,138 +425,11 @@ public class Main6Activity extends AppCompatActivity {
         dialog.show();
     }
 
-    public void CheckDelOder(){
-
-        DellYes="";
-        DellYesRef="";
-        refOut="";
-
-        //ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА
-        Handler handler1 = new Handler();
-        handler1.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                // Завершен ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА-2 при проверке регистрации
-                refOut="Out";
-                inetNot();
-            }
-        },15000);
-
-
-        Log.d(TAG, "запрос статуса ");
-        //чтение из БД с правилом для любых пользователей
-        database02 = FirebaseDatabase.getInstance();
-        ref02 = database02.getReference("Пользователи")
-                .child("Personal")
-                .child(userPhone)
-                .child("Status");
-        ref02.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                DellYes=dataSnapshot.getValue(String.class);
-                DellYesRef=""+DellYes; /* так как может получить null*/
-                Log.d(TAG, "запрос статуса получен"+DellYes);
-
-
-                // с этой записью makeText появляется только один раз!!!!! ХОРОШО
-                ref02.removeEventListener(this);
-
-                //Проверка токена
-                //checkHaveToken();
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-
-    }
-
-    //Проверка интернета во время проверки удаления
-    public void inetNot (){
-
-        if(DellYes==null){
-            Log.d(TAG, "запрос в базу был успешен");/*специально пусто*/}
-
-        else {
-            //пропал интернет во время проверки наличия регистрации
-            Log.d(TAG, "Ошибка удаления Нет интернета ");
-            Toast.makeText(Main6Activity.this, "Ошибка удаления нет интернета", Toast.LENGTH_SHORT).show();
-            //Intent aaa = new Intent(this,Choose_direction.class);
-            //startActivity(aaa);
-        }
-    }
-
-    //Проверка токена
-    public void checkHaveToken(){
-
-        if (refOut.equals("Out")){
-            Log.d(TAG, "проверка интернета время вышло");/*специально пусто*/
-        }
-
-        else{
-            if (DellYes==null){
-
-                Log.d(TAG, "Удаление Успешно");/*специально пусто*/
-                //переход к авторизации по телефону от firebase
-                Intent AuthList = new Intent(this,Choose_direction.class);
-                startActivity(AuthList);
-//                Calend_Out.setText( "" );
-//                Map.setText( "" );
-//                road_number_out.setText( "" );
-//                road_name_out.setText( "" );
-//                flight_number_Out.setText( "" );
-//                people.setText("");
-//                number.setText( "заявка НЕ оформлена" );
-//                number.setTextColor(getResources().getColor( R.color.colorNew ));
+//    public void backMainList (View view){
 //
-//                //делаем текст невидимым
-//                TextFlight.setVisibility(View.INVISIBLE);
-//                TextData.setVisibility(View.INVISIBLE);
-//                TextMap.setVisibility(View.INVISIBLE);
-//                TextPoint.setVisibility(View.INVISIBLE);
-//                searchCar.setVisibility(View.INVISIBLE);
-//                information2.setVisibility(View.INVISIBLE);
-//                people2.setVisibility(View.INVISIBLE);
-//                //стрелочки
-//                process.setVisibility(View.INVISIBLE);
-//                process1.setVisibility(View.INVISIBLE);
-//                process2.setVisibility(View.INVISIBLE);
-//                process3.setVisibility(View.INVISIBLE);
-//                //кнопка  Отменить заявку
-//                cancelOder.setVisibility(View.INVISIBLE);
-            }
-            else {
-                Log.d(TAG, "Ошибка удаления ИЗ БАЗЫ ");
-                Toast.makeText(Main6Activity.this, "Ошибка удаления ИЗ БАЗЫ", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public void backMainList (View view){
-
-        Intent qwe= new Intent(this,Choose_direction.class);
-        startActivity(qwe);
-
-
-    }
-
+//        Intent qwe= new Intent(this,Choose_direction.class);
+//        startActivity(qwe);
+//    }
 }
 
 
