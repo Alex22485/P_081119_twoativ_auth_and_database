@@ -89,7 +89,6 @@ public class Choose_direction extends AppCompatActivity {
             }
         },15000);
 
-        Log.d(TAG, "Чтение Yes/No из БД");
         //Чтение Yes/No из БД
         database01 = FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Пользователи")
@@ -105,8 +104,8 @@ public class Choose_direction extends AppCompatActivity {
                 proverka=dataSnapshot.getValue(String.class);
                 Log.d(TAG, "запрос регистрации получен"+proverka);
 
-                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
-                //ref01.removeEventListener(this);
+                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ
+                ref01.removeEventListener(this);
 
                 Handler handler1 = new Handler();
                 handler1.postDelayed(new Runnable() {
@@ -116,11 +115,6 @@ public class Choose_direction extends AppCompatActivity {
                         checkWordProverka();
                     }
                 },1000);
-
-
-
-
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -163,16 +157,6 @@ public class Choose_direction extends AppCompatActivity {
             Log.d(TAG, "в БД null");
         }
     }
-
-
-
-
-
-
-
-
-
-
 
     public void inCity(View view){
         Intent nextListInAir_choise_routes = new Intent( this,InAir_choise_routes.class );

@@ -30,6 +30,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import java.util.Map;
+
 
 public class Main6Activity extends AppCompatActivity {
 
@@ -40,6 +42,9 @@ public class Main6Activity extends AppCompatActivity {
 
     FirebaseDatabase database01;
     DatabaseReference ref01;
+
+    FirebaseDatabase database02;
+    DatabaseReference ref02;
 
     FirebaseDatabase ggg;
     DatabaseReference mmm;
@@ -191,30 +196,70 @@ public class Main6Activity extends AppCompatActivity {
             }
         },15000);
 
-        Log.d(TAG, "Чтение Yes/No из БД");
-        //Чтение Yes/No из БД
-        database01 = FirebaseDatabase.getInstance();
-        ref01 = database01.getReference("Пользователи")
+
+        database01=FirebaseDatabase.getInstance();
+        ref01= database01.getReference("Пользователи")
                 .child("Personal")
                 .child(userPhone)
                 .child("Proverka")
                 .child("Заявка");
-        ref01.addValueEventListener(new ValueEventListener() {
-
+        ref01.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 proverka=dataSnapshot.getValue(String.class);
                 Log.d(TAG, "запрос регистрации получен"+proverka);
 
-                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
-                ref01.removeEventListener(this);
-                checkWordProverka();
+                Handler handler1 = new Handler();
+                handler1.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        checkWordProverka();
+                    }
+                },300);
+
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
+
+        //Чтение Yes/No из БД
+//        database01 = FirebaseDatabase.getInstance();
+//        ref01 = database01.getReference("Пользователи")
+//                .child("Personal")
+//                .child(userPhone)
+//                .child("Proverka")
+//                .child("Заявка");
+//        ref01.addValueEventListener(new ValueEventListener() {
+//
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                proverka=dataSnapshot.getValue(String.class);
+//                Log.d(TAG, "запрос регистрации получен"+proverka);
+//
+//                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+//                ref01.removeEventListener(this);
+//
+//                Handler handler1 = new Handler();
+//                handler1.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                        checkWordProverka();
+//                    }
+//                },300);
+//
+//
+//
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            }
+//        });
     }
 
     public void internetNot(){
@@ -250,67 +295,226 @@ public class Main6Activity extends AppCompatActivity {
     }
 
     public void readOder(){
-
-        Query aaa1= FirebaseDatabase.getInstance().getReference("Пользователи")
+        //Важно в БД с читаемым объектом не должно быть параллельных линий :)
+        // только тогда считывает значения с первого раза без null
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        Query query = rootRef.child("Пользователи")
                 .child("Personal")
-                .child( userPhone )
+                .child(userPhone)
+                .child("Status")
                 .orderByChild("Status");
-        aaa1.addChildEventListener(new ChildEventListener() {
+        ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                String data=dataSnapshot.child( "дата" ).getValue(String.class);
-                String map=dataSnapshot.child( "направление" ).getValue(String.class);
-                String roar_number=dataSnapshot.child( "маршрут_номер" ).getValue(String.class);
-                String road_name=dataSnapshot.child( "маршрут_точкаСбора" ).getValue(String.class);
-                String flidht_number=dataSnapshot.child( "рейс_самолета" ).getValue(String.class);
-                Integer peopleOder=dataSnapshot.child("Человек_в_Заявке").getValue(Integer.class);
-                String сarDrive=dataSnapshot.child("Автомобиль").getValue(String.class);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ddd : dataSnapshot.getChildren()) {
+//                    String token= (String) ddd.child("token").getValue();
+//                    Integer peopleOder= (Integer) ddd.child("Человек_в_Заявке").getValue();
 
-                Calend_Out.setText( data );
-                Map.setText( map );
-                road_number_out.setText( roar_number );
-                road_name_out.setText( road_name );
-                flight_number_Out.setText( flidht_number );
-                people.setText(""+peopleOder);
+                    String token=ddd.child("token").getValue(String.class);
+                    Integer peopleOder=ddd.child("Человек_в_Заявке").getValue(Integer.class);
+                    String data= (String) ddd.child("дата").getValue();
+                    String roar_number= (String) ddd.child("маршрут_номер").getValue();
+                    String road_name= (String) ddd.child("маршрут_точкаСбора").getValue();
+                    String map= (String) ddd.child("направление").getValue();
+                    String flidht_number= (String) ddd.child("рейс_самолета").getValue();
+                    String сarDrive= (String) ddd.child("Автомобиль").getValue();
 
-                number.setText( "заявка оформлена" );
-                progressBar.setVisibility(View.INVISIBLE);
+                    Log.d(TAG, "Получаем статус"+data+map+roar_number+road_name+flidht_number+сarDrive+token);
 
-                if (сarDrive==null){
-                    Log.d(TAG, "Автомобиль не найден");/*специально пусто*/
+                    Calend_Out.setText( data );
+                    Map.setText( map );
+                    road_number_out.setText( roar_number );
+                    road_name_out.setText( road_name );
+                    flight_number_Out.setText( flidht_number );
+                    people.setText(""+peopleOder);
+
+                    number.setText( "заявка оформлена" );
+                    progressBar.setVisibility(View.INVISIBLE);
+
+                    if (сarDrive==null){
+                        Log.d(TAG, "Автомобиль не найден");/*специально пусто*/
+                    }
+                    else {
+                        searchCar.setText("Найден автомобиль "+сarDrive);
+                    }
+                    //делаем текст видимым
+                    TextFlight.setVisibility(View.VISIBLE);
+                    TextData.setVisibility(View.VISIBLE);
+                    TextMap.setVisibility(View.VISIBLE);
+                    TextPoint.setVisibility(View.VISIBLE);
+                    searchCar.setVisibility(View.VISIBLE);
+                    information2.setVisibility(View.VISIBLE);
+                    people2.setVisibility(View.VISIBLE);
+                    //стрелочки
+                    process.setVisibility(View.VISIBLE);
+                    process1.setVisibility(View.VISIBLE);
+                    process2.setVisibility(View.VISIBLE);
+                    process3.setVisibility(View.VISIBLE);
+                    //кнопка Отменить заявку
+                    cancelOder.setVisibility(View.VISIBLE);
                 }
-                else {
-                    searchCar.setText("Найден автомобиль "+сarDrive);
-                }
-                //делаем текст видимым
-                TextFlight.setVisibility(View.VISIBLE);
-                TextData.setVisibility(View.VISIBLE);
-                TextMap.setVisibility(View.VISIBLE);
-                TextPoint.setVisibility(View.VISIBLE);
-                searchCar.setVisibility(View.VISIBLE);
-                information2.setVisibility(View.VISIBLE);
-                people2.setVisibility(View.VISIBLE);
-                //стрелочки
-                process.setVisibility(View.VISIBLE);
-                process1.setVisibility(View.VISIBLE);
-                process2.setVisibility(View.VISIBLE);
-                process3.setVisibility(View.VISIBLE);
-                //кнопка Отменить заявку
-                cancelOder.setVisibility(View.VISIBLE);
             }
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            }
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            }
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
-        });
+        };
+        query.addListenerForSingleValueEvent(valueEventListener);
+
+
+
+
+
+
+//        DatabaseReference data_one=FirebaseDatabase.getInstance().getReference("Пользователи")
+//                .child("Personal")
+//                .child(userPhone)
+//                .child("Status");
+//        data_one.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                for (DataSnapshot fff:dataSnapshot.getChildren()){
+//                    String data= (String) fff.child("дата").getValue();
+//                    Log.d(TAG, "Получаем статус"+data);
+//                    Calend_Out.setText( data );
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+
+
+
+
+
+//        database02=FirebaseDatabase.getInstance();
+//        ref02= database02.getReference("Пользователи")
+//                .child("Personal")
+//                .child(userPhone)
+//                .child("Status");
+//        ref02.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                for (DataSnapshot ddd:dataSnapshot.getChildren()){
+//                    String token= (String) ddd.child("token").getValue();
+//                    String data= (String) ddd.child("дата").getValue();
+//                    String map= (String) ddd.child("направление").getValue();
+//                    String roar_number= (String) ddd.child("маршрут_номер").getValue();
+//                    String road_name= (String) ddd.child("маршрут_точкаСбора").getValue();
+//                    String flidht_number= (String) ddd.child("рейс_самолета").getValue();
+//                    Integer peopleOder= (Integer) ddd.child("Человек_в_Заявке").getValue();
+//                    String сarDrive= (String) ddd.child("Автомобиль").getValue();
+//
+//                    Log.d(TAG, "Получаем статус"+data+map+roar_number+road_name+flidht_number+сarDrive+token);
+//
+//                    Calend_Out.setText( data );
+//                    Map.setText( map );
+//                    road_number_out.setText( roar_number );
+//                    road_name_out.setText( road_name );
+//                    flight_number_Out.setText( flidht_number );
+//                    people.setText(""+peopleOder);
+//
+//                    number.setText( "заявка оформлена" );
+//                    progressBar.setVisibility(View.INVISIBLE);
+//
+//                    if (сarDrive==null){
+//                        Log.d(TAG, "Автомобиль не найден");/*специально пусто*/
+//                    }
+//                    else {
+//                        searchCar.setText("Найден автомобиль "+сarDrive);
+//                    }
+//                    //делаем текст видимым
+//                    TextFlight.setVisibility(View.VISIBLE);
+//                    TextData.setVisibility(View.VISIBLE);
+//                    TextMap.setVisibility(View.VISIBLE);
+//                    TextPoint.setVisibility(View.VISIBLE);
+//                    searchCar.setVisibility(View.VISIBLE);
+//                    information2.setVisibility(View.VISIBLE);
+//                    people2.setVisibility(View.VISIBLE);
+//                    //стрелочки
+//                    process.setVisibility(View.VISIBLE);
+//                    process1.setVisibility(View.VISIBLE);
+//                    process2.setVisibility(View.VISIBLE);
+//                    process3.setVisibility(View.VISIBLE);
+//                    //кнопка Отменить заявку
+//                    cancelOder.setVisibility(View.VISIBLE);
+//
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+
+
+
+//        Query aaa1= FirebaseDatabase.getInstance().getReference("Пользователи")
+//                .child("Personal")
+//                .child( userPhone )
+//                .orderByChild("Status");
+//        aaa1.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                String data=dataSnapshot.child( "дата" ).getValue(String.class);
+//                String map=dataSnapshot.child( "направление" ).getValue(String.class);
+//                String roar_number=dataSnapshot.child( "маршрут_номер" ).getValue(String.class);
+//                String road_name=dataSnapshot.child( "маршрут_точкаСбора" ).getValue(String.class);
+//                String flidht_number=dataSnapshot.child( "рейс_самолета" ).getValue(String.class);
+//                Integer peopleOder=dataSnapshot.child("Человек_в_Заявке").getValue(Integer.class);
+//                String сarDrive=dataSnapshot.child("Автомобиль").getValue(String.class);
+//
+//                Calend_Out.setText( data );
+//                Map.setText( map );
+//                road_number_out.setText( roar_number );
+//                road_name_out.setText( road_name );
+//                flight_number_Out.setText( flidht_number );
+//                people.setText(""+peopleOder);
+//
+//                number.setText( "заявка оформлена" );
+//                progressBar.setVisibility(View.INVISIBLE);
+//
+//                if (сarDrive==null){
+//                    Log.d(TAG, "Автомобиль не найден");/*специально пусто*/
+//                }
+//                else {
+//                    searchCar.setText("Найден автомобиль "+сarDrive);
+//                }
+//                //делаем текст видимым
+//                TextFlight.setVisibility(View.VISIBLE);
+//                TextData.setVisibility(View.VISIBLE);
+//                TextMap.setVisibility(View.VISIBLE);
+//                TextPoint.setVisibility(View.VISIBLE);
+//                searchCar.setVisibility(View.VISIBLE);
+//                information2.setVisibility(View.VISIBLE);
+//                people2.setVisibility(View.VISIBLE);
+//                //стрелочки
+//                process.setVisibility(View.VISIBLE);
+//                process1.setVisibility(View.VISIBLE);
+//                process2.setVisibility(View.VISIBLE);
+//                process3.setVisibility(View.VISIBLE);
+//                //кнопка Отменить заявку
+//                cancelOder.setVisibility(View.VISIBLE);
+//            }
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//            }
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//            }
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            }
+//        });
     }
 
     public void setNotText(){
@@ -375,26 +579,8 @@ public class Main6Activity extends AppCompatActivity {
                 mmm.child( token ).removeValue();
 
                 Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
+                Log.d(TAG, "Заявка Отменена....");/*специально пусто*/
                 setNotText();
-
-//                //28 02 2020  задержка на удаление из БД, нужна для правильного подсчета человек в БД ЗАявкиServerApp
-//                Handler handler = new Handler();
-//                handler.postDelayed( new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        mmm = ggg.getReference("Пользователи")
-//                                .child("Personal")
-//                                .child(userPhone);
-//                        mmm.child( "Status" ).removeValue();
-//
-//                        //CheckDelOder();
-//
-//                        Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
-//                        setNotText();
-//
-//                    }
-//                },1000
-//                );
             }
         }
         );

@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +37,9 @@ import com.google.firebase.iid.InstanceIdResult;
     DatabaseReference ref01;
     DatabaseReference ref02;
 
+    FirebaseAuth mAuth;
+    String userPhone;
+    String proverka;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -253,11 +258,31 @@ import com.google.firebase.iid.InstanceIdResult;
             startActivity(AuthList);
         }
         else if (keyReg.equals("Hello")){
-            Log.d(TAG, "Переход на лист заказов");/*специально пусто*/
-            //goMainList();
-            //Переход в главное меню заказов
-            Intent mainList = new Intent(this,Choose_direction.class);
-            startActivity(mainList);
+            Log.d(TAG, "Проверка Наличия заявок");/*специально пусто*/
+
+            //полуаем phone пользователя
+            mAuth= FirebaseAuth.getInstance(  );
+            FirebaseUser user=mAuth.getCurrentUser();
+            userPhone = user.getPhoneNumber();
+            Log.d(TAG, "получен телефон"+userPhone);/*специально пусто*/
+
+
+            //Старт Проверка наличия заявок
+            Handler handler1 = new Handler();
+            handler1.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    checkOder();
+                    Log.d(TAG, "Считывание Yes/No");/*специально пусто*/
+                }
+            },500);
+
+
+
+
+//            //Переход в главное меню заказов
+//            Intent mainList = new Intent(this,Choose_direction.class);
+//            startActivity(mainList);
         }
     }
     }
@@ -267,6 +292,63 @@ import com.google.firebase.iid.InstanceIdResult;
 //        Intent mainList = new Intent(this,Choose_direction.class);
 //        startActivity(mainList);
 //    }
+
+        public void checkOder(){
+
+            proverka="";
+
+            Log.d(TAG, "Чтение Yes/No из БД");
+            //Чтение Yes/No из БД
+            database01 = FirebaseDatabase.getInstance();
+            ref01 = database01.getReference("Пользователи")
+                    .child("Personal")
+                    .child(userPhone)
+                    .child("Proverka")
+                    .child("Заявка");
+            ref01.addValueEventListener(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    proverka=dataSnapshot.getValue(String.class);
+                    Log.d(TAG, "запрос регистрации получен"+proverka);
+
+                    // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+                    ref01.removeEventListener(this);
+
+                    Handler handler1 = new Handler();
+                    handler1.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            checkWordProverka();
+
+                        }
+                    },200);
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+        }
+
+        public void checkWordProverka(){
+
+        if(proverka.equals("Yes")){
+            Log.d(TAG, "переход лист заявок");
+            Intent MyStatus= new Intent(this,Main6Activity.class);
+            startActivity(MyStatus);
+        }
+        else if(proverka.equals("No")){
+            Log.d(TAG, "Заявок нет");
+            Intent Choose_direction= new Intent(this,Choose_direction.class);
+            startActivity(Choose_direction);
+        }
+        else{
+            Log.d(TAG, "в БД null");
+        }
+    }
+
 
     // Блокировка кнопки Back!!!! :)))
     @Override
