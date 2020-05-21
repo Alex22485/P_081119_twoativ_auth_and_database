@@ -38,7 +38,7 @@ public class Main6ActivityNotInternet extends AppCompatActivity {
 
     // Кнопка обновить
     public void Update(View view){
-        Intent ddd=new Intent(this,Main6Activity.class);
+        Intent ddd=new Intent(this,MainActivity.class);
         startActivity(ddd);
     }
 }

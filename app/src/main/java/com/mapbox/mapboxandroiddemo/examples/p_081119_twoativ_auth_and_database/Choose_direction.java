@@ -19,6 +19,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class Choose_direction extends AppCompatActivity {
@@ -89,37 +90,72 @@ public class Choose_direction extends AppCompatActivity {
             }
         },15000);
 
-        //Чтение Yes/No из БД
-        database01 = FirebaseDatabase.getInstance();
-        ref01 = database01.getReference("Пользователи")
+        //Важно в БД с читаемым объектом не должно быть параллельных линий :)
+        // только тогда считывает значения с первого раза без null
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        Query query = rootRef.child("Пользователи")
                 .child("Personal")
                 .child(userPhone)
                 .child("Proverka")
-                .child("Заявка");
-        ref01.addValueEventListener(new ValueEventListener() {
-
+                .orderByChild("Oder");
+        ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ddd : dataSnapshot.getChildren()) {
 
-                proverka=dataSnapshot.getValue(String.class);
-                Log.d(TAG, "запрос регистрации получен"+proverka);
+                    String YesNo=ddd.child("Заявка").getValue(String.class);
 
-                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ
-                ref01.removeEventListener(this);
+                    proverka=YesNo;
+                    Log.d(TAG, "Получаем статус"+YesNo);
 
-                Handler handler1 = new Handler();
-                handler1.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        checkWordProverka();
-                    }
-                },1000);
+                    // Проверяем YesNo
+                    checkWordProverka();
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
-        });
+        };
+        query.addListenerForSingleValueEvent(valueEventListener);
+
+
+
+
+
+
+
+//        //Чтение Yes/No из БД
+//        database01 = FirebaseDatabase.getInstance();
+//        ref01 = database01.getReference("Пользователи")
+//                .child("Personal")
+//                .child(userPhone)
+//                .child("Proverka")
+//                .child("Proverka")
+//                .child("Заявка");
+//        ref01.addValueEventListener(new ValueEventListener() {
+//
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                proverka=dataSnapshot.getValue(String.class);
+//                Log.d(TAG, "запрос регистрации получен"+proverka);
+//
+//                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ
+//                ref01.removeEventListener(this);
+//
+//                Handler handler1 = new Handler();
+//                handler1.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                        checkWordProverka();
+//                    }
+//                },1000);
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            }
+//        });
     }
 
     public void internetNot(){
@@ -185,6 +221,11 @@ public class Choose_direction extends AppCompatActivity {
         startActivity(MyStatus);
     }
 
+
+    public void Vremenno(View view){
+        Intent MyStatus= new Intent(this,Main6Activity.class);
+        startActivity(MyStatus);
+    }
 
 
     // кнопка Back сворачивает приложение
