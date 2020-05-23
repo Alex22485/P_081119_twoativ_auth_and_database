@@ -218,5 +218,6 @@ public  void oneChoose(View view) {
         nextList.putExtra( "TVchoise_pointMap",TVchoise_pointMap.getText().toString() );
         nextList.putExtra( "mapTop",mapTop.getText().toString() );
         startActivity( nextList);
+
     }
 }

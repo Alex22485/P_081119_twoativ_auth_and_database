@@ -8,17 +8,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class Main6ActivityNotInternet extends AppCompatActivity {
+public class Main6ActivityNotInternetAfterDellOder extends AppCompatActivity {
+
+   // не используется
+
 
     TextView TextUpdate;
     TextView TextMessage1;
     TextView TextMessage2;
     Button BtnUpdate;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main6_not_internet);
+        setContentView(R.layout.activity_main6_not_internet_after_dell_oder);
         TextUpdate=findViewById(R.id.TextUpdate);
         TextMessage1=findViewById(R.id.TextMessage1);
         TextMessage1.setText("Кажется, что-то пошло не так!!!");
@@ -40,7 +44,6 @@ public class Main6ActivityNotInternet extends AppCompatActivity {
     public void Update(View view){
         Intent ddd=new Intent(this,MainActivity.class);
         startActivity(ddd);
-
 
     }
 }

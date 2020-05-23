@@ -469,8 +469,8 @@ public class Main6Activity extends AppCompatActivity {
         else{
             Log.d(TAG, "Время удаления вышло not internet");
             Toast.makeText(Main6Activity.this,"Время вышло not internet....",Toast.LENGTH_LONG).show();
-//            Intent Main6ActivityNotInternet  = new Intent(this,Main6ActivityNotInternet.class);
-//            startActivity(Main6ActivityNotInternet);
+            Intent Main6ActivityNotInternet  = new Intent(this,Main6ActivityNotInternet.class);
+            startActivity(Main6ActivityNotInternet);
         }
     }
 
@@ -504,7 +504,11 @@ public class Main6Activity extends AppCompatActivity {
         BtnNewOrder.setVisibility(View.VISIBLE);
 
     }
+
+
     }
+
+
 
 //    public void backMainList (View view){
 //
