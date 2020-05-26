@@ -6,19 +6,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 public class InAir_choise_routes extends AppCompatActivity {
 
-    TextView TVchoiseMap,TVchoise_pointMap;
+//    TextView TVchoiseMap,TVchoise_pointMap;
     Button oneChoose,twoChoose,threeChoose,fourChoose;
 
-    Button nextList;
+    String TVchoiseMap;
+    String TVchoise_pointMap;
+
+//    Button nextList;
 
 
     ///Выбрать пункт Сбора Маршрута №1 КрасТэц-Аэропорт-КрасТэц
@@ -41,17 +41,17 @@ public class InAir_choise_routes extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_in_air_choise_routes );
 
-        TVchoiseMap = findViewById(R.id.TVchoiseMap);
-        TVchoise_pointMap = findViewById(R.id.TVchoise_pointMap);
+//        TVchoiseMap = findViewById(R.id.TVchoiseMap);
+//        TVchoise_pointMap = findViewById(R.id.TVchoise_pointMap);
         oneChoose = findViewById(R.id.oneChoose);
         twoChoose = findViewById(R.id.twoChoose);
         threeChoose = findViewById(R.id.threeChoose);
         fourChoose = findViewById(R.id.fourChoose);
 
         // 1.1 Disable Button if Text is Empty
-        nextList=findViewById(R.id.nextList);
-        TVchoiseMap.addTextChangedListener( loginTextWather );
-        TVchoise_pointMap.addTextChangedListener( loginTextWather );
+//        nextList=findViewById(R.id.nextList);
+//        TVchoiseMap.addTextChangedListener( loginTextWather );
+//        TVchoise_pointMap.addTextChangedListener( loginTextWather );
 
         // for Extra
         oneMap= findViewById(R.id.oneMap);
@@ -74,6 +74,19 @@ public class InAir_choise_routes extends AppCompatActivity {
         treeMap.setText( sTreeMap );
         fourMap.setText( sFourMap );
 
+        if(sOneMap.equals("Аэропорт-КрасТэц")){
+            oneChoose.setText("Пункт сбора Парковка Р3");
+        }
+        if(sTwoMap.equals("Аэропорт-Щорса")){
+            twoChoose.setText("Пункт сбора Парковка Р3");
+        }
+        if(sTreeMap.equals("Аэропорт-Северный")){
+            threeChoose.setText("Пункт сбора Парковка Р3");
+        }
+        if(sFourMap.equals("Аэропорт-Ветлужанка")){
+            fourChoose.setText("Пункт сбора Парковка Р3");
+        }
+
     }
 
     //Выбрать выбрать пункт Сбора Маршрута КрасТэц-Аэропорт-КрасТэц
@@ -90,8 +103,12 @@ public  void oneChoose(View view) {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
 
-                TVchoiseMap.setText(oneMap.getText().toString());
-                TVchoise_pointMap.setText(pointOneMap[which]);
+//                TVchoiseMap.setText(oneMap.getText().toString());
+//                TVchoise_pointMap.setText(pointOneMap[which]);
+
+                TVchoiseMap=oneMap.getText().toString();
+                TVchoise_pointMap=pointOneMap[which];
+                nextList();
 
             }
         });
@@ -99,8 +116,12 @@ public  void oneChoose(View view) {
         dialog.show();
     }
     else{
-        TVchoiseMap.setText(oneMap.getText().toString());
-        TVchoise_pointMap.setText("Парковка Р3");
+//        TVchoiseMap.setText(oneMap.getText().toString());
+//        TVchoise_pointMap.setText("Парковка Р3");
+
+        TVchoiseMap=oneMap.getText().toString();
+        TVchoise_pointMap="Парковка Р3";
+        nextList();
 
     }
 
@@ -120,16 +141,25 @@ public  void oneChoose(View view) {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
 
-                TVchoiseMap.setText( twoMap.getText().toString() );
-                TVchoise_pointMap.setText(pointTwoMap[which]);
+//                TVchoiseMap.setText( twoMap.getText().toString() );
+//                TVchoise_pointMap.setText(pointTwoMap[which]);
+
+                TVchoiseMap=twoMap.getText().toString();
+                TVchoise_pointMap=pointTwoMap[which];
+
+                nextList();
             }
         } );
         AlertDialog dialog = builder.create();
         dialog.show();
         }
         else{
-            TVchoiseMap.setText(twoMap.getText().toString());
-            TVchoise_pointMap.setText("Парковка Р3");
+//            TVchoiseMap.setText(twoMap.getText().toString());
+//            TVchoise_pointMap.setText("Парковка Р3");
+
+            TVchoiseMap=twoMap.getText().toString();
+            TVchoise_pointMap="Парковка Р3";
+            nextList();
 
         }
     }
@@ -148,16 +178,25 @@ public  void oneChoose(View view) {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int which) {
 
-                    TVchoiseMap.setText( treeMap.getText().toString() );
-                    TVchoise_pointMap.setText(pointTreeMap[which]);
+//                    TVchoiseMap.setText( treeMap.getText().toString() );
+//                    TVchoise_pointMap.setText(pointTreeMap[which]);
+
+                    TVchoiseMap=treeMap.getText().toString();
+                    TVchoise_pointMap=pointTreeMap[which];
+
+                    nextList();
                 }
             } );
             AlertDialog dialog = builder.create();
             dialog.show();
         }
         else{
-            TVchoiseMap.setText(treeMap.getText().toString());
-            TVchoise_pointMap.setText("Парковка Р3");
+//            TVchoiseMap.setText(treeMap.getText().toString());
+//            TVchoise_pointMap.setText("Парковка Р3");
+
+            TVchoiseMap=treeMap.getText().toString();
+            TVchoise_pointMap="Парковка Р3";
+            nextList();
 
         }
     }
@@ -176,46 +215,55 @@ public  void oneChoose(View view) {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int which) {
 
-                    TVchoiseMap.setText( fourMap.getText().toString() );
-                    TVchoise_pointMap.setText(pointFourMap[which]);
+//                    TVchoiseMap.setText( fourMap.getText().toString() );
+//                    TVchoise_pointMap.setText(pointFourMap[which]);
+
+                    TVchoiseMap=fourMap.getText().toString();
+                    TVchoise_pointMap=pointFourMap[which];
+                    nextList();
                 }
             } );
             AlertDialog dialog = builder.create();
             dialog.show();
         }
         else{
-            TVchoiseMap.setText(fourMap.getText().toString());
-            TVchoise_pointMap.setText("Парковка Р3");
+//            TVchoiseMap.setText(fourMap.getText().toString());
+//            TVchoise_pointMap.setText("Парковка Р3");
+
+
+            TVchoiseMap=fourMap.getText().toString();
+            TVchoise_pointMap="Парковка Р3";
+            nextList();
 
         }
     }
 
     // 1.2 Disable Button if Text is Empty
-    private TextWatcher loginTextWather = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
+//    private TextWatcher loginTextWather = new TextWatcher() {
+//        @Override
+//        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//        }
+//
+//        @Override
+//        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            String TVchoiseMapInput =TVchoiseMap.getText().toString().trim();
+//            String TVchoise_pointMapInput =TVchoise_pointMap.getText().toString().trim();
+//
+//            nextList.setEnabled(!TVchoiseMapInput.isEmpty()&& !TVchoise_pointMapInput.isEmpty() );
+//
+//        }
+//        @Override
+//        public void afterTextChanged(Editable editable) {
+//
+//        }
+//    };
 
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            String TVchoiseMapInput =TVchoiseMap.getText().toString().trim();
-            String TVchoise_pointMapInput =TVchoise_pointMap.getText().toString().trim();
-
-            nextList.setEnabled(!TVchoiseMapInput.isEmpty()&& !TVchoise_pointMapInput.isEmpty() );
-
-        }
-        @Override
-        public void afterTextChanged(Editable editable) {
-
-        }
-    };
-
-    public void nextList(View view){
+    public void nextList(){
 
         Intent nextList = new Intent( this,Main3Activity.class );
-        nextList.putExtra( "TVchoiseMap",TVchoiseMap.getText().toString() );
-        nextList.putExtra( "TVchoise_pointMap",TVchoise_pointMap.getText().toString() );
+        nextList.putExtra( "TVchoiseMap",TVchoiseMap );
+        nextList.putExtra( "TVchoise_pointMap",TVchoise_pointMap );
         nextList.putExtra( "mapTop",mapTop.getText().toString() );
         startActivity( nextList);
 

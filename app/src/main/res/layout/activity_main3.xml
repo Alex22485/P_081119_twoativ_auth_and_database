@@ -7,12 +7,19 @@
     android:orientation="vertical"
     tools:context=".Main3Activity">
 
+    <LinearLayout
+        android:id="@+id/TextRegistration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
     <Button
         android:id="@+id/choisData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="1 Выберите дату поездки"
-        android:textSize="20dp">
+        android:textSize="20sp">
     </Button>
 
     <Button
@@ -21,7 +28,7 @@
         android:layout_height="wrap_content"
         android:text="2 Выберите номер рейса"
         android:enabled="false"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:onClick="btn_number_Flight">
     </Button>
 
@@ -29,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:text=""
-        android:textSize="20dp" />
+        android:textSize="20sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,20 +47,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Дата поездки"
-            android:textSize="25dp" />
+            android:textSize="20sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="       "
-            android:textSize="20dp" />
+            android:textSize="20sp" />
         <TextView
             android:id="@+id/Calend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
             android:textColor="@color/colorAccent"
-            android:textSize="30dp" />
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -66,20 +73,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Рейс номер"
-            android:textSize="25dp" />
+            android:textSize="20sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="       "
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/Flight"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            android:textSize="30dp" />
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -88,35 +95,73 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:enabled="false"
-        android:visibility="visible"
         android:onClick="btnInsert"
         android:text="Зарегистрировать Заявку"
         android:textSize="20sp" />
 
+    </LinearLayout>
+
     <LinearLayout
+        android:id="@+id/TextProgress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+        android:visibility="invisible"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/TextProcess"
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="процесс регистрации..."
             android:textColor="#D51E1E"
-            android:textSize="25dp" />
+            android:layout_gravity="center_horizontal"
+            android:textSize="20sp" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:indeterminate="false"
+        />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/TextRegistration1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:orientation="vertical">
 
         <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="маршрут:"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"/>
+        <TextView
+            android:id="@+id/TextMarshryt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlue"
+            android:text=""
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="точка сбора:"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"/>
+        <TextView
+            android:id="@+id/TextSbor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20sp"
+            android:textColor="@color/colorBlue"
+            android:layout_gravity="center_horizontal"/>
     </LinearLayout>
 
 </LinearLayout>

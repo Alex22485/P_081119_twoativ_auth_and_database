@@ -7,39 +7,7 @@
     android:orientation="vertical"
     tools:context=".Main6Activity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:text=""
-            android:layout_weight="1" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="Ваш статус:"
-            android:textSize="25sp" />
-
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:text=""
-            android:layout_weight="1" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/number"
@@ -47,13 +15,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:text=""
+            android:layout_gravity="center_horizontal"
             android:textColor="@color/colorNew"
             android:textSize="25sp" />
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -65,436 +29,188 @@
         android:indeterminate="false"
         />
 
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="15sp" />
-
     <LinearLayout
+        android:id="@+id/TextOder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:visibility="invisible">
 
         <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-
-    </LinearLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="7sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/TextData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Дата: "
-            android:visibility="invisible"
+            android:text="Дата:"
+            android:layout_gravity="center_horizontal"
             android:textSize="20sp"/>
-
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="5sp" />
+        <TextView
+            android:id="@+id/Calend_Out"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint=""
+            android:text=""
             android:textSize="20sp"
-            android:textColor="@color/colorNew"
-            android:id="@+id/Calend_Out"/>
-        <TextView
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/colorNew" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="  "
-            android:textSize="20sp"
-             />
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Рейс самолета: №"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/flight_number_Out"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/colorNew"
+                android:textSize="20sp"/>
+        </LinearLayout>
         <TextView
-            android:id="@+id/TextFlight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Рейс самолета: № "
-            android:visibility="invisible"
-            android:textSize="20sp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint=""
-            android:textColor="@color/colorNew"
-            android:textSize="20sp"
-            android:id="@+id/flight_number_Out"/>
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="5sp" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="5sp" />
 
         <TextView
             android:id="@+id/Map"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Направление:"
+            android:text=""
             android:textColor="@color/colorNew"
             android:textSize="20sp"
             android:visibility="gone"/>
 
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="5sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
         <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-        <TextView
-            android:id="@+id/TextMap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
             android:text="Маршрут:"
-            android:textSize="20sp"
-            android:visibility="invisible"/>
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:hint=""
-            android:textSize="20sp"
-            android:textColor="@color/colorNew"
-            android:id="@+id/road_number_out"/>
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-
-        <TextView
-        android:layout_width="match_parent"
-        android:layout_height="5sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-        <TextView
-            android:id="@+id/TextPoint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="Точка сбора"
-            android:visibility="invisible"
+            android:layout_gravity="center_horizontal"
             android:textSize="20sp"/>
         <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
+            android:layout_width="match_parent"
+            android:layout_height="5sp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
         <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:id="@+id/road_number_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/colorNew"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="5sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Точка сбора:"
+            android:layout_gravity="center_horizontal"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="5sp" />
+
         <TextView
             android:id="@+id/road_name_out"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:hint=""
+            android:text=""
             android:textColor="@color/colorNew"
+            android:layout_gravity="center_horizontal"
             android:textSize="20sp"/>
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="5sp" />
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
         <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_width="match_parent"
+            android:layout_height="10sp" />
 
         <TextView
-            android:id="@+id/process"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="|"
-            android:visibility="invisible"
-            android:textColor="@color/colorRed"
-            android:textSize="13sp" />
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/process1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="V"
-            android:visibility="invisible"
-            android:textColor="@color/colorRed"
-            android:textSize="13sp" />
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-        <TextView
-            android:id="@+id/information2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="зарегистрировано:"
-            android:layout_weight="0"
-            android:visibility="invisible"
+            android:layout_gravity="center_horizontal"
             android:textSize="20sp" />
         <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="5sp" />
 
-        <TextView
-        android:layout_width="0sp"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/people"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="  "
-            android:textSize="20sp"
-            android:textColor="@color/colorNew" />
-        <TextView
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="  "
-            android:textSize="20sp"/>
-        <TextView
-            android:id="@+id/people2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="человек(а)"
-            android:layout_weight="0"
-            android:visibility="invisible"
-            android:textSize="20sp" />
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            <TextView
+                android:id="@+id/people"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="20sp"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/colorNew"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  человек(а)"
+                android:textSize="20sp" />
+        </LinearLayout>
 
         <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/process2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="|"
-            android:visibility="invisible"
-            android:textColor="@color/colorRed"
-            android:textSize="13sp" />
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/process3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="V"
-            android:visibility="invisible"
-            android:textColor="@color/colorRed"
-            android:textSize="13sp" />
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_width="match_parent"
+            android:layout_height="10sp" />
 
         <TextView
             android:id="@+id/searchCar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
             android:text="ищем для Вас автомобиль..."
             android:textColor="@color/colorBlue"
-            android:visibility="invisible"
+            android:layout_gravity="center_horizontal"
             android:textSize="20sp" />
+
         <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
+            android:layout_width="match_parent"
+            android:layout_height="20sp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="20sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-
-
-        <Button
-            android:id="@+id/cancelOder"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="отменить заявку"
-            android:visibility="invisible"
-            android:textSize="15sp"
-            android:onClick="cancelOder"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
 
-            />
-        <TextView
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="3" />
-        <Button
-            android:id="@+id/detailsTrip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="детали поездки"
-            android:textSize="15sp"
-            android:enabled="false"
-            />
+            <Button
+                android:id="@+id/cancelOder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="отменить заявку"
+                android:textSize="15sp"
+                android:onClick="cancelOder"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""/>
+
+            <Button
+                android:id="@+id/detailsTrip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="детали поездки"
+                android:textSize="15sp"
+                android:enabled="false"/>
+        </LinearLayout>
+
     </LinearLayout>
-      <Button
-          android:id="@+id/BtnNewOrder"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="Оформить заявку"
-          android:textSize="15sp"
-          android:visibility="invisible"
-          android:onClick="backMainList">
-    </Button>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </LinearLayout>

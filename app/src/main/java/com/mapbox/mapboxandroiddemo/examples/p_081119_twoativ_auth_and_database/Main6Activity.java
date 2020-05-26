@@ -1,7 +1,6 @@
 package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +11,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,24 +29,26 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
-import java.util.Map;
-
-
 public class Main6Activity extends AppCompatActivity {
 
     private static final String TAG ="Main6Activity" ;
+
+    LinearLayout TextOder;
 
     String timeOut;
     String timeOutDel;
     String proverka;
     String proverkaDel;
 
+    String timeOutBeforDel;
+    String proverkaBeforDel;
+
+
     FirebaseDatabase ggg;
     DatabaseReference mmm;
 
     Button cancelOder;
     Button detailsTrip;
-    Button BtnNewOrder;
     String userPhone;
 
     String[] CancelOderWhy ={"Самолет отменён","Передумал", };
@@ -62,20 +63,10 @@ public class Main6Activity extends AppCompatActivity {
     TextView road_number_out;
     TextView road_name_out;
     TextView number;
-    TextView information2;
     TextView people;
-    TextView people2;
-    TextView process;
-    TextView process1;
-    TextView process2;
-    TextView process3;
     TextView searchCar;
-    TextView TextData;
-    TextView TextFlight;
-    TextView TextMap;
-    TextView TextPoint;
-
     ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -84,6 +75,7 @@ public class Main6Activity extends AppCompatActivity {
         Log.d(TAG, "onCreate");/*специально пусто*/
 
         progressBar = findViewById( R.id.progressBar );
+        TextOder = findViewById( R.id.TextOder );
 
         number = findViewById( R.id.number );
         Calend_Out=findViewById( R.id.Calend_Out );
@@ -91,23 +83,12 @@ public class Main6Activity extends AppCompatActivity {
         Map=findViewById( R.id.Map );
         road_number_out=findViewById( R.id.road_number_out );
         road_name_out=findViewById( R.id.road_name_out );
-        information2=findViewById( R.id.information2 );
+
         people=findViewById( R.id.people );
-        people2=findViewById( R.id.people2 );
-        process=findViewById( R.id.process );
-        process1=findViewById( R.id.process1 );
-        process2=findViewById( R.id.process2 );
-        process3=findViewById( R.id.process3 );
+
         searchCar=findViewById( R.id.searchCar );
         cancelOder=findViewById( R.id.cancelOder );
         detailsTrip=findViewById( R.id.detailsTrip );
-        BtnNewOrder=findViewById( R.id.BtnNewOrder );
-
-
-        TextFlight=findViewById( R.id.TextFlight );
-        TextData=findViewById( R.id.TextData );
-        TextMap=findViewById( R.id.TextMap );
-        TextPoint=findViewById( R.id.TextPoint );
 
 
         //полуаем phone пользователя
@@ -134,7 +115,6 @@ public class Main6Activity extends AppCompatActivity {
             @Override
             public void run() {
 
-                //21052020 Proba
                 readOder();
                 Log.d(TAG, "Считывание Заявки");/*специально пусто*/
             }
@@ -176,56 +156,6 @@ public class Main6Activity extends AppCompatActivity {
         Log.d(TAG, "onRestart");
     }
 
-//    public void readYesNoEmpty(){
-//
-//        timeOut="";
-//        proverka="";
-//
-//
-//        //ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА
-//        Handler handler1 = new Handler();
-//        handler1.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                // Завершен ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА-2 при проверке регистрации
-//                timeOut="Out";
-//                internetNot();
-//            }
-//        },15000);
-//
-//
-//        database01=FirebaseDatabase.getInstance();
-//        ref01= database01.getReference("Пользователи")
-//                .child("Personal")
-//                .child(userPhone)
-//                .child("Proverka")
-//                .child("Заявка");
-//        ref01.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                proverka=dataSnapshot.getValue(String.class);
-//                Log.d(TAG, "запрос регистрации получен"+proverka);
-//
-//                Handler handler1 = new Handler();
-//                handler1.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-//                        checkWordProverka();
-//                    }
-//                },300);
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
-
-
     public void readOder(){
 
         timeOut="";
@@ -241,7 +171,7 @@ public class Main6Activity extends AppCompatActivity {
                 timeOut="Out";
                 internetNot();
             }
-        },15000);
+        },20000);
 
         //Важно в БД с читаемым объектом не должно быть параллельных линий :)
         // только тогда считывает значения с первого раза без null
@@ -275,9 +205,6 @@ public class Main6Activity extends AppCompatActivity {
                     flight_number_Out.setText( flidht_number );
                     people.setText(""+peopleOder);
 
-                    number.setText( "заявка оформлена" );
-                    progressBar.setVisibility(View.INVISIBLE);
-
                     if (сarDrive==null){
                         Log.d(TAG, "Автомобиль не найден");/*специально пусто*/
                     }
@@ -297,9 +224,8 @@ public class Main6Activity extends AppCompatActivity {
 
     public void internetNot(){
         if (!proverka.isEmpty()){
-            Log.d(TAG, "время вышло статус получен");
+            Log.d(TAG, "время вышло, но статус получен");
         }
-//        else if (proverka.isEmpty()){
           else{
             Log.d(TAG, "Время поиска статуса вышло not internet");
             Intent Main6ActivityNotInternet  = new Intent(this,Main6ActivityNotInternet.class);
@@ -314,34 +240,12 @@ public class Main6Activity extends AppCompatActivity {
         }
         else if(!proverka.isEmpty()){
             Log.d(TAG, "Заявка есть");
-            //делаем текст видимым
-            TextFlight.setVisibility(View.VISIBLE);
-            TextData.setVisibility(View.VISIBLE);
-            TextMap.setVisibility(View.VISIBLE);
-            TextPoint.setVisibility(View.VISIBLE);
-            searchCar.setVisibility(View.VISIBLE);
-            information2.setVisibility(View.VISIBLE);
-            people2.setVisibility(View.VISIBLE);
-            //стрелочки
-            process.setVisibility(View.VISIBLE);
-            process1.setVisibility(View.VISIBLE);
-            process2.setVisibility(View.VISIBLE);
-            process3.setVisibility(View.VISIBLE);
-            //кнопка Отменить заявку
-            cancelOder.setVisibility(View.VISIBLE);
+
+            number.setText( "заявка оформлена" );
+            progressBar.setVisibility(View.INVISIBLE);
+            TextOder.setVisibility(View.VISIBLE);
 
         }
-    }
-
-// кнопка Back сворачивает приложение
-  @Override
-   public void onBackPressed(){
-     this.moveTaskToBack(true);
-    }
-
-    public void backMainList(View view){
-        Intent Choose_direction =new Intent(this,Choose_direction.class);
-        startActivity(Choose_direction);
     }
 
 // Отмена заявки
@@ -350,24 +254,19 @@ public class Main6Activity extends AppCompatActivity {
         builder.setTitle( "Укажите причину отмены");
         //builder.setCancelable( false );
         builder.setItems(CancelOderWhy, new DialogInterface.OnClickListener() {
+
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
-                        ggg = FirebaseDatabase.getInstance();
-                        mmm = ggg.getReference("Заявки")
-                                .child(Map.getText().toString())
-                                .child(Calend_Out.getText().toString())
-                                //.child(road_number_out.getText().toString())
-                                .child(flight_number_Out.getText().toString())
-                                .child(road_number_out.getText().toString())
-                                .child(road_name_out.getText().toString())
-                                .child("notificationTokens");
-                        mmm.child(token).removeValue();
-                        Log.d(TAG, "удаление старт");
 
+
+                        Log.d(TAG, "проверка интернета перед удалением");
+
+                        number.setText( "процесс удаления заявки" );
                         progressBar.setVisibility(View.VISIBLE);
+                        TextOder.setVisibility(View.INVISIBLE);
 
-                        //задержка на считывание YesNo
-                        checkDellOderWithTime();
+                        //проверка интернета перед удалением
+                        CheskInt();
                     }
                 }
         ).setNeutralButton("Назад", new DialogInterface.OnClickListener() {
@@ -378,6 +277,104 @@ public class Main6Activity extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public void CheskInt(){
+
+        timeOutBeforDel="";
+        proverkaBeforDel="";
+
+        //ТАЙМ-АУТ проверка интернета
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                // Завершен ТАЙМ-АУТ проверка интернета
+                timeOutBeforDel="Out";
+                internetNotBeforDel();
+            }
+        },20000);
+
+        //Важно в БД с читаемым объектом не должно быть параллельных линий :)
+        // только тогда считывает значения с первого раза без null
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        Query query = rootRef.child("Пользователи")
+                .child("Personal")
+                .child(userPhone)
+                .child("Proverka")
+                .orderByChild("Oder");
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ddd : dataSnapshot.getChildren()) {
+
+                    String yesNo=ddd.child("Заявка").getValue(String.class);
+
+                    proverkaBeforDel=yesNo;
+                    Log.d(TAG, "инетрнет есть, заявка есть?"+yesNo);
+
+                    // начало удаления заявки
+                    StartDellOder();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        };
+        query.addListenerForSingleValueEvent(valueEventListener);
+
+    }
+
+    public void internetNotBeforDel(){
+
+        if (!proverkaBeforDel.isEmpty()){
+            Log.d(TAG, "время проверки интернета вышло, но интернет есть");
+        }
+        else{
+            Log.d(TAG, "Время удаления вышло not internet");
+            Toast.makeText(Main6Activity.this,"not internet....",Toast.LENGTH_LONG).show();
+//            Intent Main6ActivityNotInternetAfterDellOder  = new Intent(this,Main6ActivityNotInternetAfterDellOder.class);
+//            startActivity(Main6ActivityNotInternetAfterDellOder);
+        }
+    }
+
+    public void StartDellOder(){
+        if (timeOutBeforDel.equals("Out")){
+            Log.d(TAG, "интернет есть, но время проверки вышло");
+        }
+        else if (proverkaBeforDel.equals("Yes")){
+            Log.d(TAG, "старт удаления");
+            //цикл удаления заявки
+            DeleteOder();
+        }
+        else if (proverkaBeforDel.equals("No")){
+            //Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
+            Log.d(TAG, "Ошибка в опросе");
+            //setNotText();
+            //progressBar.setVisibility(View.INVISIBLE);
+
+            //Intent Choose_direction  = new Intent(this,Choose_direction.class);
+            //startActivity(Choose_direction);
+
+        }
+
+    }
+
+    public void DeleteOder(){
+        ggg = FirebaseDatabase.getInstance();
+        mmm = ggg.getReference("Заявки")
+                .child(Map.getText().toString())
+                .child(Calend_Out.getText().toString())
+                .child(flight_number_Out.getText().toString())
+                .child(road_number_out.getText().toString())
+                .child(road_name_out.getText().toString())
+                .child("notificationTokens");
+        mmm.child(token).removeValue();
+        Log.d(TAG, "запрос удаления отправлен в БД");
+
+        //проверка удален или нет
+        checkDellOderWithTime();
     }
 
     //задержка на считывание YesNo
@@ -398,13 +395,13 @@ public class Main6Activity extends AppCompatActivity {
         timeOutDel="";
         proverkaDel="";
 
-        //ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА
+        //ТАЙМ-АУТ ЗАПРОСА YesNo
         Handler handler1 = new Handler();
         handler1.postDelayed(new Runnable() {
             @Override
             public void run() {
 
-                // Завершен ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА-2 при проверке регистрации
+                // Завершен ТАЙМ-АУТ ЗАПРОСА YesNo
                 timeOutDel="Out";
                 internetNotDel();
             }
@@ -444,15 +441,13 @@ public class Main6Activity extends AppCompatActivity {
             Log.d(TAG, "Время удаления вышло но запрос YesNo получен");
         }
         else if (proverkaDel.equals("Yes")){
-            Log.d(TAG, "Ошибка удаления");
+            Log.d(TAG, "удаление не завершено повторяем цикл проверки");
             //цикл еще раз проверка удаления на YesNo
             checkDellOderWithTime();
             }
         else if (proverkaDel.equals("No")){
             Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
             Log.d(TAG, "Заявка удалена");
-            setNotText();
-            progressBar.setVisibility(View.INVISIBLE);
 
             Intent Choose_direction  = new Intent(this,Choose_direction.class);
             startActivity(Choose_direction);
@@ -469,52 +464,21 @@ public class Main6Activity extends AppCompatActivity {
         else{
             Log.d(TAG, "Время удаления вышло not internet");
             Toast.makeText(Main6Activity.this,"Время вышло not internet....",Toast.LENGTH_LONG).show();
-            Intent Main6ActivityNotInternet  = new Intent(this,Main6ActivityNotInternet.class);
-            startActivity(Main6ActivityNotInternet);
+//            Intent Main6ActivityNotInternetAfterDellOder  = new Intent(this,Main6ActivityNotInternetAfterDellOder.class);
+//            startActivity(Main6ActivityNotInternetAfterDellOder);
         }
     }
 
-    public void setNotText(){
-        Calend_Out.setText("");
-        Map.setText("");
-        road_number_out.setText("");
-        road_name_out.setText("");
-        flight_number_Out.setText("");
-        people.setText("");
-        number.setText( "заявка не оформлена" );
-        progressBar.setVisibility(View.INVISIBLE);
-
-
-        //делаем текст НЕ видимым
-        TextFlight.setVisibility(View.INVISIBLE);
-        TextData.setVisibility(View.INVISIBLE);
-        TextMap.setVisibility(View.INVISIBLE);
-        TextPoint.setVisibility(View.INVISIBLE);
-        searchCar.setVisibility(View.INVISIBLE);
-        information2.setVisibility(View.INVISIBLE);
-        people2.setVisibility(View.INVISIBLE);
-        //стрелочки
-        process.setVisibility(View.INVISIBLE);
-        process1.setVisibility(View.INVISIBLE);
-        process2.setVisibility(View.INVISIBLE);
-        process3.setVisibility(View.INVISIBLE);
-        //кнопка Отменить заявку
-        cancelOder.setVisibility(View.INVISIBLE);
-
-        BtnNewOrder.setVisibility(View.VISIBLE);
-
+    // кнопка Back сворачивает приложение
+    @Override
+    public void onBackPressed(){
+        this.moveTaskToBack(true);
     }
+}
 
 
-    }
 
 
-
-//    public void backMainList (View view){
-//
-//        Intent qwe= new Intent(this,Choose_direction.class);
-//        startActivity(qwe);
-//    }
 
 
 

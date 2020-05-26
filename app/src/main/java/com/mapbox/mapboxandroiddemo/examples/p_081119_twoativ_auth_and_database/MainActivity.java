@@ -22,12 +22,8 @@ import com.google.firebase.iid.InstanceIdResult;
 
     private static final String TAG ="MainActivity" ;
 
-    String key;
     String keyReg;
     String UserToken;
-
-    String internet;
-    String internetTimeOut;
 
     String registration;
     String checkregistrationTimeOut;
@@ -197,7 +193,7 @@ import com.google.firebase.iid.InstanceIdResult;
                 checkregistrationTimeOut="Out";
                 inetNotWhenGoCheckRegistration();
             }
-        },15000);
+        },20000);
 
         Log.d(TAG, "запрос регистрации начат");
         //чтение из БД с правилом для любых пользователей
@@ -213,7 +209,7 @@ import com.google.firebase.iid.InstanceIdResult;
 
                 keyReg=dataSnapshot.getValue(String.class);
                 registration=""+keyReg; /* так как может получить null*/
-                Log.d(TAG, "запрос регистрации получен");
+                Log.d(TAG, "запрос регистрации получен"+keyReg);
 
 
                 // с этой записью makeText появляется только один раз!!!!! ХОРОШО
