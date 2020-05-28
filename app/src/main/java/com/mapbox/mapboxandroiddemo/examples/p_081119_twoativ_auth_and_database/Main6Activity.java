@@ -34,6 +34,7 @@ public class Main6Activity extends AppCompatActivity {
     private static final String TAG ="Main6Activity" ;
 
     LinearLayout TextOder;
+    LinearLayout TextProcess;
 
     String timeOut;
     String timeOutDel;
@@ -76,6 +77,7 @@ public class Main6Activity extends AppCompatActivity {
 
         progressBar = findViewById( R.id.progressBar );
         TextOder = findViewById( R.id.TextOder );
+        TextProcess = findViewById( R.id.TextProcess );
 
         number = findViewById( R.id.number );
         Calend_Out=findViewById( R.id.Calend_Out );
@@ -106,8 +108,8 @@ public class Main6Activity extends AppCompatActivity {
             }
         });
 
-        number.setText("Поиск Заявок...");
-        progressBar.setVisibility(View.VISIBLE);
+        TextProcess.setVisibility(View.VISIBLE);
+        number.setText("поиск заявок...");
 
         //Старт Проверка интернета+статус заявок
         Handler handler1 = new Handler();
@@ -241,8 +243,7 @@ public class Main6Activity extends AppCompatActivity {
         else if(!proverka.isEmpty()){
             Log.d(TAG, "Заявка есть");
 
-            number.setText( "заявка оформлена" );
-            progressBar.setVisibility(View.INVISIBLE);
+            TextProcess.setVisibility(View.GONE);
             TextOder.setVisibility(View.VISIBLE);
 
         }
@@ -261,9 +262,9 @@ public class Main6Activity extends AppCompatActivity {
 
                         Log.d(TAG, "проверка интернета перед удалением");
 
-                        number.setText( "процесс удаления заявки" );
-                        progressBar.setVisibility(View.VISIBLE);
-                        TextOder.setVisibility(View.INVISIBLE);
+                        TextOder.setVisibility(View.GONE);
+                        TextProcess.setVisibility(View.VISIBLE);
+                        number.setText( "процесс отмены заявки..." );
 
                         //проверка интернета перед удалением
                         CheskInt();
@@ -333,9 +334,9 @@ public class Main6Activity extends AppCompatActivity {
         }
         else{
             Log.d(TAG, "Время удаления вышло not internet");
-            Toast.makeText(Main6Activity.this,"not internet....",Toast.LENGTH_LONG).show();
-//            Intent Main6ActivityNotInternetAfterDellOder  = new Intent(this,Main6ActivityNotInternetAfterDellOder.class);
-//            startActivity(Main6ActivityNotInternetAfterDellOder);
+            //Toast.makeText(Main6Activity.this,"not internet....",Toast.LENGTH_LONG).show();
+            Intent Main6ActivityNotInternet  = new Intent(this,Main6ActivityNotInternet.class);
+            startActivity(Main6ActivityNotInternet);
         }
     }
 
@@ -345,17 +346,12 @@ public class Main6Activity extends AppCompatActivity {
         }
         else if (proverkaBeforDel.equals("Yes")){
             Log.d(TAG, "старт удаления");
-            //цикл удаления заявки
+            // удаления заявки
             DeleteOder();
         }
         else if (proverkaBeforDel.equals("No")){
             //Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
             Log.d(TAG, "Ошибка в опросе");
-            //setNotText();
-            //progressBar.setVisibility(View.INVISIBLE);
-
-            //Intent Choose_direction  = new Intent(this,Choose_direction.class);
-            //startActivity(Choose_direction);
 
         }
 
@@ -387,7 +383,7 @@ public class Main6Activity extends AppCompatActivity {
                 checkDellOder();
                 Log.d(TAG, "проверка удаления");
             }
-        }, 2500);
+        }, 3000);
     }
 
     public void checkDellOder(){
@@ -460,12 +456,11 @@ public class Main6Activity extends AppCompatActivity {
         if (!proverkaDel.isEmpty()){
             Log.d(TAG, "время удаления вышло, но опрос получен");
         }
-//        else if (proverka.isEmpty()){
         else{
             Log.d(TAG, "Время удаления вышло not internet");
             Toast.makeText(Main6Activity.this,"Время вышло not internet....",Toast.LENGTH_LONG).show();
-//            Intent Main6ActivityNotInternetAfterDellOder  = new Intent(this,Main6ActivityNotInternetAfterDellOder.class);
-//            startActivity(Main6ActivityNotInternetAfterDellOder);
+            Intent Main6ActivityNotInternetAfterDellOder  = new Intent(this,Main6ActivityNotInternetAfterDellOder.class);
+            startActivity(Main6ActivityNotInternetAfterDellOder);
         }
     }
 

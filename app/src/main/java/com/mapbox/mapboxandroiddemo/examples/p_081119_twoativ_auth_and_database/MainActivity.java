@@ -73,10 +73,6 @@ import com.google.firebase.iid.InstanceIdResult;
         super.onDestroy();
         Log.d(TAG, "onDestroy");
 
-        // 1.1не выдает всплывающее сообщение в другом активити когда нет интернета. Работает в паре с finish() в onPause
-        //отключает прослушивание(выполнение запроса из базы данных), при переходе в спящий режим или переходе в другую активити, конкретно когда нет интернета
-      //database01.goOffline();
-
     }
     @Override
     protected void onPause(){
