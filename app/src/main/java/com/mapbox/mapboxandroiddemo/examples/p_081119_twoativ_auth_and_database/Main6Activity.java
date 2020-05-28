@@ -58,6 +58,7 @@ public class Main6Activity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
 
+    TextView TextMain;
     TextView Calend_Out;
     TextView flight_number_Out;
     TextView Map;
@@ -75,6 +76,7 @@ public class Main6Activity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate");/*специально пусто*/
 
+        TextMain = findViewById( R.id.TextMain );
         progressBar = findViewById( R.id.progressBar );
         TextOder = findViewById( R.id.TextOder );
         TextProcess = findViewById( R.id.TextProcess );
@@ -120,9 +122,8 @@ public class Main6Activity extends AppCompatActivity {
                 readOder();
                 Log.d(TAG, "Считывание Заявки");/*специально пусто*/
             }
-        },500);
-
-
+            //сделано специально чтобы текст заявки успел записаться через nodJS
+        },3000);
     }
 
     @Override
@@ -245,6 +246,7 @@ public class Main6Activity extends AppCompatActivity {
 
             TextProcess.setVisibility(View.GONE);
             TextOder.setVisibility(View.VISIBLE);
+            TextMain.setText("заявка оформлена");
 
         }
     }
@@ -334,9 +336,17 @@ public class Main6Activity extends AppCompatActivity {
         }
         else{
             Log.d(TAG, "Время удаления вышло not internet");
-            //Toast.makeText(Main6Activity.this,"not internet....",Toast.LENGTH_LONG).show();
-            Intent Main6ActivityNotInternet  = new Intent(this,Main6ActivityNotInternet.class);
-            startActivity(Main6ActivityNotInternet);
+            Toast.makeText(Main6Activity.this,"слабый сигнал, проверьте интернет....",Toast.LENGTH_LONG).show();
+
+            TextMain.setText( "ошибка отмены заявки" );
+            TextMain.setTextColor(getResources().getColor( R.color.colorMistakeDell));
+            TextProcess.setVisibility(View.GONE);
+            TextOder.setVisibility(View.VISIBLE);
+
+
+
+//            Intent Main6ActivityNotInternet  = new Intent(this,Main6ActivityNotInternet.class);
+//            startActivity(Main6ActivityNotInternet);
         }
     }
 
@@ -350,7 +360,7 @@ public class Main6Activity extends AppCompatActivity {
             DeleteOder();
         }
         else if (proverkaBeforDel.equals("No")){
-            //Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
+            Toast.makeText(Main6Activity.this,"Ошибка сервера....",Toast.LENGTH_LONG).show();
             Log.d(TAG, "Ошибка в опросе");
 
         }

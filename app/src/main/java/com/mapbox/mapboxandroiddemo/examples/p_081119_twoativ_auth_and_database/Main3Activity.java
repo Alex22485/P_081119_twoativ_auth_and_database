@@ -20,6 +20,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,6 +41,7 @@ import java.util.Calendar;
 public class Main3Activity extends AppCompatActivity {
 
     private static final String TAG ="Main3Activity";
+
 
     LinearLayout TextRegistration;
     LinearLayout TextRegistration1;
@@ -72,7 +75,6 @@ public class Main3Activity extends AppCompatActivity {
     String TVchoise_pointMap;
     String MapTop;
     String userPhone;
-    String userid;
     String timeOut;
     String proverka;
 
@@ -327,7 +329,7 @@ public class Main3Activity extends AppCompatActivity {
                 .setMessage("Ищем автомобиль..."+" "+"Вы получите уведомление о результате поиска")
                 .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        //переход в окно статуса лист 6
+                        //переход в окно статуса лист после получения 6
                         onStatusList();
                     }
                 });
@@ -374,6 +376,9 @@ public class Main3Activity extends AppCompatActivity {
         Intent zxz = new Intent( this,Main6Activity.class );
         startActivity( zxz);
     }
+
+
+
 
     // Блокировка кнопки Back!!!! :)))
 //    @Override
