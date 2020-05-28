@@ -342,11 +342,6 @@ public class Main6Activity extends AppCompatActivity {
             TextMain.setTextColor(getResources().getColor( R.color.colorMistakeDell));
             TextProcess.setVisibility(View.GONE);
             TextOder.setVisibility(View.VISIBLE);
-
-
-
-//            Intent Main6ActivityNotInternet  = new Intent(this,Main6ActivityNotInternet.class);
-//            startActivity(Main6ActivityNotInternet);
         }
     }
 

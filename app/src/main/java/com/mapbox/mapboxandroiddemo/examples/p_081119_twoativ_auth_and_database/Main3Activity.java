@@ -42,10 +42,12 @@ public class Main3Activity extends AppCompatActivity {
 
     private static final String TAG ="Main3Activity";
 
+    String tOBeforReg;
+    String proverkaBeforRegistraion;
 
     LinearLayout TextRegistration;
-    LinearLayout TextRegistration1;
     LinearLayout TextProgress;
+    LinearLayout MistakeRegistration;
 
 
     Button btnInsert;
@@ -58,7 +60,6 @@ public class Main3Activity extends AppCompatActivity {
 
     TextView Calend;
     TextView Flight;
-    TextView TextProcess;
     TextView TextMarshryt;
     TextView TextSbor;
 
@@ -86,8 +87,8 @@ public class Main3Activity extends AppCompatActivity {
         setContentView(R.layout.activity_main3);
 
         TextRegistration= findViewById(R.id.TextRegistration);
-        TextRegistration1= findViewById(R.id.TextRegistration1);
         TextProgress= findViewById(R.id.TextProgress);
+        MistakeRegistration= findViewById(R.id.MistakeRegistration);
 
         Flight = findViewById(R.id.Flight);
         btn_number_Flight=findViewById( R.id.btn_number_Flight );
@@ -144,7 +145,6 @@ public class Main3Activity extends AppCompatActivity {
         TextSbor.setText(TVchoise_pointMap);
 
         TextRegistration.setVisibility(View.VISIBLE);
-        TextRegistration1.setVisibility(View.VISIBLE);
     }
 
     // Disable Button if Text is Empty
@@ -182,11 +182,83 @@ public class Main3Activity extends AppCompatActivity {
 
     // кнопка регистрация
     public void btnInsert (View view) {
-        Log.d(TAG, "Старт Регистрации");
+        Log.d(TAG, "Старт Проверка интернета YesNO");
 
-        TextRegistration.setVisibility(View.INVISIBLE);
-        TextRegistration1.setVisibility(View.INVISIBLE);
         TextProgress.setVisibility(View.VISIBLE);
+        TextRegistration.setVisibility(View.GONE);
+
+        tOBeforReg="";
+        proverkaBeforRegistraion="";
+
+        //ТАЙМ-АУТ проверка интернета
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                // Завершен ТАЙМ-АУТ проверка интернета
+                tOBeforReg="Out";
+                intNotBeforRegistraion();
+            }
+        },20000);
+
+        //Важно в БД с читаемым объектом не должно быть параллельных линий :)
+        // только тогда считывает значения с первого раза без null
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        Query query = rootRef.child("Пользователи")
+                .child("Personal")
+                .child(userPhone)
+                .child("Proverka")
+                .orderByChild("Oder");
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ddd : dataSnapshot.getChildren()) {
+
+                    String yesNo=ddd.child("Заявка").getValue(String.class);
+
+                    proverkaBeforRegistraion=yesNo;
+                    Log.d(TAG, "инетрнет есть, заявка есть?"+yesNo);
+
+                    // проверка YEsNo
+                    YesNoBeforeReg();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        };
+        query.addListenerForSingleValueEvent(valueEventListener);
+
+    }
+
+    public void intNotBeforRegistraion(){
+        if (!proverkaBeforRegistraion.isEmpty()){
+            Log.d(TAG, "время проверки интернета вышло, но интернет есть");
+        }
+        else{
+            Log.d(TAG, "Время проверки вышло, not internet");
+            showAlertDialog4();
+        }
+    }
+
+    public void YesNoBeforeReg(){
+        if(tOBeforReg.equals("Out")){
+            Log.d(TAG, "Время проверки интернета вышло, но интернет есть");
+        }
+        else if (proverkaBeforRegistraion.equals("No")){
+            Log.d(TAG, "Интернет есть, старт регистрации");
+            startRegistration();
+
+        }
+        else if (proverkaBeforRegistraion.equals("Yes")){
+            Log.d(TAG, "Интернет есть, НО есть старая заявка");
+            showAlertDialog5();
+        }
+    }
+
+    public void startRegistration(){
+        Log.d(TAG, "Старт Регистрации");
 
         timeOut="";
         proverka="";
@@ -200,7 +272,7 @@ public class Main3Activity extends AppCompatActivity {
                 timeOut="Out";
                 internetNot();
             }
-            },15000);
+        },15000);
 
         //030320 Запись токена для проверки Разрешения на запись заявки в БД ЗАЯВКИ...-...-...-"CheckStopOder"...
         database01 = FirebaseDatabase.getInstance();
@@ -231,8 +303,8 @@ public class Main3Activity extends AppCompatActivity {
     public void Qwery(){
         Log.d(TAG, "старт запроса Разрешения/Запрет");
 
-
-        // проверяем какое слово написано в объекте РазрешениеНаЗапись. Если Разрешено то запись заявки оформляется, если нет то заявка отклонена (процесс записи и отклонения выполнен в nod js function OderCheck)
+        // проверяем какое слово написано в объекте РазрешениеНаЗапись.
+        // Если Разрешено то запись заявки оформляется, если нет то заявка отклонена (процесс записи и отклонения выполнен в nod js function OderCheck)
         final Query aaa1= FirebaseDatabase.getInstance().getReference("Заявки")
                 .child(MapTop)
                 .child(Calend.getText().toString())
@@ -351,6 +423,52 @@ public class Main3Activity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         //переход в окно статуса лист 6
                         onStatusList();
+                    }
+                });
+        mAlertDialog.create();
+        // Showing Alert Message
+        mAlertDialog.show();
+    }
+
+    public void showAlertDialog4(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
+                Main3Activity.this);
+        // Set Title
+        mAlertDialog.setTitle("Ошибка регистрации");
+        mAlertDialog.setCancelable(false);
+        // Set Message
+        mAlertDialog
+                .setMessage("проверьте настройки интернета")
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        MistakeRegistration.setVisibility(View.VISIBLE);
+                        TextProgress.setVisibility(View.GONE);
+                        TextRegistration.setVisibility(View.VISIBLE);
+
+
+
+                    }
+                });
+        mAlertDialog.create();
+        // Showing Alert Message
+        mAlertDialog.show();
+    }
+    public void showAlertDialog5(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
+                Main3Activity.this);
+        // Set Title
+        mAlertDialog.setTitle("Ошибка регистрации");
+        mAlertDialog.setCancelable(false);
+        // Set Message
+        mAlertDialog
+                .setMessage("сначала отмените старую заявку")
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        //Переход на лист Статуса
+                        onStatusList();
+
                     }
                 });
         mAlertDialog.create();
