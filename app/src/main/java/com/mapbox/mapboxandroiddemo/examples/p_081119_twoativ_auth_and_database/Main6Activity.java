@@ -364,18 +364,45 @@ public class Main6Activity extends AppCompatActivity {
 
     public void DeleteOder(){
         ggg = FirebaseDatabase.getInstance();
-        mmm = ggg.getReference("Заявки")
-                .child(Map.getText().toString())
-                .child(Calend_Out.getText().toString())
-                .child(flight_number_Out.getText().toString())
-                .child(road_number_out.getText().toString())
-                .child(road_name_out.getText().toString())
-                .child("notificationTokens");
-        mmm.child(token).removeValue();
-        Log.d(TAG, "запрос удаления отправлен в БД");
+        mmm = ggg.getReference("Пользователи")
+                .child("Personal")
+                .child(userPhone)
+                .child("Status")
+                .child("Status");
+        mmm.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "запрос удаления отправлен в БД");
+                mmm.child("Dell").setValue("Oder");
 
-        //проверка удален или нет
-        checkDellOderWithTime();
+                //проверка удален или нет
+                checkDellOderWithTime();
+                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ
+                mmm.removeEventListener(this);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+
+
+
+
+
+
+//        mmm = ggg.getReference("Заявки")
+//                .child(Map.getText().toString())
+//                .child(Calend_Out.getText().toString())
+//                .child(flight_number_Out.getText().toString())
+//                .child(road_number_out.getText().toString())
+//                .child(road_name_out.getText().toString())
+//                .child("notificationTokens");
+//        mmm.child(token).removeValue();
+//        Log.d(TAG, "запрос удаления отправлен в БД");
+//
+//        //проверка удален или нет
+//        checkDellOderWithTime();
     }
 
     //задержка на считывание YesNo

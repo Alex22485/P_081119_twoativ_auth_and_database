@@ -5,11 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -20,8 +17,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,7 +26,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -257,6 +251,7 @@ public class Main3Activity extends AppCompatActivity {
         }
     }
 
+    // !!!!!Переделка на private Room 30.05.20
     public void startRegistration(){
         Log.d(TAG, "Старт Регистрации");
 
@@ -276,7 +271,10 @@ public class Main3Activity extends AppCompatActivity {
 
         //030320 Запись токена для проверки Разрешения на запись заявки в БД ЗАЯВКИ...-...-...-"CheckStopOder"...
         database01 = FirebaseDatabase.getInstance();
-        ref01 = database01.getReference("Заявки")
+        ref01 = database01.getReference("Пользователи")
+                .child("Personal")
+                .child(userPhone)
+                .child("Заявки")
                 .child(MapTop)
                 .child(Calend.getText().toString())
                 .child(Flight.getText().toString())
@@ -305,7 +303,10 @@ public class Main3Activity extends AppCompatActivity {
 
         // проверяем какое слово написано в объекте РазрешениеНаЗапись.
         // Если Разрешено то запись заявки оформляется, если нет то заявка отклонена (процесс записи и отклонения выполнен в nod js function OderCheck)
-        final Query aaa1= FirebaseDatabase.getInstance().getReference("Заявки")
+        final Query aaa1= FirebaseDatabase.getInstance().getReference("Пользователи")
+                .child("Personal")
+                .child(userPhone)
+                .child("Заявки")
                 .child(MapTop)
                 .child(Calend.getText().toString())
                 .child(Flight.getText().toString())
