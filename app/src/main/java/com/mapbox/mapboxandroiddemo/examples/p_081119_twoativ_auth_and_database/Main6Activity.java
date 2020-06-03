@@ -111,9 +111,10 @@ public class Main6Activity extends AppCompatActivity {
         });
 
         TextProcess.setVisibility(View.VISIBLE);
-        number.setText("поиск заявок...");
+        number.setText("заявка найдена, загрузка...");
 
         //Старт Проверка интернета+статус заявок
+        // С выдержкой времени чтобы заявка успела записаться в БД
         Handler handler1 = new Handler();
         handler1.postDelayed(new Runnable() {
             @Override
@@ -123,7 +124,7 @@ public class Main6Activity extends AppCompatActivity {
                 Log.d(TAG, "Считывание Заявки");/*специально пусто*/
             }
             //сделано специально чтобы текст заявки успел записаться через nodJS
-        },3000);
+        },4000);
     }
 
     @Override
@@ -317,7 +318,7 @@ public class Main6Activity extends AppCompatActivity {
                     proverkaBeforDel=yesNo;
                     Log.d(TAG, "инетрнет есть, заявка есть?"+yesNo);
 
-                    // начало удаления заявки
+                    // проверка YES NO
                     StartDellOder();
                 }
             }
@@ -355,12 +356,36 @@ public class Main6Activity extends AppCompatActivity {
             DeleteOder();
         }
         else if (proverkaBeforDel.equals("No")){
-            Toast.makeText(Main6Activity.this,"Ошибка сервера....",Toast.LENGTH_LONG).show();
+            // этот пункт вообще не должен появляться но на всякий случай сделал защиту
             Log.d(TAG, "Ошибка в опросе");
+
+            AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
+                    Main6Activity.this);
+            // Set Title
+            mAlertDialog.setTitle("Ошибка сервера");
+            mAlertDialog.setCancelable(false);
+            // Set Message
+            mAlertDialog
+                    .setMessage("")
+                    .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                            mistakeServer();
+                        }
+                    });
+            mAlertDialog.create();
+            // Showing Alert Message
+            mAlertDialog.show();
 
         }
 
     }
+
+    //этот пункт вообще не должен работать но на всякий случай сделал защиту
+    public void mistakeServer (){
+        Intent ddd=new Intent(this,MainActivity.class);
+        startActivity(ddd);
+    };
 
     public void DeleteOder(){
         ggg = FirebaseDatabase.getInstance();
@@ -384,25 +409,6 @@ public class Main6Activity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-
-
-
-
-
-
-
-//        mmm = ggg.getReference("Заявки")
-//                .child(Map.getText().toString())
-//                .child(Calend_Out.getText().toString())
-//                .child(flight_number_Out.getText().toString())
-//                .child(road_number_out.getText().toString())
-//                .child(road_name_out.getText().toString())
-//                .child("notificationTokens");
-//        mmm.child(token).removeValue();
-//        Log.d(TAG, "запрос удаления отправлен в БД");
-//
-//        //проверка удален или нет
-//        checkDellOderWithTime();
     }
 
     //задержка на считывание YesNo
@@ -479,9 +485,7 @@ public class Main6Activity extends AppCompatActivity {
 
             Intent Choose_direction  = new Intent(this,Choose_direction.class);
             startActivity(Choose_direction);
-
         }
-
         }
 
     public void internetNotDel(){
@@ -490,7 +494,6 @@ public class Main6Activity extends AppCompatActivity {
         }
         else{
             Log.d(TAG, "Время удаления вышло not internet");
-            Toast.makeText(Main6Activity.this,"Время вышло not internet....",Toast.LENGTH_LONG).show();
             Intent Main6ActivityNotInternetAfterDellOder  = new Intent(this,Main6ActivityNotInternetAfterDellOder.class);
             startActivity(Main6ActivityNotInternetAfterDellOder);
         }
@@ -502,12 +505,6 @@ public class Main6Activity extends AppCompatActivity {
         this.moveTaskToBack(true);
     }
 }
-
-
-
-
-
-
 
 //// Кнопка обновить информацию перезапуск активити
 //public void btnStatus(View view) {

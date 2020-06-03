@@ -134,7 +134,7 @@ public class Main3Activity extends AppCompatActivity {
         TVchoiseMap = nextList.getStringExtra( "TVchoiseMap" );
         TVchoise_pointMap = nextList.getStringExtra( "TVchoise_pointMap" );
         MapTop = nextList.getStringExtra( "mapTop" );
-
+        //Экспорт
         TextMarshryt.setText(TVchoiseMap);
         TextSbor.setText(TVchoise_pointMap);
 
@@ -178,6 +178,7 @@ public class Main3Activity extends AppCompatActivity {
     public void btnInsert (View view) {
         Log.d(TAG, "Старт Проверка интернета YesNO");
 
+        MistakeRegistration.setVisibility(View.GONE);
         TextProgress.setVisibility(View.VISIBLE);
         TextRegistration.setVisibility(View.GONE);
 
@@ -269,7 +270,7 @@ public class Main3Activity extends AppCompatActivity {
             }
         },15000);
 
-        //030320 Запись токена для проверки Разрешения на запись заявки в БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+        //030320 Запись токена для проверки Разрешения на запись заявки в БД
         database01 = FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Пользователи")
                 .child("Personal")
@@ -361,14 +362,17 @@ public class Main3Activity extends AppCompatActivity {
         }
         else if(proverka.equals("Разрешено")){
             Log.d(TAG, "Разрешено");
+            TextProgress.setVisibility(View.GONE);
             showAlertDialog1();
         }
         else if (proverka.equals("Запрещено")){
             Log.d(TAG, "Запрещено");
+            TextProgress.setVisibility(View.GONE);
             showAlertDialog();
         }
         else if (proverka.equals("Повтор")){
             Log.d(TAG, "Повтор");
+            TextProgress.setVisibility(View.GONE);
             showAlertDialog3();
         }
     }
@@ -446,9 +450,6 @@ public class Main3Activity extends AppCompatActivity {
                         MistakeRegistration.setVisibility(View.VISIBLE);
                         TextProgress.setVisibility(View.GONE);
                         TextRegistration.setVisibility(View.VISIBLE);
-
-
-
                     }
                 });
         mAlertDialog.create();
@@ -483,21 +484,12 @@ public class Main3Activity extends AppCompatActivity {
         Intent zxz = new Intent( this,Main6Activity.class );
         startActivity(zxz);
     }
-
     // Переход на лист выбора точки сбора
     public void onBackList() {
         //Переход на лист Статуса
         Intent Choose_direction = new Intent( this,Choose_direction.class );
         startActivity( Choose_direction);
     }
-
-    public void btnStatus(View view){
-        Intent zxz = new Intent( this,Main6Activity.class );
-        startActivity( zxz);
-    }
-
-
-
 
     // Блокировка кнопки Back!!!! :)))
 //    @Override

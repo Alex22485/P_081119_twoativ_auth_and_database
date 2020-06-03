@@ -108,7 +108,6 @@ public class Main6ActivityNotInternetAfterDellOder extends AppCompatActivity {
                 registration=""+keyReg;
                 Log.d(TAG, "запрос регистрации получен"+keyReg);
 
-
                 // с этой записью makeText появляется только один раз!!!!! ХОРОШО
                 ref02.removeEventListener(this);
 
@@ -160,7 +159,4 @@ public class Main6ActivityNotInternetAfterDellOder extends AppCompatActivity {
         Intent ddd=new Intent(this,MainActivity.class);
         startActivity(ddd);
     }
-
-
-
 }

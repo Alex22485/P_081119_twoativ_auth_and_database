@@ -15,6 +15,10 @@ import com.google.firebase.iid.InstanceIdResult;
 public class Main6ActivityNotInternet extends AppCompatActivity {
     private static final String TAG ="Main6ActivityNotInt" ;
 
+    // переход из
+    // 1. Main3Activity при второй проверке интернета
+    // 2. Main6Activity при считывании статуса заявки и потере интернета
+
 
 
     Button BtnUpdate;
