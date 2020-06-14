@@ -42,4 +42,8 @@ public class MainList extends AppCompatActivity {
         Intent probaRegDriver= new Intent(this,DriversApp_0.class);
         startActivity(probaRegDriver);
     }
+    public void prParsing(View view){
+        Intent ParsingCursApp= new Intent(this,ParsingCursApp.class);
+        startActivity(ParsingCursApp);
+    }
 }

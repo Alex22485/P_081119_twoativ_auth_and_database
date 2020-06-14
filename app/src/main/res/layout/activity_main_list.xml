@@ -64,6 +64,13 @@
         android:textSize="20sp"
         android:onClick="probaRegDriver"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Проба Parsing"
+        android:textSize="20sp"
+        android:onClick="prParsing"/>
+
 
     <TextView
         android:layout_width="wrap_content"

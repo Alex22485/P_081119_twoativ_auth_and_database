@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Main6ActivityNotInternetAfterDellOder"></activity>
+        <activity android:name=".ParsingCursApp"></activity>
+        <activity android:name=".Main6ActivityNotInternetAfterDellOder" />
         <activity android:name=".Choose_directionNotInternet" />
         <activity android:name=".Main6ActivityNotInternet" />
         <activity android:name=".Website" />
