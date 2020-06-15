@@ -244,10 +244,17 @@ import com.google.firebase.iid.InstanceIdResult;
         else{
         if (keyReg==null){
 
-            Log.d(TAG, "Переход на лист регистрации");/*специально пусто*/
+            //15/06/20 Убрано
+//            Log.d(TAG, "Переход на лист регистрации");/*специально пусто*/
+//            //переход к авторизации по телефону от firebase
+//            Intent AuthList = new Intent(this,Main2Activity.class);
+//            startActivity(AuthList);
+
+            //15/06/20 Добавлено
+            Log.d(TAG, "Переход на первый лист");/*специально пусто*/
             //переход к авторизации по телефону от firebase
-            Intent AuthList = new Intent(this,Main2Activity.class);
-            startActivity(AuthList);
+            Intent MainUserNewOne = new Intent(this,MainUserNewOne.class);
+            startActivity(MainUserNewOne);
         }
         else if (keyReg.equals("Hello")){
             Log.d(TAG, "Проверка Наличия заявок");/*специально пусто*/

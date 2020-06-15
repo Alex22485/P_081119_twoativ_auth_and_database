@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:text="Летаете маршрутом?"
         android:gravity="center"
+        android:textColor="#3E180B"
         android:textSize="23sp"/>
 
     <TextView
@@ -29,8 +30,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Красноярск <-----> Игарка"
+        android:text="Красноярск --- Игарка"
         android:gravity="center"
+        android:textColor="#C62840"
         android:textSize="20sp"/>
     <TextView
         android:layout_width="match_parent"
@@ -40,8 +42,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Красноярск <-----> Северо-Енисейск"
+        android:text="Красноярск --- Северо-Енисейск"
         android:gravity="center"
+        android:textColor="#C62840"
         android:textSize="20sp"/>
     <TextView
         android:layout_width="match_parent"
@@ -51,8 +54,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Красноярск <-----> Туруханск"
+        android:text="Красноярск --- Туруханск"
         android:gravity="center"
+        android:textColor="#C62840"
         android:textSize="20sp"/>
     <TextView
         android:layout_width="match_parent"
@@ -65,6 +69,7 @@
         android:layout_height="wrap_content"
         android:text="Да                         Нет"
         android:gravity="center"
+        android:textColor="#093E04"
         android:textSize="23sp"/>
 
     <TextView
@@ -72,12 +77,14 @@
         android:layout_height="wrap_content"
         android:text="|                               |"
         android:gravity="center"
+        android:textColor="#C6B628"
         android:textSize="23sp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="V                             V"
         android:gravity="center"
+        android:textColor="#C6B628"
         android:textSize="23sp"/>
 
     <TextView
@@ -95,18 +102,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="продолжить"/>
+        android:textSize="15sp"
+        android:text="продолжить"
+        android:onClick="mainUserNewOne2"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="  "
+        android:layout_weight="1"
         android:textSize="5sp"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:textSize="15sp"
         android:text="закрыть приложение"/>
 
 </LinearLayout>

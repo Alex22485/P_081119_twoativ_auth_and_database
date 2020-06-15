@@ -14,7 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainUserNewOne"></activity>
+        <activity android:name=".MainUserNewOne4"></activity>
+        <activity android:name=".MainUserNewOne3" />
+        <activity android:name=".MainUserNewOne2" />
+        <activity android:name=".MainUserNewOne" />
         <activity android:name=".ParsingCursApp" />
         <activity android:name=".Main6ActivityNotInternetAfterDellOder" />
         <activity android:name=".Choose_directionNotInternet" />
