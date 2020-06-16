@@ -36,6 +36,9 @@ public class Main3Activity extends AppCompatActivity {
 
     private static final String TAG ="Main3Activity";
 
+    String toOrFrom;
+    String refCity;
+
     String tOBeforReg;
     String proverkaBeforRegistraion;
 
@@ -79,6 +82,20 @@ public class Main3Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
+
+        // putExtra from InAir_choise_routes
+
+        Intent nextList = getIntent();
+        TVchoiseMap = nextList.getStringExtra( "TVchoiseMap" );
+        TVchoise_pointMap = nextList.getStringExtra( "TVchoise_pointMap" );
+        MapTop = nextList.getStringExtra( "mapTop" );
+
+        toOrFrom =nextList.getStringExtra("toOrFrom");
+        refCity= nextList.getStringExtra("refCity");
+
+        Log.d(TAG, "toOrFrom: "+toOrFrom);
+        Log.d(TAG, "refCity: "+refCity);
+
 
         TextRegistration= findViewById(R.id.TextRegistration);
         TextProgress= findViewById(R.id.TextProgress);
@@ -129,16 +146,21 @@ public class Main3Activity extends AppCompatActivity {
         Calend.addTextChangedListener( loginTextWather );
         Flight.addTextChangedListener( loginTextWather );
 
-        //Экспорт данных из др активити
-        Intent nextList = getIntent();
-        TVchoiseMap = nextList.getStringExtra( "TVchoiseMap" );
-        TVchoise_pointMap = nextList.getStringExtra( "TVchoise_pointMap" );
-        MapTop = nextList.getStringExtra( "mapTop" );
         //Экспорт
         TextMarshryt.setText(TVchoiseMap);
         TextSbor.setText(TVchoise_pointMap);
 
-        TextRegistration.setVisibility(View.VISIBLE);
+        if(toOrFrom.equals("B Красноярск")){
+            TextRegistration.setVisibility(View.VISIBLE);
+        }
+
+        if(toOrFrom.equals("Из Красноярска")){
+            TextRegistration.setVisibility(View.GONE);
+        }
+
+
+
+
     }
 
     // Disable Button if Text is Empty

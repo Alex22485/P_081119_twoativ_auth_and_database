@@ -75,7 +75,7 @@
         android:id="@+id/choisData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="1 Выберите дату поездки"
+        android:text="Укажите дату вылета"
         android:textSize="20sp">
     </Button>
         <TextView

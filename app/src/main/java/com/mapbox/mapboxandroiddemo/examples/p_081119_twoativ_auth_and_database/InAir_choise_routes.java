@@ -6,14 +6,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 public class InAir_choise_routes extends AppCompatActivity {
 
+    private static final String TAG ="InAir_choise_routes" ;
+
 //    TextView TVchoiseMap,TVchoise_pointMap;
     Button oneChoose,twoChoose,threeChoose,fourChoose;
+
+    String toOrFrom;
+    String refCity;
+
 
     String TVchoiseMap;
     String TVchoise_pointMap;
@@ -60,13 +67,21 @@ public class InAir_choise_routes extends AppCompatActivity {
         fourMap= findViewById(R.id.fourMap);
         mapTop= findViewById(R.id.mapTop);
 
-        //Put Extra form Main2Activity Определяет какое значение установть в название маршрута если в Main2Activity нажата В Аэропорт или из Аэропорта
+        //Put Extra
         Intent nextListInAir_choise_routes =getIntent();
         String sMapTop =nextListInAir_choise_routes.getStringExtra( "Маршрут" );
         String sOneMap =nextListInAir_choise_routes.getStringExtra( "oneMap" );
         String sTwoMap =nextListInAir_choise_routes.getStringExtra( "twoMap" );
         String sTreeMap =nextListInAir_choise_routes.getStringExtra( "treeMap" );
         String sFourMap =nextListInAir_choise_routes.getStringExtra( "fourMap" );
+
+        // получаем значение В(ИЗ) Красноярск;  В(ИЗ) Сосновоборск;  В(ИЗ) Канск; В(ИЗ) Ачинск; Предаем его в MainActivity3
+        toOrFrom =nextListInAir_choise_routes.getStringExtra( "toOrFrom" );
+        Log.d(TAG, "toOrFrom: "+toOrFrom);
+
+        // extra из MainUserNewOne4 Предаем его в MainActivity3
+        refCity =nextListInAir_choise_routes.getStringExtra( "refCity" );
+        Log.d(TAG, "refCity: "+refCity);
 
         mapTop.setText( sMapTop );
         oneMap.setText( sOneMap );
@@ -265,6 +280,13 @@ public  void oneChoose(View view) {
         nextList.putExtra( "TVchoiseMap",TVchoiseMap );
         nextList.putExtra( "TVchoise_pointMap",TVchoise_pointMap );
         nextList.putExtra( "mapTop",mapTop.getText().toString() );
+
+        //транзит с MainUserNewOne4
+        nextList.putExtra( "toOrFrom",toOrFrom );
+        nextList.putExtra( "refCity",refCity );
+
+
+
         startActivity( nextList);
 
     }

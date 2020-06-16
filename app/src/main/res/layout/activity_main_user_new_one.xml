@@ -27,13 +27,13 @@
         android:text=""
         android:textSize="20sp"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Красноярск --- Игарка"
-        android:gravity="center"
-        android:textColor="#C62840"
-        android:textSize="20sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Красноярск --- Игарка"
+            android:gravity="center"
+            android:textColor="#C62840"
+            android:textSize="20sp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

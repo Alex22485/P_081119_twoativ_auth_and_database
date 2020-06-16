@@ -15,22 +15,22 @@ public class MainUserNewOne3 extends AppCompatActivity {
     }
     public void IgarkaCharter(View view){
         Intent mainUserNewOne4 = new Intent(this,MainUserNewOne4.class);
-        mainUserNewOne4.putExtra( "ИгаркаЧ", "ИгаркаЧ" );
+        mainUserNewOne4.putExtra( "refCity", "ИгаркаЧ" );
         startActivity(mainUserNewOne4);
     }
     public void Igarka(View view){
         Intent mainUserNewOne4 = new Intent(this,MainUserNewOne4.class);
-        mainUserNewOne4.putExtra( "Игарка", "Игарка" );
+        mainUserNewOne4.putExtra( "refCity", "Игарка" );
         startActivity(mainUserNewOne4);
     }
     public void Turyxansk(View view){
         Intent mainUserNewOne4 = new Intent(this,MainUserNewOne4.class);
-        mainUserNewOne4.putExtra( "Туруханск", "Туруханск" );
+        mainUserNewOne4.putExtra( "refCity", "Туруханск" );
         startActivity(mainUserNewOne4);
     }
     public void SeveroEniseisk(View view){
         Intent mainUserNewOne4 = new Intent(this,MainUserNewOne4.class);
-        mainUserNewOne4.putExtra( "Северо-Енисейск", "Северо-Енисейск" );
+        mainUserNewOne4.putExtra( "refCity", "Северо-Енисейск" );
         startActivity(mainUserNewOne4);
     }
 }
