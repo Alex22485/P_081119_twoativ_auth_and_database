@@ -60,6 +60,7 @@ public class Main6Activity extends AppCompatActivity {
 
     TextView TextMain;
     TextView Calend_Out;
+    TextView TextflightOrtime;
     TextView flight_number_Out;
     TextView Map;
     TextView road_number_out;
@@ -74,6 +75,7 @@ public class Main6Activity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main6 );
 
+
         Log.d(TAG, "onCreate");/*специально пусто*/
 
         TextMain = findViewById( R.id.TextMain );
@@ -83,6 +85,7 @@ public class Main6Activity extends AppCompatActivity {
 
         number = findViewById( R.id.number );
         Calend_Out=findViewById( R.id.Calend_Out );
+        TextflightOrtime=findViewById(R.id.TextflightOrtime);
         flight_number_Out=findViewById( R.id.flight_number_Out );
         Map=findViewById( R.id.Map );
         road_number_out=findViewById( R.id.road_number_out );
@@ -208,6 +211,15 @@ public class Main6Activity extends AppCompatActivity {
                     road_name_out.setText( road_name );
                     flight_number_Out.setText( flidht_number );
                     people.setText(""+peopleOder);
+
+                    if(map.equals("Красноярск-Аэропорт")){
+                        TextflightOrtime.setText("время вылета самолета:");
+
+                    }
+                    if(map.equals("Аэропорт-Красноярск")){
+                        TextflightOrtime.setText("Рейс самолета: №");
+
+                    }
 
                     if (сarDrive==null){
                         Log.d(TAG, "Автомобиль не найден");/*специально пусто*/
@@ -483,8 +495,8 @@ public class Main6Activity extends AppCompatActivity {
             Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
             Log.d(TAG, "Заявка удалена");
 
-            Intent Choose_direction  = new Intent(this,Choose_direction.class);
-            startActivity(Choose_direction);
+            Intent MainUserNewOne3  = new Intent(this,MainUserNewOne3.class);
+            startActivity(MainUserNewOne3);
         }
         }
 

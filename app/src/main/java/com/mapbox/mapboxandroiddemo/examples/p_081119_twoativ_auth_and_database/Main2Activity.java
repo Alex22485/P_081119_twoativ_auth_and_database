@@ -134,7 +134,7 @@ public class Main2Activity extends AppCompatActivity {
 
 
     public void GoMainActivity(View view){
-        Intent GoMainActivity= new Intent(this,MainActivity.class);
+        Intent GoMainActivity= new Intent(this,Main2Activity.class);
         startActivity(GoMainActivity);
     }
 

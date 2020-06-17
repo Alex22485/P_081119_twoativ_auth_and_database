@@ -254,6 +254,7 @@ import com.google.firebase.iid.InstanceIdResult;
             Log.d(TAG, "Переход на первый лист");/*специально пусто*/
             //переход к авторизации по телефону от firebase
             Intent MainUserNewOne = new Intent(this,MainUserNewOne.class);
+            MainUserNewOne.putExtra("registration",registration);
             startActivity(MainUserNewOne);
         }
         else if (keyReg.equals("Hello")){

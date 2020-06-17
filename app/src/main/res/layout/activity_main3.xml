@@ -7,6 +7,10 @@
     android:orientation="vertical"
     tools:context=".Main3Activity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="10sp" />
+
     <LinearLayout
         android:id="@+id/MistakeRegistration"
         android:layout_width="match_parent"
@@ -65,65 +69,112 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/TextRegistration"
+        android:id="@+id/TextData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="visible">
-
-    <Button
-        android:id="@+id/choisData"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Укажите дату вылета"
-        android:textSize="20sp">
-    </Button>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="15sp" />
-
-    <Button
-        android:id="@+id/btn_number_Flight"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="2 Выберите номер рейса"
-        android:enabled="false"
-        android:textSize="20sp"
-        android:onClick="btn_number_Flight">
-    </Button>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="15sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="20sp" />
-
+        android:visibility="gone">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Дата "
+            android:text="выберите дату вылета"
+            android:textColor="#A1188F"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="15sp" />
+
+        <Button
+            android:id="@+id/choisData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="календарь"
+            android:textSize="15sp">
+        </Button>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/TextNumberFlight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="выберите порядковый номер рейса"
+            android:textColor="#A1188F"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="самолета Игарка-Красноярск (чартер)"
+            android:textColor="#A1188F"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="15sp" />
+
+        <Button
+            android:id="@+id/btn_number_Flight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="номер рейса"
+            android:textSize="15sp"
+            android:onClick="btn_number_Flight">
+        </Button>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/TextTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="выберите время вылета самолета"
+            android:textColor="#A1188F"
             android:textSize="20sp"
             android:layout_gravity="center_horizontal"/>
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="5sp" />
+            android:layout_height="15sp" />
 
-        <TextView
-            android:id="@+id/Calend"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/btn_time"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@color/colorNew"
-            android:textSize="20sp"
-            android:layout_gravity="center_horizontal"/>
+            android:text="время вылета самолета"
+            android:textSize="15sp"
+            android:onClick="btn_time">
+        </Button>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/TextRegistration"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="match_parent"
+            android:layout_height="15sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Игарка-Красноярск (чартер)"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"/>
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="5sp" />
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -144,6 +195,26 @@
                 android:textColor="@color/colorNew"
                 android:textSize="20sp"/>
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Дата "
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="5sp" />
+
+        <TextView
+            android:id="@+id/Calend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/colorNew"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -201,7 +272,126 @@
             android:id="@+id/btnInsert"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
+            android:onClick="btnInsert"
+            android:text="Зарегистрировать Заявку"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/TextRegistrationFromCity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="15sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Красноярск-Игарка (чартер)"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="5sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Дата "
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/CalendTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/colorNew"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="время вылета самолета:"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/colorNew"
+                android:textSize="20sp"/>
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="5sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Маршрут:"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="5sp" />
+
+        <TextView
+            android:id="@+id/TextMarshrytTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorNew"
+            android:text=""
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="5sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Точка сбора:"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="5sp" />
+
+        <TextView
+            android:id="@+id/TextSborTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20sp"
+            android:textColor="@color/colorNew"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="15sp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:onClick="btnInsert"
             android:text="Зарегистрировать Заявку"
             android:textSize="20sp" />

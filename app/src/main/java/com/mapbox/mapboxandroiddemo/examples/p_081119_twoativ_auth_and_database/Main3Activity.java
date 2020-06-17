@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,12 +32,15 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
 public class Main3Activity extends AppCompatActivity {
 
     private static final String TAG ="Main3Activity";
+
 
     String toOrFrom;
     String refCity;
@@ -43,11 +49,16 @@ public class Main3Activity extends AppCompatActivity {
     String proverkaBeforRegistraion;
 
     LinearLayout TextRegistration;
+    LinearLayout TextRegistrationFromCity;
     LinearLayout TextProgress;
     LinearLayout MistakeRegistration;
+    LinearLayout TextData;
+    LinearLayout TextNumberFlight;
+    LinearLayout TextTime;
 
 
     Button btnInsert;
+    Button btnInsertTime;
     Button btn_number_Flight;
     Button choisData;
 
@@ -56,16 +67,23 @@ public class Main3Activity extends AppCompatActivity {
     DatabaseReference ref01;
 
     TextView Calend;
+    TextView CalendTime;
     TextView Flight;
+    TextView time;
     TextView TextMarshryt;
+    TextView TextMarshrytTime;
     TextView TextSbor;
+    TextView TextSborTime;
 
     int year;
     int month;
     int dayOfmonth;
+
+    int hourOfDay;
+    int minute;
     Calendar calendar;
     DatePickerDialog datePickerDialog;
-
+    TimePickerDialog timePickerDialog;
 
     String[] listFlights = {"1","2","3"};
     String newToken;
@@ -76,6 +94,9 @@ public class Main3Activity extends AppCompatActivity {
     String timeOut;
     String proverka;
 
+    String registrationREF;
+    String reg;
+
 
 
     @Override
@@ -83,8 +104,13 @@ public class Main3Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
 
-        // putExtra from InAir_choise_routes
+        Intent MainUserNewOne= getIntent();
+        registrationREF =MainUserNewOne.getStringExtra( "registration" );
+        reg="k"+registrationREF;
+        Log.d(TAG, "registration:"+registrationREF);
+        Log.d(TAG, "registration1:"+reg);
 
+        // putExtra from InAir_choise_routes
         Intent nextList = getIntent();
         TVchoiseMap = nextList.getStringExtra( "TVchoiseMap" );
         TVchoise_pointMap = nextList.getStringExtra( "TVchoise_pointMap" );
@@ -96,15 +122,26 @@ public class Main3Activity extends AppCompatActivity {
         Log.d(TAG, "toOrFrom: "+toOrFrom);
         Log.d(TAG, "refCity: "+refCity);
 
+        TextData=findViewById(R.id.TextData);
+        TextNumberFlight=findViewById(R.id.TextNumberFlight);
+        TextTime=findViewById(R.id.TextTime);
 
         TextRegistration= findViewById(R.id.TextRegistration);
+        TextRegistrationFromCity= findViewById(R.id.TextRegistrationFromCity);
+
         TextProgress= findViewById(R.id.TextProgress);
         MistakeRegistration= findViewById(R.id.MistakeRegistration);
 
         Flight = findViewById(R.id.Flight);
+        time = findViewById(R.id.time);
+
         btn_number_Flight=findViewById( R.id.btn_number_Flight );
+
         TextMarshryt=findViewById( R.id.TextMarshryt );
+        TextMarshrytTime=findViewById( R.id.TextMarshrytTime );
+
         TextSbor=findViewById( R.id.TextSbor );
+        TextSborTime=findViewById( R.id.TextSborTime );
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser ghg = mAuth.getCurrentUser();
@@ -121,7 +158,10 @@ public class Main3Activity extends AppCompatActivity {
         // ADD Calendar
         choisData=findViewById(R.id.choisData);
         Calend=findViewById(R.id.Calend);
-        btnInsert = findViewById(R.id.btnInsert);
+        CalendTime=findViewById(R.id.CalendTime);
+
+        //btnInsert = findViewById(R.id.btnInsert);
+
         choisData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,6 +174,17 @@ public class Main3Activity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         Calend.setText(day + " " + (month + 1) + " " + year);
+                        CalendTime.setText(day + " " + (month + 1) + " " + year);
+                        if(toOrFrom.equals("В Красноярск")){
+                            TextData.setVisibility(View.GONE);
+                            TextNumberFlight.setVisibility(View.VISIBLE);
+                            showNumberFlight();
+                        }
+                        if(toOrFrom.equals("Из Красноярска")){
+                            TextData.setVisibility(View.GONE);
+                            TextTime.setVisibility(View.VISIBLE);
+                            showTime();
+                        }
                     }
                     },
                         year,month,dayOfmonth);
@@ -143,52 +194,159 @@ public class Main3Activity extends AppCompatActivity {
         );
 
 // Disable Button if Text is Empty
-        Calend.addTextChangedListener( loginTextWather );
-        Flight.addTextChangedListener( loginTextWather );
+//        Calend.addTextChangedListener( loginTextWather );
+//        Flight.addTextChangedListener( loginTextWather );
 
         //Экспорт
         TextMarshryt.setText(TVchoiseMap);
         TextSbor.setText(TVchoise_pointMap);
 
-        if(toOrFrom.equals("B Красноярск")){
-            TextRegistration.setVisibility(View.VISIBLE);
-        }
+        TextMarshrytTime.setText(TVchoiseMap);
+        TextSborTime.setText(TVchoise_pointMap);
 
-        if(toOrFrom.equals("Из Красноярска")){
-            TextRegistration.setVisibility(View.GONE);
-        }
-
-
-
+        TextData.setVisibility(View.VISIBLE);
+        showCalendar();
 
     }
 
     // Disable Button if Text is Empty
-    TextWatcher loginTextWather = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            String calendInput =Calend.getText().toString().trim();
-            String flightInput =Flight.getText().toString().trim();
-            btn_number_Flight.setEnabled(!calendInput.isEmpty());
-            btnInsert.setEnabled(!calendInput.isEmpty()&& !flightInput.isEmpty() );
-        }
-        @Override
-        public void afterTextChanged(Editable editable) {
-        }
-    };
+//    TextWatcher loginTextWather = new TextWatcher() {
+//        @Override
+//        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//        }
+//        @Override
+//        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//            String calendInput =Calend.getText().toString().trim();
+//            String flightInput =Flight.getText().toString().trim();
+//            btn_number_Flight.setEnabled(!calendInput.isEmpty());
+//            btnInsert.setEnabled(!calendInput.isEmpty()&& !flightInput.isEmpty() );
+//        }
+//        @Override
+//        public void afterTextChanged(Editable editable) {
+//        }
+//    };
+
+    // Показать календарь
+    public void showCalendar (){
+
+        Log.d(TAG, "Запуск Календаря: "+"запуск");
+        calendar=Calendar.getInstance();
+        year=calendar.get(Calendar.YEAR);
+        month=calendar.get(Calendar.MONTH);
+        dayOfmonth=calendar.get(Calendar.DAY_OF_MONTH);
+        datePickerDialog=new DatePickerDialog(Main3Activity.this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        Calend.setText(day + " " + (month + 1) + " " + year);
+                        CalendTime.setText(day + " " + (month + 1) + " " + year);
+                        if(toOrFrom.equals("В Красноярск")){
+                            TextData.setVisibility(View.GONE);
+                            TextNumberFlight.setVisibility(View.VISIBLE);
+                            showNumberFlight();
+                        }
+                        if(toOrFrom.equals("Из Красноярска")){
+                            TextData.setVisibility(View.GONE);
+                            TextTime.setVisibility(View.VISIBLE);
+                            showTime();
+                        }
+
+                    }
+                },
+                year,month,dayOfmonth);
+        datePickerDialog.show();
+    }
+
+
+
+    // Показать время
+    public void showTime(){
+        calendar=Calendar.getInstance();
+        hourOfDay=calendar.get(Calendar.HOUR);
+        minute=calendar.get(Calendar.MINUTE);
+        //SimpleDateFormat simpleDateFormat=new SimpleDateFormat("HH:mm");
+        timePickerDialog=new TimePickerDialog(Main3Activity.this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        if (minute<10){
+                            //time=hourOfDay+":"+"0"+minute;
+                            time.setText(hourOfDay+":"+"0"+minute);
+                            TextTime.setVisibility(View.GONE);
+                            TextRegistrationFromCity.setVisibility(View.VISIBLE);
+                        }
+                        if (minute>=10){
+                            time.setText(hourOfDay+":"+minute);
+                            TextTime.setVisibility(View.GONE);
+                            TextRegistrationFromCity.setVisibility(View.VISIBLE);
+                        }
+
+
+                        Log.d(TAG, "время: "+time);
+                    }
+                },hourOfDay,minute,true);
+        timePickerDialog.show();
+    }
+
+    // Показать время
+    public void btn_time (View view){
+        calendar=Calendar.getInstance();
+        hourOfDay=calendar.get(Calendar.HOUR);
+        minute=calendar.get(Calendar.MINUTE);
+        //SimpleDateFormat simpleDateFormat=new SimpleDateFormat("HH:mm");
+        timePickerDialog=new TimePickerDialog(Main3Activity.this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        if (minute<10){
+                            //time=hourOfDay+":"+"0"+minute;
+                            time.setText(hourOfDay+":"+"0"+minute);
+                            TextTime.setVisibility(View.GONE);
+                            TextRegistrationFromCity.setVisibility(View.VISIBLE);
+                        }
+                        if (minute>=10){
+                            time.setText(hourOfDay+":"+minute);
+                            TextTime.setVisibility(View.GONE);
+                            TextRegistrationFromCity.setVisibility(View.VISIBLE);
+                        }
+
+
+                        Log.d(TAG, "время: "+time);
+                    }
+                },hourOfDay,minute,true);
+        timePickerDialog.show();
+    }
+
+    // Показать выбор номера рейса
+    public void showNumberFlight(){
+        AlertDialog.Builder builder = new AlertDialog.Builder( Main3Activity.this );
+        builder.setTitle( "порядковый номер рейса самолета из Игарки (чартер)" );
+       // builder.setCancelable( false );
+        builder.setItems( listFlights, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        Flight.setText( listFlights[which] );
+                        TextNumberFlight.setVisibility(View.GONE);
+                        TextRegistration.setVisibility(View.VISIBLE);
+                    }
+                }
+        );
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 
     //Выбрать номер рейса
     public void btn_number_Flight (View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder( Main3Activity.this );
-        builder.setTitle( "Выберите Номер рейса" );
-        builder.setCancelable( false );
+        builder.setTitle( "порядковый номер рейса самолета из Игарки (чартер)" );
+        //builder.setCancelable( false );
         builder.setItems( listFlights, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 Flight.setText( listFlights[which] );
+                TextNumberFlight.setVisibility(View.GONE);
+                TextRegistration.setVisibility(View.VISIBLE);
             }
         }
         );
@@ -196,13 +354,53 @@ public class Main3Activity extends AppCompatActivity {
         dialog.show();
     }
 
+    public void btnInsert(View view){
+        Log.d(TAG, "registration2:"+reg);
+
+        if (reg.equals("knull")){
+            Log.d(TAG, "registration3:"+reg);
+
+            AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Main3Activity.this);
+            // Set Title
+            //mAlertDialog.setTitle("Спасибо, заявка оформлена!!!");
+            //mAlertDialog.setCancelable(false);
+            // Set Message
+            mAlertDialog.setMessage("Для продолжения необходимо" +
+                    " зарегистрироваться по номеру телефона." +
+                    " Вам придет SMS c кодом подтверждения")
+                    .setPositiveButton("Принять", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            goListRegistration();
+
+                        }
+                    })
+            .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            mAlertDialog.create();
+            mAlertDialog.show();
+        }
+        if (!reg.equals("knull")){
+            btnInsertd();
+        }
+    }
+
+    public void goListRegistration(){
+        Intent main2Activity =new Intent(this, Main2Activity.class);
+        startActivity(main2Activity);
+    }
+
     // кнопка регистрация
-    public void btnInsert (View view) {
+    public void btnInsertd () {
         Log.d(TAG, "Старт Проверка интернета YesNO");
 
         MistakeRegistration.setVisibility(View.GONE);
         TextProgress.setVisibility(View.VISIBLE);
         TextRegistration.setVisibility(View.GONE);
+        TextRegistrationFromCity.setVisibility(View.GONE);
 
         tOBeforReg="";
         proverkaBeforRegistraion="";
@@ -292,79 +490,162 @@ public class Main3Activity extends AppCompatActivity {
             }
         },15000);
 
-        //030320 Запись токена для проверки Разрешения на запись заявки в БД
-        database01 = FirebaseDatabase.getInstance();
-        ref01 = database01.getReference("Пользователи")
-                .child("Personal")
-                .child(userPhone)
-                .child("Заявки")
-                .child(MapTop)
-                .child(Calend.getText().toString())
-                .child(Flight.getText().toString())
-                .child(TVchoiseMap)
-                .child(TVchoise_pointMap)
-                .child("CheckStopOder")
-                .child(userPhone);
-        ref01.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ref01.child(newToken).setValue(userPhone);
-                //запускаем метод
-                Qwery();
-                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
-                ref01.removeEventListener(this);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
+        if(toOrFrom.equals("В Красноярск")){
+            //030320 Запись токена для проверки Разрешения на запись заявки в БД
+            database01 = FirebaseDatabase.getInstance();
+            ref01 = database01.getReference("Пользователи")
+                    .child("Personal")
+                    .child(userPhone)
+                    .child("Заявки")
+                    .child(MapTop)
+                    .child(Calend.getText().toString())
+                    .child(Flight.getText().toString())
+                    .child(TVchoiseMap)
+                    .child(TVchoise_pointMap)
+                    .child("CheckStopOder")
+                    .child(userPhone);
+            ref01.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                ref01.child(newToken).setValue(userPhone);
+                                                //запускаем метод
+                                                Qwery();
+                                                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+                                                ref01.removeEventListener(this);
+                                            }
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                            }
+                                        }
+            );
         }
-        );
+
+        if(toOrFrom.equals("Из Красноярска")){
+            //030320 Запись токена для проверки Разрешения на запись заявки в БД
+            database01 = FirebaseDatabase.getInstance();
+            ref01 = database01.getReference("Пользователи")
+                    .child("Personal")
+                    .child(userPhone)
+                    .child("Заявки")
+                    .child(MapTop)
+                    .child(CalendTime.getText().toString())
+                    .child(time.getText().toString())
+                    .child(TVchoiseMap)
+                    .child(TVchoise_pointMap)
+                    .child("CheckStopOder")
+                    .child(userPhone);
+            ref01.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                ref01.child(newToken).setValue(userPhone);
+                                                //запускаем метод
+                                                Qwery();
+                                                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+                                                ref01.removeEventListener(this);
+                                            }
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                            }
+                                        }
+            );
+        }
+
+
     }
 
     public void Qwery(){
         Log.d(TAG, "старт запроса Разрешения/Запрет");
 
-        // проверяем какое слово написано в объекте РазрешениеНаЗапись.
-        // Если Разрешено то запись заявки оформляется, если нет то заявка отклонена (процесс записи и отклонения выполнен в nod js function OderCheck)
-        final Query aaa1= FirebaseDatabase.getInstance().getReference("Пользователи")
-                .child("Personal")
-                .child(userPhone)
-                .child("Заявки")
-                .child(MapTop)
-                .child(Calend.getText().toString())
-                .child(Flight.getText().toString())
-                .child(TVchoiseMap)
-                .child(TVchoise_pointMap)
-                .child("Разрешение")
-                .child(userPhone)
-                .orderByChild("Разрешение");
-        aaa1.addChildEventListener( new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                String data=dataSnapshot.child( "РазрешениеНаЗапись" ).getValue(String.class);
-                Log.d(TAG, "РазрешениеНаЗапись"+data);/*специально пусто*/
+        if(toOrFrom.equals("В Красноярск")){
+            // проверяем какое слово написано в объекте РазрешениеНаЗапись.
+            // Если Разрешено то запись заявки оформляется, если нет то заявка отклонена (процесс записи и отклонения выполнен в nod js function OderCheck)
+            final Query aaa1= FirebaseDatabase.getInstance().getReference("Пользователи")
+                    .child("Personal")
+                    .child(userPhone)
+                    .child("Заявки")
+                    .child(MapTop)
+                    .child(Calend.getText().toString())
+                    .child(Flight.getText().toString())
+                    .child(TVchoiseMap)
+                    .child(TVchoise_pointMap)
+                    .child("Разрешение")
+                    .child(userPhone)
+                    .orderByChild("Разрешение");
+            aaa1.addChildEventListener( new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    String data=dataSnapshot.child( "РазрешениеНаЗапись" ).getValue(String.class);
+                    Log.d(TAG, "РазрешениеНаЗапись"+data);/*специально пусто*/
 
-                proverka=data;
+                    proverka=data;
 
-                // Проверяем закончилось ли время опроса time-out
-                checkWordProverka();
+                    // Проверяем закончилось ли время опроса time-out
+                    checkWordProverka();
 
-                //Останавливаем прослушивание, чтобы в приложении у другого пользователя не появлялась информация когда другой пользоваьель регистрирует заявку
-                aaa1.removeEventListener(this);
-            }
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            }
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            }
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        } );
+                    //Останавливаем прослушивание, чтобы в приложении у другого пользователя не появлялась информация когда другой пользоваьель регистрирует заявку
+                    aaa1.removeEventListener(this);
+                }
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                }
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                }
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            } );
+
+        }
+        if(toOrFrom.equals("Из Красноярска")){
+            // проверяем какое слово написано в объекте РазрешениеНаЗапись.
+            // Если Разрешено то запись заявки оформляется, если нет то заявка отклонена (процесс записи и отклонения выполнен в nod js function OderCheck)
+            final Query aaa1= FirebaseDatabase.getInstance().getReference("Пользователи")
+                    .child("Personal")
+                    .child(userPhone)
+                    .child("Заявки")
+                    .child(MapTop)
+                    .child(CalendTime.getText().toString())
+                    .child(time.getText().toString())
+                    .child(TVchoiseMap)
+                    .child(TVchoise_pointMap)
+                    .child("Разрешение")
+                    .child(userPhone)
+                    .orderByChild("Разрешение");
+            aaa1.addChildEventListener( new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    String data=dataSnapshot.child( "РазрешениеНаЗапись" ).getValue(String.class);
+                    Log.d(TAG, "РазрешениеНаЗапись"+data);/*специально пусто*/
+
+                    proverka=data;
+
+                    // Проверяем закончилось ли время опроса time-out
+                    checkWordProverka();
+
+                    //Останавливаем прослушивание, чтобы в приложении у другого пользователя не появлялась информация когда другой пользоваьель регистрирует заявку
+                    aaa1.removeEventListener(this);
+                }
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                }
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                }
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            } );
+
+        }
+
+
     }
 
     public void internetNot(){
