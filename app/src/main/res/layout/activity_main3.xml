@@ -55,7 +55,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="процесс регистрации..."
+            android:text="регистрация заявки..."
             android:gravity="center"
             android:textColor="#62B6AB"
             android:textSize="20sp" />

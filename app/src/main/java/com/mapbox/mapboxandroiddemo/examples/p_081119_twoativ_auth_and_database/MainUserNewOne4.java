@@ -10,6 +10,7 @@ import android.view.View;
 public class MainUserNewOne4 extends AppCompatActivity {
 
     String refCity;
+    String registration;
 
     private static final String TAG ="MainUserNewOne4" ;
 
@@ -21,7 +22,11 @@ public class MainUserNewOne4 extends AppCompatActivity {
         //для транзита из MainUserOne3
         Intent mainUserNewOne4 = getIntent();
         refCity =mainUserNewOne4.getStringExtra( "refCity" );
+
+        //транзит в Main3Activity
+        registration=mainUserNewOne4.getStringExtra( "registration" );
         Log.d(TAG, "refCity: "+refCity);
+        Log.d(TAG, "registration: "+registration);
 
 
     }
@@ -34,11 +39,14 @@ public class MainUserNewOne4 extends AppCompatActivity {
         nextListInAir_choise_routes.putExtra( "twoMap", "Щорса-Аэропорт" );
         nextListInAir_choise_routes.putExtra( "treeMap", "Северный-Аэропорт" );
         nextListInAir_choise_routes.putExtra( "fourMap", "Ветлужанка-Аэропорт" );
-
         nextListInAir_choise_routes.putExtra( "toOrFrom", "Из Красноярска" );
 
         //транзит из MainUserOne3
         nextListInAir_choise_routes.putExtra( "refCity", refCity );
+
+        //транзит в Main3Activity
+        nextListInAir_choise_routes.putExtra("registration",registration);
+
         startActivity( nextListInAir_choise_routes);
     }
 
@@ -50,11 +58,14 @@ public class MainUserNewOne4 extends AppCompatActivity {
         nextListInAir_choise_routes.putExtra( "twoMap", "Аэропорт-Щорса" );
         nextListInAir_choise_routes.putExtra( "treeMap", "Аэропорт-Северный" );
         nextListInAir_choise_routes.putExtra( "fourMap", "Аэропорт-Ветлужанка" );
-
         nextListInAir_choise_routes.putExtra( "toOrFrom", "В Красноярск" );
 
         //транзит из MainUserOne3
         nextListInAir_choise_routes.putExtra( "refCity", refCity );
+
+        //транзит в Main3Activity
+        nextListInAir_choise_routes.putExtra("registration",registration);
+
         startActivity( nextListInAir_choise_routes);
     }
 

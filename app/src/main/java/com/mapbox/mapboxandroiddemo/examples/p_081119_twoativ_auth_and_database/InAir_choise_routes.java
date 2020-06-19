@@ -20,6 +20,7 @@ public class InAir_choise_routes extends AppCompatActivity {
 
     String toOrFrom;
     String refCity;
+    String registration;
 
 
     String TVchoiseMap;
@@ -82,6 +83,10 @@ public class InAir_choise_routes extends AppCompatActivity {
         // extra из MainUserNewOne4 Предаем его в MainActivity3
         refCity =nextListInAir_choise_routes.getStringExtra( "refCity" );
         Log.d(TAG, "refCity: "+refCity);
+
+        //транзит в MainActivity3
+        registration=nextListInAir_choise_routes.getStringExtra("registration");
+        Log.d(TAG, "registration: "+registration);
 
         mapTop.setText( sMapTop );
         oneMap.setText( sOneMap );
@@ -284,6 +289,9 @@ public  void oneChoose(View view) {
         //транзит с MainUserNewOne4
         nextList.putExtra( "toOrFrom",toOrFrom );
         nextList.putExtra( "refCity",refCity );
+
+        //транзит в Main3Activity
+        nextList.putExtra("registration",registration);
 
 
 

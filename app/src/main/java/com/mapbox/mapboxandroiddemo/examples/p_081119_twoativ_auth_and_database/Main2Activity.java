@@ -45,6 +45,7 @@ public class Main2Activity extends AppCompatActivity {
 
     LinearLayout Layout1;
     LinearLayout Layout2;
+    LinearLayout AuthNot;
 
     FirebaseAuth mAuth;
 
@@ -53,6 +54,17 @@ public class Main2Activity extends AppCompatActivity {
     String checkInternet;
     String writeData;
 
+    String refCity;
+    String toOrFrom;
+    String MapTop;
+    String Calend;
+    String CalendTime;
+    String Flight;
+    String time;
+    String TVchoiseMap;
+    String TVchoise_pointMap;
+
+
     private static final int RC_SIGN_IN = 101;
 
     @Override
@@ -60,15 +72,28 @@ public class Main2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
+        //данные из main3Activity
+        Intent main3Activity=getIntent();
+        refCity=main3Activity.getStringExtra("refCity");
+        toOrFrom=main3Activity.getStringExtra("toOrFrom");
+        MapTop=main3Activity.getStringExtra("MapTop");
+        Calend=main3Activity.getStringExtra("Calend");
+        CalendTime=main3Activity.getStringExtra("CalendTime");
+        Flight=main3Activity.getStringExtra("Flight");
+        time=main3Activity.getStringExtra("time");
+        TVchoiseMap=main3Activity.getStringExtra("TVchoiseMap");
+        TVchoise_pointMap=main3Activity.getStringExtra("TVchoise_pointMap");
+
         TextHello1=findViewById(R.id.TextHello1);
-        GoMainActivity=findViewById(R.id.GoMainActivity);
+        //GoMainActivity=findViewById(R.id.GoMainActivity);
         Layout1=findViewById(R.id.Layout1);
         Layout2=findViewById(R.id.Layout2);
+        AuthNot=findViewById(R.id. AuthNot);
 
         doPhoneLogin();
     }
     private void doPhoneLogin() {
-//        Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
+
         Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
                 .setIsSmartLockEnabled(!BuildConfig.DEBUG)
                 .setAvailableProviders(Collections.singletonList(
@@ -100,22 +125,13 @@ public class Main2Activity extends AppCompatActivity {
 
             }
             else {
-                TextHello1.setText("Авторизация не выполнена ");
-                TextHello1.setTextColor(getResources().getColor( R.color.colorNew ));
-                TextHello1.setVisibility(View.VISIBLE);
-
-                GoMainActivity.setVisibility(View.VISIBLE);
-                GoMainActivity.setVisibility(View.VISIBLE);
-
-                //Toast.makeText(getBaseContext(), "Ошибка Авторизации", Toast.LENGTH_LONG).show();
+                AuthNot.setVisibility(View.VISIBLE);
             }
         }
     }
     // Всплывающая информация
     public void showAlertDialog(FirebaseUser user) {
-        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
-                Main2Activity.this);
-
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Main2Activity.this);
         // Set Title
         mAlertDialog.setTitle("Авторизация успешна");
 
@@ -132,9 +148,9 @@ public class Main2Activity extends AppCompatActivity {
         mAlertDialog.show();
     }
 
-
+// Auth is NOT кнопка перезапуска приложения
     public void GoMainActivity(View view){
-        Intent GoMainActivity= new Intent(this,Main2Activity.class);
+        Intent GoMainActivity= new Intent(this,MainActivity.class);
         startActivity(GoMainActivity);
     }
 
@@ -249,8 +265,24 @@ public class Main2Activity extends AppCompatActivity {
             //return нужен чтобы при возобноблении интернета автоматически не переходило на лист с заявками
             return;
         }
-        Intent Choose_direction=new Intent(this,Choose_direction.class);
-        startActivity(Choose_direction);
+
+        Intent Main3Activity=new Intent(this,Main3Activity.class);
+
+        //регистрация завершена успешно передаем Ok в main3Activity в лист регистрации заявки
+        Main3Activity.putExtra("authOk","Ok");
+
+        //параметры заявки полученные из main3Activity возвращаем обратно в main3Activity
+        Main3Activity.putExtra("refCity",refCity);
+        Main3Activity.putExtra("toOrFrom",toOrFrom);
+        Main3Activity.putExtra("MapTop",MapTop);
+        Main3Activity.putExtra("Calend",Calend);
+        Main3Activity.putExtra("CalendTime",CalendTime);
+        Main3Activity.putExtra("Flight",Flight);
+        Main3Activity.putExtra("time",time);
+        Main3Activity.putExtra("TVchoiseMap",TVchoiseMap);
+        Main3Activity.putExtra("TVchoise_pointMap",TVchoise_pointMap);
+
+        startActivity(Main3Activity);
     }
 
     // кнопка Back сворачивает приложение

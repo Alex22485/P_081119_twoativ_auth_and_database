@@ -205,7 +205,8 @@ import com.google.firebase.iid.InstanceIdResult;
 
                 keyReg=dataSnapshot.getValue(String.class);
                 registration=""+keyReg; /* так как может получить null*/
-                Log.d(TAG, "запрос регистрации получен"+keyReg);
+                Log.d(TAG, "keyReg"+keyReg);
+                Log.d(TAG, "registration"+keyReg);
 
 
                 // с этой записью makeText появляется только один раз!!!!! ХОРОШО
@@ -251,10 +252,9 @@ import com.google.firebase.iid.InstanceIdResult;
 //            startActivity(AuthList);
 
             //15/06/20 Добавлено
-            Log.d(TAG, "Переход на первый лист");/*специально пусто*/
-            //переход к авторизации по телефону от firebase
+            Log.d(TAG, "Переход на первый лист");
             Intent MainUserNewOne = new Intent(this,MainUserNewOne.class);
-            MainUserNewOne.putExtra("registration",registration);
+            //MainActivityToMain3ActivityTo.putExtra("registration",registration);
             startActivity(MainUserNewOne);
         }
         else if (keyReg.equals("Hello")){
@@ -342,8 +342,10 @@ import com.google.firebase.iid.InstanceIdResult;
         }
         else if(proverka.equals("No")){
             Log.d(TAG, "Заявок нет");
-            Intent Choose_direction= new Intent(this,Choose_direction.class);
-            startActivity(Choose_direction);
+            Intent MainActivityToMainUserNewOne3= new Intent(this,MainUserNewOne3.class);
+            // регистрация есть заявок нет отправляем Hello
+            MainActivityToMainUserNewOne3.putExtra("registration",registration);
+            startActivity(MainActivityToMainUserNewOne3);
         }
         else{
             Log.d(TAG, "в БД null");

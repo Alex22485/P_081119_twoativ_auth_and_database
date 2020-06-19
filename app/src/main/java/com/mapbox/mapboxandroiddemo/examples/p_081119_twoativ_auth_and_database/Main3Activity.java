@@ -94,8 +94,12 @@ public class Main3Activity extends AppCompatActivity {
     String timeOut;
     String proverka;
 
-    String registrationREF;
-    String reg;
+
+    String registration;
+    // формируется ok после ввода телефона при авторизации
+    String authOK;
+
+    String regFromMain6;
 
 
 
@@ -104,23 +108,15 @@ public class Main3Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
 
-        Intent MainUserNewOne= getIntent();
-        registrationREF =MainUserNewOne.getStringExtra( "registration" );
-        reg="k"+registrationREF;
-        Log.d(TAG, "registration:"+registrationREF);
-        Log.d(TAG, "registration1:"+reg);
-
-        // putExtra from InAir_choise_routes
-        Intent nextList = getIntent();
-        TVchoiseMap = nextList.getStringExtra( "TVchoiseMap" );
-        TVchoise_pointMap = nextList.getStringExtra( "TVchoise_pointMap" );
-        MapTop = nextList.getStringExtra( "mapTop" );
-
-        toOrFrom =nextList.getStringExtra("toOrFrom");
-        refCity= nextList.getStringExtra("refCity");
-
-        Log.d(TAG, "toOrFrom: "+toOrFrom);
-        Log.d(TAG, "refCity: "+refCity);
+        // Получить Токен!!!!
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Main3Activity.this,new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                newToken = instanceIdResult.getToken();
+                Log.d(TAG, "newToken: "+newToken);
+            }
+        }
+        );
 
         TextData=findViewById(R.id.TextData);
         TextNumberFlight=findViewById(R.id.TextNumberFlight);
@@ -136,95 +132,137 @@ public class Main3Activity extends AppCompatActivity {
         time = findViewById(R.id.time);
 
         btn_number_Flight=findViewById( R.id.btn_number_Flight );
-
         TextMarshryt=findViewById( R.id.TextMarshryt );
         TextMarshrytTime=findViewById( R.id.TextMarshrytTime );
-
         TextSbor=findViewById( R.id.TextSbor );
         TextSborTime=findViewById( R.id.TextSborTime );
 
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser ghg = mAuth.getCurrentUser();
-        userPhone = ghg.getPhoneNumber();
-
-        // Получить Токен!!!!
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Main3Activity.this,new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                newToken = instanceIdResult.getToken();
-            }
-        }
-        );
         // ADD Calendar
         choisData=findViewById(R.id.choisData);
         Calend=findViewById(R.id.Calend);
         CalendTime=findViewById(R.id.CalendTime);
 
-        //btnInsert = findViewById(R.id.btnInsert);
+        // putExtra from InAir_choise_routes
+        Intent nextList = getIntent();
+        TVchoiseMap = nextList.getStringExtra( "TVchoiseMap" );
+        TVchoise_pointMap = nextList.getStringExtra( "TVchoise_pointMap" );
+        MapTop = nextList.getStringExtra( "mapTop" );
 
-        choisData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                calendar=Calendar.getInstance();
-                year=calendar.get(Calendar.YEAR);
-                month=calendar.get(Calendar.MONTH);
-                dayOfmonth=calendar.get(Calendar.DAY_OF_MONTH);
-                datePickerDialog=new DatePickerDialog(Main3Activity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        Calend.setText(day + " " + (month + 1) + " " + year);
-                        CalendTime.setText(day + " " + (month + 1) + " " + year);
-                        if(toOrFrom.equals("В Красноярск")){
-                            TextData.setVisibility(View.GONE);
-                            TextNumberFlight.setVisibility(View.VISIBLE);
-                            showNumberFlight();
-                        }
-                        if(toOrFrom.equals("Из Красноярска")){
-                            TextData.setVisibility(View.GONE);
-                            TextTime.setVisibility(View.VISIBLE);
-                            showTime();
-                        }
-                    }
-                    },
-                        year,month,dayOfmonth);
-                datePickerDialog.show();
-            }
+        toOrFrom =nextList.getStringExtra("toOrFrom");
+        refCity= nextList.getStringExtra("refCity");
+
+        //получен транзитом из MainActivity (заставка)
+        registration="k"+nextList.getStringExtra("registration");
+
+        Log.d(TAG, "TVchoiseMap: "+TVchoiseMap);
+        Log.d(TAG, "TVchoise_pointMap: "+TVchoise_pointMap);
+        Log.d(TAG, "MapTop: "+MapTop);
+        Log.d(TAG, "toOrFrom: "+toOrFrom);
+        Log.d(TAG, "refCity: "+refCity);
+        Log.d(TAG, "registration: "+registration);
+
+        authOK= "";
+
+        // экспорт из листа регисттрации после успешного ввода телефона поучаем OK
+        Intent Main3Activity= getIntent();
+        authOK= "K"+ Main3Activity.getStringExtra("authOk");
+        Log.d(TAG, "authOk: "+authOK);
+
+        if(authOK.equals("KOk")){
+
+            refCity=Main3Activity.getStringExtra("refCity");
+            toOrFrom=Main3Activity.getStringExtra("toOrFrom");
+            MapTop=Main3Activity.getStringExtra("MapTop");
+            Calend.setText(Main3Activity.getStringExtra("Calend"));
+            CalendTime.setText(Main3Activity.getStringExtra("CalendTime"));
+            Flight.setText(Main3Activity.getStringExtra("Flight"));
+            time.setText(Main3Activity.getStringExtra("time"));
+            TVchoiseMap=Main3Activity.getStringExtra("TVchoiseMap");
+            TVchoise_pointMap=Main3Activity.getStringExtra("TVchoise_pointMap");
+
+
+            Log.d(TAG, "0refCity: "+refCity);
+            Log.d(TAG, "0toOrFrom: "+toOrFrom);
+            Log.d(TAG, "0MapTop: "+MapTop);
+            Log.d(TAG, "0Calend: "+Calend);
+            Log.d(TAG, "0CalendTime: "+CalendTime);
+            Log.d(TAG, "0Flight: "+Flight);
+            Log.d(TAG, "0time: "+time);
+            Log.d(TAG, "0TVchoiseMap: "+TVchoiseMap);
+            Log.d(TAG, "0TVchoise_pointMap: "+TVchoise_pointMap);
+
+            mAuth = FirebaseAuth.getInstance();
+            FirebaseUser ghg = mAuth.getCurrentUser();
+            userPhone = ghg.getPhoneNumber();
+            Log.d(TAG, "userPhone: "+userPhone);
+
+            //ТАЙМ-АУТ проверка интернета
+            Handler handler1 = new Handler();
+            handler1.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // автоматическая регистрация ранее сформированной заявки после авторизации
+                    btnInsertd();
+                }
+            },1000);
         }
-        );
 
-// Disable Button if Text is Empty
-//        Calend.addTextChangedListener( loginTextWather );
-//        Flight.addTextChangedListener( loginTextWather );
+        if (authOK.equals("Knull")){
 
-        //Экспорт
-        TextMarshryt.setText(TVchoiseMap);
-        TextSbor.setText(TVchoise_pointMap);
+//            Intent MainActivityToMainUserNewOne3= getIntent();
+//            registration="k"+MainActivityToMainUserNewOne3.getStringExtra( "registration" );
+//            Log.d(TAG, "registration:"+registration);
 
-        TextMarshrytTime.setText(TVchoiseMap);
-        TextSborTime.setText(TVchoise_pointMap);
+//            // проверка был ли переход на эту страницу после отмены заявки
+//            Intent Main6ToMain3=getIntent();
+//            regFromMain6=""+Main6ToMain3.getStringExtra("regFromMain6");
+//            Log.d(TAG, "regFromMain6:"+regFromMain6);
+//
+//            //если был то пишем Hello вместо такого же слова которое бралось из Mainactivity (лист с Заставкой)
+//            if (regFromMain6.equals("Hello")){
+//                registration="kHello";
+//                Log.d(TAG, "registrationNEW:"+regFromMain6);
+//            }
 
-        TextData.setVisibility(View.VISIBLE);
-        showCalendar();
+            choisData.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    calendar=Calendar.getInstance();
+                    year=calendar.get(Calendar.YEAR);
+                    month=calendar.get(Calendar.MONTH);
+                    dayOfmonth=calendar.get(Calendar.DAY_OF_MONTH);
+                    datePickerDialog=new DatePickerDialog(Main3Activity.this,
+                            new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                            Calend.setText(day + " " + (month + 1) + " " + year);
+                            CalendTime.setText(day + " " + (month + 1) + " " + year);
+                            if(toOrFrom.equals("В Красноярск")){
+                                TextData.setVisibility(View.GONE);
+                                TextNumberFlight.setVisibility(View.VISIBLE);
+                                showNumberFlight();
+                            }
+                            if(toOrFrom.equals("Из Красноярска")){
+                                TextData.setVisibility(View.GONE);
+                                TextTime.setVisibility(View.VISIBLE);
+                                showTime();
+                            }
+                        }
+                        },year,month,dayOfmonth);
+                    datePickerDialog.show();
+                }
+            }
+            );
+            TextMarshryt.setText(TVchoiseMap);
+            TextSbor.setText(TVchoise_pointMap);
 
+            TextMarshrytTime.setText(TVchoiseMap);
+            TextSborTime.setText(TVchoise_pointMap);
+
+            TextData.setVisibility(View.VISIBLE);
+            showCalendar();
+        }
     }
-
-    // Disable Button if Text is Empty
-//    TextWatcher loginTextWather = new TextWatcher() {
-//        @Override
-//        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//        }
-//        @Override
-//        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//            String calendInput =Calend.getText().toString().trim();
-//            String flightInput =Flight.getText().toString().trim();
-//            btn_number_Flight.setEnabled(!calendInput.isEmpty());
-//            btnInsert.setEnabled(!calendInput.isEmpty()&& !flightInput.isEmpty() );
-//        }
-//        @Override
-//        public void afterTextChanged(Editable editable) {
-//        }
-//    };
 
     // Показать календарь
     public void showCalendar (){
@@ -355,10 +393,7 @@ public class Main3Activity extends AppCompatActivity {
     }
 
     public void btnInsert(View view){
-        Log.d(TAG, "registration2:"+reg);
-
-        if (reg.equals("knull")){
-            Log.d(TAG, "registration3:"+reg);
+        if (registration.equals("knull")){
 
             AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Main3Activity.this);
             // Set Title
@@ -366,7 +401,7 @@ public class Main3Activity extends AppCompatActivity {
             //mAlertDialog.setCancelable(false);
             // Set Message
             mAlertDialog.setMessage("Для продолжения необходимо" +
-                    " зарегистрироваться по номеру телефона." +
+                    " авторизироваться по номеру телефона." +
                     " Вам придет SMS c кодом подтверждения")
                     .setPositiveButton("Принять", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -383,17 +418,41 @@ public class Main3Activity extends AppCompatActivity {
             mAlertDialog.create();
             mAlertDialog.show();
         }
-        if (!reg.equals("knull")){
-            btnInsertd();
+        if (registration.equals("kHello")){
+            Log.d(TAG, "считывание userPhone: "+userPhone);
+            mAuth = FirebaseAuth.getInstance();
+            FirebaseUser ghg = mAuth.getCurrentUser();
+            userPhone = ghg.getPhoneNumber();
+            Log.d(TAG, "userPhone: "+userPhone);
+
+            //задержка чтобы успел считаться номер телефона
+            Handler handler1 = new Handler();
+            handler1.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    btnInsertd();
+                }
+            },500);
+
+
         }
     }
 
     public void goListRegistration(){
-        Intent main2Activity =new Intent(this, Main2Activity.class);
-        startActivity(main2Activity);
+        Intent main3Activity =new Intent(this, Main2Activity.class);
+        main3Activity.putExtra("refCity",refCity);
+        main3Activity.putExtra("toOrFrom",toOrFrom);
+        main3Activity.putExtra("MapTop",MapTop);
+        main3Activity.putExtra("Calend",Calend.getText().toString());
+        main3Activity.putExtra("CalendTime",CalendTime.getText().toString());
+        main3Activity.putExtra("Flight",Flight.getText().toString());
+        main3Activity.putExtra("time",time.getText().toString());
+        main3Activity.putExtra("TVchoiseMap",TVchoiseMap);
+        main3Activity.putExtra("TVchoise_pointMap",TVchoise_pointMap);
+        startActivity(main3Activity);
     }
 
-    // кнопка регистрация
+    //  регистрация заявки
     public void btnInsertd () {
         Log.d(TAG, "Старт Проверка интернета YesNO");
 

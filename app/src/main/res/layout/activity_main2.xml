@@ -9,28 +9,36 @@
     tools:context=".Main2Activity">
 
     <LinearLayout
+        android:id="@+id/AuthNot"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
         <TextView
-            android:id="@+id/TextHello1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="15sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="Авторизация не выполнена"
+            android:textColor="#C520AF"
+            android:gravity="center"
+            android:textSize="20sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="15sp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="приложение будет перезапущено"
             android:layout_gravity="center"
-            android:visibility="gone"
-            android:textSize="25sp"/>
-
+            android:textSize="15sp"
+            android:onClick="GoMainActivity"/>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/GoMainActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Попробуйте еще раз"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:onClick="GoMainActivity"/>
 
     <LinearLayout
         android:id="@+id/Layout1"

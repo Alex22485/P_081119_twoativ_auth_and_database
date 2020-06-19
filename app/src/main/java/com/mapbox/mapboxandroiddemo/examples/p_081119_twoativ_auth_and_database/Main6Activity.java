@@ -114,7 +114,7 @@ public class Main6Activity extends AppCompatActivity {
         });
 
         TextProcess.setVisibility(View.VISIBLE);
-        number.setText("заявка найдена, загрузка...");
+        number.setText("получение данных...");
 
         //Старт Проверка интернета+статус заявок
         // С выдержкой времени чтобы заявка успела записаться в БД
@@ -495,8 +495,10 @@ public class Main6Activity extends AppCompatActivity {
             Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
             Log.d(TAG, "Заявка удалена");
 
-            Intent MainUserNewOne3  = new Intent(this,MainUserNewOne3.class);
-            startActivity(MainUserNewOne3);
+            Intent Main6ToMain3  = new Intent(this,MainUserNewOne3.class);
+            // отправляем Hello в для считывания в Main3Activity это вместо Hello которое берется из MainActivity(заставка)
+            Main6ToMain3.putExtra("regFromMain6","Hello");
+            startActivity(Main6ToMain3);
         }
         }
 
