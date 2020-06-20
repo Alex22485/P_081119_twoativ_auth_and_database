@@ -29,4 +29,11 @@
         android:textColor="@color/colorPrimary"
         android:layout_gravity="center_horizontal"/>
 
+    <ProgressBar
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:indeterminate="false" />
+
 </LinearLayout>

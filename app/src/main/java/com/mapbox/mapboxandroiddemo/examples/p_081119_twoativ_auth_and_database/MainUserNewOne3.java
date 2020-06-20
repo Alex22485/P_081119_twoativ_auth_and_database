@@ -67,4 +67,9 @@ public class MainUserNewOne3 extends AppCompatActivity {
         mainUserNewOne4.putExtra("registration",registration);
         startActivity(mainUserNewOne4);
     }
+    
+    // Блокировка кнопки Back!!!! :)))
+    @Override
+    public void onBackPressed(){
+    }
 }

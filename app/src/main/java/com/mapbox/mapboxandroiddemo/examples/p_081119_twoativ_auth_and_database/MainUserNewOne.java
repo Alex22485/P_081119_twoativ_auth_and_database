@@ -17,4 +17,9 @@ public class MainUserNewOne extends AppCompatActivity {
         Intent mainUserNewOne2=new Intent(this,MainUserNewOne2.class);
         startActivity(mainUserNewOne2);
     }
+
+     //Блокировка кнопки Back!!!! :)))
+    @Override
+    public void onBackPressed(){
+    }
 }

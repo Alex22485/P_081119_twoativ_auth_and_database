@@ -12,6 +12,13 @@ public class MainList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_list);
+
+        //IamUser();
+    }
+
+    public void IamUser(){
+        Intent IamUser= new Intent(this,MainActivity.class);
+        startActivity(IamUser);
     }
 
     public void IamDriver(View view){
