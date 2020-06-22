@@ -437,7 +437,7 @@ public class Main3Activity extends AppCompatActivity {
 
         }
     }
-
+// переход к авторизации (забираем с собой данные через expotr чтобы после авторизации автоматически зарегистрировать сформированную заявку в этом активити)
     public void goListRegistration(){
         Intent main3Activity =new Intent(this, Main2Activity.class);
         main3Activity.putExtra("refCity",refCity);
