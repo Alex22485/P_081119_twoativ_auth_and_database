@@ -1,5 +1,7 @@
 package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database;
 
+//кажется не используется
+
 public class ServApp_2 {
     private String Дата;
     private String Рейс;

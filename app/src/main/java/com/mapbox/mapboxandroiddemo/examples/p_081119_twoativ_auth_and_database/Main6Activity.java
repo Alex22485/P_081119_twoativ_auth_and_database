@@ -59,6 +59,7 @@ public class Main6Activity extends AppCompatActivity {
     FirebaseAuth mAuth;
 
     TextView TextMain;
+    TextView NamePlain;
     TextView Calend_Out;
     TextView TextflightOrtime;
     TextView flight_number_Out;
@@ -79,6 +80,7 @@ public class Main6Activity extends AppCompatActivity {
         Log.d(TAG, "onCreate");/*специально пусто*/
 
         TextMain = findViewById( R.id.TextMain );
+        NamePlain = findViewById( R.id.NamePlain );
         progressBar = findViewById( R.id.progressBar );
         TextOder = findViewById( R.id.TextOder );
         TextProcess = findViewById( R.id.TextProcess );
@@ -206,17 +208,50 @@ public class Main6Activity extends AppCompatActivity {
                     Log.d(TAG, "Получаем статус"+data+map+roar_number+road_name+flidht_number+сarDrive+token);
 
                     Calend_Out.setText( data );
-                    Map.setText( map );
+                    //Map.setText( map );
                     road_number_out.setText( roar_number );
                     road_name_out.setText( road_name );
                     flight_number_Out.setText( flidht_number );
                     people.setText(""+peopleOder);
 
-                    if(map.equals("Красноярск-Аэропорт")){
+                    if (map.equals("ИгаркаЧ")){
+                        if(roar_number.equals("КрасТэц-Аэропорт")||roar_number.equals("Щорса-Аэропорт")){
+                            NamePlain.setText("Красноярск-Игарка (чартер)");
+                        }
+                        if(roar_number.equals("Ветлужанка-Аэропорт")||roar_number.equals("Северный-Аэропорт")){
+                            NamePlain.setText("Красноярск-Игарка (чартер)");
+                        }
+                        if(roar_number.equals("Канск-Аэропорт")||roar_number.equals("Ачинск-Аэропорт")){
+                            NamePlain.setText("Красноярск-Игарка (чартер)");
+                        }
+                        if(roar_number.equals("Сосновоборск-Аэропорт")){
+                            NamePlain.setText("Красноярск-Игарка (чартер)");
+                        }
+                    }
+
+                    if (map.equals("ИгаркаЧ")){
+                        if(roar_number.equals("Аэропорт-КрасТэц")||roar_number.equals("Аэропорт-Щорса")){
+                            NamePlain.setText("Игарка-Красноярск- (чартер)");
+                        }
+                        if(roar_number.equals("Аэропорт-Ветлужанка")||roar_number.equals("Аэропорт-Северный")){
+                            NamePlain.setText("Игарка-Красноярск (чартер)");
+                        }
+                        if(roar_number.equals("Аэропорт-Канск")||roar_number.equals("Аэропорт-Ачинск")){
+                            NamePlain.setText("Игарка-Красноярск (чартер)");
+                        }
+                        if(roar_number.equals("Аэропорт-Сосновоборск")){
+                            NamePlain.setText("Игарка-Красноярск (чартер)");
+                        }
+                    }
+
+
+
+
+                    if(!road_name.equals("Парковка Р3")){
                         TextflightOrtime.setText("время вылета самолета:");
 
                     }
-                    if(map.equals("Аэропорт-Красноярск")){
+                    if(road_name.equals("Парковка Р3")){
                         TextflightOrtime.setText("Рейс самолета: №");
 
                     }

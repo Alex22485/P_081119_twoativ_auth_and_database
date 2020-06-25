@@ -52,7 +52,21 @@
             android:textColor="#35988F" />
         <TextView
             android:layout_width="match_parent"
+            android:layout_height="10sp" />
+
+        <TextView
+            android:id="@+id/NamePlain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/colorNew" />
+
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="5sp" />
+
 
         <TextView
             android:layout_width="wrap_content"
