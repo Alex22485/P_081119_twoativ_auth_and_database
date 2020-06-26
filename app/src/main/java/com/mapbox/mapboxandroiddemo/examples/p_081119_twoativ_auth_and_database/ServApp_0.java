@@ -35,6 +35,8 @@ public class ServApp_0 extends AppCompatActivity {
 
     TextView dataREF;
     TextView MapREF;
+    TextView TextTime;
+    TextView TextRoad;
 
     String Calend;
     String Map;
@@ -64,6 +66,8 @@ public class ServApp_0 extends AppCompatActivity {
         dataREF=findViewById(R.id.dataREF);
         MapREF=findViewById(R.id.MapREF);
         choisData=findViewById(R.id.choisData);
+        TextTime=findViewById(R.id.TextTime);
+        TextRoad=findViewById(R.id.TextRoad);
 
         // выбрать дату в календаре
         choisData.setOnClickListener(new View.OnClickListener() {
@@ -144,7 +148,58 @@ public void showTimeFlight (View view){
                 @Override
                 public void onClick(DialogInterface dialogInterface, int which) {
 
-                    findMap=array[which];
+                    //findMap=array[which];
+                    TextTime.setText(array[which]);
+                    //BtnOneDriver.setText(array[which]);
+                }
+            }
+    );
+    AlertDialog dialog = builder.create();
+    dialog.show();
+}
+
+public void findRoad(View view){
+    // обнуляем массив,  для повторного запроса
+    driver1.clear();
+    key1="";
+    array1 = driver1.toArray(new String[driver1.size()]);
+
+    //30 03 2020 Получить все ключи объекта по его значению "Водила" записать их в ArrayList и преобразовать в строковый массив array
+    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child( "Заявки" ).child("zRef").child(dataREF.getText().toString()).child(MapREF.getText().toString()).child(TextTime.getText().toString());
+    ref.orderByValue().equalTo( "направление" ).addListenerForSingleValueEvent( new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            for (DataSnapshot snap: dataSnapshot.getChildren()){
+
+                //Преобразовываем ArrayList в обычный массив чтобы вставить его в AlertDialog
+                key1 = snap.getKey(); //получить все ключи значения
+                driver1.add( key1 );
+                array1 = driver1.toArray(new String[driver1.size()]);
+
+                Log.d(TAG, "key1: "+key1);
+                Log.d(TAG, "driver1: "+driver1);
+                Log.d(TAG, "array1: "+array1);
+
+                Toast.makeText(ServApp_0.this,"направление считано",Toast.LENGTH_LONG).show();
+            }
+        }
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    } );
+}
+
+public void showRoad(View view){
+    AlertDialog.Builder builder = new AlertDialog.Builder( ServApp_0.this );
+    builder.setTitle( "Найдено направление" );
+    // Отображает Водителей загруженных из БД
+    builder.setItems( array1, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int which) {
+
+                    //findMap=array[which];
+                    TextRoad.setText(array1[which]);
                     //BtnOneDriver.setText(array[which]);
                 }
             }
