@@ -27,39 +27,36 @@
         android:layout_height="wrap_content"
         android:textSize="10sp"/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="найти Время-Рейс"
-        android:onClick="findTime"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="10sp"/>
 
     <Button
+        android:id="@+id/BTNshowTimeFlight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="показать время-рейс"
+        android:enabled="false"
         android:onClick="showTimeFlight"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="10sp"/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="найти направление"
-        android:onClick="findRoad"/>
 
     <Button
+        android:id="@+id/BTNShowRoad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="показать напрвление"
+        android:enabled="false"
         android:onClick="showRoad"/>
 
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="50sp"/>
 
     <Button
         android:layout_width="match_parent"
