@@ -145,7 +145,7 @@
                     android:layout_weight="1"
                     android:onClick="choise_Driver1"
                     android:text="Driver"
-                    android:enabled="true"
+                    android:enabled="false"
                     android:textSize="10sp">
                 </Button>
                 <Button

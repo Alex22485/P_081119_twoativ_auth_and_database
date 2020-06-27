@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -34,6 +35,11 @@ import java.util.Calendar;
 
 
 public class ServApp_1 extends AppCompatActivity {
+
+    String dataREF;
+    String MapREF;
+    String TextTime;
+    String TextRoad;
 
     TextView Дата;
     TextView Рейс;
@@ -114,7 +120,7 @@ public class ServApp_1 extends AppCompatActivity {
     //Номер Направления
     String[] listMap = {"Красноярск-Аэропорт","Аэропорт-Красноярск"};
     String[] listMap1 = {"КрасТэц-Аэропорт","Щорса-Аэропорт","Северный-Аэропорт","Ветлужанка-Аэропорт"};
-    String[] listMap2 = {"Аэропорт-КрасТэц","Аэропорт-Щорса","Аэропорт-Северный","Аэропорт-Ветлужанка"};
+    String[] listMap2 = {"Аэропорт-КрасТэц","Аэропорт-Щорса","Аэропорт-Северный","Аэропорт-Ветлужанка","Аэропорт-Сосновоборск","Аэропорт-Ачинск","Аэропорт-Канск","Аэропорт-Северо-Енисейск"};
     String[] pointOneMap = {"ДК КрасТЭЦ","Аэрокосмическая академия","Торговый центр","Предмостная пл"};
     String[] pointTwoMap = {"Кинотеатр Металлург","Автобусный пер","Пикра","Мебельная фабрика"};
 
@@ -215,8 +221,20 @@ public class ServApp_1 extends AppCompatActivity {
         treeTimedelete=findViewById(R.id.treeTimedelete);
         fourTimedelete=findViewById(R.id.fourTimedelete);
 
-        //20.03.2020 для отправки заявки в БД Водителя
-        //Не используется servApp_2= new ServApp_2();
+        Intent nex=getIntent();
+        dataREF=nex.getStringExtra("dataREF");
+        MapREF=nex.getStringExtra("MapREF");
+        TextTime=nex.getStringExtra("TextTime");
+        TextRoad=nex.getStringExtra("TextRoad");
+
+        Дата.setText(dataREF);
+        Направление.setText(MapREF);
+        Рейс.setText(TextTime);
+        Маршрут.setText(TextRoad);
+
+        if(TextRoad.equals(listMap2[0])||TextRoad.equals(listMap2[1])||TextRoad.equals(listMap2[2])||TextRoad.equals(listMap2[3])||TextRoad.equals(listMap2[4])||TextRoad.equals(listMap2[5])||TextRoad.equals(listMap2[6])||TextRoad.equals(listMap2[7])){
+
+        }
 
 
 

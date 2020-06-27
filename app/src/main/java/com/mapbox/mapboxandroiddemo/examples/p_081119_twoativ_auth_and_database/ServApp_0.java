@@ -160,7 +160,7 @@ public void findTime(){
 
 public void showTimeFlight (View view){
     AlertDialog.Builder builder = new AlertDialog.Builder( ServApp_0.this );
-    builder.setTitle( "Найдено Время/рейс" );
+    builder.setTitle( "Дата: "+dataREF.getText().toString() );
     // Отображает Водителей загруженных из БД
     builder.setItems( array, new DialogInterface.OnClickListener() {
                 @Override
@@ -211,7 +211,7 @@ public void findRoad(){
 
 public void showRoad(View view){
     AlertDialog.Builder builder = new AlertDialog.Builder( ServApp_0.this );
-    builder.setTitle( "Найдено направление" );
+    builder.setTitle( "на время-рейс: "+TextTime.getText().toString() );
     // Отображает Водителей загруженных из БД
     builder.setItems( array1, new DialogInterface.OnClickListener() {
                 @Override
@@ -227,82 +227,12 @@ public void showRoad(View view){
     dialog.show();
 }
 
-//public void showFindZrefTime(){
-//    AlertDialog.Builder builder = new AlertDialog.Builder( ServApp_0.this );
-//    builder.setTitle( "Найдено Время/рейс" );
-//    //builder.setCancelable(true);
-//    // Отображает Водителей загруженных из БД
-//    builder.setItems( array, new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialogInterface, int which) {
-//
-//                    findMap=array[which];
-//                    //Запускаем метод считывание телефона выбранного водителя
-//                    findZrefMap();
-//                    Log.d(TAG, "Выбрано время-рейс: "+findMap);
-//
-//
-//                }
-//            }
-//    );
-//    AlertDialog dialog = builder.create();
-//    dialog.show();
-//}
-//
-//public void findZrefMap(){
-//
-//    driver1.clear();
-//
-//    //30 03 2020 Получить все ключи объекта по его значению "направление" записать их в ArrayList и преобразовать в строковый массив array
-//    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child( "Заявки" ).child("zRef").child(dataREF.getText().toString()).child(MapREF.getText().toString()).child(findMap);
-//    ref.orderByValue().equalTo( "направление" ).addListenerForSingleValueEvent( new ValueEventListener() {
-//        @Override
-//        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//            for (DataSnapshot snap: dataSnapshot.getChildren()){
-//
-//                //key1="";
-//
-//                //Преобразовываем ArrayList в обычный массив чтобы вставить его в AlertDialog
-//                key1 = snap.getKey(); //получить все ключи значения
-//                driver1.add( key1 );
-//                array1 = driver1.toArray(new String[driver1.size()]);
-//
-//                Log.d(TAG, "key1: "+key1);
-//                Log.d(TAG, "driver1: "+driver1);
-//                Log.d(TAG, "array1: "+array1);
-//
-//                showFindZrefMap();
-//            }
-//        }
-//        @Override
-//        public void onCancelled(@NonNull DatabaseError databaseError) {
-//        }
-//    } );
-//}
-//
-//public void showFindZrefMap(){
-//
-//    AlertDialog.Builder builder = new AlertDialog.Builder( ServApp_0.this );
-//    builder.setTitle( "Найдено направление" );
-//    builder.setCancelable(true);
-//    // Отображает Водителей загруженных из БД
-//    builder.setItems( array1, new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialogInterface, int which) {
-//
-//                    findMap1=array1[which];
-//                    Log.d(TAG, "выбрано направление: "+findMap1);
-//
-//
-//                }
-//            }
-//    );
-//    AlertDialog dialog = builder.create();
-//    dialog.show();
-//}
-
 public void nex (View view){
         Intent nex = new Intent(this,ServApp_1.class);
+        nex.putExtra("dataREF",dataREF.getText().toString());
+        nex.putExtra("MapREF",MapREF.getText().toString());
+        nex.putExtra("TextTime",TextTime.getText().toString());
+        nex.putExtra("TextRoad",TextRoad.getText().toString());
         startActivity(nex);
 }
 
