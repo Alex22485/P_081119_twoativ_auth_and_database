@@ -36,6 +36,8 @@ import java.util.Calendar;
 
 public class ServApp_1 extends AppCompatActivity {
 
+    private static final String TAG ="ServApp_1";
+
     String dataREF;
     String MapREF;
     String TextTime;
@@ -232,10 +234,18 @@ public class ServApp_1 extends AppCompatActivity {
         Рейс.setText(TextTime);
         Маршрут.setText(TextRoad);
 
-        if(TextRoad.equals(listMap2[0])||TextRoad.equals(listMap2[1])||TextRoad.equals(listMap2[2])||TextRoad.equals(listMap2[3])||TextRoad.equals(listMap2[4])||TextRoad.equals(listMap2[5])||TextRoad.equals(listMap2[6])||TextRoad.equals(listMap2[7])){
+//        if(TextRoad.equals(listMap2[0])||TextRoad.equals(listMap2[1])||TextRoad.equals(listMap2[2])||TextRoad.equals(listMap2[3])||TextRoad.equals(listMap2[4])||TextRoad.equals(listMap2[5])||TextRoad.equals(listMap2[6])||TextRoad.equals(listMap2[7])){
+//
+//        }
 
+        for (int i=0; i<listMap2.length;i++){
+            if (TextRoad.equals(listMap2[i])){
+                onePoint.setText("парковка Р3");
+                Log.d(TAG, "TextRoad: "+TextRoad+" равно "+listMap2[i]);
+                return;
+            }
+            Log.d(TAG, "TextRoad: "+TextRoad+" не равно "+listMap2[i]);
         }
-
 
 
         choiseD.setOnClickListener( new View.OnClickListener() {
