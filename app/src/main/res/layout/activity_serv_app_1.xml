@@ -10,60 +10,17 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="33sp"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/choiseD"
-            android:layout_width="0sp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="10sp"
-            android:text="дата">
-        </Button>
-
-        <Button
-            android:id="@+id/choiseN"
-            android:layout_width="0sp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="10sp"
-            android:text="напр"
-            android:onClick="choiseN">
-        </Button>
-        <Button
-            android:id="@+id/choiseF"
-            android:layout_width="0sp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="10sp"
-            android:text="рейс"
-            android:onClick="choiseF">
-        </Button>
-
-        <Button
-            android:id="@+id/choiseM"
-            android:layout_width="0sp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="10sp"
-            android:onClick="choiseM"
-            android:text="маршрут">
-        </Button>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:id="@+id/Дата"
+            android:id="@+id/Data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="xx xx xx"
             android:textSize="15sp" />
         <TextView
-            android:id="@+id/Направление"
+            android:id="@+id/Map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -71,7 +28,7 @@
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/Рейс"
+            android:id="@+id/TimeFly"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
@@ -80,7 +37,7 @@
     </LinearLayout>
 
         <TextView
-            android:id="@+id/Маршрут"
+            android:id="@+id/Road"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Маршрут"

@@ -14,12 +14,9 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,10 +40,10 @@ public class ServApp_1 extends AppCompatActivity {
     String TextTime;
     String TextRoad;
 
-    TextView Дата;
-    TextView Рейс;
-    TextView Направление;
-    TextView Маршрут;
+    TextView Data;
+    TextView TimeFly;
+    TextView Map;
+    TextView Road;
 
     TextView onePoint;
     TextView twoPoint;
@@ -83,9 +80,6 @@ public class ServApp_1 extends AppCompatActivity {
     TextView treeTimedelete;
     TextView fourTimedelete;
 
-    Button choiseD;
-    Button choiseF;
-    Button choiseN;
     Button read;
 
     Button BtnOneStop;
@@ -125,6 +119,8 @@ public class ServApp_1 extends AppCompatActivity {
     String[] listMap2 = {"Аэропорт-КрасТэц","Аэропорт-Щорса","Аэропорт-Северный","Аэропорт-Ветлужанка","Аэропорт-Сосновоборск","Аэропорт-Ачинск","Аэропорт-Канск","Аэропорт-Северо-Енисейск"};
     String[] pointOneMap = {"ДК КрасТЭЦ","Аэрокосмическая академия","Торговый центр","Предмостная пл"};
     String[] pointTwoMap = {"Кинотеатр Металлург","Автобусный пер","Пикра","Мебельная фабрика"};
+    String[] pointTreeMap = {"1xxx","2xxx","3xxx","4xxx"};
+    String[] pointFourMap = {"5xxx","6xxx","7xxx","8xxx"};
 
     // 20.03.2020 Для выбора водителя
     ArrayList<String> driver=new ArrayList<String>(  );
@@ -158,14 +154,13 @@ public class ServApp_1 extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_serv_app_1 );
 
-        Дата = findViewById( R.id. Дата );
-        Рейс = findViewById( R.id. Рейс );
-        Направление = findViewById( R.id. Направление );
-        Маршрут = findViewById( R.id. Маршрут );
 
-        choiseD = findViewById( R.id. choiseD );
-        choiseF = findViewById( R.id. choiseF );
-        choiseN = findViewById( R.id. choiseN );
+
+        Data = findViewById( R.id. Data );
+        TimeFly = findViewById( R.id. TimeFly );
+        Map = findViewById( R.id. Map );
+        Road = findViewById( R.id. Road );
+
         read = findViewById( R.id. read );
 
         onePoint = findViewById( R.id. onePoint );
@@ -177,6 +172,8 @@ public class ServApp_1 extends AppCompatActivity {
         twoMen = findViewById( R.id. twoMen );
         treeMen = findViewById( R.id. treeMen );
         fourMen = findViewById( R.id. fourMen );
+
+
 
         BtnOneStop = findViewById( R.id. BtnOneStop );
         BtnTwoStop = findViewById( R.id. BtnTwoStop );
@@ -208,6 +205,7 @@ public class ServApp_1 extends AppCompatActivity {
         treeTimeSend = findViewById( R.id. treeTimeSend );
         fourTimeSend = findViewById( R.id. fourTimeSend );
 
+
         oneTimeAccepted=findViewById(R.id.oneTimeAccepted);
         twoTimeAccepted=findViewById(R.id.twoTimeAccepted);
         treeTimeAccepted=findViewById(R.id.treeTimeAccepted);
@@ -229,43 +227,50 @@ public class ServApp_1 extends AppCompatActivity {
         TextTime=nex.getStringExtra("TextTime");
         TextRoad=nex.getStringExtra("TextRoad");
 
-        Дата.setText(dataREF);
-        Направление.setText(MapREF);
-        Рейс.setText(TextTime);
-        Маршрут.setText(TextRoad);
+        Data.setText(dataREF);
+        Map.setText(MapREF);
+        TimeFly.setText(TextTime);
+        Road.setText(TextRoad);
 
-//        if(TextRoad.equals(listMap2[0])||TextRoad.equals(listMap2[1])||TextRoad.equals(listMap2[2])||TextRoad.equals(listMap2[3])||TextRoad.equals(listMap2[4])||TextRoad.equals(listMap2[5])||TextRoad.equals(listMap2[6])||TextRoad.equals(listMap2[7])){
-//
-//        }
 
+
+
+        // запись парковка Р3 если TextRoad совпадает с любым словом из массива listMap2
         for (int i=0; i<listMap2.length;i++){
             if (TextRoad.equals(listMap2[i])){
-                onePoint.setText("парковка Р3");
+                onePoint.setText("Парковка Р3");
                 Log.d(TAG, "TextRoad: "+TextRoad+" равно "+listMap2[i]);
-                return;
             }
             Log.d(TAG, "TextRoad: "+TextRoad+" не равно "+listMap2[i]);
         }
 
 
-        choiseD.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                calendar=Calendar.getInstance();
-                year=calendar.get(Calendar.YEAR);
-                month=calendar.get(Calendar.MONTH);
-                dayOfmonth=calendar.get(Calendar.DAY_OF_MONTH);
-                datePickerDialog=new DatePickerDialog(ServApp_1.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        Дата.setText(day + " " + (month + 1) + " " + year);
-                        Дата.setTextColor(getResources().getColor( R.color.colorNew));
-                    }
-                    }, year,month,dayOfmonth);
-                datePickerDialog.show();
-            }
-        } );
+
+        if(TextRoad.equals("КрасТэц-Аэропорт")){
+            onePoint.setText( pointOneMap[0] );
+            twoPoint.setText( pointOneMap[1] );
+            treePoint.setText( pointOneMap[2] );
+            fourPoint.setText( pointOneMap[3] );
+        }
+        if(TextRoad.equals("Щорса-Аэропорт")){
+            onePoint.setText( pointTwoMap[0] );
+            twoPoint.setText( pointTwoMap[1] );
+            treePoint.setText( pointTwoMap[2] );
+            fourPoint.setText( pointTwoMap[3] );
+        }
+        if(TextRoad.equals("Северный-Аэропорт")){
+            onePoint.setText( pointTreeMap[0] );
+            twoPoint.setText( pointTreeMap[1] );
+            treePoint.setText( pointTreeMap[2] );
+            fourPoint.setText( pointTreeMap[3] );
+        }
+        if(TextRoad.equals("Ветлужанка-Аэропорт")){
+            onePoint.setText( pointFourMap[0] );
+            twoPoint.setText( pointFourMap[1] );
+            treePoint.setText( pointFourMap[2] );
+            fourPoint.setText( pointFourMap[3] );
+        }
+
 
         //30 03 2020 Получить все ключи объекта по его значению "Водила" записать их в ArrayList и преобразовать в строковый массив array
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child( "Водители" ).child("DriverForOder");
@@ -290,6 +295,8 @@ public class ServApp_1 extends AppCompatActivity {
        oneMen.addTextChangedListener( loginTextWather1 );
        oneTimeStop.addTextChangedListener( loginTextWather1 );
 //       driverNew1.addTextChangedListener( loginTextWather1 );
+        Log.d(TAG, "oneMen: "+oneMen.getText().toString());
+        Log.d(TAG, "oneTimeStop: "+oneTimeStop.getText().toString());
 
         // Прослушивание текста для Видимости кнопок 2 точки
        twoMen.addTextChangedListener( loginTextWather2 );
@@ -310,6 +317,7 @@ public class ServApp_1 extends AppCompatActivity {
     TextWatcher loginTextWather1=new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
         }
 
         @Override
@@ -326,6 +334,7 @@ public class ServApp_1 extends AppCompatActivity {
         }
         @Override
         public void afterTextChanged(Editable s) {
+
         }
     };
 
@@ -404,7 +413,7 @@ public class ServApp_1 extends AppCompatActivity {
 // определениие точек сбора в зависимости от выбранного маршрута
     public void getPoint(){
 
-        String map=Маршрут.getText().toString();
+        String map=Map.getText().toString();
         String map1=listMap1[0];
         String map2=listMap2[0];
 
@@ -432,8 +441,8 @@ public class ServApp_1 extends AppCompatActivity {
         builder.setItems( listFlights, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
-                Рейс.setText( listFlights[which] );
-                Рейс.setTextColor(getResources().getColor( R.color.colorNew));
+                Road.setText( listFlights[which] );
+                Road.setTextColor(getResources().getColor( R.color.colorNew));
             }
         }
         );
@@ -449,8 +458,8 @@ public class ServApp_1 extends AppCompatActivity {
         builder.setItems( listMap, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
-                        Направление.setText( listMap[which] );
-                        Направление.setTextColor(getResources().getColor( R.color.colorNew));
+                        Map.setText( listMap[which] );
+                        Map.setTextColor(getResources().getColor( R.color.colorNew));
                     }
                 }
         );
@@ -459,7 +468,7 @@ public class ServApp_1 extends AppCompatActivity {
     }
 // выбор выпадающего меню в зависимости от того что указано в строке Направление "Красноярск-Аэропорт" или "Аэропорт-Красноярск"
     public void choiseM (View view){
-        String one=Направление.getText().toString();
+        String one=Map.getText().toString();
         String ref="Красноярск-Аэропорт";
         if (one.equals(ref)){
                 AlertDialog.Builder builder = new AlertDialog.Builder( ServApp_1.this );
@@ -468,8 +477,8 @@ public class ServApp_1 extends AppCompatActivity {
                 builder.setItems( listMap1, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int which) {
-                                Маршрут.setText( listMap1[which] );
-                                Маршрут.setTextColor(getResources().getColor( R.color.colorNew));
+                                Map.setText( listMap1[which] );
+                                Map.setTextColor(getResources().getColor( R.color.colorNew));
                                 getPoint();
                             }
                         }
@@ -484,8 +493,8 @@ public class ServApp_1 extends AppCompatActivity {
             builder.setItems( listMap2, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int which) {
-                            Маршрут.setText( listMap2[which] );
-                            Маршрут.setTextColor(getResources().getColor( R.color.colorNew));
+                            Map.setText( listMap2[which] );
+                            Map.setTextColor(getResources().getColor( R.color.colorNew));
                             onePoint.setText( "Парковка Р3" );
 
                             //запускаем выполнение метода
@@ -506,13 +515,19 @@ public class ServApp_1 extends AppCompatActivity {
             BtnTree();
             BtnFour();
 
+            Log.d(TAG, "Data: "+Data.getText().toString());
+            Log.d(TAG, "Map: "+Map.getText().toString());
+            Log.d(TAG, "TimeFly: "+TimeFly.getText().toString());
+            Log.d(TAG, "Road: "+Road.getText().toString());
+            Log.d(TAG, "onePoint: "+onePoint.getText().toString());
+
 
         // считывание количества человек из БД по первой точке сбора
             final Query aaa1= FirebaseDatabase.getInstance().getReference("ЗаявкиServerApp")
-                    .child( Дата.getText().toString() )
-                    .child( Направление.getText().toString() )
-                    .child( Рейс.getText().toString() )
-                    .child( Маршрут.getText().toString() )
+                    .child( Data.getText().toString() )
+                    .child( Map.getText().toString() )
+                    .child( TimeFly.getText().toString() )
+                    .child( Road.getText().toString() )
                     .child( onePoint.getText().toString() )
                     .orderByChild( "Человек" );
             aaa1.addChildEventListener( new ChildEventListener() {
@@ -554,10 +569,10 @@ public class ServApp_1 extends AppCompatActivity {
             } );
             // считывание количества человек из БД по второй точке сбора
             final Query aaa2= FirebaseDatabase.getInstance().getReference("ЗаявкиServerApp")
-                    .child( Дата.getText().toString() )
-                    .child( Направление.getText().toString() )
-                    .child( Рейс.getText().toString() )
-                    .child( Маршрут.getText().toString() )
+                    .child( Data.getText().toString() )
+                    .child( Map.getText().toString() )
+                    .child( TimeFly.getText().toString() )
+                    .child( Road.getText().toString() )
                     .child( twoPoint.getText().toString() )
                     .orderByChild( "Человек" );
             aaa2.addChildEventListener( new ChildEventListener() {
@@ -598,10 +613,10 @@ public class ServApp_1 extends AppCompatActivity {
 
             // считывание количества человек из БД по третьей точке сбора
             final Query aaa3= FirebaseDatabase.getInstance().getReference("ЗаявкиServerApp")
-                    .child( Дата.getText().toString() )
-                    .child( Направление.getText().toString() )
-                    .child( Рейс.getText().toString() )
-                    .child( Маршрут.getText().toString() )
+                    .child( Data.getText().toString() )
+                    .child( Map.getText().toString() )
+                    .child( TimeFly.getText().toString() )
+                    .child( Road.getText().toString() )
                     .child( treePoint.getText().toString() )
                     .orderByChild( "Человек" );
             aaa3.addChildEventListener( new ChildEventListener() {
@@ -640,10 +655,10 @@ public class ServApp_1 extends AppCompatActivity {
             } );
             // считывание количества человек из БД по четвертой точке сбора
             final Query aaa4= FirebaseDatabase.getInstance().getReference("ЗаявкиServerApp")
-                    .child( Дата.getText().toString() )
-                    .child( Направление.getText().toString() )
-                    .child( Рейс.getText().toString() )
-                    .child( Маршрут.getText().toString() )
+                    .child( Data.getText().toString() )
+                    .child( Map.getText().toString() )
+                    .child( TimeFly.getText().toString() )
+                    .child( Road.getText().toString() )
                     .child( fourPoint.getText().toString() )
                     .orderByChild( "Человек" );
             aaa4.addChildEventListener( new ChildEventListener() {
@@ -734,10 +749,10 @@ public class ServApp_1 extends AppCompatActivity {
         //080420 Запись Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
         database01 = FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Заявки")
-                .child(Направление.getText().toString())
-                .child(Дата.getText().toString())
-                .child(Рейс.getText().toString())
-                .child(Маршрут.getText().toString())
+                .child( Data.getText().toString() )
+                .child( Map.getText().toString() )
+                .child( TimeFly.getText().toString() )
+                .child( Road.getText().toString() )
                 .child(onePoint.getText().toString());
         ref01.addValueEventListener(new ValueEventListener() {
             @Override
@@ -761,10 +776,10 @@ public class ServApp_1 extends AppCompatActivity {
         //Удаление Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
         database01 = FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Заявки")
-                .child(Направление.getText().toString())
-                .child(Дата.getText().toString())
-                .child(Рейс.getText().toString())
-                .child(Маршрут.getText().toString())
+                .child( Data.getText().toString() )
+                .child( Map.getText().toString() )
+                .child( TimeFly.getText().toString() )
+                .child( Road.getText().toString() )
                 .child(onePoint.getText().toString());
         ref01.addValueEventListener(new ValueEventListener() {
                                         @Override
@@ -792,10 +807,10 @@ public class ServApp_1 extends AppCompatActivity {
         //080420 Запись Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
         database01 = FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Заявки")
-                .child(Направление.getText().toString())
-                .child(Дата.getText().toString())
-                .child(Рейс.getText().toString())
-                .child(Маршрут.getText().toString())
+                .child( Data.getText().toString() )
+                .child( Map.getText().toString() )
+                .child( TimeFly.getText().toString() )
+                .child( Road.getText().toString() )
                 .child(twoPoint.getText().toString());
         ref01.addValueEventListener(new ValueEventListener() {
                                         @Override
@@ -821,10 +836,10 @@ public class ServApp_1 extends AppCompatActivity {
         //Удаление Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
         database01 = FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Заявки")
-                .child(Направление.getText().toString())
-                .child(Дата.getText().toString())
-                .child(Рейс.getText().toString())
-                .child(Маршрут.getText().toString())
+                .child( Data.getText().toString() )
+                .child( Map.getText().toString() )
+                .child( TimeFly.getText().toString() )
+                .child( Road.getText().toString() )
                 .child(twoPoint.getText().toString());
         ref01.addValueEventListener(new ValueEventListener() {
                                         @Override
@@ -852,10 +867,10 @@ public class ServApp_1 extends AppCompatActivity {
         //080420 Запись Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
         database01 = FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Заявки")
-                .child(Направление.getText().toString())
-                .child(Дата.getText().toString())
-                .child(Рейс.getText().toString())
-                .child(Маршрут.getText().toString())
+                .child( Data.getText().toString() )
+                .child( Map.getText().toString() )
+                .child( TimeFly.getText().toString() )
+                .child( Road.getText().toString() )
                 .child(treePoint.getText().toString());
         ref01.addValueEventListener(new ValueEventListener() {
                                         @Override
@@ -881,10 +896,10 @@ public class ServApp_1 extends AppCompatActivity {
         //Удаление Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
         database01 = FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Заявки")
-                .child(Направление.getText().toString())
-                .child(Дата.getText().toString())
-                .child(Рейс.getText().toString())
-                .child(Маршрут.getText().toString())
+                .child( Data.getText().toString() )
+                .child( Map.getText().toString() )
+                .child( TimeFly.getText().toString() )
+                .child( Road.getText().toString() )
                 .child(treePoint.getText().toString());
         ref01.addValueEventListener(new ValueEventListener() {
                                         @Override
@@ -914,10 +929,10 @@ public class ServApp_1 extends AppCompatActivity {
         //080420 Запись Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
         database01 = FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Заявки")
-                .child(Направление.getText().toString())
-                .child(Дата.getText().toString())
-                .child(Рейс.getText().toString())
-                .child(Маршрут.getText().toString())
+                .child( Data.getText().toString() )
+                .child( Map.getText().toString() )
+                .child( TimeFly.getText().toString() )
+                .child( Road.getText().toString() )
                 .child(fourPoint.getText().toString());
         ref01.addValueEventListener(new ValueEventListener() {
                                         @Override
@@ -943,10 +958,10 @@ public class ServApp_1 extends AppCompatActivity {
         //Удаление Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
         database01 = FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Заявки")
-                .child(Направление.getText().toString())
-                .child(Дата.getText().toString())
-                .child(Рейс.getText().toString())
-                .child(Маршрут.getText().toString())
+                .child( Data.getText().toString() )
+                .child( Map.getText().toString() )
+                .child( TimeFly.getText().toString() )
+                .child( Road.getText().toString() )
                 .child(fourPoint.getText().toString());
         ref01.addValueEventListener(new ValueEventListener() {
                                         @Override
@@ -1194,10 +1209,10 @@ public class ServApp_1 extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //getServApp_2();
                 //ref01.child("Заявка").setValue(servApp_2);
-                ref01.child("дата").setValue(Дата.getText().toString());
-                ref01.child("рейс").setValue(Рейс.getText().toString());
-                ref01.child("направление").setValue(Направление.getText().toString());
-                ref01.child("маршрут").setValue(Маршрут.getText().toString());
+                ref01.child("дата").setValue(Data.getText().toString());
+                ref01.child("рейс").setValue(TimeFly.getText().toString());
+                ref01.child("направление").setValue(Map.getText().toString());
+                ref01.child("маршрут").setValue(Road.getText().toString());
                 ref01.child("точкаСбора1").setValue(onePoint.getText().toString());
                 ref01.child("точкаСбора1Чел").setValue(oneMen.getText().toString());
                 ref01.removeEventListener( this );
@@ -1219,10 +1234,10 @@ public class ServApp_1 extends AppCompatActivity {
 
         //080420 Запись Отправлена заявка водителю заявки в БД ServApp...-...-...-"Отправлена"...
         ref02 = database01.getReference("ЗаявкиServerApp")
-                .child(Дата.getText().toString())
-                .child(Направление.getText().toString())
-                .child(Рейс.getText().toString())
-                .child(Маршрут.getText().toString())
+                .child(Data.getText().toString())
+                .child(Map.getText().toString())
+                .child(TimeFly.getText().toString())
+                .child(Road.getText().toString())
                 .child(onePoint.getText().toString())
                 .child("Человек");
         ref02.addValueEventListener(new ValueEventListener() {
@@ -1253,12 +1268,11 @@ public class ServApp_1 extends AppCompatActivity {
         ref01.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //getServApp_2();
-                //ref01.child("Заявка").setValue(servApp_2);
-                ref01.child("дата").setValue(Дата.getText().toString());
-                ref01.child("рейс").setValue(Рейс.getText().toString());
-                ref01.child("направление").setValue(Направление.getText().toString());
-                ref01.child("маршрут").setValue(Маршрут.getText().toString());
+
+                ref01.child("дата").setValue(Data.getText().toString());
+                ref01.child("рейс").setValue(TimeFly.getText().toString());
+                ref01.child("направление").setValue(Map.getText().toString());
+                ref01.child("маршрут").setValue(Road.getText().toString());
                 ref01.child("точкаСбора2").setValue(twoPoint.getText().toString());
                 ref01.child("точкаСбора2Чел").setValue(twoMen.getText().toString());
 
@@ -1283,10 +1297,10 @@ public class ServApp_1 extends AppCompatActivity {
 
         //080420 Запись Отправлена заявка водителю заявки в БД ServApp...-...-...-"Отправлена"...
         ref02 = database01.getReference("ЗаявкиServerApp")
-                .child(Дата.getText().toString())
-                .child(Направление.getText().toString())
-                .child(Рейс.getText().toString())
-                .child(Маршрут.getText().toString())
+                .child(Data.getText().toString())
+                .child(Map.getText().toString())
+                .child(TimeFly.getText().toString())
+                .child(Road.getText().toString())
                 .child(twoPoint.getText().toString())
                 .child("Человек");
         ref02.addValueEventListener(new ValueEventListener() {
@@ -1305,9 +1319,8 @@ public class ServApp_1 extends AppCompatActivity {
                                         public void onCancelled(@NonNull DatabaseError databaseError) {
                                         }
                                     }
-        );
-
-    };
+                                    );
+    }
 
     // Отправить заявку водителю по третьей точке
     public void sendToDriver3(View view){
@@ -1317,10 +1330,10 @@ public class ServApp_1 extends AppCompatActivity {
         ref01.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ref01.child("дата").setValue(Дата.getText().toString());
-                ref01.child("рейс").setValue(Рейс.getText().toString());
-                ref01.child("направление").setValue(Направление.getText().toString());
-                ref01.child("маршрут").setValue(Маршрут.getText().toString());
+                ref01.child("дата").setValue(Data.getText().toString());
+                ref01.child("рейс").setValue(TimeFly.getText().toString());
+                ref01.child("направление").setValue(Map.getText().toString());
+                ref01.child("маршрут").setValue(Road.getText().toString());
                 ref01.child("точкаСбора3").setValue(treePoint.getText().toString());
                 ref01.child("точкаСбора3Чел").setValue(treeMen.getText().toString());
 
@@ -1345,10 +1358,10 @@ public class ServApp_1 extends AppCompatActivity {
 
         //080420 Запись Отправлена заявка водителю заявки в БД ServApp...-...-...-"Отправлена"...
         ref02 = database01.getReference("ЗаявкиServerApp")
-                .child(Дата.getText().toString())
-                .child(Направление.getText().toString())
-                .child(Рейс.getText().toString())
-                .child(Маршрут.getText().toString())
+                .child(Data.getText().toString())
+                .child(Map.getText().toString())
+                .child(TimeFly.getText().toString())
+                .child(Road.getText().toString())
                 .child(treePoint.getText().toString())
                 .child("Человек");
         ref02.addValueEventListener(new ValueEventListener() {
@@ -1378,10 +1391,10 @@ public class ServApp_1 extends AppCompatActivity {
         ref01.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ref01.child("дата").setValue(Дата.getText().toString());
-                ref01.child("рейс").setValue(Рейс.getText().toString());
-                ref01.child("направление").setValue(Направление.getText().toString());
-                ref01.child("маршрут").setValue(Маршрут.getText().toString());
+                ref01.child("дата").setValue(Data.getText().toString());
+                ref01.child("рейс").setValue(TimeFly.getText().toString());
+                ref01.child("направление").setValue(Map.getText().toString());
+                ref01.child("маршрут").setValue(Road.getText().toString());
                 ref01.child("точкаСбора4").setValue(fourPoint.getText().toString());
                 ref01.child("точкаСбора4Чел").setValue(fourMen.getText().toString());
 
@@ -1406,10 +1419,10 @@ public class ServApp_1 extends AppCompatActivity {
 
         //080420 Запись Отправлена заявка водителю заявки в БД ServApp...-...-...-"Отправлена"...
         ref02 = database01.getReference("ЗаявкиServerApp")
-                .child(Дата.getText().toString())
-                .child(Направление.getText().toString())
-                .child(Рейс.getText().toString())
-                .child(Маршрут.getText().toString())
+                .child(Data.getText().toString())
+                .child(Map.getText().toString())
+                .child(TimeFly.getText().toString())
+                .child(Road.getText().toString())
                 .child(fourPoint.getText().toString())
                 .child("Человек");
         ref02.addValueEventListener(new ValueEventListener() {
@@ -1429,27 +1442,7 @@ public class ServApp_1 extends AppCompatActivity {
                                         }
                                     }
         );
-
     }
-
-    private void  getServApp_2(){
-
-//        servApp_2.setДата(Дата.getText().toString());
-//        servApp_2.setРейс(Рейс.getText().toString());
-//        servApp_2.setНаправление(Направление.getText().toString());
-//        servApp_2.setМаршрут(Маршрут.getText().toString());
-//        servApp_2.setТочкаСбора1(onePoint.getText().toString());
-//        servApp_2.setТочкаСбора1Чел(oneMen.getText().toString());
-//        servApp_2.setТочкаСбора2(twoPoint.getText().toString());
-//        servApp_2.setТочкаСбора2Чел(twoMen.getText().toString());
-//        servApp_2.setТочкаСбора3(treePoint.getText().toString());
-//        servApp_2.setТочкаСбора3Чел(treeMen.getText().toString());
-//        servApp_2.setТочкаСбора4(fourPoint.getText().toString());
-//        servApp_2.setТочкаСбора4Чел(fourMen.getText().toString());
-
     }
-
-
-}
 
 
