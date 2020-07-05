@@ -236,14 +236,24 @@ public class ServApp_1 extends AppCompatActivity {
 
 
         // запись парковка Р3 если TextRoad совпадает с любым словом из массива listMap2
-        for (int i=0; i<listMap2.length;i++){
-            if (TextRoad.equals(listMap2[i])){
-                onePoint.setText("Парковка Р3");
-                Log.d(TAG, "TextRoad: "+TextRoad+" равно "+listMap2[i]);
-            }
-            Log.d(TAG, "TextRoad: "+TextRoad+" не равно "+listMap2[i]);
-        }
+//        for (int i=0; i<listMap2.length;i++){
+//            if (TextRoad.equals(listMap2[i])){
+//                onePoint.setText("Парковка Р3");
+//                Log.d(TAG, "TextRoad: "+TextRoad+" равно "+listMap2[i]);
+//            }
+//            Log.d(TAG, "TextRoad: "+TextRoad+" не равно "+listMap2[i]);
+//        }
 
+        // Интересный цикл "for each" перебирает весь массив listMap2 и каждую позицию сравнивает с TextRoad.
+        // присваиваем строке i поочередно каждую позицию из массива listMap2
+        // более современный цикл "for each" чем просто цикл "for" указанный в коментах выше. хотя оба работают одинаково
+        for (String i:listMap2){
+            if (TextRoad.equals(i)){
+                onePoint.setText("Парковка Р3");
+                Log.d(TAG, "TextRoad: "+TextRoad+" равно "+i);
+            }
+            Log.d(TAG, "TextRoad: "+TextRoad+" не равно "+i);
+        }
 
 
         if(TextRoad.equals("КрасТэц-Аэропорт")){
@@ -432,80 +442,80 @@ public class ServApp_1 extends AppCompatActivity {
             fourPoint.setText( pointTwoMap[3] );
         }
     }
-
-    //Выбрать номер рейса
-    public void choiseF (View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder( ServApp_1.this );
-        builder.setTitle( "Выберите Номер рейса" );
-        builder.setCancelable( false );
-        builder.setItems( listFlights, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int which) {
-                Road.setText( listFlights[which] );
-                Road.setTextColor(getResources().getColor( R.color.colorNew));
-            }
-        }
-        );
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    //Выбрать направление
-    public void choiseN (View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder( ServApp_1.this );
-        builder.setTitle( "Выберите Направление" );
-        builder.setCancelable( false );
-        builder.setItems( listMap, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        Map.setText( listMap[which] );
-                        Map.setTextColor(getResources().getColor( R.color.colorNew));
-                    }
-                }
-        );
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-// выбор выпадающего меню в зависимости от того что указано в строке Направление "Красноярск-Аэропорт" или "Аэропорт-Красноярск"
-    public void choiseM (View view){
-        String one=Map.getText().toString();
-        String ref="Красноярск-Аэропорт";
-        if (one.equals(ref)){
-                AlertDialog.Builder builder = new AlertDialog.Builder( ServApp_1.this );
-                builder.setTitle( "Выберите Маршрут" );
-                builder.setCancelable( false );
-                builder.setItems( listMap1, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int which) {
-                                Map.setText( listMap1[which] );
-                                Map.setTextColor(getResources().getColor( R.color.colorNew));
-                                getPoint();
-                            }
-                        }
-                );
-                AlertDialog dialog = builder.create();
-                dialog.show();
-        }
-        else{
-            AlertDialog.Builder builder = new AlertDialog.Builder( ServApp_1.this );
-            builder.setTitle( "Выберите Маршрут" );
-            builder.setCancelable( false );
-            builder.setItems( listMap2, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int which) {
-                            Map.setText( listMap2[which] );
-                            Map.setTextColor(getResources().getColor( R.color.colorNew));
-                            onePoint.setText( "Парковка Р3" );
-
-                            //запускаем выполнение метода
-                            //getPoint();
-                        }
-                    }
-            );
-            AlertDialog dialog = builder.create();
-            dialog.show();
-        }
-        }
+// не испотзуется в новой версии с 29/06/2020
+//    //Выбрать номер рейса
+//    public void choiseF (View view) {
+//        AlertDialog.Builder builder = new AlertDialog.Builder( ServApp_1.this );
+//        builder.setTitle( "Выберите Номер рейса" );
+//        builder.setCancelable( false );
+//        builder.setItems( listFlights, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int which) {
+//                Road.setText( listFlights[which] );
+//                Road.setTextColor(getResources().getColor( R.color.colorNew));
+//            }
+//        }
+//        );
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
+//    }
+//
+//    //Выбрать направление
+//    public void choiseN (View view) {
+//        AlertDialog.Builder builder = new AlertDialog.Builder( ServApp_1.this );
+//        builder.setTitle( "Выберите Направление" );
+//        builder.setCancelable( false );
+//        builder.setItems( listMap, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int which) {
+//                        Map.setText( listMap[which] );
+//                        Map.setTextColor(getResources().getColor( R.color.colorNew));
+//                    }
+//                }
+//        );
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
+//    }
+//// выбор выпадающего меню в зависимости от того что указано в строке Направление "Красноярск-Аэропорт" или "Аэропорт-Красноярск"
+//    public void choiseM (View view){
+//        String one=Map.getText().toString();
+//        String ref="Красноярск-Аэропорт";
+//        if (one.equals(ref)){
+//                AlertDialog.Builder builder = new AlertDialog.Builder( ServApp_1.this );
+//                builder.setTitle( "Выберите Маршрут" );
+//                builder.setCancelable( false );
+//                builder.setItems( listMap1, new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int which) {
+//                                Map.setText( listMap1[which] );
+//                                Map.setTextColor(getResources().getColor( R.color.colorNew));
+//                                getPoint();
+//                            }
+//                        }
+//                );
+//                AlertDialog dialog = builder.create();
+//                dialog.show();
+//        }
+//        else{
+//            AlertDialog.Builder builder = new AlertDialog.Builder( ServApp_1.this );
+//            builder.setTitle( "Выберите Маршрут" );
+//            builder.setCancelable( false );
+//            builder.setItems( listMap2, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int which) {
+//                            Map.setText( listMap2[which] );
+//                            Map.setTextColor(getResources().getColor( R.color.colorNew));
+//                            onePoint.setText( "Парковка Р3" );
+//
+//                            //запускаем выполнение метода
+//                            //getPoint();
+//                        }
+//                    }
+//            );
+//            AlertDialog dialog = builder.create();
+//            dialog.show();
+//        }
+//        }
 
         public void reada (View view){
 
@@ -772,6 +782,10 @@ public class ServApp_1 extends AppCompatActivity {
     public void DelBtnOneStop(View view){
 
         DelBtnOneStop.setEnabled(false);
+        sendToDriver1.setEnabled(false);
+        BtnOneDriver.setTextColor(getResources().getColor( R.color.colorBlack));
+        BtnOneDriver.setText("Driver");
+        BtnOneDriver.setEnabled(false);
 
         //Удаление Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
         database01 = FirebaseDatabase.getInstance();
@@ -832,6 +846,10 @@ public class ServApp_1 extends AppCompatActivity {
     public void DelBtnTwoStop(View view){
 
         DelBtnTwoStop.setEnabled(false);
+        sendToDriver2.setEnabled(false);
+        BtnTwoDriver.setTextColor(getResources().getColor( R.color.colorBlack));
+        BtnTwoDriver.setText("Driver");
+        BtnTwoDriver.setEnabled(false);
 
         //Удаление Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
         database01 = FirebaseDatabase.getInstance();
@@ -893,6 +911,12 @@ public class ServApp_1 extends AppCompatActivity {
     public void DelBtnTreeStop(View view){
 
         DelBtnTreeStop.setEnabled(false);
+        sendToDriver3.setEnabled(false);
+        BtnTreeDriver.setTextColor(getResources().getColor( R.color.colorBlack));
+        BtnTreeDriver.setText("Driver");
+        BtnTreeDriver.setEnabled(false);
+
+
         //Удаление Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
         database01 = FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Заявки")
@@ -954,6 +978,10 @@ public class ServApp_1 extends AppCompatActivity {
     public void DelBtnFourStop(View view){
 
         DelBtnFourStop.setEnabled(false);
+        sendToDriver4.setEnabled(false);
+        BtnFourDriver.setTextColor(getResources().getColor( R.color.colorBlack));
+        BtnFourDriver.setText("Driver");
+        BtnFourDriver.setEnabled(false);
 
         //Удаление Запрета Заявки заявки в БД ЗАЯВКИ...-...-...-"StopOder:Stop"...
         database01 = FirebaseDatabase.getInstance();
@@ -998,12 +1026,8 @@ public class ServApp_1 extends AppCompatActivity {
         builder.setItems( array, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
-//                        driverNew1.setText( array[which] );
-//                        driverNew1.setTextColor(getResources().getColor( R.color.colorBlue));
                         BtnOneDriver.setText(array[which]);
                         BtnOneDriver.setTextColor(getResources().getColor( R.color.colorBlue));
-
-
                         //Запускаем метод считывание телефона выбранного водителя
                         getWriteDriver1Point();
 
@@ -1053,8 +1077,6 @@ public class ServApp_1 extends AppCompatActivity {
         builder.setItems( array, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
-//                        driverNew2.setText( array[which] );
-//                        driverNew2.setTextColor(getResources().getColor( R.color.colorBlue));
                         BtnTwoDriver.setText(array[which]);
                         BtnTwoDriver.setTextColor(getResources().getColor( R.color.colorBlue));
 
@@ -1104,8 +1126,6 @@ public class ServApp_1 extends AppCompatActivity {
         builder.setItems( array, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
-//                        driverNew3.setText( array[which] );
-//                        driverNew3.setTextColor(getResources().getColor( R.color.colorBlue));
                         BtnTreeDriver.setText(array[which]);
                         BtnTreeDriver.setTextColor(getResources().getColor( R.color.colorBlue));
 
@@ -1154,8 +1174,6 @@ public class ServApp_1 extends AppCompatActivity {
         builder.setItems( array, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
-//                        driverNew4.setText( array[which] );
-//                        driverNew4.setTextColor(getResources().getColor( R.color.colorBlue));
                         BtnFourDriver.setText(array[which]);
                         BtnFourDriver.setTextColor(getResources().getColor( R.color.colorBlue));
 
@@ -1194,27 +1212,27 @@ public class ServApp_1 extends AppCompatActivity {
         });
     }
 
-
-
-
-
-
     // Отправить заявку водителю по первой точке
     public void sendToDriver1(View view){
+
+        sendToDriver1.setEnabled(false);
 
         database01=FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Водители").child("Personal").child(Dr1PhRef).child("Заявка");
         ref01.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //getServApp_2();
-                //ref01.child("Заявка").setValue(servApp_2);
-                ref01.child("дата").setValue(Data.getText().toString());
+
+                ref01.child("маршрут").setValue(Road.getText().toString());
                 ref01.child("рейс").setValue(TimeFly.getText().toString());
                 ref01.child("направление").setValue(Map.getText().toString());
-                ref01.child("маршрут").setValue(Road.getText().toString());
                 ref01.child("точкаСбора1").setValue(onePoint.getText().toString());
                 ref01.child("точкаСбора1Чел").setValue(oneMen.getText().toString());
+                // искусственная задержка.
+                // записывается в последнюю очередь т.к. по факту этой записи запускается функция уведомления водителя
+                // ее поставил в последнюю очередь чтобы вся заявка успела записаться в БД
+                ref01.child("дата").setValue(Data.getText().toString());
+
                 ref01.removeEventListener( this );
 
                 //Отправляем время "Заказ отправлен" в БД ServerApp по 1-ой точке
@@ -1263,18 +1281,23 @@ public class ServApp_1 extends AppCompatActivity {
     // Отправить заявку водителю по второй точке
     public void sendToDriver2(View view){
 
+        sendToDriver2.setEnabled(false);
+
         database01=FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Водители").child("Personal").child(Dr2PhRef).child("Заявка");
         ref01.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                ref01.child("дата").setValue(Data.getText().toString());
+                ref01.child("маршрут").setValue(Road.getText().toString());
                 ref01.child("рейс").setValue(TimeFly.getText().toString());
                 ref01.child("направление").setValue(Map.getText().toString());
-                ref01.child("маршрут").setValue(Road.getText().toString());
                 ref01.child("точкаСбора2").setValue(twoPoint.getText().toString());
                 ref01.child("точкаСбора2Чел").setValue(twoMen.getText().toString());
+                // искусственная задержка.
+                // записывается в последнюю очередь т.к. по факту этой записи запускается функция уведомления водителя
+                // ее поставил в последнюю очередь чтобы вся заявка успела записаться в БД
+                ref01.child("дата").setValue(Data.getText().toString());
 
                 // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Пользователи"
                 ref01.removeEventListener( this );
@@ -1325,17 +1348,22 @@ public class ServApp_1 extends AppCompatActivity {
     // Отправить заявку водителю по третьей точке
     public void sendToDriver3(View view){
 
+        sendToDriver3.setEnabled(false);
+
         database01=FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Водители").child("Personal").child(Dr3PhRef).child("Заявка");
         ref01.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ref01.child("дата").setValue(Data.getText().toString());
+                ref01.child("маршрут").setValue(Road.getText().toString());
                 ref01.child("рейс").setValue(TimeFly.getText().toString());
                 ref01.child("направление").setValue(Map.getText().toString());
-                ref01.child("маршрут").setValue(Road.getText().toString());
                 ref01.child("точкаСбора3").setValue(treePoint.getText().toString());
                 ref01.child("точкаСбора3Чел").setValue(treeMen.getText().toString());
+                // искусственная задержка.
+                // записывается в последнюю очередь т.к. по факту этой записи запускается функция уведомления водителя
+                // ее поставил в последнюю очередь чтобы вся заявка успела записаться в БД
+                ref01.child("дата").setValue(Data.getText().toString());
 
                 // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Пользователи"
                 ref01.removeEventListener( this );
@@ -1386,17 +1414,22 @@ public class ServApp_1 extends AppCompatActivity {
     // Отправить заявку водителю по четвертой точке
     public void sendToDriver4(View view){
 
+        sendToDriver4.setEnabled(false);
+
         database01=FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Водители").child("Personal").child(Dr4PhRef).child("Заявка");
         ref01.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ref01.child("дата").setValue(Data.getText().toString());
+                ref01.child("маршрут").setValue(Road.getText().toString());
                 ref01.child("рейс").setValue(TimeFly.getText().toString());
                 ref01.child("направление").setValue(Map.getText().toString());
-                ref01.child("маршрут").setValue(Road.getText().toString());
                 ref01.child("точкаСбора4").setValue(fourPoint.getText().toString());
                 ref01.child("точкаСбора4Чел").setValue(fourMen.getText().toString());
+                // искусственная задержка.
+                // записывается в последнюю очередь т.к. по факту этой записи запускается функция уведомления водителя
+                // ее поставил в последнюю очередь чтобы вся заявка успела записаться в БД
+                ref01.child("дата").setValue(Data.getText().toString());
 
                 // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД "вкладка "Пользователи"
                 ref01.removeEventListener( this );
@@ -1408,8 +1441,6 @@ public class ServApp_1 extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-
-
     }
 
     //Отправляем время "Заказ отправлен" в БД ServerApp по 4-ой точке

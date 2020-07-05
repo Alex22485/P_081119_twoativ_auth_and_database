@@ -26,6 +26,8 @@ import java.util.Calendar;
 
 public class DriversApp_1 extends AppCompatActivity {
 
+    private static final String TAG ="DriverApp_1";
+
     TextView yourCar;
     TextView yourNumber;
 
@@ -135,7 +137,6 @@ public class DriversApp_1 extends AppCompatActivity {
 
     }
 
-    // Проверить заказ нужно изменить путь child( "123Lexus" ) для любого водителя чтобы работал Н-р id
     public void checkOder (View view){
         final Query aaa= FirebaseDatabase.getInstance().getReference("Водители").child( "Personal" ).child( driverPhone )
                 .orderByChild( "Заявка" );
@@ -156,10 +157,26 @@ public class DriversApp_1 extends AppCompatActivity {
                 String point4=dataSnapshot.child( "точкаСбора4" ).getValue(String.class);
                 String point4Men=dataSnapshot.child( "точкаСбора4Чел" ).getValue(String.class);
 
+                Log.d(TAG, "time: "+time);
+                Log.d(TAG, "date: "+date);
+                Log.d(TAG, "MapOrder: "+MapOrder);
+                Log.d(TAG, "маршрут: "+маршрут);
+                Log.d(TAG, "point1: "+point1);
+                Log.d(TAG, "point1Men: "+point1Men);
+                Log.d(TAG, "point2: "+point2);
+                Log.d(TAG, "point2Men: "+point2Men);
+                Log.d(TAG, "point3: "+point3);
+                Log.d(TAG, "point3Men: "+point3Men);
+                Log.d(TAG, "point4: "+point4);
+                Log.d(TAG, "point4Men: "+point4Men);
+
 
 
                 DataOrder.setText(date);
                 TimeOrder.setText(time);
+
+                Log.d(TAG, "DataOrder: "+DataOrder.getText().toString());
+                Log.d(TAG, "TimeOrder: "+TimeOrder.getText().toString());
 
                 //MapOrder.setText(направление);
                 RoutepOrder.setText(маршрут);
@@ -299,8 +316,8 @@ public class DriversApp_1 extends AppCompatActivity {
             //260320 Запись в БД Заявки--...--Users-Заявки водителя принявшего заявку
             database01 = FirebaseDatabase.getInstance();
             ref01 = database01.getReference("Заявки")
-                    .child(MapOrder)
                     .child(DataOrder.getText().toString())
+                    .child(MapOrder)
                     .child(TimeOrder.getText().toString())
                     .child(RoutepOrder.getText().toString())
                     .child(StopOrder1.getText().toString())

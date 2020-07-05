@@ -578,7 +578,6 @@ public class Main3Activity extends AppCompatActivity {
                                         }
             );
         }
-
         if(toOrFrom.equals("Из Красноярска")){
             //030320 Запись токена для проверки Разрешения на запись заявки в БД
             database01 = FirebaseDatabase.getInstance();
@@ -608,8 +607,6 @@ public class Main3Activity extends AppCompatActivity {
                                         }
             );
         }
-
-
     }
 
     public void Qwery(){
@@ -849,8 +846,12 @@ public class Main3Activity extends AppCompatActivity {
     // Переход на лист выбора точки сбора
     public void onBackList() {
         //Переход на лист Статуса
-        Intent Choose_direction = new Intent( this,Choose_direction.class );
-        startActivity( Choose_direction);
+        Intent Main3ToMainUserNewOne3 = new Intent( this,MainUserNewOne3.class );
+        // отправляем Hello в для считывания в Main3Activity это вместо Hello которое берется из MainActivity(заставка)
+        Main3ToMainUserNewOne3.putExtra("regFromMain3","Hello");
+        startActivity( Main3ToMainUserNewOne3);
+
+
     }
 
     // Блокировка кнопки Back!!!! :)))

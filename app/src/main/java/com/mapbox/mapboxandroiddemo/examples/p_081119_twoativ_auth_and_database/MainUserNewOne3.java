@@ -13,6 +13,7 @@ public class MainUserNewOne3 extends AppCompatActivity {
 
     String registration;
     String regFromMain6;
+    String regFromMain3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +29,21 @@ public class MainUserNewOne3 extends AppCompatActivity {
         regFromMain6=""+Main6ToMain3.getStringExtra("regFromMain6");
         Log.d(TAG, "regFromMain6:"+regFromMain6);
 
-        //если был то пишем Hello вместо такого же слова которое бралось из Mainactivity (лист с Заставкой)
+        //если был то пишем Hello вместо такого же слова которое бралось из MainActivity (лист с Заставкой)
         if (regFromMain6.equals("Hello")){
             registration="Hello";
             Log.d(TAG, "registrationNEW:"+regFromMain6);
+        }
+
+        // проверка был ли переход на эту страницу из Main3Activity после запрета регистрации на уже сформировавийся маршрут (STOPODER)
+        Intent Main3ToMainUserNewOne3=getIntent();
+        regFromMain3=""+Main3ToMainUserNewOne3.getStringExtra("regFromMain3");
+        Log.d(TAG, "regFromMain3:"+regFromMain3);
+
+        //если был то пишем Hello вместо такого же слова которое бралось из MainActivity (лист с Заставкой)
+        if (regFromMain3.equals("Hello")){
+            registration="Hello";
+            Log.d(TAG, "registrationAfterSTOPODER:"+regFromMain3);
         }
 
     }
