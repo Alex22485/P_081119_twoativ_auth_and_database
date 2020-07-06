@@ -47,6 +47,8 @@ public class Main3Activity extends AppCompatActivity {
 
     String tOBeforReg;
     String proverkaBeforRegistraion;
+    String IneternetYES;
+    String phoneNew;
 
     LinearLayout TextRegistration;
     LinearLayout TextRegistrationFromCity;
@@ -64,7 +66,9 @@ public class Main3Activity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseDatabase database01;
+    FirebaseDatabase databaseSecret;
     DatabaseReference ref01;
+    DatabaseReference refSecret;
 
     TextView Calend;
     TextView CalendTime;
@@ -202,7 +206,7 @@ public class Main3Activity extends AppCompatActivity {
                 @Override
                 public void run() {
                     // автоматическая регистрация ранее сформированной заявки после авторизации
-                    btnInsertd();
+                    cryptography();
                 }
             },1000);
         }
@@ -430,7 +434,7 @@ public class Main3Activity extends AppCompatActivity {
             handler1.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    btnInsertd();
+                    cryptography();
                 }
             },500);
 
@@ -452,14 +456,123 @@ public class Main3Activity extends AppCompatActivity {
         startActivity(main3Activity);
     }
 
-    //  регистрация заявки
-    public void btnInsertd () {
-        Log.d(TAG, "Старт Проверка интернета YesNO");
+
+    public void cryptography(){
+        Log.d(TAG, "Старт шифрования");
 
         MistakeRegistration.setVisibility(View.GONE);
         TextProgress.setVisibility(View.VISIBLE);
         TextRegistration.setVisibility(View.GONE);
         TextRegistrationFromCity.setVisibility(View.GONE);
+
+        IneternetYES="";
+
+        //ТАЙМ-АУТ проверка интернета
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Завершен ТАЙМ-АУТ проверка интернета
+                IneternetYES="Out";
+                IneternetYesNo();
+            }
+        },20000);
+
+
+        //050720 реализация шифрования
+        //запись phone to БД secret
+        databaseSecret = FirebaseDatabase.getInstance();
+        refSecret = databaseSecret.getReference("Пользователи")
+                .child("Cipher")
+                .child(userPhone);
+        refSecret.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                refSecret.child("phone").setValue(userPhone);
+
+                Log.d(TAG, "Телефон для шифрования записан");
+
+                //получаем СС номер
+                QwerySecret();
+                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+                refSecret.removeEventListener(this);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        }
+        );
+    }
+
+    //получаем СС номер
+    public void QwerySecret(){
+        Log.d(TAG, "Получаем секретный номер");
+
+        phoneNew="";
+
+        final Query secret= FirebaseDatabase.getInstance().getReference("Пользователи")
+                .child("Cipher")
+                .child(userPhone)
+                .child("secretNumber")
+                .orderByChild("number");
+        secret.addChildEventListener( new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String number=dataSnapshot.child( "numberCrypt" ).getValue(String.class);
+                Log.d(TAG, "Секретный номер"+number);
+
+                phoneNew=number;
+
+                // Проверяем закончилось ли время опроса интернета
+                checkInternetYesNo();
+
+                //Останавливаем прослушивание, чтобы в приложении у другого пользователя не появлялась информация когда другой пользоваьель регистрирует заявку
+                secret.removeEventListener(this);
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        } );
+    }
+
+    public void checkInternetYesNo(){
+            if(IneternetYES.equals("Out")){
+                Log.d(TAG, "СС номер получен, но время проверки интернета вышло");
+            }
+            else if(!phoneNew.isEmpty()){
+                Log.d(TAG, "CC получен, старт регистрации заявки");
+                TextProgress.setVisibility(View.GONE);
+                btnInsertd();
+            }
+    }
+
+    public void IneternetYesNo(){
+        if (!phoneNew.isEmpty()){
+            Log.d(TAG, "время проверки интернета вышло, но номер СС получен");
+        }
+        else{
+            Log.d(TAG, "Время проверки вышло, not internet");
+            showAlertDialog4();
+        }
+    }
+
+    //  регистрация заявки
+    public void btnInsertd () {
+        Log.d(TAG, "Старт Проверка интернета YesNO");
+
+//        MistakeRegistration.setVisibility(View.GONE);
+//        TextProgress.setVisibility(View.VISIBLE);
+//        TextRegistration.setVisibility(View.GONE);
+//        TextRegistrationFromCity.setVisibility(View.GONE);
 
         tOBeforReg="";
         proverkaBeforRegistraion="";
