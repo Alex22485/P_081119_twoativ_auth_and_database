@@ -20,10 +20,12 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -34,11 +36,19 @@ public class Main2Activity extends AppCompatActivity {
 
     private static final String TAG ="Main2activity" ;
 
+    LinearLayout TextProgress;
+
 
     FirebaseDatabase database01;
     DatabaseReference ref01;
+
+    FirebaseDatabase databaseSecret;
+    DatabaseReference refSecret;
+
     String UserToken;
     String phoneUser;
+    String IneternetYES;
+    String phoneNew;
 
     TextView TextHello1;
     Button GoMainActivity;
@@ -89,6 +99,7 @@ public class Main2Activity extends AppCompatActivity {
         Layout1=findViewById(R.id.Layout1);
         Layout2=findViewById(R.id.Layout2);
         AuthNot=findViewById(R.id. AuthNot);
+        TextProgress=findViewById(R.id. TextProgress);
 
         doPhoneLogin();
     }
@@ -172,28 +183,114 @@ public class Main2Activity extends AppCompatActivity {
         });
     }
 
-//    public void writePrivateData(){
-//        //030320 Запись токена для проверки Разрешения на запись заявки в БД ЗАЯВКИ...-...-...-"CheckStopOder"...
-//        database01 = FirebaseDatabase.getInstance();
-//        ref01 = database01.getReference("Check")
-//                .child("CheckUsers")
-//                .child("Token");
-//        ref01.addValueEventListener(new ValueEventListener() {
-//                                        @Override
-//                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                                            ref01.child(UserToken).setValue("Hello");
-//                                            // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
-//                                            ref01.removeEventListener(this);
-//                                        }
-//                                        @Override
-//                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-//                                        }
-//                                    }
-//        );
-//    }
+// реализация шифрования
+    public void GoMainOder(View view){
+        Log.d(TAG, "Старт шифрования");
+
+        TextProgress.setVisibility(View.VISIBLE);
+        Layout1.setVisibility(View.GONE);
+        Layout2.setVisibility(View.GONE);
+
+        IneternetYES="";
+
+        //ТАЙМ-АУТ проверка интернета
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Завершен ТАЙМ-АУТ проверка интернета
+                IneternetYES="Out";
+                IneternetYesNo();
+            }
+            },20000);
+
+
+        //050720 реализация шифрования
+        //запись phone to БД secret
+        databaseSecret = FirebaseDatabase.getInstance();
+        refSecret = databaseSecret.getReference("Пользователи")
+                .child("Cipher")
+                .child(phoneUser);
+        refSecret.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                refSecret.child("phone").setValue(phoneUser);
+
+                Log.d(TAG, "Телефон для шифрования записан");
+                //получаем СС номер
+                QwerySecret();
+                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+                refSecret.removeEventListener(this);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        }
+        );
+    }
+
+    //получаем СС номер
+    public void QwerySecret(){
+        Log.d(TAG, "Получаем секретный номер");
+
+        phoneNew="";
+
+        final Query secret= FirebaseDatabase.getInstance().getReference("Пользователи")
+                .child("Cipher")
+                .child(phoneUser)
+                .child("secretNumber")
+                .orderByChild("number");
+        secret.addChildEventListener( new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String number=dataSnapshot.child( "numberCrypt" ).getValue(String.class);
+                Log.d(TAG, "Секретный номер"+number);
+
+                phoneNew=number;
+
+                // Проверяем закончилось ли время опроса интернета
+                checkInternetYesNo();
+
+                //Останавливаем прослушивание, чтобы в приложении у другого пользователя не появлялась информация когда другой пользоваьель регистрирует заявку
+                secret.removeEventListener(this);
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        } );
+    }
+
+    public void checkInternetYesNo(){
+        if(IneternetYES.equals("Out")){
+            Log.d(TAG, "СС номер получен, но время проверки интернета вышло");
+        }
+        else if(!phoneNew.isEmpty()){
+            Log.d(TAG, "CC получен, старт регистрации заявки");
+            btnInsertd();
+        }
+    }
+
+    public void IneternetYesNo(){
+        if (!phoneNew.isEmpty()){
+            Log.d(TAG, "время проверки интернета вышло, но номер СС получен");
+        }
+        else{
+            Log.d(TAG, "Время проверки вышло, not internet");
+            showAlertDialog4();
+        }
+    }
 
     //Кнопка пропустить c в БД персональные данные
-    public void GoMainOder(View view){
+    public void btnInsertd(){
 
         keyReg="";
         checkInternet="";
@@ -217,7 +314,7 @@ public class Main2Activity extends AppCompatActivity {
         database01 = FirebaseDatabase.getInstance();
         ref01 = database01.getReference("Пользователи")
                 .child("Personal")
-                .child(phoneUser)
+                .child(phoneNew)
                 .child("Private");
         ref01.addValueEventListener(new ValueEventListener() {
                                         @Override
@@ -236,11 +333,6 @@ public class Main2Activity extends AppCompatActivity {
         );
 
 
-
-
-
-//        Intent GoMainOder = new Intent( this,Choose_direction.class );
-//        startActivity( GoMainOder);
     }
 
     public void inetNotWhenGoCheckRegistration(){
@@ -285,14 +377,33 @@ public class Main2Activity extends AppCompatActivity {
         startActivity(Main3Activity);
     }
 
+    public void showAlertDialog4(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
+                Main2Activity.this);
+        // Set Title
+        mAlertDialog.setTitle("Ошибка регистрации");
+        mAlertDialog.setCancelable(false);
+        // Set Message
+        mAlertDialog
+                .setMessage("проверьте настройки интернета")
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        TextProgress.setVisibility(View.GONE);
+                        Layout1.setVisibility(View.VISIBLE);
+                        Layout2.setVisibility(View.VISIBLE);
+
+                    }
+                });
+        mAlertDialog.create();
+        // Showing Alert Message
+        mAlertDialog.show();
+    }
+
     // кнопка Back сворачивает приложение
     @Override
     public void onBackPressed(){
         this.moveTaskToBack(true);
     }
-
-
-
-
 
     }

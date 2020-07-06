@@ -2,18 +2,23 @@ package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -21,6 +26,9 @@ import com.google.firebase.iid.InstanceIdResult;
     public class MainActivity extends AppCompatActivity {
 
     private static final String TAG ="MainActivity" ;
+
+    String IneternetYES;
+    String phoneNew;
 
     String keyReg;
     String UserToken;
@@ -32,6 +40,9 @@ import com.google.firebase.iid.InstanceIdResult;
     FirebaseDatabase database02;
     DatabaseReference ref01;
     DatabaseReference ref02;
+
+    FirebaseDatabase databaseSecret;
+    DatabaseReference refSecret;
 
     FirebaseAuth mAuth;
     String userPhone;
@@ -245,16 +256,9 @@ import com.google.firebase.iid.InstanceIdResult;
         else{
         if (keyReg==null){
 
-            //15/06/20 Убрано
-//            Log.d(TAG, "Переход на лист регистрации");/*специально пусто*/
-//            //переход к авторизации по телефону от firebase
-//            Intent AuthList = new Intent(this,Main2Activity.class);
-//            startActivity(AuthList);
-
             //15/06/20 Добавлено
             Log.d(TAG, "Переход на первый лист");
             Intent MainUserNewOne = new Intent(this,MainUserNewOne.class);
-            //MainActivityToMain3ActivityTo.putExtra("registration",registration);
             startActivity(MainUserNewOne);
         }
         else if (keyReg.equals("Hello")){
@@ -272,26 +276,116 @@ import com.google.firebase.iid.InstanceIdResult;
             handler1.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    checkOder();
+
+                    //start шифрования
+                    cryptography();
                     Log.d(TAG, "Считывание Yes/No");/*специально пусто*/
                 }
             },500);
 
-
-
-
-//            //Переход в главное меню заказов
-//            Intent mainList = new Intent(this,Choose_direction.class);
-//            startActivity(mainList);
         }
     }
     }
+        public void cryptography(){
+            Log.d(TAG, "Старт шифрования");
 
-//    //Переход в главное меню заказов
-//    public void goMainList(){
-//        Intent mainList = new Intent(this,Choose_direction.class);
-//        startActivity(mainList);
-//    }
+            IneternetYES="";
+
+            //ТАЙМ-АУТ проверка интернета
+            Handler handler1 = new Handler();
+            handler1.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // Завершен ТАЙМ-АУТ проверка интернета
+                    IneternetYES="Out";
+                    IneternetYesNo();
+                }
+            },20000);
+        //050720 реализация шифрования
+        //запись phone to БД secret
+        databaseSecret = FirebaseDatabase.getInstance();
+        refSecret = databaseSecret.getReference("Пользователи")
+                .child("Cipher")
+                .child(userPhone);
+        refSecret.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                refSecret.child("phone").setValue(userPhone);
+
+                Log.d(TAG, "Телефон для шифрования записан");
+
+                //получаем СС номер
+                QwerySecret();
+                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+                refSecret.removeEventListener(this);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        }
+        );
+    }
+
+        //получаем СС номер
+        public void QwerySecret(){
+            Log.d(TAG, "Получаем секретный номер");
+
+            phoneNew="";
+
+            final Query secret= FirebaseDatabase.getInstance().getReference("Пользователи")
+                    .child("Cipher")
+                    .child(userPhone)
+                    .child("secretNumber")
+                    .orderByChild("number");
+            secret.addChildEventListener( new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    String number=dataSnapshot.child( "numberCrypt" ).getValue(String.class);
+                    Log.d(TAG, "Секретный номер"+number);
+
+                    phoneNew=number;
+
+                    // Проверяем закончилось ли время опроса интернета
+                    checkInternetYesNo();
+
+                    //Останавливаем прослушивание, чтобы в приложении у другого пользователя не появлялась информация когда другой пользоваьель регистрирует заявку
+                    secret.removeEventListener(this);
+                }
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                }
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                }
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            } );
+        }
+
+        public void checkInternetYesNo(){
+            if(IneternetYES.equals("Out")){
+                Log.d(TAG, "СС номер получен, но время проверки интернета вышло");
+            }
+            else if(!phoneNew.isEmpty()){
+                Log.d(TAG, "CC получен, проверка старых заявок");
+                checkOder();
+            }
+        }
+
+        public void IneternetYesNo(){
+            if (!phoneNew.isEmpty()){
+                Log.d(TAG, "время проверки интернета вышло, но номер СС получен");
+            }
+            else{
+                Log.d(TAG, "Время проверки вышло, not internet");
+                Intent aaa = new Intent(this,InternetNot.class);
+                startActivity(aaa);
+            }
+        }
 
         public void checkOder(){
 
@@ -302,7 +396,7 @@ import com.google.firebase.iid.InstanceIdResult;
             database01 = FirebaseDatabase.getInstance();
             ref01 = database01.getReference("Пользователи")
                     .child("Personal")
-                    .child(userPhone)
+                    .child(phoneNew)
                     .child("Proverka")
                     .child("Oder")
                     .child("Заявка");

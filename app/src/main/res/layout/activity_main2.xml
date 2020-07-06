@@ -9,6 +9,31 @@
     tools:context=".Main2Activity">
 
     <LinearLayout
+        android:id="@+id/TextProgress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity=""
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="обработка данных..."
+            android:gravity="center"
+            android:textColor="#62B6AB"
+            android:textSize="20sp" />
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:indeterminate="false" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/AuthNot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

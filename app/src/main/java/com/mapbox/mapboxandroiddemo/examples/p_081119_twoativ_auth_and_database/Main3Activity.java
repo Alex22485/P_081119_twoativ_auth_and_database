@@ -594,7 +594,7 @@ public class Main3Activity extends AppCompatActivity {
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         Query query = rootRef.child("Пользователи")
                 .child("Personal")
-                .child(userPhone)
+                .child(phoneNew)
                 .child("Proverka")
                 .orderByChild("Oder");
         ValueEventListener valueEventListener = new ValueEventListener() {
@@ -667,7 +667,7 @@ public class Main3Activity extends AppCompatActivity {
             database01 = FirebaseDatabase.getInstance();
             ref01 = database01.getReference("Пользователи")
                     .child("Personal")
-                    .child(userPhone)
+                    .child(phoneNew)
                     .child("Заявки")
                     .child(Calend.getText().toString())
                     .child(refCity)
@@ -675,11 +675,11 @@ public class Main3Activity extends AppCompatActivity {
                     .child(TVchoiseMap)
                     .child(TVchoise_pointMap)
                     .child("CheckStopOder")
-                    .child(userPhone);
+                    .child(phoneNew);
             ref01.addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                ref01.child(newToken).setValue(userPhone);
+                                                ref01.child(newToken).setValue(phoneNew);
                                                 //запускаем метод
                                                 Qwery();
                                                 // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
@@ -696,7 +696,7 @@ public class Main3Activity extends AppCompatActivity {
             database01 = FirebaseDatabase.getInstance();
             ref01 = database01.getReference("Пользователи")
                     .child("Personal")
-                    .child(userPhone)
+                    .child(phoneNew)
                     .child("Заявки")
                     .child(CalendTime.getText().toString())
                     .child(refCity)
@@ -704,11 +704,11 @@ public class Main3Activity extends AppCompatActivity {
                     .child(TVchoiseMap)
                     .child(TVchoise_pointMap)
                     .child("CheckStopOder")
-                    .child(userPhone);
+                    .child(phoneNew);
             ref01.addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                ref01.child(newToken).setValue(userPhone);
+                                                ref01.child(newToken).setValue(phoneNew);
                                                 //запускаем метод
                                                 Qwery();
                                                 // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
@@ -730,7 +730,7 @@ public class Main3Activity extends AppCompatActivity {
             // Если Разрешено то запись заявки оформляется, если нет то заявка отклонена (процесс записи и отклонения выполнен в nod js function OderCheck)
             final Query aaa1= FirebaseDatabase.getInstance().getReference("Пользователи")
                     .child("Personal")
-                    .child(userPhone)
+                    .child(phoneNew)
                     .child("Заявки")
                     .child(Calend.getText().toString())
                     .child(refCity)
@@ -738,7 +738,7 @@ public class Main3Activity extends AppCompatActivity {
                     .child(TVchoiseMap)
                     .child(TVchoise_pointMap)
                     .child("Разрешение")
-                    .child(userPhone)
+                    .child(phoneNew)
                     .orderByChild("Разрешение");
             aaa1.addChildEventListener( new ChildEventListener() {
                 @Override
@@ -774,7 +774,7 @@ public class Main3Activity extends AppCompatActivity {
             // Если Разрешено то запись заявки оформляется, если нет то заявка отклонена (процесс записи и отклонения выполнен в nod js function OderCheck)
             final Query aaa1= FirebaseDatabase.getInstance().getReference("Пользователи")
                     .child("Personal")
-                    .child(userPhone)
+                    .child(phoneNew)
                     .child("Заявки")
                     .child(CalendTime.getText().toString())
                     .child(refCity)
@@ -782,7 +782,7 @@ public class Main3Activity extends AppCompatActivity {
                     .child(TVchoiseMap)
                     .child(TVchoise_pointMap)
                     .child("Разрешение")
-                    .child(userPhone)
+                    .child(phoneNew)
                     .orderByChild("Разрешение");
             aaa1.addChildEventListener( new ChildEventListener() {
                 @Override
