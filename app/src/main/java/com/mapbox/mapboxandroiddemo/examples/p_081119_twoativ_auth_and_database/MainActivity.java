@@ -431,8 +431,9 @@ import com.google.firebase.iid.InstanceIdResult;
 
         if(proverka.equals("Yes")){
             Log.d(TAG, "переход лист заявок");
-            Intent MyStatus= new Intent(this,Main6Activity.class);
-            startActivity(MyStatus);
+            Intent MainTOMain6= new Intent(this,Main6Activity.class);
+            MainTOMain6.putExtra("phoneNew",phoneNew);
+            startActivity(MainTOMain6);
         }
         else if(proverka.equals("No")){
             Log.d(TAG, "Заявок нет");

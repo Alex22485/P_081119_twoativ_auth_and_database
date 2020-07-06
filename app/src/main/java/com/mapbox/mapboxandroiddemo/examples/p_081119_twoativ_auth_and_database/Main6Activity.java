@@ -40,6 +40,9 @@ public class Main6Activity extends AppCompatActivity {
     String timeOutDel;
     String proverka;
     String proverkaDel;
+    String phoneNew;
+    String phoneNew1;
+    String phoneNew2;
 
     String timeOutBeforDel;
     String proverkaBeforDel;
@@ -50,13 +53,9 @@ public class Main6Activity extends AppCompatActivity {
 
     Button cancelOder;
     Button detailsTrip;
-    String userPhone;
 
     String[] CancelOderWhy ={"Самолет отменён","Передумал", };
 
-    String token;
-
-    FirebaseAuth mAuth;
 
     TextView TextMain;
     TextView NamePlain;
@@ -99,21 +98,30 @@ public class Main6Activity extends AppCompatActivity {
         cancelOder=findViewById( R.id.cancelOder );
         detailsTrip=findViewById( R.id.detailsTrip );
 
+        //Экспорт СС номера из MainActivity
+        Intent MainTOMain6=getIntent();
+        phoneNew1=""+MainTOMain6.getStringExtra("phoneNew");
+        Log.d(TAG, "phoneNew1: "+phoneNew1);
 
-        //полуаем phone пользователя
-        mAuth= FirebaseAuth.getInstance(  );
-        FirebaseUser user=mAuth.getCurrentUser();
-        userPhone = user.getPhoneNumber();
-        Log.d(TAG, "получен телефон"+userPhone);/*специально пусто*/
+        //если значение не равно "null"
+        if (!phoneNew1.equals("null")){
+            phoneNew=phoneNew1;
+            Log.d(TAG, "phoneNew: "+phoneNew);
+        }
 
-        // Получить Токен!!!!
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Main6Activity.this,new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                token = instanceIdResult.getToken();
-                Log.d(TAG, "получен токен: "+token);
-            }
-        });
+        //Экспорт СС номера из Main3Activity
+        Intent Main3ActivTOMain6=getIntent();
+        phoneNew2=""+Main3ActivTOMain6.getStringExtra("phoneRef");
+        Log.d(TAG, "phoneNew2: "+phoneNew2);
+
+
+        //если значение не равно "null"
+        if (!phoneNew2.equals("null")){
+            phoneNew=phoneNew2;
+            Log.d(TAG, "phoneNew: "+phoneNew);
+        }
+
+
 
         TextProcess.setVisibility(View.VISIBLE);
         number.setText("получение данных...");
@@ -187,7 +195,7 @@ public class Main6Activity extends AppCompatActivity {
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         Query query = rootRef.child("Пользователи")
                 .child("Personal")
-                .child(userPhone)
+                .child(phoneNew)
                 .child("Status")
                 .orderByChild("Status");
         ValueEventListener valueEventListener = new ValueEventListener() {
@@ -243,10 +251,6 @@ public class Main6Activity extends AppCompatActivity {
                             NamePlain.setText("Игарка-Красноярск (чартер)");
                         }
                     }
-
-
-
-
                     if(!road_name.equals("Парковка Р3")){
                         TextflightOrtime.setText("время вылета самолета:");
 
@@ -352,7 +356,7 @@ public class Main6Activity extends AppCompatActivity {
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         Query query = rootRef.child("Пользователи")
                 .child("Personal")
-                .child(userPhone)
+                .child(phoneNew)
                 .child("Proverka")
                 .orderByChild("Oder");
         ValueEventListener valueEventListener = new ValueEventListener() {
@@ -438,7 +442,7 @@ public class Main6Activity extends AppCompatActivity {
         ggg = FirebaseDatabase.getInstance();
         mmm = ggg.getReference("Пользователи")
                 .child("Personal")
-                .child(userPhone)
+                .child(phoneNew)
                 .child("Status")
                 .child("Status");
         mmm.addValueEventListener(new ValueEventListener() {
@@ -492,7 +496,7 @@ public class Main6Activity extends AppCompatActivity {
         DatabaseReference rootRef1 = FirebaseDatabase.getInstance().getReference();
         Query query1 = rootRef1.child("Пользователи")
                 .child("Personal")
-                .child(userPhone)
+                .child(phoneNew)
                 .child("Proverka")
                 .orderByChild("Oder");
         ValueEventListener valueEventListener = new ValueEventListener() {

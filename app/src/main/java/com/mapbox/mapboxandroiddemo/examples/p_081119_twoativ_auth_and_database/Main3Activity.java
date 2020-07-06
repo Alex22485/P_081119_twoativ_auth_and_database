@@ -213,21 +213,6 @@ public class Main3Activity extends AppCompatActivity {
 
         if (authOK.equals("Knull")){
 
-//            Intent MainActivityToMainUserNewOne3= getIntent();
-//            registration="k"+MainActivityToMainUserNewOne3.getStringExtra( "registration" );
-//            Log.d(TAG, "registration:"+registration);
-
-//            // проверка был ли переход на эту страницу после отмены заявки
-//            Intent Main6ToMain3=getIntent();
-//            regFromMain6=""+Main6ToMain3.getStringExtra("regFromMain6");
-//            Log.d(TAG, "regFromMain6:"+regFromMain6);
-//
-//            //если был то пишем Hello вместо такого же слова которое бралось из Mainactivity (лист с Заставкой)
-//            if (regFromMain6.equals("Hello")){
-//                registration="kHello";
-//                Log.d(TAG, "registrationNEW:"+regFromMain6);
-//            }
-
             choisData.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -550,7 +535,6 @@ public class Main3Activity extends AppCompatActivity {
             }
             else if(!phoneNew.isEmpty()){
                 Log.d(TAG, "CC получен, старт регистрации заявки");
-                TextProgress.setVisibility(View.GONE);
                 btnInsertd();
             }
     }
@@ -953,8 +937,9 @@ public class Main3Activity extends AppCompatActivity {
     // Переход на лист Статуса
     public void onStatusList() {
         //Переход на лист Статуса
-        Intent zxz = new Intent( this,Main6Activity.class );
-        startActivity(zxz);
+        Intent Main3ActivTOMain6 = new Intent( this,Main6Activity.class );
+        Main3ActivTOMain6.putExtra("phoneRef",phoneNew);
+        startActivity(Main3ActivTOMain6);
     }
     // Переход на лист выбора точки сбора
     public void onBackList() {
