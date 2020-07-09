@@ -262,7 +262,6 @@ import com.google.firebase.iid.InstanceIdResult;
             startActivity(MainUserNewOne);
         }
         else if (keyReg.equals("Hello")){
-            Log.d(TAG, "Проверка Наличия заявок");/*специально пусто*/
 
             //полуаем phone пользователя
             mAuth= FirebaseAuth.getInstance(  );
@@ -279,7 +278,6 @@ import com.google.firebase.iid.InstanceIdResult;
 
                     //start шифрования
                     cryptography();
-                    Log.d(TAG, "Считывание Yes/No");/*специально пусто*/
                 }
             },500);
 
@@ -300,7 +298,7 @@ import com.google.firebase.iid.InstanceIdResult;
                     IneternetYES="Out";
                     IneternetYesNo();
                 }
-            },20000);
+            },40000);
         //050720 реализация шифрования
         //запись phone to БД secret
         databaseSecret = FirebaseDatabase.getInstance();
