@@ -114,95 +114,27 @@ import com.google.firebase.iid.InstanceIdResult;
         Log.d(TAG, "onStop");
     }
 
-//    //Проверка интернета
-//    public void cheskInternet(){
-//
-//        key="";
-//        internet="";
-//        internetTimeOut="";
-//
-//        //ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА-1
-//        Handler handler1 = new Handler();
-//        handler1.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                // Завершен ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА-1
-//               inetNot();
-//               internetTimeOut="Out";
-//            }
-//        },7000);
-//
-//
-//        //чтение из БД с правилом для любых пользователей
-//        database01 = FirebaseDatabase.getInstance();
-//        ref01 = database01.getReference("Check")
-//                .child("Internet")
-//                .child("Work");
-//        ref01.addValueEventListener(new ValueEventListener() {
-//
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                key=dataSnapshot.getValue(String.class);
-//                internet=key;
-//                //Log.d(TAG, "интернет 1 есть");
-//                Log.d(TAG, "интернет 1 есть"+key);
-//
-//                //Проверка time-Out
-//                timeOutInternet();
-//
-//
-//                // с этой записью makeText появляется только один раз!!!!! ХОРОШО, блин не всегда :(((
-//                ref01.removeEventListener(this);
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//            }
-//        });
-//    }
-//
-//        public void  inetNot(){
-//            if (internet.equals("Yes")){
-//                Log.d(TAG, "таймер-1 остановлен");/*специально пусто*/}
-//            else {
-//                Log.d(TAG, "Интернета нет при первом запросе");/*специально пусто*/
-//                Intent aaa = new Intent(this,InternetNot.class);
-//                startActivity(aaa);
-//            }
-//            }
-//
-//        //Проверка time-Out
-//        public void timeOutInternet (){
-//        if(internetTimeOut.equals("Out")){
-//            Log.d(TAG, "проверка интернета1 время вышло");/*специально пусто*/}
-//
-//        else {
-//            // Проверка регистрации
-//            CheckRegistration();
-//        }
-//        }
-
     //проверка регистрации
     public void CheckRegistration(){
+
+        Log.d(TAG, "запрос регистрации начат");
 
         keyReg="";
         registration="";
         checkregistrationTimeOut="";
 
-        //ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА-2
+        //таймер ЗАПРОСА ИНТЕРНЕТА-1
         Handler handler1 = new Handler();
         handler1.postDelayed(new Runnable() {
             @Override
             public void run() {
 
-                // Завершен ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА-2 при проверке регистрации
+                // Завершен таймер ЗАПРОСА ИНТЕРНЕТА-1
                 checkregistrationTimeOut="Out";
                 inetNotWhenGoCheckRegistration();
             }
-        },20000);
+        },30000);
 
-        Log.d(TAG, "запрос регистрации начат");
         //чтение из БД с правилом для любых пользователей
         database02 = FirebaseDatabase.getInstance();
         ref02 = database02.getReference("Check")
@@ -218,7 +150,6 @@ import com.google.firebase.iid.InstanceIdResult;
                 registration=""+keyReg; /* так как может получить null*/
                 Log.d(TAG, "keyReg"+keyReg);
                 Log.d(TAG, "registration"+keyReg);
-
 
                 // с этой записью makeText появляется только один раз!!!!! ХОРОШО
                 ref02.removeEventListener(this);
@@ -236,7 +167,7 @@ import com.google.firebase.iid.InstanceIdResult;
         public void inetNotWhenGoCheckRegistration (){
 
             if(registration.equals("Hello")||keyReg==null){
-                Log.d(TAG, "таймер-2 остановлен");/*специально пусто*/}
+                Log.d(TAG, "таймер запроса интернета-1 остановлен");/*специально пусто*/}
 
             else {
                 //пропал интернет во время проверки наличия регистрации
@@ -250,7 +181,7 @@ import com.google.firebase.iid.InstanceIdResult;
     public void checkHaveToken(){
 
         if (checkregistrationTimeOut.equals("Out")){
-            Log.d(TAG, "проверка интернета2 время вышло");/*специально пусто*/
+            Log.d(TAG, "данные регистрации считаны, но таймер интернета-1 вышел");/*специально пусто*/
         }
 
         else{
@@ -269,7 +200,6 @@ import com.google.firebase.iid.InstanceIdResult;
             userPhone = user.getPhoneNumber();
             Log.d(TAG, "получен телефон"+userPhone);/*специально пусто*/
 
-
             //Старт Проверка наличия заявок
             Handler handler1 = new Handler();
             handler1.postDelayed(new Runnable() {
@@ -280,7 +210,6 @@ import com.google.firebase.iid.InstanceIdResult;
                     cryptography();
                 }
             },500);
-
         }
     }
     }
@@ -289,16 +218,17 @@ import com.google.firebase.iid.InstanceIdResult;
 
             IneternetYES="";
 
-            //ТАЙМ-АУТ проверка интернета
+            //ТАЙМ-АУТ проверка интернета-2
             Handler handler1 = new Handler();
             handler1.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    // Завершен ТАЙМ-АУТ проверка интернета
+                    // Завершен ТАЙМ-АУТ проверка интернета-2
                     IneternetYES="Out";
                     IneternetYesNo();
                 }
             },40000);
+
         //050720 реализация шифрования
         //запись phone to БД secret
         databaseSecret = FirebaseDatabase.getInstance();
@@ -314,6 +244,7 @@ import com.google.firebase.iid.InstanceIdResult;
 
                 //получаем СС номер
                 QwerySecret();
+
                 // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
                 refSecret.removeEventListener(this);
             }
@@ -376,7 +307,7 @@ import com.google.firebase.iid.InstanceIdResult;
 
         public void IneternetYesNo(){
             if (!phoneNew.isEmpty()){
-                Log.d(TAG, "время проверки интернета вышло, но номер СС получен");
+                Log.d(TAG, "время проверки интернета-2 вышло, но номер СС получен");
             }
             else{
                 Log.d(TAG, "Время проверки вышло, not internet");
@@ -404,7 +335,7 @@ import com.google.firebase.iid.InstanceIdResult;
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                     proverka=dataSnapshot.getValue(String.class);
-                    Log.d(TAG, "запрос регистрации получен"+proverka);
+                    Log.d(TAG, "Старая заявка Yes/No"+proverka);
 
                     // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
                     ref01.removeEventListener(this);

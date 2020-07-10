@@ -408,7 +408,6 @@ public class Main3Activity extends AppCompatActivity {
             mAlertDialog.show();
         }
         if (registration.equals("kHello")){
-            Log.d(TAG, "считывание userPhone: "+userPhone);
             mAuth = FirebaseAuth.getInstance();
             FirebaseUser ghg = mAuth.getCurrentUser();
             userPhone = ghg.getPhoneNumber();
@@ -451,6 +450,7 @@ public class Main3Activity extends AppCompatActivity {
         TextRegistrationFromCity.setVisibility(View.GONE);
 
         IneternetYES="";
+        phoneNew="";
 
         //ТАЙМ-АУТ проверка интернета
         Handler handler1 = new Handler();
@@ -492,8 +492,6 @@ public class Main3Activity extends AppCompatActivity {
     //получаем СС номер
     public void QwerySecret(){
         Log.d(TAG, "Получаем секретный номер");
-
-        phoneNew="";
 
         final Query secret= FirebaseDatabase.getInstance().getReference("Пользователи")
                 .child("Cipher")
