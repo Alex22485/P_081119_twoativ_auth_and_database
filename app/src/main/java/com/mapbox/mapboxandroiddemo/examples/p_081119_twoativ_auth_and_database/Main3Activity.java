@@ -461,7 +461,7 @@ public class Main3Activity extends AppCompatActivity {
                 IneternetYES="Out";
                 IneternetYesNo();
             }
-        },20000);
+        },40000);
 
 
         //050720 реализация шифрования
