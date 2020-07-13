@@ -29,6 +29,7 @@ public class Main6Activity extends AppCompatActivity {
 
     LinearLayout TextOder;
     LinearLayout TextProcess;
+    LinearLayout TimeInDetailed;
 
     String timeOut;
     String timeOutDel;
@@ -47,21 +48,26 @@ public class Main6Activity extends AppCompatActivity {
 
     Button cancelOder;
     Button detailsTrip;
+    Button BtnPushTime;
 
     String[] CancelOderWhy ={"Самолет отменён","Передумал", };
 
 
     TextView TextMain;
     TextView NamePlain;
-    TextView Calend_Out;
     TextView TextflightOrtime;
+    TextView flight_number_Out1;
     TextView flight_number_Out;
+    TextView flight_number_Out2;
+    TextView Textflight_number_Out2;
     TextView Map;
     TextView road_number_out;
     TextView road_name_out;
     TextView number;
     TextView people;
     TextView searchCar;
+    TextView TextNumberFromIgarkaCh;
+    TextView NumberFromIgarkaCh;
     ProgressBar progressBar;
 
     @Override
@@ -75,13 +81,16 @@ public class Main6Activity extends AppCompatActivity {
         TextMain = findViewById( R.id.TextMain );
         NamePlain = findViewById( R.id.NamePlain );
         progressBar = findViewById( R.id.progressBar );
+        TimeInDetailed=findViewById(R.id.TimeInDetailed);
         TextOder = findViewById( R.id.TextOder );
         TextProcess = findViewById( R.id.TextProcess );
 
         number = findViewById( R.id.number );
-        Calend_Out=findViewById( R.id.Calend_Out );
         TextflightOrtime=findViewById(R.id.TextflightOrtime);
+        flight_number_Out1=findViewById( R.id.flight_number_Out1 );
         flight_number_Out=findViewById( R.id.flight_number_Out );
+        Textflight_number_Out2=findViewById( R.id.Textflight_number_Out2 );
+        flight_number_Out2=findViewById( R.id.flight_number_Out2 );
         Map=findViewById( R.id.Map );
         road_number_out=findViewById( R.id.road_number_out );
         road_name_out=findViewById( R.id.road_name_out );
@@ -91,6 +100,22 @@ public class Main6Activity extends AppCompatActivity {
         searchCar=findViewById( R.id.searchCar );
         cancelOder=findViewById( R.id.cancelOder );
         detailsTrip=findViewById( R.id.detailsTrip );
+        BtnPushTime=findViewById( R.id.BtnPushTime );
+
+        TextNumberFromIgarkaCh=findViewById( R.id.TextNumberFromIgarkaCh );
+        NumberFromIgarkaCh=findViewById( R.id.NumberFromIgarkaCh );
+
+        //Видимость время сбора в "ПОДРОБНО"
+        BtnPushTime.setVisibility(View.GONE);
+        flight_number_Out.setVisibility(View.GONE);
+
+        //Видимость номера рейса самолета в "ПОДРОБНО"
+        TextNumberFromIgarkaCh.setVisibility(View.GONE);
+        NumberFromIgarkaCh.setVisibility(View.GONE);
+
+        // видимость время вылета самолета в "ПОДРОБНО"
+        Textflight_number_Out2.setVisibility(View.GONE);
+        flight_number_Out2.setVisibility(View.GONE);
 
         //Экспорт СС номера из MainActivity
         Intent MainTOMain6=getIntent();
@@ -209,40 +234,39 @@ public class Main6Activity extends AppCompatActivity {
                     proverka=data;
                     Log.d(TAG, "Получаем статус"+data+map+roar_number+road_name+flidht_number+сarDrive+token);
 
-                    Calend_Out.setText( data );
-                    //Map.setText( map );
                     road_number_out.setText( roar_number );
                     road_name_out.setText( road_name );
+                    flight_number_Out1.setText( "в "+flidht_number );
                     flight_number_Out.setText( flidht_number );
+                    flight_number_Out2.setText( flidht_number );
+                    NumberFromIgarkaCh.setText( flidht_number );
                     people.setText(""+peopleOder);
 
                     if (map.equals("ИгаркаЧ")){
-                        if(roar_number.equals("КрасТэц-Аэропорт")||roar_number.equals("Щорса-Аэропорт")){
-                            NamePlain.setText("Красноярск-Игарка (чартер)");
+                        if(roar_number.equals("КрасТэц-Аэропорт")||
+                                roar_number.equals("Щорса-Аэропорт")||
+                                roar_number.equals("Ветлужанка-Аэропорт")||
+                                roar_number.equals("Северный-Аэропорт")||
+                                roar_number.equals("Канск-Аэропорт")||
+                                roar_number.equals("Ачинск-Аэропорт")||
+                                roar_number.equals("Сосновоборск-Аэропорт")){
+                            NamePlain.setText(" Красноярск-Игарка(чартер)");
+                            //Видимость Время вылета самолета в ""ПОДРОБНО"
+                            Textflight_number_Out2.setVisibility(View.VISIBLE);
+                            flight_number_Out2.setVisibility(View.VISIBLE);
                         }
-                        if(roar_number.equals("Ветлужанка-Аэропорт")||roar_number.equals("Северный-Аэропорт")){
-                            NamePlain.setText("Красноярск-Игарка (чартер)");
-                        }
-                        if(roar_number.equals("Канск-Аэропорт")||roar_number.equals("Ачинск-Аэропорт")){
-                            NamePlain.setText("Красноярск-Игарка (чартер)");
-                        }
-                        if(roar_number.equals("Сосновоборск-Аэропорт")){
-                            NamePlain.setText("Красноярск-Игарка (чартер)");
-                        }
-                    }
 
-                    if (map.equals("ИгаркаЧ")){
-                        if(roar_number.equals("Аэропорт-КрасТэц")||roar_number.equals("Аэропорт-Щорса")){
-                            NamePlain.setText("Игарка-Красноярск- (чартер)");
-                        }
-                        if(roar_number.equals("Аэропорт-Ветлужанка")||roar_number.equals("Аэропорт-Северный")){
-                            NamePlain.setText("Игарка-Красноярск (чартер)");
-                        }
-                        if(roar_number.equals("Аэропорт-Канск")||roar_number.equals("Аэропорт-Ачинск")){
-                            NamePlain.setText("Игарка-Красноярск (чартер)");
-                        }
-                        if(roar_number.equals("Аэропорт-Сосновоборск")){
-                            NamePlain.setText("Игарка-Красноярск (чартер)");
+                        if(roar_number.equals("Аэропорт-КрасТэц")||
+                                roar_number.equals("Аэропорт-Щорса")||
+                                roar_number.equals("Аэропорт-Ветлужанка")||
+                                roar_number.equals("Аэропорт-Северный")||
+                                roar_number.equals("Аэропорт-Канск")||
+                                roar_number.equals("Аэропорт-Ачинск")||
+                                roar_number.equals("Аэропорт-Сосновоборск")){
+                            NamePlain.setText(" Игарка-Красноярск(чартер)");
+                            //Видимость номера рейса самолета в "ПОДРОБНО"
+                            NumberFromIgarkaCh.setVisibility(View.VISIBLE);
+                            TextNumberFromIgarkaCh.setVisibility(View.VISIBLE);
                         }
                     }
                     if(!road_name.equals("Парковка Р3")){
@@ -255,10 +279,24 @@ public class Main6Activity extends AppCompatActivity {
                     }
 
                     if (сarDrive==null){
+                        //видимость строки в "ПОДРОБНО"
+                        TimeInDetailed.setVisibility(View.VISIBLE);
+                        // видимость времени в "ПОДРОБНО"
+                        if(roar_number.equals("КрасТэц-Аэропорт")||roar_number.equals("Щорса-Аэропорт")||roar_number.equals("Ветлужанка-Аэропорт")||roar_number.equals("Северный-Аэропорт")){
+                            flight_number_Out.setVisibility(View.VISIBLE);
+                        }
+                        if(roar_number.equals("Аэропорт-КрасТэц")||roar_number.equals("Аэропорт-Щорса")||roar_number.equals("Аэропорт-Ветлужанка")||roar_number.equals("Аэропорт-Северный")){
+                            BtnPushTime.setVisibility(View.VISIBLE);
+                        }
                         Log.d(TAG, "Автомобиль не найден");/*специально пусто*/
                     }
                     else {
-                        searchCar.setText("Найден автомобиль "+сarDrive);
+
+                        if(roar_number.equals("КрасТэц-Аэропорт")||roar_number.equals("Щорса-Аэропорт")||roar_number.equals("Ветлужанка-Аэропорт")||roar_number.equals("Северный-Аэропорт")){
+                            flight_number_Out1.setVisibility(View.VISIBLE);
+                        }
+
+                        searchCar.setText("к Вам подъедет "+сarDrive);
                     }
                     // Проверяем закончилось ли время опроса time-out
                     checkWordProverka();
@@ -292,7 +330,7 @@ public class Main6Activity extends AppCompatActivity {
 
             TextProcess.setVisibility(View.GONE);
             TextOder.setVisibility(View.VISIBLE);
-            TextMain.setText("заявка оформлена");
+            TextMain.setText("Заказ на "+proverka);
 
         }
     }
