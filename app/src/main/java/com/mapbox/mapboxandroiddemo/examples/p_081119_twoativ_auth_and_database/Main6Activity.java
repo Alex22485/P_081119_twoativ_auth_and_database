@@ -430,7 +430,7 @@ public class Main6Activity extends AppCompatActivity {
     public void mistakeServer (){
         Intent ddd=new Intent(this,MainActivity.class);
         startActivity(ddd);
-    };
+    }
 
     public void DeleteOder(){
         ggg = FirebaseDatabase.getInstance();
