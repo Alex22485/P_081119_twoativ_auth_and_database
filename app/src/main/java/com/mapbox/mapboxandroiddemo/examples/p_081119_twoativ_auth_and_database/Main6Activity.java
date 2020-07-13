@@ -55,7 +55,6 @@ public class Main6Activity extends AppCompatActivity {
 
     TextView TextMain;
     TextView NamePlain;
-    TextView TextflightOrtime;
     TextView flight_number_Out1;
     TextView flight_number_Out;
     TextView flight_number_Out2;
@@ -86,7 +85,6 @@ public class Main6Activity extends AppCompatActivity {
         TextProcess = findViewById( R.id.TextProcess );
 
         number = findViewById( R.id.number );
-        TextflightOrtime=findViewById(R.id.TextflightOrtime);
         flight_number_Out1=findViewById( R.id.flight_number_Out1 );
         flight_number_Out=findViewById( R.id.flight_number_Out );
         Textflight_number_Out2=findViewById( R.id.Textflight_number_Out2 );
@@ -268,14 +266,6 @@ public class Main6Activity extends AppCompatActivity {
                             NumberFromIgarkaCh.setVisibility(View.VISIBLE);
                             TextNumberFromIgarkaCh.setVisibility(View.VISIBLE);
                         }
-                    }
-                    if(!road_name.equals("Парковка Р3")){
-                        TextflightOrtime.setText("время вылета самолета:");
-
-                    }
-                    if(road_name.equals("Парковка Р3")){
-                        TextflightOrtime.setText("Рейс самолета: №");
-
                     }
 
                     if (сarDrive==null){
