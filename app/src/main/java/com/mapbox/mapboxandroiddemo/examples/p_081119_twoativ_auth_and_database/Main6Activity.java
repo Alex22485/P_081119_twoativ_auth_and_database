@@ -30,6 +30,9 @@ public class Main6Activity extends AppCompatActivity {
     LinearLayout TextOder;
     LinearLayout TextProcess;
     LinearLayout TimeInDetailed;
+    LinearLayout TextAboutTimeSerchDriver;
+    LinearLayout QRcode;
+    LinearLayout TextDetailed;
 
     String timeOut;
     String timeOutDel;
@@ -49,6 +52,8 @@ public class Main6Activity extends AppCompatActivity {
     Button cancelOder;
     Button detailsTrip;
     Button BtnPushTime;
+    Button BtnDetailed;
+    Button BtnShortly;
 
     String[] CancelOderWhy ={"Самолет отменён","Передумал", };
 
@@ -59,11 +64,9 @@ public class Main6Activity extends AppCompatActivity {
     TextView flight_number_Out;
     TextView flight_number_Out2;
     TextView Textflight_number_Out2;
-    TextView Map;
     TextView road_number_out;
     TextView road_name_out;
     TextView number;
-    TextView people;
     TextView searchCar;
     TextView TextNumberFromIgarkaCh;
     TextView NumberFromIgarkaCh;
@@ -81,6 +84,10 @@ public class Main6Activity extends AppCompatActivity {
         NamePlain = findViewById( R.id.NamePlain );
         progressBar = findViewById( R.id.progressBar );
         TimeInDetailed=findViewById(R.id.TimeInDetailed);
+        TextAboutTimeSerchDriver=findViewById(R.id.TextAboutTimeSerchDriver);
+        QRcode=findViewById(R.id.QRcode);
+        TextDetailed=findViewById(R.id.TextDetailed);
+
         TextOder = findViewById( R.id.TextOder );
         TextProcess = findViewById( R.id.TextProcess );
 
@@ -89,19 +96,22 @@ public class Main6Activity extends AppCompatActivity {
         flight_number_Out=findViewById( R.id.flight_number_Out );
         Textflight_number_Out2=findViewById( R.id.Textflight_number_Out2 );
         flight_number_Out2=findViewById( R.id.flight_number_Out2 );
-        Map=findViewById( R.id.Map );
         road_number_out=findViewById( R.id.road_number_out );
         road_name_out=findViewById( R.id.road_name_out );
 
-        people=findViewById( R.id.people );
 
         searchCar=findViewById( R.id.searchCar );
         cancelOder=findViewById( R.id.cancelOder );
         detailsTrip=findViewById( R.id.detailsTrip );
         BtnPushTime=findViewById( R.id.BtnPushTime );
+        BtnDetailed=findViewById( R.id.BtnDetailed );
+        BtnShortly=findViewById( R.id.BtnShortly );
 
         TextNumberFromIgarkaCh=findViewById( R.id.TextNumberFromIgarkaCh );
         NumberFromIgarkaCh=findViewById( R.id.NumberFromIgarkaCh );
+
+        // Видимость всего текста "ПОДРОБНО"
+        TextDetailed.setVisibility(View.INVISIBLE);
 
         //Видимость время сбора в "ПОДРОБНО"
         BtnPushTime.setVisibility(View.GONE);
@@ -114,6 +124,15 @@ public class Main6Activity extends AppCompatActivity {
         // видимость время вылета самолета в "ПОДРОБНО"
         Textflight_number_Out2.setVisibility(View.GONE);
         flight_number_Out2.setVisibility(View.GONE);
+
+        //видимость текста  30-180минут в "ПОДРОБНО"
+        TextAboutTimeSerchDriver.setVisibility(View.GONE);
+
+        // Видимость текста покажите QRкод в "Подробно"
+        QRcode.setVisibility(View.GONE);
+
+        // Видимость кнопки "Скрыть"
+        BtnShortly.setVisibility(View.GONE);
 
         //Экспорт СС номера из MainActivity
         Intent MainTOMain6=getIntent();
@@ -155,6 +174,20 @@ public class Main6Activity extends AppCompatActivity {
             }
             //сделано специально чтобы текст заявки успел записаться через nodJS
         },4000);
+    }
+
+    // Видимость текста "ПОДРОБНО"
+    public void BtnDetailed (View view){
+        TextDetailed.setVisibility(View.VISIBLE);
+        BtnDetailed.setVisibility(View.GONE);
+        BtnShortly.setVisibility(View.VISIBLE);
+    }
+
+    // Видимость текста "ПОДРОБНО"
+    public void BtnShortly (View view){
+        TextDetailed.setVisibility(View.INVISIBLE);
+        BtnDetailed.setVisibility(View.VISIBLE);
+        BtnShortly.setVisibility(View.GONE);
     }
 
     @Override
@@ -238,7 +271,6 @@ public class Main6Activity extends AppCompatActivity {
                     flight_number_Out.setText( flidht_number );
                     flight_number_Out2.setText( flidht_number );
                     NumberFromIgarkaCh.setText( flidht_number );
-                    people.setText(""+peopleOder);
 
                     if (map.equals("ИгаркаЧ")){
                         if(roar_number.equals("КрасТэц-Аэропорт")||
@@ -271,16 +303,23 @@ public class Main6Activity extends AppCompatActivity {
                     if (сarDrive==null){
                         //видимость строки в "ПОДРОБНО"
                         TimeInDetailed.setVisibility(View.VISIBLE);
+
+                        //видимость текста  30-180минут в "ПОДРОБНО"
+                        TextAboutTimeSerchDriver.setVisibility(View.VISIBLE);
+
                         // видимость времени в "ПОДРОБНО"
                         if(roar_number.equals("КрасТэц-Аэропорт")||roar_number.equals("Щорса-Аэропорт")||roar_number.equals("Ветлужанка-Аэропорт")||roar_number.equals("Северный-Аэропорт")){
                             flight_number_Out.setVisibility(View.VISIBLE);
                         }
+                        // // видимость кнопки ?Нажми в "ПОДРОБНО"
                         if(roar_number.equals("Аэропорт-КрасТэц")||roar_number.equals("Аэропорт-Щорса")||roar_number.equals("Аэропорт-Ветлужанка")||roar_number.equals("Аэропорт-Северный")){
                             BtnPushTime.setVisibility(View.VISIBLE);
                         }
                         Log.d(TAG, "Автомобиль не найден");/*специально пусто*/
                     }
                     else {
+                        // Видимость текста покажите QRкод в "Подробно"
+                        QRcode.setVisibility(View.GONE);
 
                         if(roar_number.equals("КрасТэц-Аэропорт")||roar_number.equals("Щорса-Аэропорт")||roar_number.equals("Ветлужанка-Аэропорт")||roar_number.equals("Северный-Аэропорт")){
                             flight_number_Out1.setVisibility(View.VISIBLE);
