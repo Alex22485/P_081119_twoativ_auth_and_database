@@ -159,7 +159,7 @@ public class Main2Activity extends AppCompatActivity {
         mAlertDialog.show();
     }
 
-// Auth is NOT кнопка перезапуска приложения
+    // Auth is NOT кнопка перезапуска приложения
     public void GoMainActivity(View view){
         Intent GoMainActivity= new Intent(this,MainActivity.class);
         startActivity(GoMainActivity);
@@ -183,7 +183,7 @@ public class Main2Activity extends AppCompatActivity {
         });
     }
 
-// реализация шифрования
+    // кнопка пропустить реализация шифрования
     public void GoMainOder(View view){
         Log.d(TAG, "Старт шифрования");
 
@@ -202,7 +202,7 @@ public class Main2Activity extends AppCompatActivity {
                 IneternetYES="Out";
                 IneternetYesNo();
             }
-            },20000);
+        },30000);
 
 
         //050720 реализация шифрования
@@ -212,20 +212,20 @@ public class Main2Activity extends AppCompatActivity {
                 .child("Cipher")
                 .child(phoneUser);
         refSecret.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                refSecret.child("phone").setValue(phoneUser);
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                refSecret.child("phone").setValue(phoneUser);
 
-                Log.d(TAG, "Телефон для шифрования записан");
-                //получаем СС номер
-                QwerySecret();
-                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
-                refSecret.removeEventListener(this);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        }
+                                                Log.d(TAG, "Телефон для шифрования записан");
+                                                //получаем СС номер
+                                                QwerySecret();
+                                                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
+                                                refSecret.removeEventListener(this);
+                                            }
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                            }
+                                        }
         );
     }
 
@@ -236,7 +236,7 @@ public class Main2Activity extends AppCompatActivity {
         phoneNew="";
 
         final Query secret= FirebaseDatabase.getInstance().getReference("Пользователи")
-                .child("Cipher")
+                .child("CipherNew")
                 .child(phoneUser)
                 .child("secretNumber")
                 .orderByChild("number");
@@ -289,7 +289,7 @@ public class Main2Activity extends AppCompatActivity {
         }
     }
 
-    //Кнопка пропустить c в БД персональные данные
+    //старт регистрации заявки
     public void btnInsertd(){
 
         keyReg="";
@@ -406,4 +406,4 @@ public class Main2Activity extends AppCompatActivity {
         this.moveTaskToBack(true);
     }
 
-    }
+}

@@ -27,7 +27,6 @@ import com.google.firebase.iid.InstanceIdResult;
 
     private static final String TAG ="MainActivity" ;
 
-    String IneternetYES;
     String phoneNew;
 
     String keyReg;
@@ -35,6 +34,7 @@ import com.google.firebase.iid.InstanceIdResult;
 
     String registration;
     String checkregistrationTimeOut;
+    String checkregistrationTimeOut2;
 
     FirebaseDatabase database01;
     FirebaseDatabase database02;
@@ -60,6 +60,7 @@ import com.google.firebase.iid.InstanceIdResult;
             public void onSuccess(InstanceIdResult instanceIdResult) {
                 UserToken = instanceIdResult.getToken();
                 Log.d(TAG, "токен: "+UserToken);
+
             }
         });
     }
@@ -181,7 +182,7 @@ import com.google.firebase.iid.InstanceIdResult;
     public void checkHaveToken(){
 
         if (checkregistrationTimeOut.equals("Out")){
-            Log.d(TAG, "данные регистрации считаны, но таймер интернета-1 вышел");/*специально пусто*/
+            Log.d(TAG, "данные регистрации считаны, но таймер интернета-1 вышел");
         }
 
         else{
@@ -193,139 +194,54 @@ import com.google.firebase.iid.InstanceIdResult;
             startActivity(MainUserNewOne);
         }
         else if (keyReg.equals("Hello")){
-
+            // 25.08.2020 УБРАЛ
             //полуаем phone пользователя
-            mAuth= FirebaseAuth.getInstance(  );
-            FirebaseUser user=mAuth.getCurrentUser();
-            userPhone = user.getPhoneNumber();
-            Log.d(TAG, "получен телефон"+userPhone);/*специально пусто*/
+//            mAuth= FirebaseAuth.getInstance(  );
+//            FirebaseUser user=mAuth.getCurrentUser();
+//            userPhone = user.getPhoneNumber();
+//            Log.d(TAG, "получен телефон"+userPhone);
 
             //Старт Проверка наличия заявок
             Handler handler1 = new Handler();
             handler1.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+//                    // 25.08.2020 УБРАЛ
+//                    //start шифрования
+//                   cryptography();
 
-                    //start шифрования
-                    cryptography();
+                    // 25.08.2020 Поиск наличия заявок
+                    checkOder();
+
                 }
             },500);
         }
     }
     }
-        public void cryptography(){
-            Log.d(TAG, "Старт шифрования");
 
-            IneternetYES="";
+        // поиск старых заявок
+        public void checkOder(){
+            checkregistrationTimeOut2="";
+            proverka="";
 
-            //ТАЙМ-АУТ проверка интернета-2
+            //таймер ЗАПРОСА ИНТЕРНЕТА-2
             Handler handler1 = new Handler();
             handler1.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    // Завершен ТАЙМ-АУТ проверка интернета-2
-                    IneternetYES="Out";
-                    IneternetYesNo();
+
+                    // Завершен таймер ЗАПРОСА ИНТЕРНЕТА-2
+                    checkregistrationTimeOut2="Out";
+                    inetNotWhenGoCheckRegistration2();
                 }
-            },40000);
-
-        //050720 реализация шифрования
-        //запись phone to БД secret
-        databaseSecret = FirebaseDatabase.getInstance();
-        refSecret = databaseSecret.getReference("Пользователи")
-                .child("Cipher")
-                .child(userPhone);
-        refSecret.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                refSecret.child("phone").setValue(userPhone);
-
-                Log.d(TAG, "Телефон для шифрования записан");
-
-                //получаем СС номер
-                QwerySecret();
-
-                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
-                refSecret.removeEventListener(this);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        }
-        );
-    }
-
-        //получаем СС номер
-        public void QwerySecret(){
-            Log.d(TAG, "Получаем секретный номер");
-
-            phoneNew="";
-
-            final Query secret= FirebaseDatabase.getInstance().getReference("Пользователи")
-                    .child("Cipher")
-                    .child(userPhone)
-                    .child("secretNumber")
-                    .orderByChild("number");
-            secret.addChildEventListener( new ChildEventListener() {
-                @Override
-                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                    String number=dataSnapshot.child( "numberCrypt" ).getValue(String.class);
-                    Log.d(TAG, "Секретный номер"+number);
-
-                    phoneNew=number;
-
-                    // Проверяем закончилось ли время опроса интернета
-                    checkInternetYesNo();
-
-                    //Останавливаем прослушивание, чтобы в приложении у другого пользователя не появлялась информация когда другой пользоваьель регистрирует заявку
-                    secret.removeEventListener(this);
-                }
-                @Override
-                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                }
-                @Override
-                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                }
-                @Override
-                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            } );
-        }
-
-        public void checkInternetYesNo(){
-            if(IneternetYES.equals("Out")){
-                Log.d(TAG, "СС номер получен, но время проверки интернета вышло");
-            }
-            else if(!phoneNew.isEmpty()){
-                Log.d(TAG, "CC получен, проверка старых заявок");
-                checkOder();
-            }
-        }
-
-        public void IneternetYesNo(){
-            if (!phoneNew.isEmpty()){
-                Log.d(TAG, "время проверки интернета-2 вышло, но номер СС получен");
-            }
-            else{
-                Log.d(TAG, "Время проверки вышло, not internet");
-                Intent aaa = new Intent(this,InternetNot.class);
-                startActivity(aaa);
-            }
-        }
-
-        public void checkOder(){
-
-            proverka="";
+            },30000);
 
             Log.d(TAG, "Чтение Yes/No из БД");
             //Чтение Yes/No из БД
             database01 = FirebaseDatabase.getInstance();
             ref01 = database01.getReference("Пользователи")
                     .child("Personal")
-                    .child(phoneNew)
+                    .child(UserToken)
                     .child("Proverka")
                     .child("Oder")
                     .child("Заявка");
@@ -334,8 +250,8 @@ import com.google.firebase.iid.InstanceIdResult;
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    proverka=dataSnapshot.getValue(String.class);
-                    Log.d(TAG, "Старая заявка Yes/No"+proverka);
+                    proverka=""+dataSnapshot.getValue(String.class);
+                    Log.d(TAG, "Наличие заявок Yes/No"+proverka);
 
                     // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
                     ref01.removeEventListener(this);
@@ -344,9 +260,7 @@ import com.google.firebase.iid.InstanceIdResult;
                     handler1.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-
                             checkWordProverka();
-
                         }
                     },200);
                 }
@@ -356,23 +270,38 @@ import com.google.firebase.iid.InstanceIdResult;
             });
         }
 
+        //Проверка интернета во время поиска наличия заявок
+        public void inetNotWhenGoCheckRegistration2(){
+
+            if(proverka.equals("Yes")||proverka.equals("No")){
+                Log.d(TAG, "таймер запроса интернета-2 остановлен");}
+
+            else {
+                //пропал интернет во время проверки наличия регистрации
+                Log.d(TAG, "Интернет пропал при поиске наличия заявок");
+                Intent aaa = new Intent(this,InternetNot.class);
+                startActivity(aaa);
+            }
+        }
+
         public void checkWordProverka(){
 
+            if (checkregistrationTimeOut2.equals("Out")){
+                Log.d(TAG, "данные Yes/No считаны, но таймер интернета-2 вышел");
+            }
+
         if(proverka.equals("Yes")){
-            Log.d(TAG, "переход лист заявок");
+            Log.d(TAG, "переход на лист заявок");
             Intent MainTOMain6= new Intent(this,Main6Activity.class);
             MainTOMain6.putExtra("phoneNew",phoneNew);
             startActivity(MainTOMain6);
         }
-        else if(proverka.equals("No")){
+        if(proverka.equals("No")){
             Log.d(TAG, "Заявок нет");
             Intent MainActivityToMainUserNewOne3= new Intent(this,MainUserNewOne3.class);
             // регистрация есть заявок нет отправляем Hello
             MainActivityToMainUserNewOne3.putExtra("registration",registration);
             startActivity(MainActivityToMainUserNewOne3);
-        }
-        else{
-            Log.d(TAG, "в БД null");
         }
     }
 

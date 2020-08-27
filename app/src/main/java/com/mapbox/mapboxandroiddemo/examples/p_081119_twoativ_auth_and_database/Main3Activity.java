@@ -380,8 +380,9 @@ public class Main3Activity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
+// регистрация заявки
     public void btnInsert(View view){
+        //если пользователь еще не зарегистрировался
         if (registration.equals("knull")){
 
             AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Main3Activity.this);
@@ -407,6 +408,8 @@ public class Main3Activity extends AppCompatActivity {
             mAlertDialog.create();
             mAlertDialog.show();
         }
+
+        //если пользователь зарегистрировался
         if (registration.equals("kHello")){
             mAuth = FirebaseAuth.getInstance();
             FirebaseUser ghg = mAuth.getCurrentUser();
@@ -494,7 +497,7 @@ public class Main3Activity extends AppCompatActivity {
         Log.d(TAG, "Получаем секретный номер");
 
         final Query secret= FirebaseDatabase.getInstance().getReference("Пользователи")
-                .child("Cipher")
+                .child("CipherNew")
                 .child(userPhone)
                 .child("secretNumber")
                 .orderByChild("number");

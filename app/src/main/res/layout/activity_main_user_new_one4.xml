@@ -16,7 +16,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Выберите нужный город"
+        android:text="Выберите направление"
         android:gravity="center"
         android:textColor="#A1188F"
         android:textSize="23sp"/>

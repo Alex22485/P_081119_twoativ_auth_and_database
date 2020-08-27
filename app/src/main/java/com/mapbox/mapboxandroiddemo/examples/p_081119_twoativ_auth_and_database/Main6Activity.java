@@ -319,7 +319,7 @@ public class Main6Activity extends AppCompatActivity {
                     }
                     else {
                         // Видимость текста покажите QRкод в "Подробно"
-                        QRcode.setVisibility(View.GONE);
+                        QRcode.setVisibility(View.VISIBLE);
 
                         if(roar_number.equals("КрасТэц-Аэропорт")||roar_number.equals("Щорса-Аэропорт")||roar_number.equals("Ветлужанка-Аэропорт")||roar_number.equals("Северный-Аэропорт")){
                             flight_number_Out1.setVisibility(View.VISIBLE);
