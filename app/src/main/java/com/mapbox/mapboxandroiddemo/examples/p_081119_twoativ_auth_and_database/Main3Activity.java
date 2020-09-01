@@ -958,7 +958,7 @@ public class Main3Activity extends AppCompatActivity {
     }
 
     // Блокировка кнопки Back!!!! :)))
-//    @Override
-//    public void onBackPressed(){
-//    }
+    @Override
+    public void onBackPressed(){
+    }
 }
