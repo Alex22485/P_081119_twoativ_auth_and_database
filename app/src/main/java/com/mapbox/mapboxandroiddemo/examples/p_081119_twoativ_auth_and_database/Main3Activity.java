@@ -99,7 +99,7 @@ public class Main3Activity extends AppCompatActivity {
     String proverka;
 
 
-    String registration;
+    //String registration;
     // формируется ok после ввода телефона при авторизации
     String authOK;
 
@@ -147,23 +147,23 @@ public class Main3Activity extends AppCompatActivity {
         CalendTime=findViewById(R.id.CalendTime);
 
         // putExtra from InAir_choise_routes
-        Intent nextList = getIntent();
-        TVchoiseMap = nextList.getStringExtra( "TVchoiseMap" );
-        TVchoise_pointMap = nextList.getStringExtra( "TVchoise_pointMap" );
-        MapTop = nextList.getStringExtra( "mapTop" );
+        Intent InAir_choise_routesTOMain3Activity = getIntent();
+        TVchoiseMap = InAir_choise_routesTOMain3Activity.getStringExtra( "TVchoiseMap" );
+        TVchoise_pointMap = InAir_choise_routesTOMain3Activity.getStringExtra( "TVchoise_pointMap" );
+        MapTop = InAir_choise_routesTOMain3Activity.getStringExtra( "MapTop" );
 
-        toOrFrom =nextList.getStringExtra("toOrFrom");
-        refCity= nextList.getStringExtra("refCity");
+        toOrFrom =InAir_choise_routesTOMain3Activity.getStringExtra("toOrFrom");
+        refCity= InAir_choise_routesTOMain3Activity.getStringExtra("refCity");
 
-        //получен транзитом из MainActivity (заставка)
-        registration="k"+nextList.getStringExtra("registration");
+        //получен транзитом из InAir_choise_routes
+        phoneNew=""+InAir_choise_routesTOMain3Activity.getStringExtra("phoneNew");
 
         Log.d(TAG, "TVchoiseMap: "+TVchoiseMap);
         Log.d(TAG, "TVchoise_pointMap: "+TVchoise_pointMap);
         Log.d(TAG, "MapTop: "+MapTop);
         Log.d(TAG, "toOrFrom: "+toOrFrom);
         Log.d(TAG, "refCity: "+refCity);
-        Log.d(TAG, "registration: "+registration);
+        Log.d(TAG, "phoneNew: "+phoneNew);
 
         authOK= "";
 
@@ -173,6 +173,8 @@ public class Main3Activity extends AppCompatActivity {
         Log.d(TAG, "authOk: "+authOK);
 
         if(authOK.equals("KOk")){
+            TextProgress.setVisibility(View.VISIBLE);
+            Log.d(TAG, "автоматическая регистрация после авторизации: ");
 
             refCity=Main3Activity.getStringExtra("refCity");
             toOrFrom=Main3Activity.getStringExtra("toOrFrom");
@@ -182,33 +184,35 @@ public class Main3Activity extends AppCompatActivity {
             Flight.setText(Main3Activity.getStringExtra("Flight"));
             time.setText(Main3Activity.getStringExtra("time"));
             TVchoiseMap=Main3Activity.getStringExtra("TVchoiseMap");
-            TVchoise_pointMap=Main3Activity.getStringExtra("TVchoise_pointMap");
+            phoneNew=Main3Activity.getStringExtra("phoneNew");
 
-
-            Log.d(TAG, "0refCity: "+refCity);
-            Log.d(TAG, "0toOrFrom: "+toOrFrom);
-            Log.d(TAG, "0MapTop: "+MapTop);
-            Log.d(TAG, "0Calend: "+Calend);
-            Log.d(TAG, "0CalendTime: "+CalendTime);
-            Log.d(TAG, "0Flight: "+Flight);
-            Log.d(TAG, "0time: "+time);
-            Log.d(TAG, "0TVchoiseMap: "+TVchoiseMap);
-            Log.d(TAG, "0TVchoise_pointMap: "+TVchoise_pointMap);
-
-            mAuth = FirebaseAuth.getInstance();
-            FirebaseUser ghg = mAuth.getCurrentUser();
-            userPhone = ghg.getPhoneNumber();
-            Log.d(TAG, "userPhone: "+userPhone);
-
-            //ТАЙМ-АУТ проверка интернета
+            // автоматическая регистрация ранее сформированной заявки после авторизации
+            //задержка чтобы успел записаться NO в БД Заявки
             Handler handler1 = new Handler();
             handler1.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    // автоматическая регистрация ранее сформированной заявки после авторизации
-                    cryptography();
+                    btnInsertd ();
                 }
-            },1000);
+            },4000);
+
+
+
+//            mAuth = FirebaseAuth.getInstance();
+//            FirebaseUser ghg = mAuth.getCurrentUser();
+//            userPhone = ghg.getPhoneNumber();
+//            Log.d(TAG, "userPhone: "+userPhone);
+//
+//            //ТАЙМ-АУТ проверка интернета
+//            Handler handler1 = new Handler();
+//            handler1.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                    // автоматическая регистрация ранее сформированной заявки после авторизации
+//                    cryptography();
+//                }
+//            },1000);
         }
 
         if (authOK.equals("Knull")){
@@ -382,7 +386,7 @@ public class Main3Activity extends AppCompatActivity {
     }
 
     public void btnInsert(View view){
-        if (registration.equals("knull")){
+        if (phoneNew.equals("null")){
 
             AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Main3Activity.this);
             // Set Title
@@ -390,7 +394,7 @@ public class Main3Activity extends AppCompatActivity {
             //mAlertDialog.setCancelable(false);
             // Set Message
             mAlertDialog.setMessage("Для продолжения необходимо" +
-                    " авторизироваться по номеру телефона." +
+                    " авторизироваться." +
                     " Вам придет SMS c кодом подтверждения")
                     .setPositiveButton("Принять", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -407,20 +411,22 @@ public class Main3Activity extends AppCompatActivity {
             mAlertDialog.create();
             mAlertDialog.show();
         }
-        if (registration.equals("kHello")){
-            mAuth = FirebaseAuth.getInstance();
-            FirebaseUser ghg = mAuth.getCurrentUser();
-            userPhone = ghg.getPhoneNumber();
-            Log.d(TAG, "userPhone: "+userPhone);
+        else{
 
-            //задержка чтобы успел считаться номер телефона
-            Handler handler1 = new Handler();
-            handler1.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    cryptography();
-                }
-            },500);
+            btnInsertd();
+//            mAuth = FirebaseAuth.getInstance();
+//            FirebaseUser ghg = mAuth.getCurrentUser();
+//            userPhone = ghg.getPhoneNumber();
+//            Log.d(TAG, "userPhone: "+userPhone);
+//
+//            //задержка чтобы успел считаться номер телефона
+//            Handler handler1 = new Handler();
+//            handler1.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    cryptography();
+//                }
+//            },500);
 
 
         }
@@ -549,6 +555,7 @@ public class Main3Activity extends AppCompatActivity {
 
     //  регистрация заявки
     public void btnInsertd () {
+        TextProgress.setVisibility(View.VISIBLE);
         Log.d(TAG, "Старт Проверка интернета YesNO");
 
 //        MistakeRegistration.setVisibility(View.GONE);
@@ -914,11 +921,11 @@ public class Main3Activity extends AppCompatActivity {
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
                 Main3Activity.this);
         // Set Title
-        mAlertDialog.setTitle("Ошибка регистрации");
+        mAlertDialog.setTitle("Найдена ваша старая заявка");
         mAlertDialog.setCancelable(false);
         // Set Message
         mAlertDialog
-                .setMessage("сначала отмените старую заявку")
+                .setMessage("отмените старую заявку")
                 .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
@@ -941,10 +948,10 @@ public class Main3Activity extends AppCompatActivity {
     }
     // Переход на лист выбора точки сбора
     public void onBackList() {
-        //Переход на лист Статуса
+        //Переход на лист регистрации заявки
         Intent Main3ToMainUserNewOne3 = new Intent( this,MainUserNewOne3.class );
-        // отправляем Hello в для считывания в Main3Activity это вместо Hello которое берется из MainActivity(заставка)
-        Main3ToMainUserNewOne3.putExtra("regFromMain3","Hello");
+        // отправляем phoneNew в Main3Activity
+        Main3ToMainUserNewOne3.putExtra("regFromMain3",phoneNew);
         startActivity( Main3ToMainUserNewOne3);
 
 

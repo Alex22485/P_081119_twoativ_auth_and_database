@@ -30,10 +30,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Красноярск --- Игарка"
+            android:text="Красноярск-Игарка-Красноярск"
             android:gravity="center"
             android:textColor="#C62840"
-            android:textSize="20sp"/>
+            android:textSize="15sp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,10 +42,10 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Красноярск --- Северо-Енисейск"
+        android:text="Красноярск-Северо-Енисейск-Красноярск"
         android:gravity="center"
         android:textColor="#C62840"
-        android:textSize="20sp"/>
+        android:textSize="15sp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -54,10 +54,10 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Красноярск --- Туруханск"
+        android:text="Красноярск-Туруханск-Красноярск"
         android:gravity="center"
         android:textColor="#C62840"
-        android:textSize="20sp"/>
+        android:textSize="15sp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

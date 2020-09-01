@@ -87,6 +87,7 @@ public class Main2Activity extends AppCompatActivity {
         refCity=main3Activity.getStringExtra("refCity");
         toOrFrom=main3Activity.getStringExtra("toOrFrom");
         MapTop=main3Activity.getStringExtra("MapTop");
+        Log.d(TAG, "MapTop: "+MapTop);
         Calend=main3Activity.getStringExtra("Calend");
         CalendTime=main3Activity.getStringExtra("CalendTime");
         Flight=main3Activity.getStringExtra("Flight");
@@ -183,7 +184,7 @@ public class Main2Activity extends AppCompatActivity {
         });
     }
 
-// реализация шифрования
+// реализация шифрования кропка пропустить
     public void GoMainOder(View view){
         Log.d(TAG, "Старт шифрования");
 
@@ -202,7 +203,7 @@ public class Main2Activity extends AppCompatActivity {
                 IneternetYES="Out";
                 IneternetYesNo();
             }
-            },20000);
+            },30000);
 
 
         //050720 реализация шифрования
@@ -289,7 +290,7 @@ public class Main2Activity extends AppCompatActivity {
         }
     }
 
-    //Кнопка пропустить c в БД персональные данные
+    //запись  в БД персональные данные
     public void btnInsertd(){
 
         keyReg="";
@@ -373,6 +374,7 @@ public class Main2Activity extends AppCompatActivity {
         Main3Activity.putExtra("time",time);
         Main3Activity.putExtra("TVchoiseMap",TVchoiseMap);
         Main3Activity.putExtra("TVchoise_pointMap",TVchoise_pointMap);
+        Main3Activity.putExtra("phoneNew",phoneNew);
 
         startActivity(Main3Activity);
     }

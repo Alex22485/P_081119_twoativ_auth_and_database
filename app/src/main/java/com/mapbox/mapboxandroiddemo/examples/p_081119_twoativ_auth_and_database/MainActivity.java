@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,6 +34,7 @@ import com.google.firebase.iid.InstanceIdResult;
 
     String registration;
     String checkregistrationTimeOut;
+    String checkregistrationTimeOut2;
 
     FirebaseDatabase database01;
     FirebaseDatabase database02;
@@ -120,7 +120,7 @@ import com.google.firebase.iid.InstanceIdResult;
         Log.d(TAG, "запрос регистрации начат");
 
         keyReg="";
-        registration="";
+        //registration="";
         checkregistrationTimeOut="";
 
         //таймер ЗАПРОСА ИНТЕРНЕТА-1
@@ -146,10 +146,8 @@ import com.google.firebase.iid.InstanceIdResult;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                keyReg=dataSnapshot.getValue(String.class);
-                registration=""+keyReg; /* так как может получить null*/
+                keyReg=""+dataSnapshot.getValue(String.class);
                 Log.d(TAG, "keyReg"+keyReg);
-                Log.d(TAG, "registration"+keyReg);
 
                 // с этой записью makeText появляется только один раз!!!!! ХОРОШО
                 ref02.removeEventListener(this);
@@ -166,7 +164,7 @@ import com.google.firebase.iid.InstanceIdResult;
         //Проверка интернета во время проверки регистрации
         public void inetNotWhenGoCheckRegistration (){
 
-            if(registration.equals("Hello")||keyReg==null){
+            if(!keyReg.isEmpty()){
                 Log.d(TAG, "таймер запроса интернета-1 остановлен");/*специально пусто*/}
 
             else {
@@ -185,31 +183,34 @@ import com.google.firebase.iid.InstanceIdResult;
         }
 
         else{
-        if (keyReg==null){
+        if (keyReg.equals("null")){
 
             //15/06/20 Добавлено
             Log.d(TAG, "Переход на первый лист");
             Intent MainUserNewOne = new Intent(this,MainUserNewOne.class);
             startActivity(MainUserNewOne);
         }
-        else if (keyReg.equals("Hello")){
+        else if (!keyReg.isEmpty()){
 
-            //полуаем phone пользователя
-            mAuth= FirebaseAuth.getInstance(  );
-            FirebaseUser user=mAuth.getCurrentUser();
-            userPhone = user.getPhoneNumber();
-            Log.d(TAG, "получен телефон"+userPhone);/*специально пусто*/
+            // переходим к проверки Yes/No заявки
+            checkOder();
 
-            //Старт Проверка наличия заявок
-            Handler handler1 = new Handler();
-            handler1.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-
-                    //start шифрования
-                    cryptography();
-                }
-            },500);
+//            //полуаем phone пользователя
+//            mAuth= FirebaseAuth.getInstance(  );
+//            FirebaseUser user=mAuth.getCurrentUser();
+//            userPhone = user.getPhoneNumber();
+//            Log.d(TAG, "получен телефон"+userPhone);
+//
+//            //Старт Проверка наличия заявок
+//            Handler handler1 = new Handler();
+//            handler1.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                    //start шифрования
+//                    cryptography();
+//                }
+//            },500);
         }
     }
     }
@@ -316,16 +317,30 @@ import com.google.firebase.iid.InstanceIdResult;
             }
         }
 
+        // поиск старых заявок
         public void checkOder(){
 
+            checkregistrationTimeOut2="";
             proverka="";
+
+            //таймер ЗАПРОСА ИНТЕРНЕТА-2
+            Handler handler1 = new Handler();
+            handler1.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    // Завершен таймер ЗАПРОСА ИНТЕРНЕТА-2
+                    checkregistrationTimeOut2="Out";
+                    inetNotWhenGoCheckRegistration2();
+                }
+            },30000);
 
             Log.d(TAG, "Чтение Yes/No из БД");
             //Чтение Yes/No из БД
             database01 = FirebaseDatabase.getInstance();
             ref01 = database01.getReference("Пользователи")
                     .child("Personal")
-                    .child(phoneNew)
+                    .child(keyReg)
                     .child("Proverka")
                     .child("Oder")
                     .child("Заявка");
@@ -356,23 +371,39 @@ import com.google.firebase.iid.InstanceIdResult;
             });
         }
 
+
+        //Проверка интернета во время поиска наличия заявок
+        public void inetNotWhenGoCheckRegistration2(){
+
+            if(proverka.equals("Yes")||proverka.equals("No")){
+                Log.d(TAG, "таймер запроса интернета-2 остановлен");}
+
+            else {
+                //пропал интернет во время проверки наличия регистрации
+                Log.d(TAG, "Интернет пропал при поиске наличия заявок");
+                Intent aaa = new Intent(this,InternetNot.class);
+                startActivity(aaa);
+            }
+        }
+
         public void checkWordProverka(){
+
+            if (checkregistrationTimeOut2.equals("Out")){
+                Log.d(TAG, "данные Yes/No считаны, но таймер интернета-2 вышел");
+            }
 
         if(proverka.equals("Yes")){
             Log.d(TAG, "переход лист заявок");
             Intent MainTOMain6= new Intent(this,Main6Activity.class);
-            MainTOMain6.putExtra("phoneNew",phoneNew);
+            MainTOMain6.putExtra("phoneNew",keyReg);
             startActivity(MainTOMain6);
         }
-        else if(proverka.equals("No")){
+        if(proverka.equals("No")){
             Log.d(TAG, "Заявок нет");
             Intent MainActivityToMainUserNewOne3= new Intent(this,MainUserNewOne3.class);
             // регистрация есть заявок нет отправляем Hello
-            MainActivityToMainUserNewOne3.putExtra("registration",registration);
+            MainActivityToMainUserNewOne3.putExtra("phoneNew",keyReg);
             startActivity(MainActivityToMainUserNewOne3);
-        }
-        else{
-            Log.d(TAG, "в БД null");
         }
     }
 

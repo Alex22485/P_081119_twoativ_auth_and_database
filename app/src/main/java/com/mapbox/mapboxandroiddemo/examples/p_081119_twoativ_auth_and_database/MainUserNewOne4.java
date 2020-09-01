@@ -10,7 +10,7 @@ import android.view.View;
 public class MainUserNewOne4 extends AppCompatActivity {
 
     String refCity;
-    String registration;
+    String phoneNew;
 
     private static final String TAG ="MainUserNewOne4" ;
 
@@ -20,53 +20,53 @@ public class MainUserNewOne4 extends AppCompatActivity {
         setContentView(R.layout.activity_main_user_new_one4);
 
         //для транзита из MainUserOne3
-        Intent mainUserNewOne4 = getIntent();
-        refCity =mainUserNewOne4.getStringExtra( "refCity" );
+        Intent mainUserNewOne3TomainUserNewOne4 = getIntent();
+        refCity =mainUserNewOne3TomainUserNewOne4.getStringExtra( "refCity" );
 
         //транзит в Main3Activity
-        registration=mainUserNewOne4.getStringExtra( "registration" );
+        phoneNew=mainUserNewOne3TomainUserNewOne4.getStringExtra( "phoneNew" );
         Log.d(TAG, "refCity: "+refCity);
-        Log.d(TAG, "registration: "+registration);
+        Log.d(TAG, "phoneNew: "+phoneNew);
 
 
     }
 
     public void fromKrasnoyarsk(View view){
-        Intent nextListInAir_choise_routes = new Intent( this,InAir_choise_routes.class );
+        Intent MainUserNewOne4ToListInAir_choise_routes = new Intent( this,InAir_choise_routes.class );
 
-        nextListInAir_choise_routes.putExtra( "Маршрут", "Красноярск-Аэропорт" );
-        nextListInAir_choise_routes.putExtra( "oneMap", "КрасТэц-Аэропорт" );
-        nextListInAir_choise_routes.putExtra( "twoMap", "Щорса-Аэропорт" );
-        nextListInAir_choise_routes.putExtra( "treeMap", "Северный-Аэропорт" );
-        nextListInAir_choise_routes.putExtra( "fourMap", "Ветлужанка-Аэропорт" );
-        nextListInAir_choise_routes.putExtra( "toOrFrom", "Из Красноярска" );
+        MainUserNewOne4ToListInAir_choise_routes.putExtra( "Маршрут", "Красноярск-Аэропорт" );
+        MainUserNewOne4ToListInAir_choise_routes.putExtra( "oneMap", "КрасТэц-Аэропорт" );
+        MainUserNewOne4ToListInAir_choise_routes.putExtra( "twoMap", "Щорса-Аэропорт" );
+        MainUserNewOne4ToListInAir_choise_routes.putExtra( "treeMap", "Северный-Аэропорт" );
+        MainUserNewOne4ToListInAir_choise_routes.putExtra( "fourMap", "Ветлужанка-Аэропорт" );
+        MainUserNewOne4ToListInAir_choise_routes.putExtra( "toOrFrom", "Из Красноярска" );
 
-        //транзит из MainUserOne3
-        nextListInAir_choise_routes.putExtra( "refCity", refCity );
+        //транзит в MainUserOne3
+        MainUserNewOne4ToListInAir_choise_routes.putExtra( "refCity", refCity );
 
         //транзит в Main3Activity
-        nextListInAir_choise_routes.putExtra("registration",registration);
+        MainUserNewOne4ToListInAir_choise_routes.putExtra("phoneNew",phoneNew);
 
-        startActivity( nextListInAir_choise_routes);
+        startActivity( MainUserNewOne4ToListInAir_choise_routes);
     }
 
     public void toKrasnoyarsk(View view){
-        Intent nextListInAir_choise_routes = new Intent( this,InAir_choise_routes.class );
+        Intent MainUserNewOne4ToListInAir_choise_routes = new Intent( this,InAir_choise_routes.class );
 
-        nextListInAir_choise_routes.putExtra( "Маршрут", "Аэропорт-Красноярск" );
-        nextListInAir_choise_routes.putExtra( "oneMap", "Аэропорт-КрасТэц" );
-        nextListInAir_choise_routes.putExtra( "twoMap", "Аэропорт-Щорса" );
-        nextListInAir_choise_routes.putExtra( "treeMap", "Аэропорт-Северный" );
-        nextListInAir_choise_routes.putExtra( "fourMap", "Аэропорт-Ветлужанка" );
-        nextListInAir_choise_routes.putExtra( "toOrFrom", "В Красноярск" );
+        MainUserNewOne4ToListInAir_choise_routes.putExtra( "Маршрут", "Аэропорт-Красноярск" );
+        MainUserNewOne4ToListInAir_choise_routes.putExtra( "oneMap", "Аэропорт-КрасТэц" );
+        MainUserNewOne4ToListInAir_choise_routes.putExtra( "twoMap", "Аэропорт-Щорса" );
+        MainUserNewOne4ToListInAir_choise_routes.putExtra( "treeMap", "Аэропорт-Северный" );
+        MainUserNewOne4ToListInAir_choise_routes.putExtra( "fourMap", "Аэропорт-Ветлужанка" );
+        MainUserNewOne4ToListInAir_choise_routes.putExtra( "toOrFrom", "В Красноярск" );
 
         //транзит из MainUserOne3
-        nextListInAir_choise_routes.putExtra( "refCity", refCity );
+        MainUserNewOne4ToListInAir_choise_routes.putExtra( "refCity", refCity );
 
         //транзит в Main3Activity
-        nextListInAir_choise_routes.putExtra("registration",registration);
+        MainUserNewOne4ToListInAir_choise_routes.putExtra("phoneNew",phoneNew);
 
-        startActivity( nextListInAir_choise_routes);
+        startActivity( MainUserNewOne4ToListInAir_choise_routes);
     }
 
 

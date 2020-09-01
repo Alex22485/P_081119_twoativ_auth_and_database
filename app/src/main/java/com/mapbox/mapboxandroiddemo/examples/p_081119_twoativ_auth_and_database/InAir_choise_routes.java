@@ -20,7 +20,7 @@ public class InAir_choise_routes extends AppCompatActivity {
 
     String toOrFrom;
     String refCity;
-    String registration;
+    String phoneNew;
 
 
     String TVchoiseMap;
@@ -69,24 +69,24 @@ public class InAir_choise_routes extends AppCompatActivity {
         mapTop= findViewById(R.id.mapTop);
 
         //Put Extra
-        Intent nextListInAir_choise_routes =getIntent();
-        String sMapTop =nextListInAir_choise_routes.getStringExtra( "Маршрут" );
-        String sOneMap =nextListInAir_choise_routes.getStringExtra( "oneMap" );
-        String sTwoMap =nextListInAir_choise_routes.getStringExtra( "twoMap" );
-        String sTreeMap =nextListInAir_choise_routes.getStringExtra( "treeMap" );
-        String sFourMap =nextListInAir_choise_routes.getStringExtra( "fourMap" );
+        Intent MainUserNewOne4ToListInAir_choise_routes =getIntent();
+        String sMapTop =MainUserNewOne4ToListInAir_choise_routes.getStringExtra( "Маршрут" );
+        String sOneMap =MainUserNewOne4ToListInAir_choise_routes.getStringExtra( "oneMap" );
+        String sTwoMap =MainUserNewOne4ToListInAir_choise_routes.getStringExtra( "twoMap" );
+        String sTreeMap =MainUserNewOne4ToListInAir_choise_routes.getStringExtra( "treeMap" );
+        String sFourMap =MainUserNewOne4ToListInAir_choise_routes.getStringExtra( "fourMap" );
 
         // получаем значение В(ИЗ) Красноярск;  В(ИЗ) Сосновоборск;  В(ИЗ) Канск; В(ИЗ) Ачинск; Предаем его в MainActivity3
-        toOrFrom =nextListInAir_choise_routes.getStringExtra( "toOrFrom" );
+        toOrFrom =MainUserNewOne4ToListInAir_choise_routes.getStringExtra( "toOrFrom" );
         Log.d(TAG, "toOrFrom: "+toOrFrom);
 
         // extra из MainUserNewOne4 Предаем его в MainActivity3
-        refCity =nextListInAir_choise_routes.getStringExtra( "refCity" );
+        refCity =MainUserNewOne4ToListInAir_choise_routes.getStringExtra( "refCity" );
         Log.d(TAG, "refCity: "+refCity);
 
         //транзит в MainActivity3
-        registration=nextListInAir_choise_routes.getStringExtra("registration");
-        Log.d(TAG, "registration: "+registration);
+        phoneNew=MainUserNewOne4ToListInAir_choise_routes.getStringExtra("phoneNew");
+        Log.d(TAG, "phoneNew: "+phoneNew);
 
         mapTop.setText( sMapTop );
         oneMap.setText( sOneMap );
@@ -281,21 +281,21 @@ public  void oneChoose(View view) {
 
     public void nextList(){
 
-        Intent nextList = new Intent( this,Main3Activity.class );
-        nextList.putExtra( "TVchoiseMap",TVchoiseMap );
-        nextList.putExtra( "TVchoise_pointMap",TVchoise_pointMap );
-        nextList.putExtra( "mapTop",mapTop.getText().toString() );
+        Intent InAir_choise_routesTOMain3Activity = new Intent( this,Main3Activity.class );
+        InAir_choise_routesTOMain3Activity.putExtra( "TVchoiseMap",TVchoiseMap );
+        InAir_choise_routesTOMain3Activity.putExtra( "TVchoise_pointMap",TVchoise_pointMap );
+        InAir_choise_routesTOMain3Activity.putExtra( "MapTop",mapTop.getText().toString() );
 
         //транзит с MainUserNewOne4
-        nextList.putExtra( "toOrFrom",toOrFrom );
-        nextList.putExtra( "refCity",refCity );
+        InAir_choise_routesTOMain3Activity.putExtra( "toOrFrom",toOrFrom );
+        InAir_choise_routesTOMain3Activity.putExtra( "refCity",refCity );
 
         //транзит в Main3Activity
-        nextList.putExtra("registration",registration);
+        InAir_choise_routesTOMain3Activity.putExtra("phoneNew",phoneNew);
 
 
 
-        startActivity( nextList);
+        startActivity( InAir_choise_routesTOMain3Activity);
 
     }
 }

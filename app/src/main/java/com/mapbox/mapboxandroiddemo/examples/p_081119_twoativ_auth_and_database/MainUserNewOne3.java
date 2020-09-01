@@ -11,8 +11,8 @@ public class MainUserNewOne3 extends AppCompatActivity {
 
     private static final String TAG ="MainUserNewOne3" ;
 
-    String registration;
-    String regFromMain6;
+    String phoneNew;
+    String phoneNewFromMain6;
     String regFromMain3;
 
     @Override
@@ -20,19 +20,20 @@ public class MainUserNewOne3 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_user_new_one3);
 
-        //транзит в Main3Activity
+        //транзит из MainActivity
         Intent MainActivityToMainUserNewOne3= getIntent();
-        registration=MainActivityToMainUserNewOne3.getStringExtra("registration");
+        phoneNew=MainActivityToMainUserNewOne3.getStringExtra("phoneNew");
+        Log.d(TAG, "phoneNew:"+phoneNew);
 
         // проверка был ли переход на эту страницу после отмены заявки
         Intent Main6ToMain3=getIntent();
-        regFromMain6=""+Main6ToMain3.getStringExtra("regFromMain6");
-        Log.d(TAG, "regFromMain6:"+regFromMain6);
+        phoneNewFromMain6=""+Main6ToMain3.getStringExtra("regFromMain6");
+        Log.d(TAG, "phoneNewFromMain6:"+phoneNewFromMain6);
 
-        //если был то пишем Hello вместо такого же слова которое бралось из MainActivity (лист с Заставкой)
-        if (regFromMain6.equals("Hello")){
-            registration="Hello";
-            Log.d(TAG, "registrationNEW:"+regFromMain6);
+        //если был то пишем phoneNew=phoneNewFromMain6
+        if (!phoneNewFromMain6.equals("null")){
+            phoneNew=phoneNewFromMain6;
+            Log.d(TAG, "phoneNewNEW:"+phoneNew);
         }
 
         // проверка был ли переход на эту страницу из Main3Activity после запрета регистрации на уже сформировавийся маршрут (STOPODER)
@@ -40,44 +41,48 @@ public class MainUserNewOne3 extends AppCompatActivity {
         regFromMain3=""+Main3ToMainUserNewOne3.getStringExtra("regFromMain3");
         Log.d(TAG, "regFromMain3:"+regFromMain3);
 
-        //если был то пишем Hello вместо такого же слова которое бралось из MainActivity (лист с Заставкой)
-        if (regFromMain3.equals("Hello")){
-            registration="Hello";
-            Log.d(TAG, "registrationAfterSTOPODER:"+regFromMain3);
+        //если был то присваеваем phoneNew (лист с Заставкой)
+        if (!regFromMain3.equals("null")){
+            phoneNew=regFromMain3;
+            Log.d(TAG, "phoneNewAfterSTOPODER:"+phoneNew);
         }
 
     }
     public void IgarkaCharter(View view){
-        Intent mainUserNewOne4 = new Intent(this,MainUserNewOne4.class);
-        mainUserNewOne4.putExtra( "refCity", "ИгаркаЧ" );
+        Intent mainUserNewOne3TomainUserNewOne4 = new Intent(this,MainUserNewOne4.class);
+        mainUserNewOne3TomainUserNewOne4.putExtra( "refCity", "ИгаркаЧ" );
 
         //транзит в Main3Activity
-        mainUserNewOne4.putExtra("registration",registration);
-        startActivity(mainUserNewOne4);
+        mainUserNewOne3TomainUserNewOne4.putExtra("phoneNew",phoneNew);
+        startActivity(mainUserNewOne3TomainUserNewOne4);
+        Log.d(TAG, "IgarkaCharter:"+phoneNew);
     }
     public void Igarka(View view){
-        Intent mainUserNewOne4 = new Intent(this,MainUserNewOne4.class);
-        mainUserNewOne4.putExtra( "refCity", "Игарка" );
+        Intent mainUserNewOne3TomainUserNewOne4 = new Intent(this,MainUserNewOne4.class);
+        mainUserNewOne3TomainUserNewOne4.putExtra( "refCity", "Игарка" );
 
         //транзит в Main3Activity
-        mainUserNewOne4.putExtra("registration",registration);
-        startActivity(mainUserNewOne4);
+        mainUserNewOne3TomainUserNewOne4.putExtra("phoneNew",phoneNew);
+        startActivity(mainUserNewOne3TomainUserNewOne4);
+        Log.d(TAG, "Igarka:"+phoneNew);
     }
     public void Turyxansk(View view){
-        Intent mainUserNewOne4 = new Intent(this,MainUserNewOne4.class);
-        mainUserNewOne4.putExtra( "refCity", "Туруханск" );
+        Intent mainUserNewOne3TomainUserNewOne4 = new Intent(this,MainUserNewOne4.class);
+        mainUserNewOne3TomainUserNewOne4.putExtra( "refCity", "Туруханск" );
 
         //транзит в Main3Activity
-        mainUserNewOne4.putExtra("registration",registration);
-        startActivity(mainUserNewOne4);
+        mainUserNewOne3TomainUserNewOne4.putExtra("phoneNew",phoneNew);
+        startActivity(mainUserNewOne3TomainUserNewOne4);
+        Log.d(TAG, "Turyxansk:"+phoneNew);
     }
     public void SeveroEniseisk(View view){
-        Intent mainUserNewOne4 = new Intent(this,MainUserNewOne4.class);
-        mainUserNewOne4.putExtra( "refCity", "Северо-Енисейск" );
+        Intent mainUserNewOne3TomainUserNewOne4 = new Intent(this,MainUserNewOne4.class);
+        mainUserNewOne3TomainUserNewOne4.putExtra( "refCity", "Северо-Енисейск" );
 
         //транзит в Main3Activity
-        mainUserNewOne4.putExtra("registration",registration);
-        startActivity(mainUserNewOne4);
+        mainUserNewOne3TomainUserNewOne4.putExtra("phoneNew",phoneNew);
+        startActivity(mainUserNewOne3TomainUserNewOne4);
+        Log.d(TAG, "SeveroEniseisk:"+phoneNew);
     }
     
     // Блокировка кнопки Back!!!! :)))

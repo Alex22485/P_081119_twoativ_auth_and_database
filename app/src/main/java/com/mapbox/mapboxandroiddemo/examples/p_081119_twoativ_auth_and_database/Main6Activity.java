@@ -596,8 +596,8 @@ public class Main6Activity extends AppCompatActivity {
             Log.d(TAG, "Заявка удалена");
 
             Intent Main6ToMain3  = new Intent(this,MainUserNewOne3.class);
-            // отправляем Hello в для считывания в Main3Activity это вместо Hello которое берется из MainActivity(заставка)
-            Main6ToMain3.putExtra("regFromMain6","Hello");
+            // отправляем phoneNew в Main3Activity
+            Main6ToMain3.putExtra("regFromMain6",phoneNew);
             startActivity(Main6ToMain3);
         }
         }
