@@ -948,7 +948,7 @@ public class Main3Activity extends AppCompatActivity {
     }
     // Переход на лист выбора точки сбора
     public void onBackList() {
-        //Переход на лист регистрации заявки
+        //Переходд на лист регистрации заявки
         Intent Main3ToMainUserNewOne3 = new Intent( this,MainUserNewOne3.class );
         // отправляем phoneNew в Main3Activity
         Main3ToMainUserNewOne3.putExtra("regFromMain3",phoneNew);
