@@ -11,228 +11,100 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text=""
-    android:textSize="10sp"/>
+    android:textSize="10dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="- Привезём к самолету"
-        android:gravity="center"
+        android:text=" 1. Нужно в Аэропорт?"
         android:textColor="#EA0A1D"
-        android:textSize="23sp"/>
+        android:textSize="20sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=" Выбери такси и жди в указанной точке"
+        android:textColor="#201F1F"
+        android:textSize="15sp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
-        android:textSize="10sp"/>
+        android:textSize="5dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="- Отвезём домой"
-        android:gravity="center"
+        android:text=" 2. Едешь из аэропорта?"
         android:textColor="#EA0A1D"
-        android:textSize="23sp"/>
+        android:textSize="20sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=" Можешь выйти на любой автобусной остановке "
+        android:textColor="#201F1F"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=" выбранного маршрута"
+        android:textColor="#201F1F"
+        android:textSize="15sp"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
-        android:textSize="10sp"/>
+        android:textSize="95dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="218dp">
+        android:layout_height="70dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="Здесь будет КАРТИНКА"
+            android:text="Такси формируется под конкретный самолет"
             android:textColor="#36C316"
             android:textSize="20sp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/PriceList"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:text=""
+        android:textSize="155dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="  Красноярск --- Аэропорт"
-                android:textColor="#28A1C6"
-                android:textSize="17sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="   "
-                android:textSize="10sp"/>
-
-            <TextView
-                android:id="@+id/PriceKrasnoyarsk"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="300"
-                android:textColor="#D73E0009"
-                android:textSize="17sp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="  рублей"
-                android:textColor="#D73E0009"
-                android:textSize="17sp"/>
-
-        </LinearLayout>
-
-
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="  Красноярск --- Сосновоборск"
-            android:textColor="#28A1C6"
-            android:textSize="17sp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="   "
-            android:textSize="10sp"/>
-
-        <TextView
-            android:id="@+id/PriceSosnovoborsk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="400"
-            android:textColor="#D73E0009"
-            android:textSize="17sp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="  рублей"
-            android:textColor="#D73E0009"
-            android:textSize="17sp"/>
-    </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="  Красноярск --- Ачинск"
-                android:textColor="#28A1C6"
-                android:textSize="17sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="   "
-                android:textSize="10sp"/>
-
-            <TextView
-                android:id="@+id/PriceAchinsk"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="700"
-                android:textColor="#D73E0009"
-                android:textSize="17sp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="  рублей"
-                android:textColor="#D73E0009"
-                android:textSize="17sp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="  Красноярск --- Канск"
-                android:textColor="#28A1C6"
-                android:textSize="17sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="   "
-                android:textSize="10sp"/>
-
-            <TextView
-                android:id="@+id/PriceKansk"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="700"
-                android:textColor="#D73E0009"
-                android:textSize="17sp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="  рублей"
-                android:textColor="#D73E0009"
-                android:textSize="17sp"/>
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="   "
-            android:textSize="15sp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="13sp"
-                android:text="продолжить"
+                android:textSize="20sp"
+                android:textAllCaps="false"
+                android:text="посмотреть варианты маршрутов"
                 android:onClick="mainUserNewOne3"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="  "
-                android:layout_weight="1"
-                android:textSize="5sp"/>
+                android:textSize="15dp"/>
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="13sp"
-                android:text="закрыть приложение"/>
+                android:textSize="20sp"
+                android:textAllCaps="false"
+                android:text="Отмена"/>
 
         </LinearLayout>
-
-
     </LinearLayout>
-
-
-
-
-</LinearLayout>

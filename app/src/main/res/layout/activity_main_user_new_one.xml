@@ -11,26 +11,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
-        android:textSize="10sp"/>
+        android:textSize="10dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Летаете маршрутом?"
+        android:text="Летаешь ч/з Аэропорт"
         android:gravity="center"
         android:textColor="#3E180B"
-        android:textSize="23sp"/>
+        android:textSize="20sp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
+        android:textSize="3dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Хворостовского (Красноярск)?"
+        android:gravity="center"
+        android:textColor="#3E180B"
         android:textSize="20sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="15dp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Красноярск-Игарка-Красноярск"
+            android:text="Посмотри, может эти марщрутные такси "
             android:gravity="center"
             android:textColor="#C62840"
             android:textSize="15sp"/>
@@ -38,11 +52,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
-        android:textSize="20sp"/>
+        android:textSize="5dp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Красноярск-Северо-Енисейск-Красноярск"
+        android:text="удобны для тебя!"
         android:gravity="center"
         android:textColor="#C62840"
         android:textSize="15sp"/>
@@ -50,11 +64,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
-        android:textSize="20sp"/>
+        android:textSize="25dp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Красноярск-Туруханск-Красноярск"
+        android:text="Зарезервируй место!"
+        android:gravity="center"
+        android:textColor="#C62840"
+        android:textSize="25sp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="5dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Позаботься о своем пути вместе с"
         android:gravity="center"
         android:textColor="#C62840"
         android:textSize="15sp"/>
@@ -62,36 +89,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
-        android:textSize="30sp"/>
+        android:textSize="15dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Да                         Нет"
+        android:text="time to go"
         android:gravity="center"
-        android:textColor="#093E04"
-        android:textSize="23sp"/>
-
+        android:textColor="#C62840"
+        android:textSize="35sp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="|                               |"
-        android:gravity="center"
-        android:textColor="#C6B628"
-        android:textSize="23sp"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="V                             V"
-        android:gravity="center"
-        android:textColor="#C6B628"
-        android:textSize="23sp"/>
+        android:text=""
+        android:textSize="5dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
-        android:textSize="5sp"/>
+        android:textSize="245sp"/>
 
 <LinearLayout
     android:layout_width="match_parent"
