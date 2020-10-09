@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ViewMapSosnovoborsk">
+
+    <TextView
+        android:id="@+id/mainText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Маршруты г.Сосновоборск"
+        android:textSize="20sp"
+        android:textColor="#5C2B5B">
+    </TextView>
+
+    <Button
+        android:id="@+id/OneMap"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:text="1. Аэропорт-Сосновоборск"
+        android:textSize="17sp"
+        android:textColor="@color/colorBlue"
+        android:layout_below="@+id/mainText"
+        android:layout_marginTop="5dp"
+        android:textAllCaps="false">
+    </Button>
+
+    <TextView
+        android:id="@+id/TwoText"
+        android:layout_marginLeft="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="- Место посадки,- парковка Р2"
+        android:textSize="15sp"
+        android:textColor="@color/colorBlack"
+        android:layout_below="@+id/OneMap">
+    </TextView>
+
+    <TextView
+        android:id="@+id/TreeText"
+        android:layout_marginLeft="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="- Место высадки,- любая автобусная остановка маршрута"
+        android:textSize="15sp"
+        android:textColor="@color/colorBlack"
+        android:layout_below="@+id/TwoText">
+    </TextView>
+
+    <Button
+        android:id="@+id/TwoMap"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:text="1. Сосновоборск-Аэропорт"
+        android:textSize="17sp"
+        android:textColor="@color/colorBlue"
+        android:layout_below="@+id/TreeText"
+        android:textAllCaps="false">
+    </Button>
+
+    <TextView
+        android:id="@+id/FourText"
+        android:layout_marginLeft="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="- Место посадки,- выбранный вами пункт сбора"
+        android:textSize="15sp"
+        android:textColor="@color/colorBlack"
+        android:layout_below="@+id/TwoMap">
+    </TextView>
+
+    <TextView
+        android:id="@+id/FiveText"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Стоимость проезда 400 руб/человек"
+        android:textSize="15sp"
+        android:textColor="#DF0909"
+        android:layout_below="@+id/FourText"
+        android:layout_marginTop="10dp">
+    </TextView>
+
+    <Button
+        android:id="@+id/TreeBtn"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:layout_above="@+id/FourBtn"
+        android:layout_marginBottom="5dp"
+        android:text="Перейти к оформлению заявки"
+        android:textAllCaps="false"
+        android:textColor="#10A512"
+        android:textSize="17sp"
+        android:onClick="goToOder">
+
+    </Button>
+
+    <Button
+        android:id="@+id/FourBtn"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:onClick="goBack"
+        android:text="Назад"
+        android:textAllCaps="false"
+        android:textColor="@color/colorNew"
+        android:textSize="17sp">
+
+    </Button>
+
+</RelativeLayout>

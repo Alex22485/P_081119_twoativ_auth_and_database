@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ViewMapKrasnoyarsk">
+
+    <TextView
+        android:id="@+id/mainText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Маршруты г.Красноярск"
+        android:textSize="20sp"
+        android:textColor="#5C2B5B">
+    </TextView>
+
+    <Button
+        android:id="@+id/OneMap"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:text="1. Аэропорт-КрасТэц"
+        android:textSize="17sp"
+        android:textColor="@color/colorBlue"
+        android:layout_below="@+id/mainText"
+        android:layout_marginTop="5dp"
+        android:textAllCaps="false">
+    </Button>
+    <Button
+        android:id="@+id/TwoMap"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:text="2. Аэропорт-Щорса"
+        android:textSize="17sp"
+        android:textColor="@color/colorBlue"
+        android:layout_below="@+id/OneMap"
+        android:textAllCaps="false">
+    </Button>
+    <Button
+        android:id="@+id/TreeMap"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:text="3. Аэропорт-Северный"
+        android:textSize="17sp"
+        android:textColor="@color/colorBlue"
+        android:layout_below="@+id/TwoMap"
+        android:textAllCaps="false">
+    </Button>
+    <Button
+        android:id="@+id/FourMap"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:text="4. Аэропорт-Ветлужанка"
+        android:textSize="17sp"
+        android:textColor="@color/colorBlue"
+        android:layout_below="@+id/TreeMap"
+        android:textAllCaps="false">
+    </Button>
+
+    <TextView
+        android:id="@+id/TwoText"
+        android:layout_marginLeft="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="- Место посадки,- парковка Р2"
+        android:textSize="15sp"
+        android:textColor="@color/colorBlack"
+        android:layout_below="@+id/FourMap"
+        android:layout_marginTop="1dp">
+    </TextView>
+
+    <TextView
+        android:id="@+id/TreeText"
+        android:layout_marginLeft="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="- Место высадки,- любая автобусная остановка маршрута"
+        android:textSize="15sp"
+        android:textColor="@color/colorBlack"
+        android:layout_below="@+id/TwoText"
+        android:layout_marginTop="1dp">
+    </TextView>
+
+    <Button
+        android:id="@+id/FiveMap"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:text="1. КрасТэц-Аэропорт"
+        android:textSize="17sp"
+        android:textColor="@color/colorBlue"
+        android:layout_below="@+id/TreeText"
+        android:textAllCaps="false">
+    </Button>
+    <Button
+        android:id="@+id/SixMap"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:text="2. Щорса-Аэропорт"
+        android:textSize="17sp"
+        android:textColor="@color/colorBlue"
+        android:layout_below="@+id/FiveMap"
+        android:textAllCaps="false">
+    </Button>
+    <Button
+        android:id="@+id/SevenMap"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:text="3. Северный-Аэропорт"
+        android:textSize="17sp"
+        android:textColor="@color/colorBlue"
+        android:layout_below="@+id/SixMap"
+        android:textAllCaps="false">
+    </Button>
+    <Button
+        android:id="@+id/EightMap"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:text="4. Ветлужанка-Аэропорт"
+        android:textSize="17sp"
+        android:textColor="@color/colorBlue"
+        android:layout_below="@+id/SevenMap"
+        android:textAllCaps="false">
+    </Button>
+
+    <TextView
+    android:id="@+id/FourText"
+    android:layout_marginLeft="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="- Место посадки,- выбранный вами пункт сбора"
+    android:textSize="15sp"
+    android:textColor="@color/colorBlack"
+    android:layout_below="@+id/EightMap">
+</TextView>
+
+    <TextView
+        android:id="@+id/FiveText"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Стоимость проезда 300 руб/человек"
+        android:textSize="15sp"
+        android:textColor="#DF0909"
+        android:layout_below="@+id/FourText"
+        android:layout_marginTop="10dp">
+    </TextView>
+
+    <Button
+        android:id="@+id/NineMap"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:layout_above="@+id/TenMap"
+        android:layout_marginBottom="5dp"
+        android:text="Перейти к оформлению заявки"
+        android:textAllCaps="false"
+        android:textColor="#10A512"
+        android:textSize="17sp"
+        android:onClick="goToOder">
+
+    </Button>
+
+    <Button
+        android:id="@+id/TenMap"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:onClick="goBack"
+        android:text="Назад"
+        android:textAllCaps="false"
+        android:textColor="@color/colorNew"
+        android:textSize="17sp"
+        >
+
+    </Button>
+
+
+
+
+
+</RelativeLayout>
