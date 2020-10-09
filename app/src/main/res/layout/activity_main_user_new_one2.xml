@@ -23,7 +23,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=" Выбери такси и жди в указанной точке"
+        android:text=" Выбери маршрут и жди в указанной точке"
         android:textColor="#201F1F"
         android:textSize="15sp"/>
 
@@ -36,14 +36,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=" 2. Едешь из аэропорта?"
+        android:text=" 2. Едешь из Аэропорта?"
         android:textColor="#EA0A1D"
         android:textSize="20sp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=" Можешь выйти на любой автобусной остановке "
+        android:text=" Выходи на любой автобусной остановке "
         android:textColor="#201F1F"
         android:textSize="15sp"/>
 
@@ -58,27 +58,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
-        android:textSize="95dp"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="70dp">
+        android:textSize="75dp"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Такси формируется под конкретный самолет"
-            android:textColor="#36C316"
-            android:textSize="20sp" />
-    </LinearLayout>
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:text="Такси 'time to go'"
+    android:textColor="#36C316"
+    android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="под Ваш рейс самолета"
+        android:textColor="#36C316"
+        android:textSize="25sp" />
+
+    <Button
+        android:id="@+id/BtnDetailed"
+        style="@android:style/Widget.Button.Inset"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_gravity="center"
+        android:drawableLeft="@android:drawable/arrow_down_float"
+        android:onClick="listCityFly"
+        android:text="список рейсов"
+        android:textAllCaps="false"
+        android:textColor="#AF1010"
+        android:textSize="15sp"
+        android:visibility="visible" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
-        android:textSize="155dp"/>
+        android:textSize="100dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -91,13 +109,13 @@
                 android:textSize="20sp"
                 android:textAllCaps="false"
                 android:text="посмотреть варианты маршрутов"
-                android:onClick="mainUserNewOne3"/>
+                android:onClick="listCityRoad"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="  "
-                android:textSize="15dp"/>
+                android:textSize="10dp"/>
 
             <Button
                 android:layout_width="match_parent"

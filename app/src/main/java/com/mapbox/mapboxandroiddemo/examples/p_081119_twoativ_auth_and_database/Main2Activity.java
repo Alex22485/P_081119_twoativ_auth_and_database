@@ -203,7 +203,7 @@ public class Main2Activity extends AppCompatActivity {
                 IneternetYES="Out";
                 IneternetYesNo();
             }
-            },30000);
+            },40000);
 
 
         //050720 реализация шифрования

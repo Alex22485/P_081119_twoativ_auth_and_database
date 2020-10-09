@@ -187,7 +187,7 @@ public class Main3Activity extends AppCompatActivity {
             phoneNew=Main3Activity.getStringExtra("phoneNew");
 
             // автоматическая регистрация ранее сформированной заявки после авторизации
-            //задержка чтобы успел записаться NO в БД Заявки
+            //задержка чтобы успел записаться NO в БД Заявки из другого кода
             Handler handler1 = new Handler();
             handler1.postDelayed(new Runnable() {
                 @Override

@@ -44,7 +44,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Посмотри, может эти марщрутные такси "
+            android:text="Посмотри, может эти маршрутные такси "
             android:gravity="center"
             android:textColor="#C62840"
             android:textSize="15sp"/>
@@ -81,10 +81,19 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Позаботься о своем пути вместе с"
+        android:text="Позаботься о своем пути за ранее"
         android:gravity="center"
         android:textColor="#C62840"
         android:textSize="15sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="вместе с"
+        android:gravity="center"
+        android:textColor="#C62840"
+        android:textSize="15sp"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -108,7 +117,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
-        android:textSize="245sp"/>
+        android:textSize="150sp"/>
 
 <LinearLayout
     android:layout_width="match_parent"
