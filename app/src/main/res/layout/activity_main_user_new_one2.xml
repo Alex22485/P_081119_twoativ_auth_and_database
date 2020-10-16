@@ -65,7 +65,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:gravity="center"
-    android:text="Такси 'time to go'"
+    android:text="Маршрутное такси"
     android:textColor="#36C316"
     android:textSize="25sp" />
 

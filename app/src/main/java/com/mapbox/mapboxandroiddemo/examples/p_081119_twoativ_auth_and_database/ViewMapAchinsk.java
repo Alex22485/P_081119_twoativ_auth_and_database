@@ -19,7 +19,7 @@ public class ViewMapAchinsk extends AppCompatActivity {
     }
 
     public void goToOder (View view){
-        Intent goToOder = new Intent(this,MainUserNewOne3.class);
+        Intent goToOder = new Intent(this,ViewZakazOne.class);
         startActivity(goToOder);
     }
 
