@@ -65,11 +65,6 @@ public class MainUserNewOne2 extends AppCompatActivity {
                         goToRefList();
                     }
                 });
-//                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        dialog.dismiss();
-//                    }
-//                });
         mAlertDialog.create();
         // Showing Alert Message
         mAlertDialog.show();

@@ -19,7 +19,7 @@ public class ViewMapKansk extends AppCompatActivity {
     }
 
     public void goToOder (View view){
-        Intent goToOder = new Intent(this,ViewZakazOne.class);
+        Intent goToOder = new Intent(this,Zakaz1.class);
         startActivity(goToOder);
     }
 }

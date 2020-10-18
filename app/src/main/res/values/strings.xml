@@ -23,4 +23,7 @@
     <string-array name="day_of_weeks">
         <item>понедельник</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="Onefragment">Первый фрагмент</string>
+    <string name="Twofragment">второй фрагмент</string>
 </resources>
