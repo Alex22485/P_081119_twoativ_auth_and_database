@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 public class FragmentZakaz1 extends Fragment {
 
     TextView text2;
+    Button button1;
     String [] listCityTaxi= {"Красноярск","Сосновоборск","Ачинск","Канск","Лесосибирск"};
     String refCityTaxi;
     String refInFromCity;
@@ -32,10 +34,9 @@ public class FragmentZakaz1 extends Fragment {
         // Inflate the layout for this fragment
        //return inflater.inflate(R.layout.fragment_zakaz1, container, false);
 
-        View view = inflater.inflate(R.layout.fragment_zakaz1,
-                container, false);
-        Button button1 = (Button) view.findViewById(R.id.button1);
-        text2= (TextView) view.findViewById(R.id.text1);
+        View view = inflater.inflate(R.layout.fragment_zakaz1,container, false);
+        button1= view.findViewById(R.id.button1);
+        text2= view.findViewById(R.id.text1);
         button1.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -82,6 +83,9 @@ public class FragmentZakaz1 extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                       refInFromCity=InFromCity[which];
+                      //goToFr2();
+
+                      toGSend();
 
                     }
                 });
@@ -90,5 +94,22 @@ public class FragmentZakaz1 extends Fragment {
         // Showing Alert Message
         mAlertDialog.show();
 
-    };
+    }
+
+    public void goToFr2(){
+        FragmentZakaz2 ft=new FragmentZakaz2();
+        FragmentTransaction fr= getFragmentManager().beginTransaction();
+        fr.replace(R.id.container,ft);
+        fr.commit();
+    }
+
+    public void toGSend(){
+        Bundle bundle =new Bundle();
+        bundle.putString("key",refInFromCity);
+        FragmentZakaz2 ft2=new FragmentZakaz2();
+        ft2.setArguments(bundle);
+        FragmentTransaction fr2=getFragmentManager().beginTransaction();
+        fr2.replace(R.id.container,ft2);
+        fr2.commit();
+    }
 }

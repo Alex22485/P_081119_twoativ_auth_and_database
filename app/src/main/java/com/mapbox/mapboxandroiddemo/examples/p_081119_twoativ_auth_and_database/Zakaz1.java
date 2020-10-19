@@ -12,6 +12,9 @@ public class Zakaz1 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zakaz1);
+
+        toG();
+
     }
 
 public void toGo(View view){
@@ -20,4 +23,12 @@ public void toGo(View view){
     fr.replace(R.id.container,ft);
     fr.commit();
 }
+
+    public void toG(){
+        FragmentZakaz1 ft=new FragmentZakaz1();
+        FragmentTransaction fr= getSupportFragmentManager().beginTransaction();
+        fr.replace(R.id.container,ft);
+        fr.commit();
+    }
+
 }
