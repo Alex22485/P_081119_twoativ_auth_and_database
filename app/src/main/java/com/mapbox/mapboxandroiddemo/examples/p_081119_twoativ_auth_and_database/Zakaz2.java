@@ -22,8 +22,8 @@ public class Zakaz2 extends AppCompatActivity {
     // пункты сбора Красноярск
     String[] KrasnojarskOneMap={"Кинотеатр Металлург","Автобусный пер","Пикра","Мебельная фабрика"};
     String[] KrasnojarskTwoMap = {"ДК КрасТЭЦ","Аэрокосмическая академия","Торговый центр","Предмостная пл"};
-    String[] KrasnojarskTreeMap = {"xxx","xxx","xxx","xxx"};
-    String[] KrasnojarskFourMap = {"yyy","yyy","yyy","yyy"};
+    String[] KrasnojarskTreeMap = {"XXX","xxx","xxx","xxx"};
+    String[] KrasnojarskFourMap = {"YYY","yyy","yyy","yyy"};
     String[] KrasnojarskFiveMap = {"uuu","uuu","Тuuu","uuu"};
 
     // пункты сбора других городов
@@ -32,12 +32,16 @@ public class Zakaz2 extends AppCompatActivity {
     // пункт сбора из Аэропорта
     String[] FromAirport={"Парковка Р2"};
 
+
     String[] RefList1;
     String[] RefList2;
     String[] RefList3;
     String[] RefList4;
     String[] RefList5;
 
+    // выбранный маршрут
+    String RefMap;
+    // выбранная точка сбора
     String RefPoint;
 
 
@@ -101,9 +105,6 @@ public class Zakaz2 extends AppCompatActivity {
             RefList3=KrasnojarskTreeMap;
             RefList4=KrasnojarskFourMap;
             RefList5=KrasnojarskFiveMap;
-
-
-
     }
 
         if(refFromInCity.equals("Аэропорт->Красноярск")){
@@ -202,6 +203,10 @@ public class Zakaz2 extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         RefPoint=RefList1[which];
+                        RefMap=button1.getText().toString();
+
+                        // идем обратно в Zakaz1
+                        backZakaz2ToZakaz1();
 
                     }
                 });
@@ -221,6 +226,11 @@ public class Zakaz2 extends AppCompatActivity {
 
                         RefPoint=RefList2[which];
 
+                        RefMap=button2.getText().toString();
+
+                        // идем обратно в Zakaz1
+                        backZakaz2ToZakaz1();
+
                     }
                 });
         mAlertDialog.create();
@@ -238,6 +248,11 @@ public class Zakaz2 extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         RefPoint=RefList3[which];
+
+                        RefMap=button3.getText().toString();
+
+                        // идем обратно в Zakaz1
+                        backZakaz2ToZakaz1();
 
                     }
                 });
@@ -257,6 +272,11 @@ public class Zakaz2 extends AppCompatActivity {
 
                         RefPoint=RefList4[which];
 
+                        RefMap=button4.getText().toString();
+
+                        // идем обратно в Zakaz1
+                        backZakaz2ToZakaz1();
+
                     }
                 });
         mAlertDialog.create();
@@ -275,10 +295,37 @@ public class Zakaz2 extends AppCompatActivity {
 
                         RefPoint=RefList5[which];
 
+                        RefMap=button5.getText().toString();
+
+                        // идем обратно в Zakaz1
+                        backZakaz2ToZakaz1();
+
                     }
                 });
         mAlertDialog.create();
         mAlertDialog.show();
 
+    }
+
+    public void backZakaz2ToZakaz1(){
+        Intent backZakaz2ToZakaz1= new Intent(this,Zakaz1.class);
+
+        // передаем Маршрут и пункт сбора в Zakaz1
+        backZakaz2ToZakaz1.putExtra("RefMap",RefMap);
+        backZakaz2ToZakaz1.putExtra("RefPoint",RefPoint);
+        startActivity(backZakaz2ToZakaz1);
+    }
+
+    public void back(View view){
+        // передаем null в Zakaz1
+        Intent backZakaz2ToZakaz1= new Intent(this,Zakaz1.class);
+        backZakaz2ToZakaz1.putExtra("RefMap","null");
+        backZakaz2ToZakaz1.putExtra("RefPoint","null");
+        startActivity(backZakaz2ToZakaz1);
+    }
+
+    // Блокировка кнопки Back!!!! :)))
+    @Override
+    public void onBackPressed(){
     }
 }

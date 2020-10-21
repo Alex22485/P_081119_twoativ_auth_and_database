@@ -82,7 +82,7 @@
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/button2"
         app:layout_constraintTop_toBottomOf="@+id/button2"
-        android:onClick="button2"
+        android:onClick="button3"
         android:visibility="visible"/>
 
     <Button
@@ -109,7 +109,7 @@
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/button3"
         app:layout_constraintTop_toBottomOf="@+id/button3"
-        android:onClick="button2"
+        android:onClick="button4"
         android:visibility="visible"/>
 
     <Button
@@ -152,6 +152,18 @@
         app:layout_constraintTop_toTopOf="@+id/button5"
         android:onClick="map5"
         android:visibility="visible"/>
+
+    <Button
+        android:id="@+id/BtnBack"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Назад"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:onClick="back"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

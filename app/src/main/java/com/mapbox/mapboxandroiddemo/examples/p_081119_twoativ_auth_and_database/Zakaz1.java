@@ -17,14 +17,25 @@ public class Zakaz1 extends AppCompatActivity {
 
     private static final String TAG ="Zakaz1" ;
 
+
+
     Button button1,button2,button3,button4;
     TextView Right1,Right2,Right3,Right4,Right5;
     TextView No1,No2,No3,No4,No5;
     TextView OderRight;
 
+    // выбранный маршрут
+    String RefMap;
+    // выбранная точка сбора
+    String RefPoint;
+
+    // выбранный рейс самолета (город)
+    String RefplaneCity;
+
     String [] listCityTaxi= {"Красноярск","Сосновоборск","Ачинск","Канск","Лесосибирск"};
     String refCityTaxi,refFromInCity;
     String [] listCityFromIn= {};
+    String [] planeCity={"Игарка","Северо-Енисейск","Новосибирск","Иркутск","Омск","Екатеринбург",};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,21 +58,53 @@ public class Zakaz1 extends AppCompatActivity {
         No5=findViewById(R.id.No5);
         OderRight=findViewById(R.id.OderRight);
 
-        button2.setVisibility(View.INVISIBLE);
-        button3.setVisibility(View.INVISIBLE);
-        button4.setVisibility(View.INVISIBLE);
-        Right1.setVisibility(View.INVISIBLE);
-        Right2.setVisibility(View.INVISIBLE);
-        Right3.setVisibility(View.INVISIBLE);
-        Right4.setVisibility(View.INVISIBLE);
-        Right5.setVisibility(View.INVISIBLE);
-        No2.setVisibility(View.INVISIBLE);
-        No3.setVisibility(View.INVISIBLE);
-        No4.setVisibility(View.INVISIBLE);
-        No5.setVisibility(View.INVISIBLE);
-        OderRight.setVisibility(View.INVISIBLE);
+        // Проверка был ли переход сюда с листа Zakaz2
+        Intent backZakaz2ToZakaz1=getIntent();
+        RefMap=""+backZakaz2ToZakaz1.getStringExtra("RefMap");
+        RefPoint=""+backZakaz2ToZakaz1.getStringExtra("RefPoint");
+
+        // переход был
+        if (!RefMap.equals("null")){
+
+            button1.setEnabled(true);
+            No1.setVisibility(View.INVISIBLE);
+            No2.setVisibility(View.INVISIBLE);
+            No3.setVisibility(View.VISIBLE);
+            No4.setVisibility(View.VISIBLE);
+            No5.setVisibility(View.VISIBLE);
+            Right1.setVisibility(View.VISIBLE);
+            Right2.setVisibility(View.VISIBLE);
+            Right3.setVisibility(View.INVISIBLE);
+            Right4.setVisibility(View.INVISIBLE);
+            Right5.setVisibility(View.INVISIBLE);
+            Log.d(TAG, ""+RefMap);
+
+            OderRight.setText(RefMap+RefPoint);
+
+            //указать рейс самолета
+            setPlain();
+        }
+
+        // переход  Не был
+        else {
+        Log.d(TAG, ""+RefMap);
+
+            button2.setVisibility(View.INVISIBLE);
+            button3.setVisibility(View.INVISIBLE);
+            button4.setVisibility(View.INVISIBLE);
+            Right1.setVisibility(View.INVISIBLE);
+            Right2.setVisibility(View.INVISIBLE);
+            Right3.setVisibility(View.INVISIBLE);
+            Right4.setVisibility(View.INVISIBLE);
+            Right5.setVisibility(View.INVISIBLE);
+            No2.setVisibility(View.INVISIBLE);
+            No3.setVisibility(View.INVISIBLE);
+            No4.setVisibility(View.INVISIBLE);
+            No5.setVisibility(View.INVISIBLE);
+            OderRight.setVisibility(View.INVISIBLE);
 
         dinamicView();
+        }
 
     }
 
@@ -150,7 +193,7 @@ public class Zakaz1 extends AppCompatActivity {
         listCityFromIn= new String[]{refCityTaxi + "->Аэропорт","Аэропорт->"+refCityTaxi};
 
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
-        mAlertDialog.setTitle("Выбери город");
+        mAlertDialog.setTitle("Куда поедем?");
         mAlertDialog
                 .setItems(listCityFromIn, new DialogInterface.OnClickListener() {
                     @Override
@@ -174,9 +217,30 @@ public class Zakaz1 extends AppCompatActivity {
         Intent Zakaz1ToZakaz2=new Intent(this,Zakaz2.class);
         Zakaz1ToZakaz2.putExtra("refFromInCity",refFromInCity);
         startActivity(Zakaz1ToZakaz2);
+    }
 
+    public void setPlain(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
+        mAlertDialog.setTitle("рейс самолета");
+        mAlertDialog
+                .setItems(planeCity, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
+                        RefplaneCity=planeCity[which];
 
+                        No3.setVisibility(View.INVISIBLE);
+                        Right3.setVisibility(View.VISIBLE);
+                        
+                    }
+                });
+        mAlertDialog.create();
+        mAlertDialog.show();
+    }
+
+    // Блокировка кнопки Back!!!! :)))
+    @Override
+    public void onBackPressed(){
     }
 
 }
