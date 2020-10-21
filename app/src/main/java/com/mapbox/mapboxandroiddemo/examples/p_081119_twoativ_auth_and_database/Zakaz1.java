@@ -231,7 +231,7 @@ public class Zakaz1 extends AppCompatActivity {
 
                         No3.setVisibility(View.INVISIBLE);
                         Right3.setVisibility(View.VISIBLE);
-                        
+
                     }
                 });
         mAlertDialog.create();
