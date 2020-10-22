@@ -4,6 +4,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +13,11 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
+
+import java.util.Calendar;
 
 public class Zakaz1 extends AppCompatActivity {
 
@@ -35,7 +41,34 @@ public class Zakaz1 extends AppCompatActivity {
     String [] listCityTaxi= {"Красноярск","Сосновоборск","Ачинск","Канск","Лесосибирск"};
     String refCityTaxi,refFromInCity;
     String [] listCityFromIn= {};
-    String [] planeCity={"Игарка","Северо-Енисейск","Новосибирск","Иркутск","Омск","Екатеринбург",};
+    String [] planeCity={"Игарка","Северо-Енисейск","Новосибирск","Иркутск","Омск","Екатеринбург","Нет нужного города"};
+
+    // для заголовка Alert при выборе рейса самолета
+    String [] refOne = {"Щорса-Аэропорт","КрасТэц-Аэропорт","Северный-Аэропорт","ЖД вокзал-Аэропорт","Ветлужанка-Аэропорт","Сосновоборск->Аэропорт",
+            "Ачинск->Аэропорт","Канск->Аэропорт","Лесосибирск->Аэропорт"};
+    String [] refTwo = {"Аэропорт-Щорса","Аэропорт-КрасТэц","Аэропорт-Северный","Аэропорт-ЖД вокзал","Аэропорт-Ветлужанка","Аэропорт->Сосновоборск",
+            "Аэропорт->Ачинск","Аэропорт->Канск","Аэропорт->Лесосибирск"};
+    String AlertIn="В какой город вы летите из Красноярска?";
+    String AlertFrom="Из какого города вы летите в Красноярск?";
+    String RefAlertTitle;
+
+
+    // показ календаря
+    Calendar calendar;
+    DatePickerDialog datePickerDialog;
+    int year;
+    int month;
+    int dayOfmonth;
+
+    //выбранная дата
+    String Calend;
+
+    String time;
+
+    //показ часов
+    TimePickerDialog timePickerDialog;
+    int hourOfDay;
+    int minute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +112,6 @@ public class Zakaz1 extends AppCompatActivity {
             Right5.setVisibility(View.INVISIBLE);
             Log.d(TAG, ""+RefMap);
 
-            OderRight.setText(RefMap+RefPoint);
 
             //указать рейс самолета
             setPlain();
@@ -173,7 +205,7 @@ public class Zakaz1 extends AppCompatActivity {
 
 
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
-        mAlertDialog.setTitle("Выбери город");
+        mAlertDialog.setTitle("Выберите город");
         mAlertDialog
                 .setItems(listCityTaxi, new DialogInterface.OnClickListener() {
                     @Override
@@ -193,7 +225,7 @@ public class Zakaz1 extends AppCompatActivity {
         listCityFromIn= new String[]{refCityTaxi + "->Аэропорт","Аэропорт->"+refCityTaxi};
 
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
-        mAlertDialog.setTitle("Куда поедем?");
+        mAlertDialog.setTitle("Укажите направление");
         mAlertDialog
                 .setItems(listCityFromIn, new DialogInterface.OnClickListener() {
                     @Override
@@ -203,25 +235,65 @@ public class Zakaz1 extends AppCompatActivity {
 
                         No1.setVisibility(View.INVISIBLE);
                         Right1.setVisibility(View.VISIBLE);
-                        button2.setEnabled(true);
 
-                        //выбор маршрута
-                        Zakaz1ToZakaz2();
+                        // задержка для дизайна
+                        timeOut1();
+                        button1.setEnabled(false);
+
+
                     }
                 });
         mAlertDialog.create();
         mAlertDialog.show();
     }
 
+    // задержка для дизайна
+    public void timeOut1(){
+
+        Handler handler5 = new Handler();
+        handler5.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                // выбор маршрута
+                Zakaz1ToZakaz2();
+            }
+        },300);
+    }
+
     public void Zakaz1ToZakaz2(){
+
         Intent Zakaz1ToZakaz2=new Intent(this,Zakaz2.class);
         Zakaz1ToZakaz2.putExtra("refFromInCity",refFromInCity);
         startActivity(Zakaz1ToZakaz2);
     }
 
     public void setPlain(){
+
+        int x=refOne.length;
+        int i;
+         for ( i=0; i<x; i++){
+
+             if (RefMap.equals(refOne[i])){
+                 RefAlertTitle=AlertIn;
+                 showAlert();
+             }
+         }
+
+        int y=refTwo.length;
+        int b;
+        for ( b=0; b<y; b++){
+
+            if (RefMap.equals(refTwo[b])){
+                RefAlertTitle=AlertFrom;
+                showAlert();
+            }
+        }
+    }
+
+    public void showAlert(){
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
-        mAlertDialog.setTitle("рейс самолета");
+        mAlertDialog.setTitle(RefAlertTitle);
         mAlertDialog
                 .setItems(planeCity, new DialogInterface.OnClickListener() {
                     @Override
@@ -232,10 +304,53 @@ public class Zakaz1 extends AppCompatActivity {
                         No3.setVisibility(View.INVISIBLE);
                         Right3.setVisibility(View.VISIBLE);
 
+                        // выбрать дату
+                        setData();
+
                     }
                 });
         mAlertDialog.create();
         mAlertDialog.show();
+    }
+
+    public void setData(){
+
+        calendar= Calendar.getInstance();
+        year=calendar.get(Calendar.YEAR);
+        month=calendar.get(Calendar.MONTH);
+        dayOfmonth=calendar.get(Calendar.DAY_OF_MONTH);
+        datePickerDialog=new DatePickerDialog(Zakaz1.this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        Calend=day + " " + (month + 1) + " " + year;
+
+                        // выбрать время
+                        setTime();
+                    }
+                },year,month,dayOfmonth);
+        datePickerDialog.show();
+    }
+
+    public void setTime(){
+        calendar=Calendar.getInstance();
+        hourOfDay=calendar.get(Calendar.HOUR);
+        minute=calendar.get(Calendar.MINUTE);
+        //SimpleDateFormat simpleDateFormat=new SimpleDateFormat("HH:mm");
+        timePickerDialog=new TimePickerDialog(Zakaz1.this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        if (minute<10){
+                            //time=hourOfDay+":"+"0"+minute;
+                            time=(hourOfDay+":"+"0"+minute);
+                        }
+                        if (minute>=10){
+                            time=(hourOfDay+":"+minute);
+                        }
+                    }
+                },hourOfDay,minute,true);
+        timePickerDialog.show();
     }
 
     // Блокировка кнопки Back!!!! :)))
