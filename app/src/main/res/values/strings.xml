@@ -19,6 +19,8 @@
     <string name="InCity_Map3">Аэропорт-Северный</string>
     <string name="InCity_Map4">Аэропорт-Ветлужанка</string>
 
+    <integer name="Inrr">3535</integer>
+
 
     <string-array name="day_of_weeks">
         <item>понедельник</item>

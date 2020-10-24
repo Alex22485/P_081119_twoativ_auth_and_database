@@ -14,8 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Zakaz2"></activity>
-        <activity android:name=".Zakaz1"></activity>
+        <activity android:name=".Proba"></activity>
+        <activity android:name=".Zakaz2" />
+        <activity android:name=".Zakaz1" />
         <activity android:name=".ViewMapLesosibirsk" />
         <activity android:name=".ViewMapKansk" />
         <activity android:name=".ViewMapAchinsk" />

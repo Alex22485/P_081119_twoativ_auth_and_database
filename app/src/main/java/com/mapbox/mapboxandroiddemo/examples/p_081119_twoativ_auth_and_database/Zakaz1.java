@@ -2,8 +2,6 @@ package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -16,7 +14,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
 import java.util.Calendar;
 
 public class Zakaz1 extends AppCompatActivity {
@@ -48,9 +45,19 @@ public class Zakaz1 extends AppCompatActivity {
             "Ачинск->Аэропорт","Канск->Аэропорт","Лесосибирск->Аэропорт"};
     String [] refTwo = {"Аэропорт-Щорса","Аэропорт-КрасТэц","Аэропорт-Северный","Аэропорт-ЖД вокзал","Аэропорт-Ветлужанка","Аэропорт->Сосновоборск",
             "Аэропорт->Ачинск","Аэропорт->Канск","Аэропорт->Лесосибирск"};
-    String AlertIn="В какой город вы летите из Красноярска?";
-    String AlertFrom="Из какого города вы летите в Красноярск?";
+    String AlertFrom="В какой город вы летите из Красноярска?";
+    String AlertIn="Из какого города вы летите в Красноярск?";
     String RefAlertTitle;
+
+    // for title of Calendar
+    String titleCalendarFromAirport="Дата вылета из Красноярска";
+    String titleCalendarInAirport="Дата прилета в Красноярск";
+    String ReftitleCalendar;
+
+    // for title of time
+    String titleTimeFromAirport="Время вылета из Красноярска";
+    String titleTimeInAirport="Время прилета в Красноярск";
+    String ReftitleTime;
 
 
     // показ календаря
@@ -140,8 +147,11 @@ public class Zakaz1 extends AppCompatActivity {
 
     }
 
+
     // кнопка button1
     public void button1(View view){
+//        Intent proba = new Intent(this,Proba.class);
+//        startActivity(proba);
         AlertChoisCity();
     }
     // кнопка button2
@@ -275,7 +285,9 @@ public class Zakaz1 extends AppCompatActivity {
          for ( i=0; i<x; i++){
 
              if (RefMap.equals(refOne[i])){
-                 RefAlertTitle=AlertIn;
+                 RefAlertTitle=AlertFrom;
+                 ReftitleCalendar=titleCalendarFromAirport;
+                 ReftitleTime=titleTimeFromAirport;
                  showAlert();
              }
          }
@@ -285,7 +297,9 @@ public class Zakaz1 extends AppCompatActivity {
         for ( b=0; b<y; b++){
 
             if (RefMap.equals(refTwo[b])){
-                RefAlertTitle=AlertFrom;
+                RefAlertTitle=AlertIn;
+                ReftitleCalendar=titleCalendarInAirport;
+                ReftitleTime=titleTimeInAirport;
                 showAlert();
             }
         }
@@ -315,41 +329,58 @@ public class Zakaz1 extends AppCompatActivity {
 
     public void setData(){
 
+
         calendar= Calendar.getInstance();
         year=calendar.get(Calendar.YEAR);
         month=calendar.get(Calendar.MONTH);
         dayOfmonth=calendar.get(Calendar.DAY_OF_MONTH);
-        datePickerDialog=new DatePickerDialog(Zakaz1.this,
+
+        //выбирая разные параметры style календарь отображается по разному
+        //datePickerDialog=new DatePickerDialog(this,android.R.style.Theme_Light_NoTitleBar,
+
+        datePickerDialog=new DatePickerDialog(Zakaz1.this,AlertDialog.BUTTON_POSITIVE,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
-                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                    public void onDateSet(DatePicker view, int year, int month, int day) {
                         Calend=day + " " + (month + 1) + " " + year;
 
                         // выбрать время
                         setTime();
                     }
+
+
                 },year,month,dayOfmonth);
+        datePickerDialog.setTitle(ReftitleCalendar);
+
         datePickerDialog.show();
-    }
+
+        }
+
+
 
     public void setTime(){
         calendar=Calendar.getInstance();
         hourOfDay=calendar.get(Calendar.HOUR);
         minute=calendar.get(Calendar.MINUTE);
         //SimpleDateFormat simpleDateFormat=new SimpleDateFormat("HH:mm");
-        timePickerDialog=new TimePickerDialog(Zakaz1.this,
+        timePickerDialog=new TimePickerDialog(Zakaz1.this,AlertDialog.BUTTON_POSITIVE,
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         if (minute<10){
                             //time=hourOfDay+":"+"0"+minute;
                             time=(hourOfDay+":"+"0"+minute);
+                            Right4.setVisibility(View.VISIBLE);
+                            No4.setVisibility(View.INVISIBLE);
                         }
                         if (minute>=10){
                             time=(hourOfDay+":"+minute);
+                            Right4.setVisibility(View.VISIBLE);
+                            No4.setVisibility(View.INVISIBLE);
                         }
                     }
                 },hourOfDay,minute,true);
+        timePickerDialog.setTitle(ReftitleTime);
         timePickerDialog.show();
     }
 
