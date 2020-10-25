@@ -45,28 +45,41 @@
         android:layout_marginLeft="24dp"
         android:text="X"
         android:textSize="30sp"
-        android:textColor="#FB0404"
+        android:textColor="#F8050D"
         app:layout_constraintBottom_toBottomOf="@+id/button1"
         app:layout_constraintStart_toEndOf="@+id/button1"
         app:layout_constraintTop_toTopOf="@+id/button1"
         app:layout_constraintVertical_bias="0.62"
         android:visibility="visible"/>
 
-    <Button
+    <TextView
+        android:id="@+id/Exclamation1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:text="!"
+        android:textSize="30sp"
+        android:textColor="#FB3D01"
+        app:layout_constraintBottom_toBottomOf="@+id/button1"
+        app:layout_constraintStart_toEndOf="@+id/button1"
+        app:layout_constraintTop_toTopOf="@+id/button1"
+        app:layout_constraintVertical_bias="0.62"
+        android:visibility="visible"/>
+
+    <TextView
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="Маршрут"
-        android:textSize="20sp"
-        android:textAllCaps="false"
+        android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button1"
         android:enabled="false"
-        android:visibility="visible"
-        android:onClick="button2"/>
+        android:visibility="visible"/>
 
     <TextView
         android:id="@+id/Right2"
@@ -91,28 +104,44 @@
         android:layout_marginLeft="24dp"
         android:text="X"
         android:textSize="30sp"
-        android:textColor="#FB0404"
+        android:textColor="#F8050D"
         app:layout_constraintBottom_toBottomOf="@+id/button2"
         app:layout_constraintStart_toEndOf="@+id/button2"
         app:layout_constraintTop_toTopOf="@+id/button2"
         app:layout_constraintVertical_bias="0.62"
         android:visibility="visible"/>
 
-    <Button
+    <TextView
+        android:id="@+id/Exclamation2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:text="!"
+        android:textSize="30sp"
+        android:textColor="#FB3D01"
+        app:layout_constraintBottom_toBottomOf="@+id/button2"
+        app:layout_constraintStart_toEndOf="@+id/button2"
+        app:layout_constraintTop_toTopOf="@+id/button2"
+        app:layout_constraintVertical_bias="0.62"
+        android:visibility="visible"/>
+
+
+
+    <TextView
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="Рейс самолета"
-        android:textSize="20sp"
+        android:textSize="25sp"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button2"
         android:enabled="false"
-        android:visibility="visible"
-        android:onClick="button3"/>
+        android:visibility="visible"/>
 
     <TextView
         android:id="@+id/Right3"
@@ -137,28 +166,42 @@
         android:layout_marginLeft="24dp"
         android:text="X"
         android:textSize="30sp"
-        android:textColor="#D30909"
+        android:textColor="#F8050D"
         app:layout_constraintBottom_toBottomOf="@+id/button3"
         app:layout_constraintStart_toEndOf="@+id/button3"
         app:layout_constraintTop_toTopOf="@+id/button3"
         app:layout_constraintVertical_bias="0.62"
         android:visibility="visible"/>
 
-    <Button
+    <TextView
+        android:id="@+id/Exclamation3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:text="!"
+        android:textSize="30sp"
+        android:textColor="#FB3D01"
+        app:layout_constraintBottom_toBottomOf="@+id/button3"
+        app:layout_constraintStart_toEndOf="@+id/button3"
+        app:layout_constraintTop_toTopOf="@+id/button3"
+        app:layout_constraintVertical_bias="0.62"
+        android:visibility="visible"/>
+
+    <TextView
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="Дата, время"
-        android:textSize="20sp"
+        android:textSize="25sp"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button3"
         android:enabled="false"
-        android:visibility="visible"
-        android:onClick="button4"/>
+        android:visibility="visible"/>
 
     <TextView
         android:id="@+id/Right4"
@@ -183,7 +226,22 @@
         android:layout_marginLeft="24dp"
         android:text="X"
         android:textSize="30sp"
-        android:textColor="#FB0404"
+        android:textColor="#F8050D"
+        app:layout_constraintBottom_toBottomOf="@+id/button4"
+        app:layout_constraintStart_toEndOf="@+id/button4"
+        app:layout_constraintTop_toTopOf="@+id/button4"
+        app:layout_constraintVertical_bias="0.62"
+        android:visibility="visible"/>
+
+    <TextView
+        android:id="@+id/Exclamation4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:text="!"
+        android:textSize="30sp"
+        android:textColor="#FB3D01"
         app:layout_constraintBottom_toBottomOf="@+id/button4"
         app:layout_constraintStart_toEndOf="@+id/button4"
         app:layout_constraintTop_toTopOf="@+id/button4"
@@ -201,6 +259,7 @@
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button4"
+        android:enabled="false"
         android:visibility="visible"/>
 
     <TextView
@@ -226,7 +285,7 @@
         android:layout_marginLeft="24dp"
         android:text="X"
         android:textSize="30sp"
-        android:textColor="#FB0404"
+        android:textColor="#F8050D"
         app:layout_constraintBottom_toBottomOf="@+id/OderRight"
         app:layout_constraintStart_toEndOf="@+id/OderRight"
         app:layout_constraintTop_toTopOf="@+id/OderRight"
