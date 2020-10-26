@@ -18,7 +18,7 @@ import java.util.Calendar;
 public class Zakaz1 extends AppCompatActivity {
 
     //private static final String TAG ="Zakaz1" ;
-    
+
     Button button1,button3,button4;
     TextView button2;
     TextView Right1,Right2,Right3,Right4,Right5;

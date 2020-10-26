@@ -32,7 +32,6 @@ public class Zakaz2 extends AppCompatActivity {
     // пункт сбора из Аэропорта
     String[] FromAirport={"Парковка Р2"};
 
-
     String[] RefList1;
     String[] RefList2;
     String[] RefList3;
@@ -43,8 +42,6 @@ public class Zakaz2 extends AppCompatActivity {
     String RefMap;
     // выбранная точка сбора
     String RefPoint;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +105,6 @@ public class Zakaz2 extends AppCompatActivity {
     }
 
         if(refFromInCity.equals("Аэропорт->Красноярск")){
-
             button1.setVisibility(View.VISIBLE);
             button2.setVisibility(View.VISIBLE);
             button3.setVisibility(View.VISIBLE);
@@ -131,17 +127,13 @@ public class Zakaz2 extends AppCompatActivity {
             RefList3=FromAirport;
             RefList4=FromAirport;
             RefList5=FromAirport;
-
-
         }
 
         if(refFromInCity.equals("Сосновоборск->Аэропорт")){
-
             button1.setVisibility(View.VISIBLE);
             map1.setVisibility(View.VISIBLE);
             RefList1=AnyCity;
             button1.setText(refFromInCity);
-
         }
 
         if(refFromInCity.equals("Аэропорт->Сосновоборск")){
@@ -194,7 +186,6 @@ public class Zakaz2 extends AppCompatActivity {
         }
     }
     public void button1 (View view){
-
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
         mAlertDialog.setTitle("Пункт сбора");
         mAlertDialog
@@ -204,19 +195,15 @@ public class Zakaz2 extends AppCompatActivity {
 
                         RefPoint=RefList1[which];
                         RefMap=button1.getText().toString();
-
                         // идем обратно в Zakaz1
                         backZakaz2ToZakaz1();
-
                     }
                 });
         mAlertDialog.create();
         mAlertDialog.show();
-
     }
 
     public void button2 (View view){
-
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
         mAlertDialog.setTitle("Пункт сбора");
         mAlertDialog
@@ -225,91 +212,68 @@ public class Zakaz2 extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         RefPoint=RefList2[which];
-
                         RefMap=button2.getText().toString();
-
                         // идем обратно в Zakaz1
                         backZakaz2ToZakaz1();
-
                     }
                 });
         mAlertDialog.create();
         mAlertDialog.show();
-
     }
 
     public void button3 (View view){
-
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
         mAlertDialog.setTitle("Пункт сбора");
         mAlertDialog
                 .setItems(RefList3, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         RefPoint=RefList3[which];
-
                         RefMap=button3.getText().toString();
-
                         // идем обратно в Zakaz1
                         backZakaz2ToZakaz1();
-
                     }
                 });
         mAlertDialog.create();
         mAlertDialog.show();
-
     }
 
     public void button4 (View view){
-
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
         mAlertDialog.setTitle("Пункт сбора");
         mAlertDialog
                 .setItems(RefList4, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         RefPoint=RefList4[which];
-
                         RefMap=button4.getText().toString();
-
                         // идем обратно в Zakaz1
                         backZakaz2ToZakaz1();
-
                     }
                 });
         mAlertDialog.create();
         mAlertDialog.show();
-
     }
 
     public void button5 (View view){
-
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
         mAlertDialog.setTitle("Пункт сбора");
         mAlertDialog
                 .setItems(RefList5, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         RefPoint=RefList5[which];
-
                         RefMap=button5.getText().toString();
-
                         // идем обратно в Zakaz1
                         backZakaz2ToZakaz1();
-
                     }
                 });
         mAlertDialog.create();
         mAlertDialog.show();
-
     }
 
     public void backZakaz2ToZakaz1(){
         Intent backZakaz2ToZakaz1= new Intent(this,Zakaz1.class);
-
         // передаем Маршрут и пункт сбора в Zakaz1
         backZakaz2ToZakaz1.putExtra("RefMap",RefMap);
         backZakaz2ToZakaz1.putExtra("RefPoint",RefPoint);
