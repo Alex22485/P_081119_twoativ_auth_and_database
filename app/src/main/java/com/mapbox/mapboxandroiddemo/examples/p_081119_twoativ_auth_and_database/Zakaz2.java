@@ -313,14 +313,14 @@ public class Zakaz2 extends AppCompatActivity {
         // передаем Маршрут и пункт сбора в Zakaz1
         backZakaz2ToZakaz1.putExtra("RefMap",RefMap);
         backZakaz2ToZakaz1.putExtra("RefPoint",RefPoint);
+        backZakaz2ToZakaz1.putExtra("RefBackFromZakaz2","backYesFromZakaz2");
         startActivity(backZakaz2ToZakaz1);
     }
 
     public void back(View view){
         // передаем null в Zakaz1
         Intent backZakaz2ToZakaz1= new Intent(this,Zakaz1.class);
-        backZakaz2ToZakaz1.putExtra("RefMap","null");
-        backZakaz2ToZakaz1.putExtra("RefPoint","null");
+        backZakaz2ToZakaz1.putExtra("RefBackFromZakaz2","backNoFromZakaz2");
         startActivity(backZakaz2ToZakaz1);
     }
 

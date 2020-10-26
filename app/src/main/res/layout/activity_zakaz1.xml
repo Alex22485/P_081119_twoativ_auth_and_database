@@ -128,20 +128,21 @@
 
 
 
-    <TextView
+    <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="Рейс самолета"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button2"
         android:enabled="false"
-        android:visibility="visible"/>
+        android:visibility="visible"
+        android:onClick="button3"/>
 
     <TextView
         android:id="@+id/Right3"
@@ -188,20 +189,21 @@
         app:layout_constraintVertical_bias="0.62"
         android:visibility="visible"/>
 
-    <TextView
+    <Button
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="Дата, время"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button3"
         android:enabled="false"
-        android:visibility="visible"/>
+        android:visibility="visible"
+        android:onClick="button4"/>
 
     <TextView
         android:id="@+id/Right4"

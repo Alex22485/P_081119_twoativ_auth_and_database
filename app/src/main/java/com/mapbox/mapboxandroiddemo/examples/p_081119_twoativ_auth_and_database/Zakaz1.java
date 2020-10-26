@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -18,12 +17,10 @@ import java.util.Calendar;
 
 public class Zakaz1 extends AppCompatActivity {
 
-    private static final String TAG ="Zakaz1" ;
-
-
-
-    Button button1;
-    TextView button2,button3,button4;
+    //private static final String TAG ="Zakaz1" ;
+    
+    Button button1,button3,button4;
+    TextView button2;
     TextView Right1,Right2,Right3,Right4,Right5;
     TextView No1,No2,No3,No4,No5;
     TextView Exclamation1,Exclamation2,Exclamation3,Exclamation4;
@@ -33,6 +30,9 @@ public class Zakaz1 extends AppCompatActivity {
     String RefMap;
     // выбранная точка сбора
     String RefPoint;
+
+    // Реф значение был ли переход из Zakaz2
+    String RefBackFromZakaz2;
 
     // выбранный рейс самолета (город)
     String RefplaneCity;
@@ -102,106 +102,216 @@ public class Zakaz1 extends AppCompatActivity {
         Exclamation2=findViewById(R.id.Exclamation2);
         Exclamation3=findViewById(R.id.Exclamation3);
         Exclamation4=findViewById(R.id.Exclamation4);
-
         OderRight=findViewById(R.id.OderRight);
+        AllLineNoShow();
+
 
         // Проверка был ли переход сюда с листа Zakaz2
         Intent backZakaz2ToZakaz1=getIntent();
         RefMap=""+backZakaz2ToZakaz1.getStringExtra("RefMap");
         RefPoint=""+backZakaz2ToZakaz1.getStringExtra("RefPoint");
+        RefBackFromZakaz2=""+backZakaz2ToZakaz1.getStringExtra("RefBackFromZakaz2");
 
-        // переход был
-        if (!RefMap.equals("null")){
+        // переход был нажатием кнопки НАЗАД
+        if(RefBackFromZakaz2.equals("backNoFromZakaz2")){
+          Nline1();
+          Nline2();
+          Nline3();
+          Nline4();
+          Nline5();
 
-            button1.setEnabled(true);
-            No1.setVisibility(View.INVISIBLE);
-            No2.setVisibility(View.VISIBLE);
-            No3.setVisibility(View.VISIBLE);
-            No4.setVisibility(View.VISIBLE);
-            No5.setVisibility(View.VISIBLE);
-            Right1.setVisibility(View.VISIBLE);
-            Right2.setVisibility(View.INVISIBLE);
-            Right3.setVisibility(View.INVISIBLE);
-            Right4.setVisibility(View.INVISIBLE);
-            Right5.setVisibility(View.INVISIBLE);
-            Exclamation1.setVisibility(View.INVISIBLE);
-            Exclamation2.setVisibility(View.INVISIBLE);
-            Exclamation3.setVisibility(View.INVISIBLE);
-            Exclamation4.setVisibility(View.INVISIBLE);
+          Handler if1 = new Handler();
+          if1.postDelayed(new Runnable() {
+              @Override
+              public void run() {
+                  Exline1();
+                  Exline2();
+                  button1.setEnabled(false);
+              }
+              },400);
 
-            //dinamic desajin
+          Handler if2 = new Handler();
+          if2.postDelayed(new Runnable() {
+              @Override
+              public void run() {
+                  AlertChoiceCity();
+              }
+              },700);
+        }
+
+        // переход был c выбором маршрута
+        if (RefBackFromZakaz2.equals("backYesFromZakaz2")){
+            Rline1();
+            Nline2();
+            Nline3();
+            Nline4();
+            Nline5();
+
             Handler handler0 = new Handler();
             handler0.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Right2.setVisibility(View.VISIBLE);
-                    No2.setVisibility(View.INVISIBLE);
-                }
-            },300);
+                    Rline2();
+                    //button2.setTextColor(getResources().getColor(R.color.Zakaz1RightOder));
+                    }
+                    },400);
 
             // задержка Alert рейс самолета
             Handler setPlain = new Handler();
             setPlain.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-
                     //Выбор заголовка для Alert (рейс самолета)
                     setPlain();
                 }
-            },300);
+            },700);
         }
 
         // переход  Не был
-        else {
-        Log.d(TAG, ""+RefMap);
+        if (RefBackFromZakaz2.equals("null")){
 
-            button2.setVisibility(View.INVISIBLE);
-            button3.setVisibility(View.INVISIBLE);
-            button4.setVisibility(View.INVISIBLE);
-            Right1.setVisibility(View.INVISIBLE);
-            Right2.setVisibility(View.INVISIBLE);
-            Right3.setVisibility(View.INVISIBLE);
-            Right4.setVisibility(View.INVISIBLE);
-            Right5.setVisibility(View.INVISIBLE);
-            No2.setVisibility(View.INVISIBLE);
-            No3.setVisibility(View.INVISIBLE);
-            No4.setVisibility(View.INVISIBLE);
-            No5.setVisibility(View.INVISIBLE);
-            Exclamation1.setVisibility(View.INVISIBLE);
-            Exclamation2.setVisibility(View.INVISIBLE);
-            Exclamation3.setVisibility(View.INVISIBLE);
-            Exclamation4.setVisibility(View.INVISIBLE);
-            OderRight.setVisibility(View.INVISIBLE);
-
-
-        dinamicView();
+            Nline1();
+            // динамик дизайн при первом открытии Activity
+            dinamicView();
         }
+    }
 
+    // видимости линии 1-5
+    public void Rline1(){
+        button1.setVisibility(View.VISIBLE);
+        button1.setEnabled(false);
+        Right1.setVisibility(View.VISIBLE);
+        No1.setVisibility(View.INVISIBLE);
+        Exclamation1.setVisibility(View.INVISIBLE);
+    }
+    public void Nline1(){
+        button1.setVisibility(View.VISIBLE);
+        button1.setEnabled(false);
+        Right1.setVisibility(View.INVISIBLE);
+        No1.setVisibility(View.VISIBLE);
+        Exclamation1.setVisibility(View.INVISIBLE);
+    }
+    public void Exline1(){
+        button1.setVisibility(View.VISIBLE);
+        button1.setEnabled(true);
+        Right1.setVisibility(View.INVISIBLE);
+        No1.setVisibility(View.INVISIBLE);
+        Exclamation1.setVisibility(View.VISIBLE);
+    }
+    public void Rline2(){
+        button2.setVisibility(View.VISIBLE);
+        button2.setEnabled(false);
+        Right2.setVisibility(View.VISIBLE);
+        No2.setVisibility(View.INVISIBLE);
+        Exclamation2.setVisibility(View.INVISIBLE);
+    }
+    public void Nline2(){
+        button2.setVisibility(View.VISIBLE);
+        Right2.setVisibility(View.INVISIBLE);
+        No2.setVisibility(View.VISIBLE);
+        Exclamation2.setVisibility(View.INVISIBLE);
+    }
+    public void Exline2(){
+        button2.setVisibility(View.VISIBLE);
+        Right2.setVisibility(View.INVISIBLE);
+        No2.setVisibility(View.INVISIBLE);
+        Exclamation2.setVisibility(View.VISIBLE);
+    }
+    public void Rline3(){
+        button3.setVisibility(View.VISIBLE);
+        button3.setEnabled(false);
+        Right3.setVisibility(View.VISIBLE);
+        No3.setVisibility(View.INVISIBLE);
+        Exclamation3.setVisibility(View.INVISIBLE);
+    }
+    public void Nline3(){
+        button3.setVisibility(View.VISIBLE);
+        button3.setEnabled(false);
+        Right3.setVisibility(View.INVISIBLE);
+        No3.setVisibility(View.VISIBLE);
+        Exclamation3.setVisibility(View.INVISIBLE);
+    }
+    public void Exline3(){
+        button3.setVisibility(View.VISIBLE);
+        button3.setEnabled(true);
+        Right3.setVisibility(View.INVISIBLE);
+        No3.setVisibility(View.INVISIBLE);
+        Exclamation3.setVisibility(View.VISIBLE);
+    }
+    public void Rline4(){
+        button4.setVisibility(View.VISIBLE);
+        button4.setEnabled(false);
+        Right4.setVisibility(View.VISIBLE);
+        No4.setVisibility(View.INVISIBLE);
+        Exclamation4.setVisibility(View.INVISIBLE);
+    }
+    public void Nline4(){
+        button4.setVisibility(View.VISIBLE);
+        button4.setEnabled(false);
+        Right4.setVisibility(View.INVISIBLE);
+        No4.setVisibility(View.VISIBLE);
+        Exclamation4.setVisibility(View.INVISIBLE);
+    }
+    public void Exline4(){
+        button4.setVisibility(View.VISIBLE);
+        button4.setEnabled(true);
+        Right4.setVisibility(View.INVISIBLE);
+        No4.setVisibility(View.INVISIBLE);
+        Exclamation4.setVisibility(View.VISIBLE);
+    }
+    public void Rline5(){
+        OderRight.setVisibility(View.VISIBLE);
+        OderRight.setEnabled(true);
+        Right5.setVisibility(View.VISIBLE);
+        No5.setVisibility(View.INVISIBLE);
+    }
+    public void Nline5(){
+        OderRight.setVisibility(View.VISIBLE);
+        Right5.setVisibility(View.INVISIBLE);
+        No5.setVisibility(View.VISIBLE);
+    }
+    public void AllLineNoShow(){
+        button1.setVisibility(View.INVISIBLE);
+        button2.setVisibility(View.INVISIBLE);
+        button3.setVisibility(View.INVISIBLE);
+        button4.setVisibility(View.INVISIBLE);
+        Right1.setVisibility(View.INVISIBLE);
+        Right2.setVisibility(View.INVISIBLE);
+        Right3.setVisibility(View.INVISIBLE);
+        Right4.setVisibility(View.INVISIBLE);
+        Right5.setVisibility(View.INVISIBLE);
+        No2.setVisibility(View.INVISIBLE);
+        No3.setVisibility(View.INVISIBLE);
+        No4.setVisibility(View.INVISIBLE);
+        No5.setVisibility(View.INVISIBLE);
+        Exclamation1.setVisibility(View.INVISIBLE);
+        Exclamation2.setVisibility(View.INVISIBLE);
+        Exclamation3.setVisibility(View.INVISIBLE);
+        Exclamation4.setVisibility(View.INVISIBLE);
+        OderRight.setVisibility(View.INVISIBLE);
     }
 
     // кнопка button1
     public void button1(View view){
         AlertChoiceCity();
     }
-    // кнопка button2
-    public void button2(View view){
-    }
     // кнопка button3
     public void button3(View view){
+        showAlert();
     }
     // кнопка button4
     public void button4(View view){
+        setData();
     }
 
-
+    // динамик дизайн при входе в Activity
     public void dinamicView(){
 
         Handler handler1 = new Handler();
         handler1.postDelayed(new Runnable() {
             @Override
             public void run() {
-                button2.setVisibility(View.VISIBLE);
-                No2.setVisibility(View.VISIBLE);
+                Nline2();
             }
         },300);
 
@@ -209,8 +319,7 @@ public class Zakaz1 extends AppCompatActivity {
         handler2.postDelayed(new Runnable() {
             @Override
             public void run() {
-                button3.setVisibility(View.VISIBLE);
-                No3.setVisibility(View.VISIBLE);
+                Nline3();
             }
         },600);
 
@@ -218,8 +327,7 @@ public class Zakaz1 extends AppCompatActivity {
         handler3.postDelayed(new Runnable() {
             @Override
             public void run() {
-                button4.setVisibility(View.VISIBLE);
-                No4.setVisibility(View.VISIBLE);
+                Nline4();
             }
         },900);
 
@@ -227,16 +335,13 @@ public class Zakaz1 extends AppCompatActivity {
         handler4.postDelayed(new Runnable() {
             @Override
             public void run() {
-                OderRight.setVisibility(View.VISIBLE);
-                No5.setVisibility(View.VISIBLE);
-
+                Nline5();
                 //выбор города
                 AlertChoiceCity();
-                button1.setEnabled(true);
             }
         },1200);
     }
-
+    // Выбор города
     public void AlertChoiceCity(){
 
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
@@ -248,7 +353,7 @@ public class Zakaz1 extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         refCityTaxi=listCityTaxi[which];
-                        Exclamation1.setVisibility(View.INVISIBLE);
+                        button1.setEnabled(false);
 
                         // Задержка второго Диалога
                         Handler AlertFromInCity = new Handler();
@@ -264,13 +369,12 @@ public class Zakaz1 extends AppCompatActivity {
         mAlertDialog
                 .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        No1.setVisibility(View.INVISIBLE);
 
                         Handler handlerNeg1 = new Handler();
                         handlerNeg1.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Exclamation1.setVisibility(View.VISIBLE);
+                                Exline1();
                             }
                             },400);
                     }
@@ -278,6 +382,7 @@ public class Zakaz1 extends AppCompatActivity {
         mAlertDialog.create();
         mAlertDialog.show();
     }
+    // Выбор в/из города
     public void AlertFromInCity(){
         listCityFromIn= new String[]{refCityTaxi + "->Аэропорт","Аэропорт->"+refCityTaxi};
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
@@ -288,10 +393,9 @@ public class Zakaz1 extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         refFromInCity=listCityFromIn[which];
-                        Exclamation1.setVisibility(View.INVISIBLE);
+                        button1.setEnabled(false);
                         // задержка для дизайна
                         timeOut1();
-                        button1.setEnabled(false);
                     }
                 });
         mAlertDialog
@@ -303,7 +407,7 @@ public class Zakaz1 extends AppCompatActivity {
                         handlerNeg1.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Exclamation1.setVisibility(View.VISIBLE);
+                                Exline1();
                             }
                             },300);
                     }
@@ -311,18 +415,13 @@ public class Zakaz1 extends AppCompatActivity {
         mAlertDialog.create();
         mAlertDialog.show();
     }
-
     // задержка для дизайна
     public void timeOut1(){
-
         Handler handler5 = new Handler();
         handler5.postDelayed(new Runnable() {
             @Override
             public void run() {
-
-                No1.setVisibility(View.INVISIBLE);
-                Right1.setVisibility(View.VISIBLE);
-
+                Rline1();
             }
         },500);
 
@@ -330,13 +429,11 @@ public class Zakaz1 extends AppCompatActivity {
         handler6.postDelayed(new Runnable() {
             @Override
             public void run() {
-
                 // выбор маршрута
                 Zakaz1ToZakaz2();
             }
         },900);
     }
-
     public void Zakaz1ToZakaz2(){
 
         Intent Zakaz1ToZakaz2=new Intent(this,Zakaz2.class);
@@ -344,31 +441,26 @@ public class Zakaz1 extends AppCompatActivity {
         startActivity(Zakaz1ToZakaz2);
     }
 
+    //Выбор заголовка для Alert (рейс самолета)
     public void setPlain(){
-
         int x=refOne.length;
         int i;
          for ( i=0; i<x; i++){
-
              if (RefMap.equals(refOne[i])){
                  RefAlertTitle=AlertFrom;
                  ReftitleCalendar=titleCalendarFromAirport;
                  ReftitleTime=titleTimeFromAirport;
-
                  // Alert рейс самолета
                  showAlert();
              }
          }
-
         int y=refTwo.length;
         int b;
         for ( b=0; b<y; b++){
-
             if (RefMap.equals(refTwo[b])){
                 RefAlertTitle=AlertIn;
                 ReftitleCalendar=titleCalendarInAirport;
                 ReftitleTime=titleTimeInAirport;
-
                 // Alert рейс самолета
                 showAlert();
             }
@@ -384,12 +476,8 @@ public class Zakaz1 extends AppCompatActivity {
                 .setItems(planeCity, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         RefplaneCity=planeCity[which];
-
-                        No3.setVisibility(View.INVISIBLE);
-                        Right3.setVisibility(View.VISIBLE);
-
+                        Rline3();
                         // Задержка на появление Календаря
                         Handler Date = new Handler();
                         Date.postDelayed(new Runnable() {
@@ -404,24 +492,28 @@ public class Zakaz1 extends AppCompatActivity {
         mAlertDialog
                 .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Right1.setVisibility(View.INVISIBLE);
-                        Right2.setVisibility(View.INVISIBLE);
                         Handler handlerNeg1 = new Handler();
                         handlerNeg1.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Exclamation1.setVisibility(View.VISIBLE);
-                                Exclamation2.setVisibility(View.VISIBLE);
+                                Exline3();
                             }
                             },300);
-
                     }
                 });
         mAlertDialog.create();
         mAlertDialog.show();
     }
-
+    // вызов календаря
     public void setData(){
+        Handler ha = new Handler();
+        ha.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Exline4();
+            }
+        },300);
+
         calendar= Calendar.getInstance();
         year=calendar.get(Calendar.YEAR);
         month=calendar.get(Calendar.MONTH);
@@ -429,23 +521,37 @@ public class Zakaz1 extends AppCompatActivity {
 
         //выбирая разные параметры style календарь отображается по разному
         //datePickerDialog=new DatePickerDialog(this,android.R.style.Theme_Light_NoTitleBar,
+        // .....Zakaz1.this,AlertDialog.BUTTON_POSITIVE дает написать заголовок в календаре! УРА
 
         datePickerDialog=new DatePickerDialog(Zakaz1.this,AlertDialog.BUTTON_POSITIVE,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         Calend=day + " " + (month + 1) + " " + year;
-                        // выбрать время
-                        setTime();
+                        button4.setEnabled(false);
+                        Handler handlerNeg1 = new Handler();
+                        handlerNeg1.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                // выбрать время
+                                setTime();
+                            }
+                        },300);
                     }
-
                 },year,month,dayOfmonth);
         datePickerDialog.setTitle(ReftitleCalendar);
         datePickerDialog.setCancelable(false);
         datePickerDialog.show();
         }
-
+    // вызов времени
     public void setTime(){
+        Handler ha = new Handler();
+        ha.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Exline4();
+            }
+        },300);
         calendar=Calendar.getInstance();
         hourOfDay=calendar.get(Calendar.HOUR);
         minute=calendar.get(Calendar.MINUTE);
@@ -457,39 +563,43 @@ public class Zakaz1 extends AppCompatActivity {
                         if (minute<10){
                             //time=hourOfDay+":"+"0"+minute;
                             time=(hourOfDay+":"+"0"+minute);
-                            Right4.setVisibility(View.VISIBLE);
-                            No4.setVisibility(View.INVISIBLE);
-                            finishOder();
+                            button4.setEnabled(false);
+                            Handler han = new Handler();
+                            han.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Rline4();
+                                    finishOder();
+                                }
+                            },300);
                         }
                         if (minute>=10){
                             time=(hourOfDay+":"+minute);
-                            Right4.setVisibility(View.VISIBLE);
-                            No4.setVisibility(View.INVISIBLE);
-                            finishOder();
+                            button4.setEnabled(false);
+                            Handler han = new Handler();
+                            han.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Rline4();
+                                    finishOder();
+                                }
+                            },300);
                         }
                     }
                 },hourOfDay,minute,true);
         timePickerDialog.setTitle(ReftitleTime);
         timePickerDialog.show();
     }
+    // Oder is Finish
     public void finishOder(){
-
-        button1.setEnabled(false);
-
         Handler handler5 = new Handler();
         handler5.postDelayed(new Runnable() {
             @Override
             public void run() {
-
-                OderRight.setTextColor(getResources().getColor(R.color.Zakaz1RightOder));
-                Right5.setVisibility(View.VISIBLE);
-                No5.setVisibility(View.INVISIBLE);
-
-
+                Rline5();
             }
-        },500);
+        },300);
     }
-
     // Блокировка кнопки Back!!!! :)))
     @Override
     public void onBackPressed(){
