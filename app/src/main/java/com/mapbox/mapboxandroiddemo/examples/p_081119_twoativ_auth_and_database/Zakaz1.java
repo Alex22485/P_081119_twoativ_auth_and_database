@@ -19,7 +19,7 @@ public class Zakaz1 extends AppCompatActivity {
 
     //private static final String TAG ="Zakaz1" ;
 
-    Button button1,button3,button4;
+    Button button1,button3,button4,button5;
     TextView button2;
     TextView Right1,Right2,Right3,Right4,Right5;
     TextView No1,No2,No3,No4,No5;
@@ -37,7 +37,7 @@ public class Zakaz1 extends AppCompatActivity {
     // выбранный рейс самолета (город)
     String RefplaneCity;
 
-    String [] listCityTaxi= {"Красноярск","Сосновоборск","Ачинск","Канск","Лесосибирск"};
+    String [] listCityTaxi= {"Красноярск","Сосновоборск","Ачинск","Канск","Лесосибирск","Нет нужного города"};
     String refCityTaxi,refFromInCity;
     String [] listCityFromIn= {};
     String [] planeCity={"Игарка","Северо-Енисейск","Новосибирск","Иркутск","Омск","Екатеринбург","Нет нужного города"};
@@ -88,6 +88,7 @@ public class Zakaz1 extends AppCompatActivity {
         button2=findViewById(R.id.button2);
         button3=findViewById(R.id.button3);
         button4=findViewById(R.id.button4);
+        button5=findViewById(R.id.button5);
         Right1=findViewById(R.id.Right1);
         Right2=findViewById(R.id.Right2);
         Right3=findViewById(R.id.Right3);
@@ -103,6 +104,7 @@ public class Zakaz1 extends AppCompatActivity {
         Exclamation3=findViewById(R.id.Exclamation3);
         Exclamation4=findViewById(R.id.Exclamation4);
         OderRight=findViewById(R.id.OderRight);
+        button5.setVisibility(View.INVISIBLE);
         AllLineNoShow();
 
 
@@ -146,6 +148,7 @@ public class Zakaz1 extends AppCompatActivity {
             Nline3();
             Nline4();
             Nline5();
+            button5.setVisibility(View.VISIBLE);
 
             Handler handler0 = new Handler();
             handler0.postDelayed(new Runnable() {
@@ -303,6 +306,41 @@ public class Zakaz1 extends AppCompatActivity {
     public void button4(View view){
         setData();
     }
+    //изменить условия заказа
+    public void button5(View view){
+        changeMyOder();
+    }
+    public void changeMyOder(){
+
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
+        mAlertDialog.setTitle("Настройки вашего заказа будут стерты, продолжить?");
+        mAlertDialog.setCancelable(false);
+        mAlertDialog
+                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        AllLineNoShow();
+
+                        Handler handler1 = new Handler();
+                        handler1.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Nline1();
+                                dinamicView();
+                            }
+                        },300);
+
+                    }
+                });
+        mAlertDialog
+                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+        mAlertDialog.create();
+        mAlertDialog.show();
+    }
 
     // динамик дизайн при входе в Activity
     public void dinamicView(){
@@ -353,6 +391,11 @@ public class Zakaz1 extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         refCityTaxi=listCityTaxi[which];
+                        if (refCityTaxi.equals("Нет нужного города")){
+                            FeedBack1();
+                            return;
+                        }
+
                         button1.setEnabled(false);
 
                         // Задержка второго Диалога
@@ -422,6 +465,8 @@ public class Zakaz1 extends AppCompatActivity {
             @Override
             public void run() {
                 Rline1();
+
+
             }
         },500);
 
@@ -477,6 +522,12 @@ public class Zakaz1 extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         RefplaneCity=planeCity[which];
+
+                        if (RefplaneCity.equals("Нет нужного города")){
+                            FeedBack1();
+                            return;
+                        }
+
                         Rline3();
                         // Задержка на появление Календаря
                         Handler Date = new Handler();
@@ -564,6 +615,7 @@ public class Zakaz1 extends AppCompatActivity {
                             //time=hourOfDay+":"+"0"+minute;
                             time=(hourOfDay+":"+"0"+minute);
                             button4.setEnabled(false);
+                            button5.setVisibility(View.INVISIBLE);
                             Handler han = new Handler();
                             han.postDelayed(new Runnable() {
                                 @Override
@@ -576,6 +628,7 @@ public class Zakaz1 extends AppCompatActivity {
                         if (minute>=10){
                             time=(hourOfDay+":"+minute);
                             button4.setEnabled(false);
+                            button5.setVisibility(View.INVISIBLE);
                             Handler han = new Handler();
                             han.postDelayed(new Runnable() {
                                 @Override
@@ -599,6 +652,11 @@ public class Zakaz1 extends AppCompatActivity {
                 Rline5();
             }
         },300);
+    }
+
+    public void FeedBack1(){
+        Intent FeedBack1= new Intent(this,FeedBack1.class);
+        startActivity(FeedBack1);
     }
     // Блокировка кнопки Back!!!! :)))
     @Override

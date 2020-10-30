@@ -71,15 +71,15 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="16dp"
+        android:enabled="false"
         android:text="Маршрут"
         android:textSize="25sp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button1"
-        android:enabled="false"
-        android:visibility="visible"/>
+        app:layout_constraintTop_toBottomOf="@+id/button1" />
 
     <TextView
         android:id="@+id/Right2"
@@ -293,6 +293,18 @@
         app:layout_constraintTop_toTopOf="@+id/OderRight"
         app:layout_constraintVertical_bias="0.62"
         android:visibility="visible"/>
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="Изменить условия заказа"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintStart_toStartOf="parent"
+        android:onClick="button5"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

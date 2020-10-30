@@ -66,12 +66,13 @@
         android:text=""
         android:textSize="25dp"/>
     <TextView
+        android:id="@+id/lozung"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Зарезервируй место!"
         android:gravity="center"
         android:textColor="#C62840"
-        android:textSize="25sp"/>
+        android:textSize="0sp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -87,12 +88,13 @@
         android:textSize="15sp"/>
 
     <TextView
+        android:id="@+id/lozung1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="вместе с"
         android:gravity="center"
         android:textColor="#C62840"
-        android:textSize="15sp"/>
+        android:textSize="0sp"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -101,12 +103,13 @@
         android:textSize="15dp"/>
 
     <TextView
+        android:id="@+id/ttg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="time to go"
         android:gravity="center"
         android:textColor="#C62840"
-        android:textSize="35sp"/>
+        android:textSize="0sp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
