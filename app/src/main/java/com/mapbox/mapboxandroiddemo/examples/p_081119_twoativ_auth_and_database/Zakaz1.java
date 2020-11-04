@@ -2,6 +2,8 @@ package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -9,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -16,6 +19,8 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 
 public class Zakaz1 extends AppCompatActivity {
+
+    TextView textView5;
 
     //private static final String TAG ="Zakaz1" ;
 
@@ -84,6 +89,8 @@ public class Zakaz1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zakaz1);
 
+        textView5=findViewById(R.id.textView5);
+
         button1=findViewById(R.id.button1);
         button2=findViewById(R.id.button2);
         button3=findViewById(R.id.button3);
@@ -106,6 +113,11 @@ public class Zakaz1 extends AppCompatActivity {
         OderRight=findViewById(R.id.OderRight);
         button5.setVisibility(View.INVISIBLE);
         AllLineNoShow();
+
+        ConstraintLayout.LayoutParams params= (ConstraintLayout.LayoutParams) textView5.getLayoutParams();
+        params.setMargins(params.leftMargin,params.topMargin*130/100,params.rightMargin,params.bottomMargin);
+        textView5.setLayoutParams(params);
+
 
 
         // Проверка был ли переход сюда с листа Zakaz2

@@ -1,156 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainUserNewOne"
-    android:orientation="vertical">
+    android:id="@+id/cl"
+    tools:context=".MainUserNewOne">
+
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/tV1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="10dp"/>
+        android:text="Летаешь через Аэропорт"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/tV2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Летаешь ч/з Аэропорт"
-        android:gravity="center"
-        android:textColor="#3E180B"
-        android:textSize="20sp"/>
+        android:layout_marginTop="1dp"
+        android:text=" г.Красноярск"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tV1" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/tV3"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="3dp"/>
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:text=" ?"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/tV2"
+        app:layout_constraintTop_toTopOf="@+id/tV2" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/tV4"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Хворостовского (Красноярск)?"
-        android:gravity="center"
-        android:textColor="#3E180B"
-        android:textSize="20sp"/>
+        android:text="Посмотри, может эти "
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/tV5"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="15dp"/>
+        android:layout_marginTop="2dp"
+        android:text="маршрутные такси"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tV4" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Посмотри, может эти маршрутные такси "
-            android:gravity="center"
-            android:textColor="#C62840"
-            android:textSize="15sp"/>
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="5dp"/>
-    <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/tV6"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="удобны для тебя!"
-        android:gravity="center"
-        android:textColor="#C62840"
-        android:textSize="15sp"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="25dp"/>
-    <TextView
-        android:id="@+id/lozung"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Зарезервируй место!"
-        android:gravity="center"
-        android:textColor="#C62840"
-        android:textSize="0sp"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="5dp"/>
+        android:layout_marginTop="1dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tV5"/>
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/tV7"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Позаботься о своем пути за ранее"
-        android:gravity="center"
-        android:textColor="#C62840"
-        android:textSize="15sp"/>
+        android:text="Зарезервируй место"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/lozung1"
-        android:layout_width="match_parent"
+        android:id="@+id/tV8"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="вместе с"
-        android:gravity="center"
-        android:textColor="#C62840"
-        android:textSize="0sp"/>
+        android:text="Вместе с"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tV7"  />
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/tV9"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="15dp"/>
-
-    <TextView
-        android:id="@+id/ttg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="time to go"
-        android:gravity="center"
-        android:textColor="#C62840"
-        android:textSize="0sp"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="5dp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="150sp"/>
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+        android:text="Time to Go"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tV8" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:id="@+id/button6"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textSize="15sp"
-        android:text="продолжить"
-        android:onClick="mainUserNewOne2"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="  "
-        android:layout_weight="1"
-        android:textSize="5sp"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textSize="15sp"
-        android:text="закрыть приложение"/>
-
-</LinearLayout>
-
-
-
-</LinearLayout>
+        android:onClick="mainUserNewOne2"
+        android:text="Продолжить"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
