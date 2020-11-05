@@ -26,14 +26,14 @@ public class MainUserNewOne extends AppCompatActivity {
 
     private static final String TAG ="MainUserNewOne" ;
 
-    int dinamic1Size,dinamic2Size,dinamic3Size,dinamic4Size,dinamic5Size;
+    int dinamic1Size,dinamic2Size,dinamic3Size,dinamic4Size,dinamic5Size,dinamic6Size;
     int dinamicLittleTxt1, dinamicLittleTxt2;
 
     double goubleRef1;
     double goubleRef2;
     double goubleRef3;
 
-    TextView tV1,tV2,tV3,tV4,tV5,tV6,tV7,tV8,tV9;
+    TextView tV1,tV2,tV3,tV4,tV5,tV6,tV7,tV8, point1, point2, point3,tV9;
     Button button6;
     ConstraintLayout constraintLayout;
 
@@ -50,6 +50,11 @@ public class MainUserNewOne extends AppCompatActivity {
         tV6=findViewById(R.id.tV6);
         tV7=findViewById(R.id.tV7);
         tV8=findViewById(R.id.tV8);
+        point1=findViewById(R.id.point1);
+        point2=findViewById(R.id.point2);
+        point3=findViewById(R.id.point3);
+
+
         tV9=findViewById(R.id.tV9);
         button6=findViewById(R.id.button6);
         constraintLayout=findViewById(R.id.cl);
@@ -59,6 +64,7 @@ public class MainUserNewOne extends AppCompatActivity {
         dinamic3Size=0;
         dinamic4Size=0;
         dinamic5Size=0;
+        dinamic6Size=0;
 
         tV1.setTextSize(0);
         tV2.setTextSize(0);
@@ -121,7 +127,7 @@ public class MainUserNewOne extends AppCompatActivity {
     },50);
 }
         else {
-            Toast.makeText(MainUserNewOne.this,"УРА....",Toast.LENGTH_LONG).show();
+            //Toast.makeText(MainUserNewOne.this,"УРА....",Toast.LENGTH_LONG).show();
             // начальное значение verticalBias
             goubleRef1=0.5;
             //Смещение вверх фразы "Летаешь через Аэропорт г.Красноярск?"
@@ -206,7 +212,7 @@ public class MainUserNewOne extends AppCompatActivity {
 
     //Уменьшение размера фразы "Летаешь через Аэропорт г.Красноярск?"
     public void dinamicLittleTxt1(){
-        if (dinamicLittleTxt1>20){
+        if (dinamicLittleTxt1>18){
             Log.d(TAG, dinamicLittleTxt1+"");
             Handler Date = new Handler();
             Date.postDelayed(new Runnable() {
@@ -220,9 +226,6 @@ public class MainUserNewOne extends AppCompatActivity {
                     dinamicLittleTxt1();
                 }
             },200);
-        }
-        else {
-            Toast.makeText(MainUserNewOne.this,"Уменьшили 1 текст....",Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -280,7 +283,7 @@ public class MainUserNewOne extends AppCompatActivity {
     }
     // Смещение фразы "Посмотри, может эти маршрутные такси удобны для тебя"
     public void dinamicBias2(){
-        if(goubleRef2>0.11){
+        if(goubleRef2>0.09){
 
             Handler Date = new Handler();
             Date.postDelayed(new Runnable() {
@@ -340,7 +343,7 @@ public class MainUserNewOne extends AppCompatActivity {
 
     //уменьшение размера фразы "Посмотри, может эти маршрутные такси удобны для тебя"
     public void dinamicLittleTxt2(){
-        if (dinamicLittleTxt2>20){
+        if (dinamicLittleTxt2>18){
 
             Handler Date = new Handler();
             Date.postDelayed(new Runnable() {
@@ -355,11 +358,8 @@ public class MainUserNewOne extends AppCompatActivity {
                 }
             },200);
         }
-        else {
-            Toast.makeText(MainUserNewOne.this,"Уменьшили 2 текст....",Toast.LENGTH_SHORT).show();
-        }
     }
-    // Появление фраз "Зарезервируй место, вместе с"
+    // Появление фраз "Зарезервируй место,"
     public void dinamic4Size(){
         if (dinamic4Size<26){
 
@@ -368,7 +368,6 @@ public class MainUserNewOne extends AppCompatActivity {
                 @Override
                 public void run() {
                     tV7.setTextSize(dinamic4Size);
-                    tV8.setTextSize(dinamic4Size);
 
                     dinamic4Size=dinamic4Size+1;
                     dinamic4Size();
@@ -376,29 +375,47 @@ public class MainUserNewOne extends AppCompatActivity {
             },50);
         }
         else {
+            // Появление фраз "Вместе с"
+            dinamic5Size();
+        }
+    }
 
-            Handler point1 = new Handler();
-            point1.postDelayed(new Runnable() {
+    // Появление фраз "Вместе с"
+    public void dinamic5Size(){
+        if (dinamic5Size<26){
+
+            Handler Date = new Handler();
+            Date.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    tV8.setText("Вместе с .");
+                    tV8.setTextSize(dinamic5Size);
+                    dinamic5Size=dinamic5Size+1;
+                    dinamic5Size();
+                }
+            },50);
+        }
+        else {
+            Handler pointTime1 = new Handler();
+            pointTime1.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    point1.setVisibility(View.VISIBLE);
                 }
             },400);
 
-            Handler point2 = new Handler();
-            point2.postDelayed(new Runnable() {
+            Handler pointTime2 = new Handler();
+            pointTime2.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    tV8.setText("Вместе с ..");
+                    point2.setVisibility(View.VISIBLE);
                 }
             },800);
 
-            Handler point3 = new Handler();
-            point3.postDelayed(new Runnable() {
+            Handler pointTime3 = new Handler();
+            pointTime3.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    tV8.setText("Вместе с ...");
-
+                    point3.setVisibility(View.VISIBLE);
                 }
             },1200);
 
@@ -411,14 +428,10 @@ public class MainUserNewOne extends AppCompatActivity {
                     dinamicBias3();
                 }
             },2400);
-
-
         }
     }
-
     // Смещение текста "Зарезервируй место, вместе с"
     public void dinamicBias3(){
-
         if(goubleRef3>0.3){
         Handler Date = new Handler();
         Date.postDelayed(new Runnable() {
@@ -434,9 +447,6 @@ public class MainUserNewOne extends AppCompatActivity {
         },5);
     }
         else {
-//        tV7.setTextSize(20);
-//        tV8.setTextSize(20);
-
         ConstraintSet set=new ConstraintSet();
         // считываем параметры constraintLayout
                 set.clone(constraintLayout);
@@ -450,30 +460,30 @@ public class MainUserNewOne extends AppCompatActivity {
                 //TransitionManager.beginDelayedTransition(constraintLayout);
 
             // Появление фразы "Time to go"
-            dinamic5Size();
+            dinamic6Size();
 
         }
     }
     // Появление фразы "Time to go"
-    public void dinamic5Size(){
+    public void dinamic6Size(){
 
-        if (dinamic5Size<40){
+        if (dinamic6Size<40){
 
             Handler Date = new Handler();
             Date.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    tV9.setTextSize(dinamic5Size);
+                    tV9.setTextSize(dinamic6Size);
 
 
-                    dinamic5Size=dinamic5Size+1;
-                    dinamic5Size();
+                    dinamic6Size=dinamic6Size+1;
+                    dinamic6Size();
                 }
             },70);
         }
         else {
             button6.setVisibility(View.VISIBLE);
-            Toast.makeText(MainUserNewOne.this,"Yes....",Toast.LENGTH_LONG).show();
+            //Toast.makeText(MainUserNewOne.this,"",Toast.LENGTH_LONG).show();
         }
     }
 

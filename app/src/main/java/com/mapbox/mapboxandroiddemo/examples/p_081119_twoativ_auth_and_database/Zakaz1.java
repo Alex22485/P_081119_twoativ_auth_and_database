@@ -89,7 +89,6 @@ public class Zakaz1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zakaz1);
 
-        textView5=findViewById(R.id.textView5);
 
         button1=findViewById(R.id.button1);
         button2=findViewById(R.id.button2);
