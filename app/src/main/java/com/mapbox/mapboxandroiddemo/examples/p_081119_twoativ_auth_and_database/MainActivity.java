@@ -385,7 +385,7 @@ import com.google.firebase.iid.InstanceIdResult;
                 startActivity(aaa);
             }
         }
-
+        // проверка есть ли активные заявки
         public void checkWordProverka(){
 
             if (checkregistrationTimeOut2.equals("Out")){

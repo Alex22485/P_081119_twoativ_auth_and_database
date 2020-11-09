@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -20,9 +21,13 @@ import java.util.Calendar;
 
 public class Zakaz1 extends AppCompatActivity {
 
-    TextView textView5;
+    // Первый лист заказа
 
-    //private static final String TAG ="Zakaz1" ;
+    private static final String TAG ="Zakaz1" ;
+
+    String phoneNew;
+    String phoneNewFromMain6;
+    String regFromMain3;
 
     Button button1,button3,button4,button5;
     TextView button2;
@@ -41,6 +46,15 @@ public class Zakaz1 extends AppCompatActivity {
 
     // выбранный рейс самолета (город)
     String RefplaneCity;
+
+    // для Чартерных рейсов из Игарки
+    String knowOrNotTime="Вы знаете время прилета в Красноярск?";
+    String [] knowOrNotTimeChoise= {"1. Да","2. Нет, я лечу на чартере"};
+    String knowOrNotTimeRef;
+    String choiseNumberCharter="Ваш порядковый номер самолета чартера из Игарки";
+    String [] numberCharter = {"1 рейс","2 рейс","3 рейс"};
+    String numberCharterRef;
+    String haveACharter="";
 
     String [] listCityTaxi= {"Красноярск","Сосновоборск","Ачинск","Канск","Лесосибирск","Нет нужного города"};
     String refCityTaxi,refFromInCity;
@@ -113,10 +127,32 @@ public class Zakaz1 extends AppCompatActivity {
         button5.setVisibility(View.INVISIBLE);
         AllLineNoShow();
 
-        ConstraintLayout.LayoutParams params= (ConstraintLayout.LayoutParams) textView5.getLayoutParams();
-        params.setMargins(params.leftMargin,params.topMargin*130/100,params.rightMargin,params.bottomMargin);
-        textView5.setLayoutParams(params);
+        //транзит из Заставки MainActivity. переход скачком на эту страницу если ранее зарегистрирован и нет новых заявок
+        Intent MainActivityToMainUserNewOne3= getIntent();
+        phoneNew=MainActivityToMainUserNewOne3.getStringExtra("phoneNew");
+        Log.d(TAG, "phoneNew:"+phoneNew);
 
+        // проверка был ли переход на эту страницу после отмены заявки
+        Intent Main6ToMain3=getIntent();
+        phoneNewFromMain6=""+Main6ToMain3.getStringExtra("regFromMain6");
+        Log.d(TAG, "phoneNewFromMain6:"+phoneNewFromMain6);
+
+        //если был то пишем phoneNew=phoneNewFromMain6
+        if (!phoneNewFromMain6.equals("null")){
+            phoneNew=phoneNewFromMain6;
+            Log.d(TAG, "phoneNewNEW:"+phoneNew);
+        }
+
+        // проверка был ли переход на эту страницу из Main3Activity после запрета регистрации на уже сформировавийся маршрут (STOPODER)
+        Intent Main3ToMainUserNewOne3=getIntent();
+        regFromMain3=""+Main3ToMainUserNewOne3.getStringExtra("regFromMain3");
+        Log.d(TAG, "regFromMain3:"+regFromMain3);
+
+        //если был то присваеваем phoneNew (лист с Заставкой)
+        if (!regFromMain3.equals("null")){
+            phoneNew=regFromMain3;
+            Log.d(TAG, "phoneNewAfterSTOPODER:"+phoneNew);
+        }
 
 
         // Проверка был ли переход сюда с листа Zakaz2
@@ -124,6 +160,7 @@ public class Zakaz1 extends AppCompatActivity {
         RefMap=""+backZakaz2ToZakaz1.getStringExtra("RefMap");
         RefPoint=""+backZakaz2ToZakaz1.getStringExtra("RefPoint");
         RefBackFromZakaz2=""+backZakaz2ToZakaz1.getStringExtra("RefBackFromZakaz2");
+
 
         // переход был нажатием кнопки НАЗАД
         if(RefBackFromZakaz2.equals("backNoFromZakaz2")){
@@ -596,7 +633,7 @@ public class Zakaz1 extends AppCompatActivity {
                             @Override
                             public void run() {
                                 // выбрать время
-                                setTime();
+                                choiseSetTime();
                             }
                         },300);
                     }
@@ -606,7 +643,7 @@ public class Zakaz1 extends AppCompatActivity {
         datePickerDialog.show();
         }
     // вызов времени
-    public void setTime(){
+    public void choiseSetTime(){
         Handler ha = new Handler();
         ha.postDelayed(new Runnable() {
             @Override
@@ -614,6 +651,21 @@ public class Zakaz1 extends AppCompatActivity {
                 Exline4();
             }
         },300);
+
+        // если человек летит из Игарки показать вопрос знает ли он время прибытия самолета или у него чартер
+        if(RefplaneCity.equals("Игарка")&& RefAlertTitle.equals(AlertIn)){
+            // вызов Alert знаю/ не знаю время прилета
+            showKnowTimeorNot();
+        }
+
+        // в других случаях выбрать время прилета
+        else {
+            //выбрать время прилета
+            showTimeCalendar();
+        }
+    }
+    //выбрать время прилета
+    public void showTimeCalendar(){
         calendar=Calendar.getInstance();
         hourOfDay=calendar.get(Calendar.HOUR);
         minute=calendar.get(Calendar.MINUTE);
@@ -654,6 +706,84 @@ public class Zakaz1 extends AppCompatActivity {
         timePickerDialog.setTitle(ReftitleTime);
         timePickerDialog.show();
     }
+
+    public void showKnowTimeorNot(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
+        mAlertDialog.setTitle(knowOrNotTime);
+        mAlertDialog.setCancelable(false);
+        mAlertDialog
+                .setItems(knowOrNotTimeChoise, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        knowOrNotTimeRef=knowOrNotTimeChoise[which];
+
+                        // если знаю время прилета,
+                        if (knowOrNotTimeRef.equals("1. Да")){
+                            //выбрать время прилета
+                            showTimeCalendar();
+                        }
+                        else {
+                            // выбрать номер чартера
+                            choisNumberCharter();
+                        }
+                    }
+                });
+        mAlertDialog
+                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Handler handlerNeg1 = new Handler();
+                        handlerNeg1.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Exline4();
+                            }
+                        },300);
+                    }
+                });
+        mAlertDialog.create();
+        mAlertDialog.show();
+    }
+
+    public void choisNumberCharter(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
+        mAlertDialog.setTitle(choiseNumberCharter);
+        mAlertDialog.setCancelable(false);
+        mAlertDialog
+                .setItems(numberCharter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        numberCharterRef=numberCharter[which];
+                        haveACharter="haveACharter";
+                        Handler han = new Handler();
+                        han.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Rline4();
+                                finishOder();
+                            }
+                        },300);
+
+
+                    }
+                });
+        mAlertDialog
+                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Handler handlerNeg1 = new Handler();
+                        handlerNeg1.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                //обнуляем значение
+                                knowOrNotTimeRef="";
+                                Exline4();
+                            }
+                        },300);
+                    }
+                });
+        mAlertDialog.create();
+        mAlertDialog.show();
+    }
+
     // Oder is Finish
     public void finishOder(){
         Handler handler5 = new Handler();
@@ -661,8 +791,42 @@ public class Zakaz1 extends AppCompatActivity {
             @Override
             public void run() {
                 Rline5();
+                //переход на итоговый лист регистрации заявки Zakaz3finish()
+                Zakaz3finish();
             }
         },300);
+    }
+
+    public void Zakaz3finish() {
+
+        // если рейс самолета чартер из Игарки то присваиваем time номер рейса чартера 1,2,3
+        if (haveACharter.equals("haveACharter")){
+            time=numberCharterRef;
+        }
+
+        // присваиваем полное название рейса самолета Н-р Игарка красноярск или Красноярск-Новосибирск
+        if (RefAlertTitle.equals(AlertIn)){
+            RefplaneCity=RefplaneCity+"-"+"Красноярск";
+        }
+        if (RefAlertTitle.equals(AlertFrom)){
+            RefplaneCity="Красноярск"+"-"+RefplaneCity;
+        }
+
+        // передаем данные для регистрации заявки
+        Intent Zakaz1ToZakaz3finish = new Intent (this,Zakaz3finish.class);
+        // secretNumber
+        Zakaz1ToZakaz3finish.putExtra("phoneNew", phoneNew);
+        // дата полета
+        Zakaz1ToZakaz3finish.putExtra("Calend", Calend);
+        // рейс самолета
+        Zakaz1ToZakaz3finish.putExtra("RefplaneCity", RefplaneCity);
+        // время вылета/прилета/номер рейса для чартера
+        Zakaz1ToZakaz3finish.putExtra("time", time);
+        // маршрут
+        Zakaz1ToZakaz3finish.putExtra("RefMap", RefMap);
+        // точка сбора
+        Zakaz1ToZakaz3finish.putExtra("RefPoint", RefPoint);
+        startActivity(Zakaz1ToZakaz3finish);
     }
 
     public void FeedBack1(){

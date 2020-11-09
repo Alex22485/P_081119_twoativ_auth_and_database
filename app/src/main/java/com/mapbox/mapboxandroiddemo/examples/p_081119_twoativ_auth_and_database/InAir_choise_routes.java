@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 public class InAir_choise_routes extends AppCompatActivity {
 
+    //не используется с 10.2020
+
     private static final String TAG ="InAir_choise_routes" ;
 
 //    TextView TVchoiseMap,TVchoise_pointMap;

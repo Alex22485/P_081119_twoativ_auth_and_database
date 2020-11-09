@@ -281,14 +281,11 @@ public class Main3Activity extends AppCompatActivity {
                             TextTime.setVisibility(View.VISIBLE);
                             showTime();
                         }
-
                     }
                 },
                 year,month,dayOfmonth);
         datePickerDialog.show();
     }
-
-
 
     // Показать время
     public void showTime(){

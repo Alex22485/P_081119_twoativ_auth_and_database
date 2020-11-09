@@ -9,6 +9,8 @@ import android.view.View;
 
 public class MainUserNewOne3 extends AppCompatActivity {
 
+    //не используется с 10.2020 часть кода (переходы) скопированы в Zakaz1
+
     private static final String TAG ="MainUserNewOne3" ;
 
     String phoneNew;
@@ -20,7 +22,7 @@ public class MainUserNewOne3 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_user_new_one3);
 
-        //транзит из MainActivity
+        //транзит из Заставки MainActivity
         Intent MainActivityToMainUserNewOne3= getIntent();
         phoneNew=MainActivityToMainUserNewOne3.getStringExtra("phoneNew");
         Log.d(TAG, "phoneNew:"+phoneNew);

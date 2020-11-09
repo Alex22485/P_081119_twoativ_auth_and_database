@@ -9,6 +9,8 @@ import android.view.View;
 
 public class MainUserNewOne4 extends AppCompatActivity {
 
+    //не используется с 10.2020
+
     String refCity;
     String phoneNew;
 

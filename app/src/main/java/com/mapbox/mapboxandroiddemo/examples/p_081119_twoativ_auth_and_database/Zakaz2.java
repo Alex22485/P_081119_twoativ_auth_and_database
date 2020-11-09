@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class Zakaz2 extends AppCompatActivity {
+    //Лист заказа 2, выбор маршрута и пункта сбора
 
     TextView textView;
     Button button1,button2,button3,button4,button5;
