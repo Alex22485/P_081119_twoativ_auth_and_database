@@ -36,6 +36,9 @@ public class Main2Activity extends AppCompatActivity {
 
     private static final String TAG ="Main2activity" ;
 
+    // добавлено 10.11.20
+    String RefplaneCity,RefMap,RefPoint;
+
     LinearLayout TextProgress;
 
 
@@ -84,16 +87,35 @@ public class Main2Activity extends AppCompatActivity {
 
         //данные из main3Activity
         Intent main3Activity=getIntent();
-        refCity=main3Activity.getStringExtra("refCity");
-        toOrFrom=main3Activity.getStringExtra("toOrFrom");
-        MapTop=main3Activity.getStringExtra("MapTop");
-        Log.d(TAG, "MapTop: "+MapTop);
+//        refCity=main3Activity.getStringExtra("refCity");
+//        toOrFrom=main3Activity.getStringExtra("toOrFrom");
+//        MapTop=main3Activity.getStringExtra("MapTop");
+//        Log.d(TAG, "MapTop: "+MapTop);
+//        Calend=main3Activity.getStringExtra("Calend");
+//        CalendTime=main3Activity.getStringExtra("CalendTime");
+//        Flight=main3Activity.getStringExtra("Flight");
+//        time=main3Activity.getStringExtra("time");
+//        TVchoiseMap=main3Activity.getStringExtra("TVchoiseMap");
+//        TVchoise_pointMap=main3Activity.getStringExtra("TVchoise_pointMap");
+
+        // secretNumber
+        phoneNew=main3Activity.getStringExtra("phoneNew");
+        // дата полета
         Calend=main3Activity.getStringExtra("Calend");
-        CalendTime=main3Activity.getStringExtra("CalendTime");
-        Flight=main3Activity.getStringExtra("Flight");
+        // рейс самолета
+        RefplaneCity=main3Activity.getStringExtra("RefplaneCity");
+        // время вылета/прилета/номер рейса для чартера
         time=main3Activity.getStringExtra("time");
-        TVchoiseMap=main3Activity.getStringExtra("TVchoiseMap");
-        TVchoise_pointMap=main3Activity.getStringExtra("TVchoise_pointMap");
+        // маршрут
+        RefMap=main3Activity.getStringExtra("RefMap");
+        // точка сбора
+        RefPoint=main3Activity.getStringExtra("RefPoint");
+
+
+
+
+        // точка сбора
+        //main3Activity.putExtra("RefPoint",RefPoint);
 
         TextHello1=findViewById(R.id.TextHello1);
         //GoMainActivity=findViewById(R.id.GoMainActivity);
@@ -359,22 +381,39 @@ public class Main2Activity extends AppCompatActivity {
             return;
         }
 
-        Intent Main3Activity=new Intent(this,Main3Activity.class);
+        // изменено 10.11.20
+        //Intent Main3Activity=new Intent(this,Main3Activity.class);
+        Intent Main3Activity=new Intent(this,Zakaz3finish.class);
 
         //регистрация завершена успешно передаем Ok в main3Activity в лист регистрации заявки
         Main3Activity.putExtra("authOk","Ok");
 
         //параметры заявки полученные из main3Activity возвращаем обратно в main3Activity
-        Main3Activity.putExtra("refCity",refCity);
-        Main3Activity.putExtra("toOrFrom",toOrFrom);
-        Main3Activity.putExtra("MapTop",MapTop);
-        Main3Activity.putExtra("Calend",Calend);
-        Main3Activity.putExtra("CalendTime",CalendTime);
-        Main3Activity.putExtra("Flight",Flight);
-        Main3Activity.putExtra("time",time);
-        Main3Activity.putExtra("TVchoiseMap",TVchoiseMap);
-        Main3Activity.putExtra("TVchoise_pointMap",TVchoise_pointMap);
+        //ИЗМЕНЕНО 10.11.20
+//        Main3Activity.putExtra("refCity",refCity);
+//        Main3Activity.putExtra("toOrFrom",toOrFrom);
+//        Main3Activity.putExtra("MapTop",MapTop);
+//        Main3Activity.putExtra("Calend",Calend);
+//        Main3Activity.putExtra("CalendTime",CalendTime);
+//        Main3Activity.putExtra("Flight",Flight);
+//        Main3Activity.putExtra("time",time);
+//        Main3Activity.putExtra("TVchoiseMap",TVchoiseMap);
+//        Main3Activity.putExtra("TVchoise_pointMap",TVchoise_pointMap);
+//        Main3Activity.putExtra("phoneNew",phoneNew);
+
+        // телефон
         Main3Activity.putExtra("phoneNew",phoneNew);
+        // дата поездки
+        Main3Activity.putExtra("Calend",Calend);
+        // рейс самолета
+        Main3Activity.putExtra("RefMap",RefMap);
+        // маршрут такси
+        Main3Activity.putExtra("Calend",Calend);
+        // пункт сбора
+        Main3Activity.putExtra("RefPoint",RefPoint);
+        // время вылета/прилета/номер рейса для чартера
+        Main3Activity.putExtra("time",time);
+
 
         startActivity(Main3Activity);
     }

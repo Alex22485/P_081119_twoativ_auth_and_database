@@ -799,8 +799,6 @@ public class Main3Activity extends AppCompatActivity {
             } );
 
         }
-
-
     }
 
     public void internetNot(){
@@ -950,8 +948,6 @@ public class Main3Activity extends AppCompatActivity {
         // отправляем phoneNew в Main3Activity
         Main3ToMainUserNewOne3.putExtra("regFromMain3",phoneNew);
         startActivity( Main3ToMainUserNewOne3);
-
-
     }
 
     // Блокировка кнопки Back!!!! :)))
