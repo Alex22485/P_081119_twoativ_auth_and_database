@@ -19,8 +19,11 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -32,6 +35,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -112,15 +116,34 @@ public class Main3Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
 
-        // Получить Токен!!!!
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Main3Activity.this,new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                newToken = instanceIdResult.getToken();
-                Log.d(TAG, "newToken: "+newToken);
-            }
-        }
-        );
+
+        FirebaseMessaging . getInstance (). getToken ()
+                . addOnCompleteListener ( new OnCompleteListener< String >() {
+                    @Override
+                    public void onComplete ( @NonNull Task< String > task ) {
+                        if (! task . isSuccessful ()) {
+                            Log . w ( TAG , "Fetching FCM registration token failed" , task . getException ());
+                            return ;
+                        }
+
+                        // Get new FCM registration token
+                        newToken = task . getResult ();
+
+                        // Log and toast
+                        //String msg = getString ( R . String . Msg_token_fmt , token );
+                        Log . d ( TAG , newToken );
+                        Toast. makeText ( Main3Activity . this , newToken , Toast . LENGTH_SHORT ). show ();
+                    }
+                });
+        // Получить Токен устаревший вариант с 13.11.2020!!!!
+//        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Main3Activity.this,new OnSuccessListener<InstanceIdResult>() {
+//            @Override
+//            public void onSuccess(InstanceIdResult instanceIdResult) {
+//                newToken = instanceIdResult.getToken();
+//                Log.d(TAG, "newToken: "+newToken);
+//            }
+//        }
+//        );
 
         TextData=findViewById(R.id.TextData);
         TextNumberFlight=findViewById(R.id.TextNumberFlight);

@@ -20,6 +20,8 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,10 +33,15 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
 public class Main2Activity extends AppCompatActivity {
 
+    // Лист авторизации по телефону
     private static final String TAG ="Main2activity" ;
+
+    // для экспорта из Zakaz3finish
+    String phoneNew, Calend, RefplaneCity, RefMap, RefPoint, time;
 
     LinearLayout TextProgress;
 
@@ -48,7 +55,6 @@ public class Main2Activity extends AppCompatActivity {
     String UserToken;
     String phoneUser;
     String IneternetYES;
-    String phoneNew;
 
     TextView TextHello1;
     Button GoMainActivity;
@@ -67,12 +73,12 @@ public class Main2Activity extends AppCompatActivity {
     String refCity;
     String toOrFrom;
     String MapTop;
-    String Calend;
     String CalendTime;
     String Flight;
-    String time;
     String TVchoiseMap;
     String TVchoise_pointMap;
+
+    Integer phoneNumber;
 
 
     private static final int RC_SIGN_IN = 101;
@@ -84,16 +90,32 @@ public class Main2Activity extends AppCompatActivity {
 
         //данные из main3Activity
         Intent main3Activity=getIntent();
-        refCity=main3Activity.getStringExtra("refCity");
-        toOrFrom=main3Activity.getStringExtra("toOrFrom");
-        MapTop=main3Activity.getStringExtra("MapTop");
-        Log.d(TAG, "MapTop: "+MapTop);
+
+        // телефон
+        phoneNew=main3Activity.getStringExtra("phoneNew");
+        // дата поездки
         Calend=main3Activity.getStringExtra("Calend");
-        CalendTime=main3Activity.getStringExtra("CalendTime");
-        Flight=main3Activity.getStringExtra("Flight");
+        // рейс самолета
+        RefplaneCity=main3Activity.getStringExtra("RefplaneCity");
+        // маршрут такси
+        RefMap=main3Activity.getStringExtra("RefMap");
+        // пункт сбора
+        RefPoint=main3Activity.getStringExtra("RefPoint");
+        // время вылета/прилета/номер рейса для чартера
         time=main3Activity.getStringExtra("time");
-        TVchoiseMap=main3Activity.getStringExtra("TVchoiseMap");
-        TVchoise_pointMap=main3Activity.getStringExtra("TVchoise_pointMap");
+
+
+        // скрыто 13.11.2020
+//        refCity=main3Activity.getStringExtra("refCity");
+//        toOrFrom=main3Activity.getStringExtra("toOrFrom");
+//        MapTop=main3Activity.getStringExtra("MapTop");
+//        Log.d(TAG, "MapTop: "+MapTop);
+//        Calend=main3Activity.getStringExtra("Calend");
+//        CalendTime=main3Activity.getStringExtra("CalendTime");
+//        Flight=main3Activity.getStringExtra("Flight");
+//        time=main3Activity.getStringExtra("time");
+//        TVchoiseMap=main3Activity.getStringExtra("TVchoiseMap");
+//        TVchoise_pointMap=main3Activity.getStringExtra("TVchoise_pointMap");
 
         TextHello1=findViewById(R.id.TextHello1);
         //GoMainActivity=findViewById(R.id.GoMainActivity);
@@ -105,15 +127,14 @@ public class Main2Activity extends AppCompatActivity {
         doPhoneLogin();
     }
     private void doPhoneLogin() {
-
-        Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
-                .setIsSmartLockEnabled(!BuildConfig.DEBUG)
-                .setAvailableProviders(Collections.singletonList(
-                        new AuthUI.IdpConfig.PhoneBuilder().build()))
-                .setLogo(R.mipmap.ic_launcher)
-                .build();
-
-        startActivityForResult(intent, RC_SIGN_IN);
+//        Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
+//                .setIsSmartLockEnabled(!BuildConfig.DEBUG)
+//                .setAvailableProviders(Collections.singletonList(
+//                        new AuthUI.IdpConfig.PhoneBuilder().build()))
+//                .setLogo(R.mipmap.ic_launcher)
+//                .build();
+//
+//        startActivityForResult(intent, RC_SIGN_IN);
     }
 
     @Override
@@ -170,21 +191,22 @@ public class Main2Activity extends AppCompatActivity {
 
     public void getMyToken(){
 
+        //получение теелфона
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser ghg = mAuth.getCurrentUser();
         phoneUser=ghg.getPhoneNumber();
 
-        //получение токена
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Main2Activity.this,new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                UserToken = instanceIdResult.getToken();
-
-            }
-        });
+//        //получение токена
+//        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Main2Activity.this,new OnSuccessListener<InstanceIdResult>() {
+//            @Override
+//            public void onSuccess(InstanceIdResult instanceIdResult) {
+//                UserToken = instanceIdResult.getToken();
+//
+//            }
+//        });
     }
 
-// реализация шифрования кропка пропустить
+// реализация шифрования кнопка пропустить
     public void GoMainOder(View view){
         Log.d(TAG, "Старт шифрования");
 
@@ -302,10 +324,9 @@ public class Main2Activity extends AppCompatActivity {
         handler1.postDelayed(new Runnable() {
             @Override
             public void run() {
-
                 // Завершен ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА при записи данных в БД
                 checkInternet="Out";
-                Log.d(TAG, "Записан checkInternet=Out");/*специально пусто*/
+                Log.d(TAG, "Записан checkInternet=Out");
                 inetNotWhenGoCheckRegistration();
             }
         },15000);
@@ -332,8 +353,6 @@ public class Main2Activity extends AppCompatActivity {
                                         }
                                     }
         );
-
-
     }
 
     public void inetNotWhenGoCheckRegistration(){
@@ -346,14 +365,13 @@ public class Main2Activity extends AppCompatActivity {
             Intent aaa = new Intent(this,InternetNot.class);
             startActivity(aaa);
         }
-
     }
 
     public void getMainList(){
-        Log.d(TAG, "вход в проверку getMainList");/*специально пусто*/
+        Log.d(TAG, "вход в проверку getMainList");
 
         if(checkInternet.equals("Out")){
-            Log.d(TAG, "getMainList остановлен");/*специально пусто*/
+            Log.d(TAG, "getMainList остановлен");
 
             //return нужен чтобы при возобноблении интернета автоматически не переходило на лист с заявками
             return;
@@ -365,16 +383,30 @@ public class Main2Activity extends AppCompatActivity {
         Main3Activity.putExtra("authOk","Ok");
 
         //параметры заявки полученные из main3Activity возвращаем обратно в main3Activity
-        Main3Activity.putExtra("refCity",refCity);
-        Main3Activity.putExtra("toOrFrom",toOrFrom);
-        Main3Activity.putExtra("MapTop",MapTop);
-        Main3Activity.putExtra("Calend",Calend);
-        Main3Activity.putExtra("CalendTime",CalendTime);
-        Main3Activity.putExtra("Flight",Flight);
-        Main3Activity.putExtra("time",time);
-        Main3Activity.putExtra("TVchoiseMap",TVchoiseMap);
-        Main3Activity.putExtra("TVchoise_pointMap",TVchoise_pointMap);
+        // телефон
         Main3Activity.putExtra("phoneNew",phoneNew);
+        // дата поездки
+        Main3Activity.putExtra("Calend",Calend);
+        // рейс самолета
+        Main3Activity.putExtra("RefplaneCity",RefplaneCity);
+        // маршрут такси
+        Main3Activity.putExtra("RefMap",RefMap);
+        // пункт сбора
+        Main3Activity.putExtra("RefPoint",RefPoint);
+        // время вылета/прилета/номер рейса для чартера
+        Main3Activity.putExtra("time",time);
+
+        // скрыто 13.11.2020
+//        Main3Activity.putExtra("refCity",refCity);
+//        Main3Activity.putExtra("toOrFrom",toOrFrom);
+//        Main3Activity.putExtra("MapTop",MapTop);
+//        Main3Activity.putExtra("Calend",Calend);
+//        Main3Activity.putExtra("CalendTime",CalendTime);
+//        Main3Activity.putExtra("Flight",Flight);
+//        Main3Activity.putExtra("time",time);
+//        Main3Activity.putExtra("TVchoiseMap",TVchoiseMap);
+//        Main3Activity.putExtra("TVchoise_pointMap",TVchoise_pointMap);
+//        Main3Activity.putExtra("phoneNew",phoneNew);
 
         startActivity(Main3Activity);
     }

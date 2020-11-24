@@ -227,7 +227,7 @@ public class MainUserNewOne extends AppCompatActivity {
                 }
             },200);
         }
-    };
+    }
 
     // Появление фразы "Посмотри, может эти маршрутные такси удобны для тебя"
     public void dinamic3Size(){
@@ -450,7 +450,7 @@ public class MainUserNewOne extends AppCompatActivity {
         ConstraintSet set=new ConstraintSet();
         // считываем параметры constraintLayout
                 set.clone(constraintLayout);
-                // очищаем именно нижнюю привязку  для tV4
+                // очищаем именно нижнюю привязку  для tV9
                 set.clear(R.id.tV9,ConstraintSet.BOTTOM);
                 // привязываем верхушку TV9  к нижней границе tV8,  можно сделать отступ от tV2 указав значение, н-р 15
                 set.connect(R.id.tV9,ConstraintSet.TOP,R.id.tV8,ConstraintSet.BOTTOM,25);

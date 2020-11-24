@@ -1,5 +1,6 @@
 package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,12 +12,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class Zakaz3finish extends AppCompatActivity {
+
+    //финишный лист заказа с кнопкой зарегистрировать заказ
 
     private static final String TAG ="Zakaz3finish" ;
 
@@ -33,6 +40,25 @@ public class Zakaz3finish extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zakaz3finish);
+
+        // get TOKEN new with 13/11/2020
+        FirebaseMessaging. getInstance (). getToken ()
+                . addOnCompleteListener ( new OnCompleteListener< String >() {
+                    @Override
+                    public void onComplete ( @NonNull Task< String > task ) {
+                        if (! task . isSuccessful ()) {
+                            Log . w ( TAG , "Fetching FCM registration token failed" , task . getException ());
+                            return ;
+                        }
+
+                        // Get new FCM registration token
+                        newToken = task . getResult ();
+
+                        // Log and toast
+                        Log . d ( TAG , newToken );
+                        //Toast. makeText ( Zakaz3finish . this , newToken , Toast . LENGTH_SHORT ). show ();
+                    }
+                });
 
         Calend1=findViewById(R.id.Calend1);
         RefMap1=findViewById(R.id.RefMap1);
@@ -52,22 +78,13 @@ public class Zakaz3finish extends AppCompatActivity {
         btnOder=findViewById(R.id.btnOder);
         button9=findViewById(R.id.button9);
 
-        // Получить Токен!!!!
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Zakaz3finish.this,new OnSuccessListener<InstanceIdResult>() {
-                    @Override
-                    public void onSuccess(InstanceIdResult instanceIdResult) {
-                        newToken = instanceIdResult.getToken();
-                        Log.d(TAG, "newToken: "+newToken);
-                    }
-                }
-        );
-        // экспорт из листа регисттрации после успешного ввода телефона поучаем OK
-        Intent Main3Activity= getIntent();
-        authOK= "K"+ Main3Activity.getStringExtra("authOk");
+        // from Main2Activity- auth if auth is OK (phone is Right)
+        Intent Main2AcivityToZakaz3finish= getIntent();
+        authOK= "K"+ Main2AcivityToZakaz3finish.getStringExtra("authOk");
         Log.d(TAG, "authOk: "+authOK);
 
         if(authOK.equals("KOk")){
-            TextProgress.setVisibility(View.VISIBLE);
+            //TextProgress.setVisibility(View.VISIBLE);
             Log.d(TAG, "автоматическая регистрация после авторизации: ");
 
 //            refCity=Main3Activity.getStringExtra("refCity");
@@ -81,17 +98,17 @@ public class Zakaz3finish extends AppCompatActivity {
 //            phoneNew=Main3Activity.getStringExtra("phoneNew");
 
             // телефон
-            phoneNew=Main3Activity.getStringExtra("phoneNew");
+            phoneNew=Main2AcivityToZakaz3finish.getStringExtra("phoneNew");
             // дата поездки
-            Calend=Main3Activity.getStringExtra("Calend");
+            Calend=Main2AcivityToZakaz3finish.getStringExtra("Calend");
             // рейс самолета
-            RefplaneCity=Main3Activity.getStringExtra("RefplaneCity");
+            RefplaneCity=Main2AcivityToZakaz3finish.getStringExtra("RefplaneCity");
             // маршрут такси
-            RefMap=Main3Activity.getStringExtra("RefMap");
+            RefMap=Main2AcivityToZakaz3finish.getStringExtra("RefMap");
             // пункт сбора
-            RefPoint=Main3Activity.getStringExtra("TVchoiseMap");
+            RefPoint=Main2AcivityToZakaz3finish.getStringExtra("TVchoiseMap");
             // время вылета/прилета/номер рейса для чартера
-            time=Main3Activity.getStringExtra("Calend");
+            time=Main2AcivityToZakaz3finish.getStringExtra("Calend");
 
             // автоматическая регистрация ранее сформированной заявки после авторизации
             //задержка чтобы успел записаться NO в БД Заявки из другого кода
@@ -99,11 +116,12 @@ public class Zakaz3finish extends AppCompatActivity {
             handler1.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    btnInsertd ();
+                    Toast. makeText ( Zakaz3finish . this , "готовность для регистрации заявки" , Toast . LENGTH_SHORT ). show ();
+                    //автоматическая регистрация ранее сформированной заявки
+                    //btnInsertd ();
                 }
             },4000);
         }
-
 
         // получение данных из Zakaz1
         Intent Zakaz1ToZakaz3finish = getIntent();
@@ -130,13 +148,10 @@ public class Zakaz3finish extends AppCompatActivity {
             time1.setText(time);
             btnTime.setVisibility(View.INVISIBLE);
         }
-
         Calend1.setText(Calend);
         RefMap1.setText(RefMap);
         RefPoint1.setText(RefPoint);
         RefplaneCity1.setText(RefplaneCity);
-
-
 
         Log.d(TAG, "phoneNew:"+phoneNew);
         Log.d(TAG, "Calend:"+Calend);
@@ -145,7 +160,6 @@ public class Zakaz3finish extends AppCompatActivity {
         Log.d(TAG, "RefMap:"+RefMap);
         Log.d(TAG, "RefPoint:"+RefPoint);
     }
-
     public void btnOder(View view) {
         if (phoneNew.equals("null")) {
 
@@ -165,23 +179,25 @@ public class Zakaz3finish extends AppCompatActivity {
                     });
             mAlertDialog.create();
             mAlertDialog.show();
-
-        else {
-                btnInsertd();
-            }
         }
-    }
+        else {
+            //btnInsertd();
+        }
+        }
     public void goListRegistration(){
-        Intent main3Activity =new Intent(this, Zakaz3finish.class);
-        main3Activity.putExtra("refCity",refCity);
-        main3Activity.putExtra("toOrFrom",toOrFrom);
-        main3Activity.putExtra("MapTop",MapTop);
-        main3Activity.putExtra("Calend",Calend.getText().toString());
-        main3Activity.putExtra("CalendTime",CalendTime.getText().toString());
-        main3Activity.putExtra("Flight",Flight.getText().toString());
-        main3Activity.putExtra("time",time.getText().toString());
-        main3Activity.putExtra("TVchoiseMap",TVchoiseMap);
-        main3Activity.putExtra("TVchoise_pointMap",TVchoise_pointMap);
-        startActivity(main3Activity);
+        Intent Zakaz3finishToMain2AcivityTo =new Intent(this, Proba.class);
+        // телефон
+        Zakaz3finishToMain2AcivityTo.putExtra("phoneNew",phoneNew);
+        // дата поездки
+        Zakaz3finishToMain2AcivityTo.putExtra("Calend",Calend);
+        // рейс самолета
+        Zakaz3finishToMain2AcivityTo.putExtra("RefplaneCity",RefplaneCity);
+        // маршрут такси
+        Zakaz3finishToMain2AcivityTo.putExtra("RefMap",RefMap);
+        // пункт сбора
+        Zakaz3finishToMain2AcivityTo.putExtra("RefPoint",RefPoint);
+        // время вылета/прилета/номер рейса для чартера
+        Zakaz3finishToMain2AcivityTo.putExtra("time",time);
+        startActivity(Zakaz3finishToMain2AcivityTo);
     }
 }

@@ -36,9 +36,9 @@ public class MainList extends AppCompatActivity {
         startActivity(ServAppList);
     }
 
-    public void ProbaTime(View view){
-        Intent ProbaTime= new Intent(this,ProbaTime.class);
-        startActivity(ProbaTime);
+    public void OPT_Auth(View view){
+        Intent OPT_Auth= new Intent(this,Proba.class);
+        startActivity(OPT_Auth);
     }
 
     public void Website1(View view){
