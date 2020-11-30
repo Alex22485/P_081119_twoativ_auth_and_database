@@ -37,7 +37,7 @@ public class MainList extends AppCompatActivity {
     }
 
     public void OPT_Auth(View view){
-        Intent OPT_Auth= new Intent(this,Proba.class);
+        Intent OPT_Auth= new Intent(this,Zakaz3finish.class);
         startActivity(OPT_Auth);
     }
 

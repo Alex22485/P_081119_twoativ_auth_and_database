@@ -48,7 +48,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="OPT_Auth"
+        android:text="Proba list "
         android:textSize="20sp"
         android:onClick="OPT_Auth"/>
     <Button

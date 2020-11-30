@@ -17,8 +17,16 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.installations.FirebaseInstallations;
+import com.google.firebase.installations.InstallationTokenResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class Zakaz3finish extends AppCompatActivity {
@@ -36,6 +44,10 @@ public class Zakaz3finish extends AppCompatActivity {
     TextView text0,text1,text2,text3,text4,text5,text6,text7;
     Button btnTime,btnOder,button9;
 
+    // для регистрации заявки
+    String tOBeforReg;
+    String proverkaBeforRegistraion;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,22 +55,33 @@ public class Zakaz3finish extends AppCompatActivity {
 
         // get TOKEN new with 13/11/2020
         FirebaseMessaging. getInstance (). getToken ()
+//                .addOnSuccessListener(new OnSuccessListener<String>() {
+//                    @Override
+//                    public void onSuccess(String s) {
+//                        newToken=s;
+//                        Toast. makeText ( Zakaz3finish . this , " токена получен "+s , Toast . LENGTH_SHORT ). show ();
+//                    }
+//                })
                 . addOnCompleteListener ( new OnCompleteListener< String >() {
                     @Override
                     public void onComplete ( @NonNull Task< String > task ) {
                         if (! task . isSuccessful ()) {
                             Log . w ( TAG , "Fetching FCM registration token failed" , task . getException ());
+                            Toast. makeText ( Zakaz3finish . this , "ошибка получения токена" , Toast . LENGTH_SHORT ). show ();
                             return ;
                         }
 
                         // Get new FCM registration token
                         newToken = task . getResult ();
+                        Toast. makeText ( Zakaz3finish . this , "токен получен" , Toast . LENGTH_SHORT ). show ();
 
                         // Log and toast
                         Log . d ( TAG , newToken );
                         //Toast. makeText ( Zakaz3finish . this , newToken , Toast . LENGTH_SHORT ). show ();
                     }
                 });
+
+
 
         Calend1=findViewById(R.id.Calend1);
         RefMap1=findViewById(R.id.RefMap1);
@@ -118,7 +141,7 @@ public class Zakaz3finish extends AppCompatActivity {
                 public void run() {
                     Toast. makeText ( Zakaz3finish . this , "готовность для регистрации заявки" , Toast . LENGTH_SHORT ). show ();
                     //автоматическая регистрация ранее сформированной заявки
-                    //btnInsertd ();
+                    btnInsert ();
                 }
             },4000);
         }
@@ -160,6 +183,8 @@ public class Zakaz3finish extends AppCompatActivity {
         Log.d(TAG, "RefMap:"+RefMap);
         Log.d(TAG, "RefPoint:"+RefPoint);
     }
+
+
     public void btnOder(View view) {
         if (phoneNew.equals("null")) {
 
@@ -181,7 +206,8 @@ public class Zakaz3finish extends AppCompatActivity {
             mAlertDialog.show();
         }
         else {
-            //btnInsertd();
+            // регистрация заявки
+            btnInsert();
         }
         }
     public void goListRegistration(){
@@ -199,5 +225,117 @@ public class Zakaz3finish extends AppCompatActivity {
         // время вылета/прилета/номер рейса для чартера
         Zakaz3finishToMain2AcivityTo.putExtra("time",time);
         startActivity(Zakaz3finishToMain2AcivityTo);
+    }
+    // регистрация заявки
+    public void btnInsert(){
+        Log.d(TAG, "Старт регистрация заявки+ проверка интернета YesNO");
+
+        tOBeforReg="";
+        proverkaBeforRegistraion="";
+
+        //ТАЙМ-АУТ проверка интернета
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                // Завершен ТАЙМ-АУТ проверка интернета
+                tOBeforReg="Out";
+                // проверка интернета
+                intNotBeforRegistraion();
+            }
+        },20000);
+
+        //Важно в БД с читаемым объектом не должно быть параллельных линий :)
+        // только тогда считывает значения с первого раза без null
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        Query query = rootRef.child("Пользователи")
+                .child("Personal")
+                .child(phoneNew)
+                .child("Proverka")
+                .orderByChild("Oder");
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ddd : dataSnapshot.getChildren()) {
+
+                    String yesNo=ddd.child("Заявка").getValue(String.class);
+
+                    proverkaBeforRegistraion=yesNo;
+                    Log.d(TAG, "инетрнет есть, заявка есть?"+yesNo);
+
+                    // проверка YEsNo в заявке
+                    YesNoBeforeReg();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        };
+        query.addListenerForSingleValueEvent(valueEventListener);
+    }
+    // проверка интернета
+    public void intNotBeforRegistraion(){
+        if (!proverkaBeforRegistraion.isEmpty()){
+            Log.d(TAG, "время проверки интернета вышло, но интернет есть");
+        }
+        else{
+            Log.d(TAG, "Время проверки вышло, not internet");
+            showAlertDialog4();
+        }
+    }
+    // проверка YEsNo в заявке
+    public void YesNoBeforeReg(){
+        if(tOBeforReg.equals("Out")){
+            Log.d(TAG, "Время проверки интернета вышло, но интернет есть");
+        }
+        else if (proverkaBeforRegistraion.equals("No")){
+            Log.d(TAG, "Интернет есть, старт регистрации");
+            //startRegistration();
+
+        }
+        else if (proverkaBeforRegistraion.equals("Yes")){
+            Log.d(TAG, "Интернет есть, НО есть старая заявка");
+            showAlertDialog5();
+        }
+    }
+
+    public void showAlertDialog4(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
+                Zakaz3finish.this);
+        // Set Title
+        mAlertDialog.setTitle("Ошибка регистрации");
+        mAlertDialog.setCancelable(false);
+        // Set Message
+        mAlertDialog
+                .setMessage("проверьте настройки интернета")
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+        mAlertDialog.create();
+        // Showing Alert Message
+        mAlertDialog.show();
+    }
+    public void showAlertDialog5(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
+                Zakaz3finish.this);
+        // Set Title
+        mAlertDialog.setTitle("Найдена ваша старая заявка");
+        mAlertDialog.setCancelable(false);
+        // Set Message
+        mAlertDialog
+                .setMessage("отмените старую заявку")
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        //Переход на лист Статуса
+                        //onStatusList();
+
+                    }
+                });
+        mAlertDialog.create();
+        // Showing Alert Message
+        mAlertDialog.show();
     }
 }
