@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     // время выдержки времени для исключения неперехода на др активити при сварачивании,
     // есть порог 5 секунд меньше которых переход на др активити не сработает при сварачивании)
     // поэтому при сварачивании, в OnStop увеличиваем таймер еще на 5 секунд
-    Integer b,c,d,e;
+    Integer b,c,d,e,f,g,i,h;
 
     FirebaseDatabase database01;
     FirebaseDatabase database02;
@@ -68,10 +68,12 @@ public class MainActivity extends AppCompatActivity {
          //взято призвольное мальнькое время
          c=10;
          e=10;
+         f=10;
+         i=10;
 
         // ловушки от многократных переходов на др активити для кода в  OnStart
-        onStopref=1;
-        onStopref1=1;
+        //onStopref=1;
+        //onStopref1=1;
         // получение токена
         // токен будет если есть интернет
         // токен будет если есть нет интернета но это 2,3,4... вход в приложение (без удаления настроек приложения APP)
@@ -87,8 +89,7 @@ public class MainActivity extends AppCompatActivity {
                             handler1.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    // метод увеличения времени для удачного перехода на др активити при сварачивании
-                                    // если сворачивания не было то время почти не увеличивается
+                                    // таймер-сворачивания
                                     timePlus();
                                 }
                             },2000);
@@ -141,12 +142,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop (){
         super.onStop();
         Log.d(TAG, "onStop");
-        // увеличение времени таймера при сворачивании приложения для inetNotWhenGoCheckRegistration()
+        // таймер-сворачивания для перехода inetNotWhenGoCheckRegistration()
         c=5000;
-        // увеличение времени таймера при сворачивании приложения для inetNotWhenGoCheckRegistration2()
+        // таймер-сворачивания для перехода inetNotWhenGoCheckRegistration2()
         e=5000;
+        // таймер-сворачивания для перехода на лист заявок GoMain6Activity();
+        f=5000;
+        // таймер-сворачивания для перехода на лист формирования заявок GOMainUserNewOne3()
+        i=5000;
         Log.d(TAG, "onStop c="+c);
         Log.d(TAG, "onStop e="+e);
+        Log.d(TAG, "onStop f="+f);
+        Log.d(TAG, "onStop i="+i);
     }
     //проверка регистрации
     public void CheckRegistration(){
@@ -307,27 +314,26 @@ public class MainActivity extends AppCompatActivity {
             if (onStopref1==1){
                 if(proverka.equals("Yes")){
                     Log.d(TAG, "переход лист заявок");
-                    Intent MainTOMain6= new Intent(this,Main6Activity.class);
-                    MainTOMain6.putExtra("phoneNew",keyReg);
-                    startActivity(MainTOMain6);
+                    //таймер-сворачивания
+                    timePlus3();
                     // ловушка от многократных переходов при сворачивании приложения
-                    onStopref1=onStopref1+1;
+                    //onStopref1=onStopref1+1;
                         Log.d(TAG, "После"+onStopref1);
                     }
                     if(proverka.equals("No")){
                         Log.d(TAG, "Заявок нет");
-                        Intent MainActivityToMainUserNewOne3= new Intent(this,MainUserNewOne3.class);
-                        // регистрация есть заявок нет отправляем Hello
-                        MainActivityToMainUserNewOne3.putExtra("phoneNew",keyReg);
-                        startActivity(MainActivityToMainUserNewOne3);
+                        //таймер-сворачивания
+                        timePlus4();
                         // ловушка от многократных переходов при сворачивании приложения
-                        onStopref1=onStopref1+1;
+                        //onStopref1=onStopref1+1;
                         Log.d(TAG, "После"+onStopref1);
                     }
             }
         }
     }
-    // метод прибавляет задержку времени таймера
+
+    // ТАЙМЕРЫ СВАРАЧИВАНИЯ
+
     // 1.когда токен не считался при первом чистом запуске приложения
     // 2. когда нет интерента при повторных запусков приложения)
     public void timePlus(){
@@ -342,7 +348,6 @@ public class MainActivity extends AppCompatActivity {
             }
         },b);
     }
-    // метод прибавляет задержку времени таймера
     // 1.когда токен не считался при первом чистом запуске приложения
     // 2. когда нет интерента при повторных запусков приложения)
     public void timePlus2(){
@@ -356,6 +361,49 @@ public class MainActivity extends AppCompatActivity {
                 inetNotWhenGoCheckRegistration2();
             }
         },d);
+    }
+    // метод прибавляет задержку времени таймера
+    // при сворачивании приложения для перехода на лист заявок Main6Activity
+    public void timePlus3(){
+        g=f+10;
+        Log.d(TAG, "timePlus3 g="+g);
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // переход на лист заявок
+                GoMain6Activity();
+            }
+        },g);
+    }
+    // метод прибавляет задержку времени таймера
+    // при сворачивании приложения для перехода на лист формирования заявок  GOMainUserNewOne3()
+    public void timePlus4(){
+        h=i+10;
+        Log.d(TAG, "timePlus4 i="+i);
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // переход на лист формирования заявок
+                GOMainUserNewOne3();
+            }
+        },h);
+    }
+    // ПЕРЕХОДЫ НА ДР АКТИВИТИ
+
+    // переход на лист заявок
+    public void GoMain6Activity(){
+        Intent MainTOMain6= new Intent(this,Main6Activity.class);
+        MainTOMain6.putExtra("phoneNew",keyReg);
+        startActivity(MainTOMain6);
+    }
+    // переход на лист формирования заявок
+    public void GOMainUserNewOne3(){
+        Intent MainActivityToMainUserNewOne3= new Intent(this,MainUserNewOne3.class);
+        // регистрация есть заявок нет отправляем Hello
+        MainActivityToMainUserNewOne3.putExtra("phoneNew",keyReg);
+        startActivity(MainActivityToMainUserNewOne3);
     }
     // Блокировка кнопки Back!!!! :)))
     @Override
