@@ -19,6 +19,9 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
 
+    // главная страница заставка
+    // применен таймер сварачивания для корректного перехода на любую другую активити при свернутом приложении
+
     private static final String TAG ="MainActivity" ;
 
     // токен
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     // время выдержки времени для исключения неперехода на др активити при сварачивании,
     // есть порог 5 секунд меньше которых переход на др активити не сработает при сварачивании)
     // поэтому при сварачивании, в OnStop увеличиваем таймер еще на 5 секунд
-    Integer b,c,d,e,f,g,i,h;
+    Integer b,c,d,e,f,g,i,h,j,k;
 
     FirebaseDatabase database01;
     FirebaseDatabase database02;
@@ -60,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
          e=10;
          f=10;
          i=10;
+         j=10;
 
         // ловушки от многократных переходов на др активити для кода в  OnStart
         //onStopref=1;
@@ -79,11 +83,10 @@ public class MainActivity extends AppCompatActivity {
                             handler1.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    // таймер-сворачивания
+                                    // таймер-сварачивания
                                     timePlus();
                                 }
                             },2000);
-                            //return ;
                         }
                         else{
                             // получаем токен
@@ -140,14 +143,17 @@ public class MainActivity extends AppCompatActivity {
         f=5000;
         // таймер-сворачивания для перехода на лист формирования заявок GOMainUserNewOne3()
         i=5000;
+        // таймер-сворачивания для перехода на лист без авторизации GOMainUserNewOne()
+        j=5000;
         Log.d(TAG, "onStop c="+c);
         Log.d(TAG, "onStop e="+e);
         Log.d(TAG, "onStop f="+f);
         Log.d(TAG, "onStop i="+i);
+        Log.d(TAG, "onStop j="+j);
     }
-    //проверка регистрации
+    //проверка авторизации
     public void CheckRegistration(){
-        Log.d(TAG, "запрос регистрации начат");
+        Log.d(TAG, "Start запрос авторизации ");
 
         //таймер ЗАПРОСА ИНТЕРНЕТА-1
         Handler handler1 = new Handler();
@@ -173,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
                 // "" обязательно иначе ошибка
                 keyReg=""+dataSnapshot.getValue(String.class);
                 Log.d(TAG, "keyReg"+keyReg);
-                // с этой записью makeText появляется только один раз!!!!!
+                // с этой записью keyReg появляется только один раз!!!!!
                 ref02.removeEventListener(this);
                 //Проверка авторизации по полученным данным
                 checkHaveToken();
@@ -183,45 +189,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-        //1. Проверка интернета во время считывания токена
-        //2.  Проверка интернета при проверке авторизации авторизации
-        public void inetNotWhenGoCheckRegistration (){
-        if (!keyReg.isEmpty()){
-            Log.d(TAG, "таймер проверки интернета вышел, но данные считаны");
-        }
-        else {
-            Log.d(TAG, "onStopref ДО"+onStopref);
-            // ловушка для двойных переходов в следующее активити при сваращивании приложения в процессе считывания данных
-            if (onStopref==1){
-                //пропал интернет во время проверки наличия регистрации
-                Log.d(TAG, "Интернета пропал при проверке регистрации");
-                Intent aaa = new Intent(this,InternetNot.class);
-                startActivity(aaa);
-                // ловушка для двойных переходов в следующее активити при сварачивании приложения в процессе считывания данных для кода в OnStart
-                onStopref=onStopref+1;
-                Log.d(TAG, "onStopref ПОСЛЕ"+onStopref);
-            }
-        }
-    }
     //Проверка авторизации по полученным данным
     public void checkHaveToken(){
         if (checkregistrationTimeOut.equals("Out")){
-            Log.d(TAG, "данные регистрации считаны, но таймер интернета-1 вышел");
+            Log.d(TAG, "данные для авторизации считаны, но таймер интернета-1 вышел");
         }
         else{
             // null если авторизации не было
             if (keyReg.equals("null")){
-                Log.d(TAG, "onStopref1 ДО"+onStopref1);
+                //Log.d(TAG, "onStopref1 ДО"+onStopref1);
                 // ловушка от многократных переходов при сворачивании приложения
-                if (onStopref1==1){
-                    Log.d(TAG, "Переход на первый лист");
-                    Intent MainUserNewOne = new Intent(this,MainUserNewOne.class);
-                    startActivity(MainUserNewOne);
+                //if (onStopref1==1){
+                //таймер сварачивания для Переход на лист без авторизации
+                timePlus5();
                     // ловушка от многократных переходов при сворачивании приложения
                     // работает только если код помещен в OnStart
-                    onStopref1++;
-                    Log.d(TAG, "onStopref1 ПОСЛЕ"+onStopref1);
-                }
+                    //onStopref1++;
+                    //Log.d(TAG, "onStopref1 ПОСЛЕ"+onStopref1);
+                //}
             }
             // авторизация была
             else if (!keyReg.isEmpty()){
@@ -238,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 checkregistrationTimeOut2="Out";
+                //таймер сварачивания
                 timePlus2();
             }
             },35000);
@@ -272,60 +258,39 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    //Проверка интернета во время поиска наличия заявок
-    public void inetNotWhenGoCheckRegistration2(){
-        if(proverka.equals("Yes")||proverka.equals("No")){
-            Log.d(TAG, "таймер запроса интернета-2 остановлен");}
-        else {
-            Log.d(TAG, "ДО onStopref"+onStopref);
-            //ловушка
-            if (onStopref==1){
-                //пропал интернет во время проверки наличия заявок
-                Log.d(TAG, "Интернет пропал при поиске наличия заявок");
-                Intent aaa = new Intent(this,InternetNot.class);
-                startActivity(aaa);
-                // ловушка для двойных переходов в следующее активити при сварачивании приложения в процессе считывания данных
-                onStopref=onStopref+1;
-                Log.d(TAG, "После onStopref"+onStopref);
-            }
-        }
-    }
     // проверка наличия заявок
     public void checkWordProverka(){
         // при пропаже интернета и переходе на другое активити "УПС проверьте связь"
         // находясь в новой активити если появится интернет все равно считаются данные String proverka и
-        // запустится данный метод но дальше ничего не пойдет именно из за этой контрукции НИЖЕ
+        // запустится данный метод но дальше ничего не пойдет именно из-за checkregistrationTimeOut2=OUT
         if (checkregistrationTimeOut2.equals("Out")){
             Log.d(TAG, "данные Yes/No считаны, но таймер интернета-2 вышел");
         }
         else {
-            Log.d(TAG, "ДО onStopref1"+onStopref1);
+            //Log.d(TAG, "ДО onStopref1"+onStopref1);
             // ловушка от многократных переходов при сворачивании приложения
-            if (onStopref1==1){
+            //if (onStopref1==1){
                 if(proverka.equals("Yes")){
-                    Log.d(TAG, "переход лист заявок");
                     //таймер-сворачивания
                     timePlus3();
                     // ловушка от многократных переходов при сворачивании приложения
                     //onStopref1=onStopref1+1;
-                        Log.d(TAG, "После"+onStopref1);
+                        //Log.d(TAG, "После"+onStopref1);
                     }
                     if(proverka.equals("No")){
-                        Log.d(TAG, "Заявок нет");
                         //таймер-сворачивания
                         timePlus4();
                         // ловушка от многократных переходов при сворачивании приложения
                         //onStopref1=onStopref1+1;
-                        Log.d(TAG, "После"+onStopref1);
+                        //Log.d(TAG, "После"+onStopref1);
                     }
-            }
+            //}
         }
     }
-
     // ТАЙМЕРЫ СВАРАЧИВАНИЯ
 
     // 1.когда токен не считался при первом чистом запуске приложения
-    // 2. когда нет интерента при повторных запусков приложения)
+    // 2.когда нет интерента при считывании данных для авторизации)
     public void timePlus(){
         b=c+10;
         Log.d(TAG, "timePlus b="+b);
@@ -338,8 +303,7 @@ public class MainActivity extends AppCompatActivity {
             }
         },b);
     }
-    // 1.когда токен не считался при первом чистом запуске приложения
-    // 2. когда нет интерента при повторных запусков приложения)
+    // 1. когда нет интерента при проверке наличия заявок)
     public void timePlus2(){
         d=e+10;
         Log.d(TAG, "timePlus2 d="+d);
@@ -361,6 +325,7 @@ public class MainActivity extends AppCompatActivity {
         handler1.postDelayed(new Runnable() {
             @Override
             public void run() {
+                Log.d(TAG, "переход лист заявок");
                 // переход на лист заявок
                 GoMain6Activity();
             }
@@ -375,13 +340,65 @@ public class MainActivity extends AppCompatActivity {
         handler1.postDelayed(new Runnable() {
             @Override
             public void run() {
+                Log.d(TAG, "Заявок нет");
                 // переход на лист формирования заявок
                 GOMainUserNewOne3();
             }
         },h);
     }
+    // метод прибавляет задержку времени таймера
+    // при сворачивании приложения для перехода на лист без авторизации  GOMainUserNewOne3()
+    public void timePlus5(){
+        k=j+10;
+        Log.d(TAG, "timePlus5 j="+j);
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Переход на лист без авторизации
+                GOMainUserOne();
+            }
+        },k);
+    }
     // ПЕРЕХОДЫ НА ДР АКТИВИТИ
 
+    // переход на лист "Нет интернета" при считывании токена
+    public void inetNotWhenGoCheckRegistration (){
+        if (!keyReg.isEmpty()){
+            Log.d(TAG, "таймер проверки интернета вышел, но данные считаны");
+        }
+        else {
+            //Log.d(TAG, "onStopref ДО"+onStopref);
+            // ловушка для двойных переходов в следующее активити при сварачивании приложения в процессе считывания данных для кода в OnStart
+            //if (onStopref==1){
+            //пропал интернет во время проверки наличия регистрации
+            Log.d(TAG, "Интернета пропал при считывании токена");
+            Intent aaa = new Intent(this,InternetNot.class);
+            startActivity(aaa);
+            // ловушка для двойных переходов в следующее активити при сварачивании приложения в процессе считывания данных для кода в OnStart
+            //onStopref=onStopref+1;
+            //Log.d(TAG, "onStopref ПОСЛЕ"+onStopref);
+            //}
+        }
+    }
+    // переход на лист "Нет интернета" при поиске наличия заявок
+    public void inetNotWhenGoCheckRegistration2(){
+        if(proverka.equals("Yes")||proverka.equals("No")){
+            Log.d(TAG, "таймер запроса интернета-2 остановлен");}
+        else {
+            //Log.d(TAG, "ДО onStopref"+onStopref);
+            //ловушка
+            //if (onStopref==1){
+                //пропал интернет во время проверки наличия заявок
+                Log.d(TAG, "Интернет пропал при поиске наличия заявок");
+                Intent aaa = new Intent(this,InternetNot.class);
+                startActivity(aaa);
+                // ловушка для двойных переходов в следующее активити при сварачивании приложения в процессе считывания данных
+                //onStopref=onStopref+1;
+                //Log.d(TAG, "После onStopref"+onStopref);
+            //}
+        }
+    }
     // переход на лист заявок
     public void GoMain6Activity(){
         Intent MainTOMain6= new Intent(this,Main6Activity.class);
@@ -394,6 +411,12 @@ public class MainActivity extends AppCompatActivity {
         // регистрация есть заявок нет отправляем Hello
         MainActivityToMainUserNewOne3.putExtra("phoneNew",keyReg);
         startActivity(MainActivityToMainUserNewOne3);
+    }
+    // переход на лист без авторизации
+    public void GOMainUserOne(){
+        Log.d(TAG, "Переход на лист без авторизации");
+        Intent MainUserNewOne = new Intent(this,MainUserNewOne.class);
+        startActivity(MainUserNewOne);
     }
     // Блокировка кнопки Back!!!! :)))
     @Override
