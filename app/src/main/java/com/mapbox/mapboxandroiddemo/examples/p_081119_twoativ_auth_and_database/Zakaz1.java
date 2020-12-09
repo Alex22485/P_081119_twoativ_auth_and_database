@@ -27,7 +27,7 @@ public class Zakaz1 extends AppCompatActivity {
 
     String phoneNew;
     String phoneNewFromMain6;
-    String regFromMain3;
+    String regFromZaka3finish;
 
     Button button1,button3,button4,button5;
     TextView button2;
@@ -128,13 +128,13 @@ public class Zakaz1 extends AppCompatActivity {
         AllLineNoShow();
 
         //транзит из Заставки MainActivity. переход скачком на эту страницу если ранее зарегистрирован и нет новых заявок
-        Intent MainActivityToMainUserNewOne3= getIntent();
-        phoneNew=MainActivityToMainUserNewOne3.getStringExtra("phoneNew");
+        Intent MainActivityToZakaz1= getIntent();
+        phoneNew=MainActivityToZakaz1.getStringExtra("phoneNew");
         Log.d(TAG, "phoneNew:"+phoneNew);
 
         // проверка был ли переход на эту страницу после отмены заявки
-        Intent Main6ToMain3=getIntent();
-        phoneNewFromMain6=""+Main6ToMain3.getStringExtra("regFromMain6");
+        Intent Main6ToZakaz1=getIntent();
+        phoneNewFromMain6=""+Main6ToZakaz1.getStringExtra("regFromMain6");
         Log.d(TAG, "phoneNewFromMain6:"+phoneNewFromMain6);
 
         //если был то пишем phoneNew=phoneNewFromMain6
@@ -144,18 +144,18 @@ public class Zakaz1 extends AppCompatActivity {
         }
 
         // проверка был ли переход на эту страницу из Main3Activity после запрета регистрации на уже сформировавийся маршрут (STOPODER)
-        Intent Main3ToMainUserNewOne3=getIntent();
-        regFromMain3=""+Main3ToMainUserNewOne3.getStringExtra("regFromMain3");
-        Log.d(TAG, "regFromMain3:"+regFromMain3);
+        Intent Zakaz3FinishToZakaz1=getIntent();
+        regFromZaka3finish=""+Zakaz3FinishToZakaz1.getStringExtra("regFromMain3");
+        Log.d(TAG, "regFromMain3:"+regFromZaka3finish);
 
         //если был то присваеваем phoneNew (лист с Заставкой)
-        if (!regFromMain3.equals("null")){
-            phoneNew=regFromMain3;
+        if (!regFromZaka3finish.equals("null")){
+            phoneNew=regFromZaka3finish;
             Log.d(TAG, "phoneNewAfterSTOPODER:"+phoneNew);
         }
 
 
-        // Проверка был ли переход сюда с листа Zakaz2
+        // Экспорт данных с листа Zakaz2 Проверка был ли переход сюда с листа Zakaz2
         Intent backZakaz2ToZakaz1=getIntent();
         RefMap=""+backZakaz2ToZakaz1.getStringExtra("RefMap");
         RefPoint=""+backZakaz2ToZakaz1.getStringExtra("RefPoint");
@@ -164,14 +164,17 @@ public class Zakaz1 extends AppCompatActivity {
 
         // переход был нажатием кнопки НАЗАД
         if(RefBackFromZakaz2.equals("backNoFromZakaz2")){
-          Nline1();
-          Nline2();
-          Nline3();
-          Nline4();
-          Nline5();
+            // экспорт phoneNew из Zakaz2
+            phoneNew=""+backZakaz2ToZakaz1.getStringExtra("phoneNew");
+            Log.d(TAG, "Переход из Zakaz2 phoneNew:"+phoneNew);
 
-          Handler if1 = new Handler();
-          if1.postDelayed(new Runnable() {
+            Nline1();
+            Nline2();
+            Nline3();
+            Nline4();
+            Nline5();
+            Handler if1 = new Handler();
+            if1.postDelayed(new Runnable() {
               @Override
               public void run() {
                   Exline1();
@@ -191,6 +194,10 @@ public class Zakaz1 extends AppCompatActivity {
 
         // переход был c выбором маршрута
         if (RefBackFromZakaz2.equals("backYesFromZakaz2")){
+            // экспорт phoneNew из Zakaz2
+            phoneNew=""+backZakaz2ToZakaz1.getStringExtra("phoneNew");
+            Log.d(TAG, "Переход из Zakaz2 phoneNew:"+phoneNew);
+
             Rline1();
             Nline2();
             Nline3();
@@ -342,22 +349,23 @@ public class Zakaz1 extends AppCompatActivity {
         OderRight.setVisibility(View.INVISIBLE);
     }
 
-    // кнопка button1
+    // кнопка button1 выбор города
     public void button1(View view){
         AlertChoiceCity();
     }
-    // кнопка button3
+    // кнопка button3 рейс самолета
     public void button3(View view){
         showAlert();
     }
-    // кнопка button4
+    // кнопка button4 дата время
     public void button4(View view){
         setData();
     }
-    //изменить условия заказа
+    // кнопка button5 изменить условия заказа
     public void button5(View view){
         changeMyOder();
     }
+    //изменить условия заказа
     public void changeMyOder(){
 
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
@@ -477,7 +485,7 @@ public class Zakaz1 extends AppCompatActivity {
     public void AlertFromInCity(){
         listCityFromIn= new String[]{refCityTaxi + "->Аэропорт","Аэропорт->"+refCityTaxi};
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
-        mAlertDialog.setTitle("Укажите направление");
+        mAlertDialog.setTitle("Куда поедем?");
         mAlertDialog.setCancelable(false);
         mAlertDialog
                 .setItems(listCityFromIn, new DialogInterface.OnClickListener() {
@@ -531,6 +539,10 @@ public class Zakaz1 extends AppCompatActivity {
 
         Intent Zakaz1ToZakaz2=new Intent(this,Zakaz2.class);
         Zakaz1ToZakaz2.putExtra("refFromInCity",refFromInCity);
+        //отправляем phoneNew в Zakaz2
+        Zakaz1ToZakaz2.putExtra("phoneNew",phoneNew);
+        Log.d(TAG, "Cтарт переход в Zakaz2 phoneNew:"+phoneNew);
+
         startActivity(Zakaz1ToZakaz2);
     }
 

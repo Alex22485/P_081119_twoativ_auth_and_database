@@ -595,10 +595,10 @@ public class Main6Activity extends AppCompatActivity {
             Toast.makeText(Main6Activity.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
             Log.d(TAG, "Заявка удалена");
 
-            Intent Main6ToMain3  = new Intent(this,MainUserNewOne3.class);
+            Intent Main6ToZakaz1  = new Intent(this,Zakaz1.class);
             // отправляем phoneNew в Main3Activity
-            Main6ToMain3.putExtra("regFromMain6",phoneNew);
-            startActivity(Main6ToMain3);
+            Main6ToZakaz1.putExtra("regFromMain6",phoneNew);
+            startActivity(Main6ToZakaz1);
         }
         }
 

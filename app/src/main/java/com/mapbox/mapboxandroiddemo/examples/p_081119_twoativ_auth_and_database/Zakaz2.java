@@ -6,17 +6,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 public class Zakaz2 extends AppCompatActivity {
+    private static final String TAG ="Zakaz2" ;
     //Лист заказа 2, выбор маршрута и пункта сбора
 
     TextView textView;
     Button button1,button2,button3,button4,button5;
     Button map1,map2,map3,map4,map5;
+    // данные из Zakaz1
     String refFromInCity;
+    String phoneNew;
+
     String[] array1 ={"Щорса-Аэропорт","КрасТэц-Аэропорт","Северный-Аэропорт","ЖД вокзал-Аэропорт","Ветлужанка-Аэропорт"};
     String[] array2 ={"Аэропорт-Щорса","Аэропорт-КрасТэц","Аэропорт-Северный","Аэропорт-ЖД вокзал","Аэропорт-Ветлужанка"};
 
@@ -43,6 +48,7 @@ public class Zakaz2 extends AppCompatActivity {
     String RefMap;
     // выбранная точка сбора
     String RefPoint;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,10 +78,13 @@ public class Zakaz2 extends AppCompatActivity {
         map4.setVisibility(View.INVISIBLE);
         map5.setVisibility(View.INVISIBLE);
 
+        // полученине данных из Zakaz1
         Intent Zakaz1ToZakaz2=getIntent();
         refFromInCity= Zakaz1ToZakaz2.getStringExtra("refFromInCity");
-
+        phoneNew=Zakaz1ToZakaz2.getStringExtra("phoneNew");
         visalList();
+        Log.d(TAG, "Данные из Zakaz1 refFromInCity:"+refFromInCity);
+        Log.d(TAG, "Данные из Zakaz1 phoneNew:"+phoneNew);
     }
 
     public void visalList(){
@@ -279,6 +288,7 @@ public class Zakaz2 extends AppCompatActivity {
         backZakaz2ToZakaz1.putExtra("RefMap",RefMap);
         backZakaz2ToZakaz1.putExtra("RefPoint",RefPoint);
         backZakaz2ToZakaz1.putExtra("RefBackFromZakaz2","backYesFromZakaz2");
+        backZakaz2ToZakaz1.putExtra("phoneNew",phoneNew);
         startActivity(backZakaz2ToZakaz1);
     }
 
@@ -286,6 +296,7 @@ public class Zakaz2 extends AppCompatActivity {
         // передаем null в Zakaz1
         Intent backZakaz2ToZakaz1= new Intent(this,Zakaz1.class);
         backZakaz2ToZakaz1.putExtra("RefBackFromZakaz2","backNoFromZakaz2");
+        backZakaz2ToZakaz1.putExtra("phoneNew",phoneNew);
         startActivity(backZakaz2ToZakaz1);
     }
 

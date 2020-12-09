@@ -87,18 +87,24 @@ public class Proba extends AppCompatActivity {
         tryAgain=findViewById(R.id.tryAgain);
 
         //данные из main3Activity
-        Intent Zakaz3finishToMain2AcivityTo=getIntent();
+        Intent Zakaz3finishToProba=getIntent();
 
         // дата поездки
-        Calend=Zakaz3finishToMain2AcivityTo.getStringExtra("Calend");
+        Calend=Zakaz3finishToProba.getStringExtra("Calend");
         // рейс самолета
-        RefplaneCity=Zakaz3finishToMain2AcivityTo.getStringExtra("RefplaneCity");
+        RefplaneCity=Zakaz3finishToProba.getStringExtra("RefplaneCity");
         // маршрут такси
-        RefMap=Zakaz3finishToMain2AcivityTo.getStringExtra("RefMap");
+        RefMap=Zakaz3finishToProba.getStringExtra("RefMap");
         // пункт сбора
-        RefPoint=Zakaz3finishToMain2AcivityTo.getStringExtra("RefPoint");
+        RefPoint=Zakaz3finishToProba.getStringExtra("RefPoint");
         // время вылета/прилета/номер рейса для чартера
-        time=Zakaz3finishToMain2AcivityTo.getStringExtra("time");
+        time=Zakaz3finishToProba.getStringExtra("time");
+
+        Log.d(TAG, "Calend:"+Calend);
+        Log.d(TAG, "RefplaneCity:"+RefplaneCity);
+        Log.d(TAG, "time:"+time);
+        Log.d(TAG, "RefMap:"+RefMap);
+        Log.d(TAG, "RefPoint:"+RefPoint);
 
         // get TOKEN new with 13/11/2020
         FirebaseMessaging. getInstance (). getToken ()
@@ -531,26 +537,29 @@ public void sendCode (View view){
             //return нужен чтобы при возобноблении интернета автоматически не переходило на лист с заявками
             return;
         }
+        Log.d(TAG, "Calend:"+Calend);
+        Log.d(TAG, "RefplaneCity:"+RefplaneCity);
+        Log.d(TAG, "time:"+time);
+        Log.d(TAG, "RefMap:"+RefMap);
+        Log.d(TAG, "RefPoint:"+RefPoint);
 
-        Intent Main2AcivityToZakaz3finish=new Intent(this,Zakaz3finish.class);
+        Intent ProbaToZakaz3finish=new Intent(this,Zakaz3finish.class);
 
         //регистрация завершена успешно передаем Ok в main3Activity в лист регистрации заявки
-        Main2AcivityToZakaz3finish.putExtra("authOk","Ok");
+        ProbaToZakaz3finish.putExtra("authOk","Ok");
         //параметры заявки полученные из Zakaz3finish возвращаем обратно в Zakaz3finish
         // телефон
-        Main2AcivityToZakaz3finish.putExtra("phoneNew",phoneNew);
+        ProbaToZakaz3finish.putExtra("phoneNew",phoneNew);
         // дата поездки
-        Main2AcivityToZakaz3finish.putExtra("Calend",Calend);
+        ProbaToZakaz3finish.putExtra("Calend",Calend);
         // рейс самолета
-        Main2AcivityToZakaz3finish.putExtra("RefplaneCity",RefplaneCity);
+        ProbaToZakaz3finish.putExtra("RefplaneCity",RefplaneCity);
         // маршрут такси
-        Main2AcivityToZakaz3finish.putExtra("RefMap",RefMap);
+        ProbaToZakaz3finish.putExtra("RefMap",RefMap);
         // пункт сбора
-        Main2AcivityToZakaz3finish.putExtra("RefPoint",RefPoint);
+        ProbaToZakaz3finish.putExtra("RefPoint",RefPoint);
         // время вылета/прилета/номер рейса для чартера
-        Main2AcivityToZakaz3finish.putExtra("time",time);
-
-
-        startActivity(Main2AcivityToZakaz3finish);
+        ProbaToZakaz3finish.putExtra("time",time);
+        startActivity(ProbaToZakaz3finish);
     }
 }

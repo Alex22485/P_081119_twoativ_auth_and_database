@@ -325,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 Log.d(TAG, "Заявок нет");
                 // переход на лист формирования заявок
-                GOMainUserNewOne3();
+                Zakaz1();
             }
         },h);
     }
@@ -374,11 +374,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(MainTOMain6);
     }
     // переход на лист формирования заявок
-    public void GOMainUserNewOne3(){
-        Intent MainActivityToMainUserNewOne3= new Intent(this,MainUserNewOne3.class);
+    public void Zakaz1(){
+        Intent MainActivityToZakaz1= new Intent(this,Zakaz1.class);
         // регистрация есть заявок нет отправляем Hello
-        MainActivityToMainUserNewOne3.putExtra("phoneNew",keyReg);
-        startActivity(MainActivityToMainUserNewOne3);
+        MainActivityToZakaz1.putExtra("phoneNew",keyReg);
+        startActivity(MainActivityToZakaz1);
     }
     // переход на лист без авторизации
     public void GOMainUserOne(){

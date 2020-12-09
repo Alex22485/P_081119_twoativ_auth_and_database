@@ -164,8 +164,14 @@ public class MainUserNewOne extends AppCompatActivity {
             },5);
         }
         else {
+            // 08.12.2020 удалено из проекта
             // Появление фразы "Посмотри, может эти маршрутные такси удобны для тебя"
-            dinamic3Size();
+            //  dinamic3Size();
+
+            // 08.12.2020 Добавлено в проект
+            // запуск фразы "Зарезервируй место вместе с time to go"
+            dinamic4Size();
+
         }
         //1 ПРИМЕР
         //источник урок 183 STARTANDROID
@@ -228,141 +234,142 @@ public class MainUserNewOne extends AppCompatActivity {
             },200);
         }
     }
-
+    // 08.12.2020 удалено из проекта
     // Появление фразы "Посмотри, может эти маршрутные такси удобны для тебя"
-    public void dinamic3Size(){
-        if (dinamic3Size<26){
+//    public void dinamic3Size(){
+//        if (dinamic3Size<26){
+//
+//            Handler Date = new Handler();
+//            Date.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    tV4.setTextSize(dinamic3Size);
+//                    tV5.setTextSize(dinamic3Size);
+//                    tV6.setTextSize(dinamic3Size);
+//
+//                    dinamic3Size=dinamic3Size+1;
+//                    dinamic3Size();
+//                }
+//            },50);
+//        }
+//        else {
+//            goubleRef2=0.5;
+//
+//
+//            Handler upGoTxt = new Handler();
+//            upGoTxt.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    // Смещение фразы "Посмотри, может эти маршрутные такси удобны для тебя"
+//                    dinamicBias2();
+//                }
+//            },1000);
+//
+//
+//            Handler little2 = new Handler();
+//            little2.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    //уменьшение размера фразы "Посмотри, может эти маршрутные такси удобны для тебя"
+//                    dinamicLittleTxt2=25;
+//                    dinamicLittleTxt2();
+//                }
+//            },500);
+//
+//
+//            Handler ttG = new Handler();
+//            ttG.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    // запуск фразы "Зарезервируй место вместе с time to go"
+//                    dinamic4Size();
+//                }
+//            },2500);
+//        }
+//    }
 
-            Handler Date = new Handler();
-            Date.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    tV4.setTextSize(dinamic3Size);
-                    tV5.setTextSize(dinamic3Size);
-                    tV6.setTextSize(dinamic3Size);
-
-                    dinamic3Size=dinamic3Size+1;
-                    dinamic3Size();
-                }
-            },50);
-        }
-        else {
-            goubleRef2=0.5;
-
-
-            Handler upGoTxt = new Handler();
-            upGoTxt.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    // Смещение фразы "Посмотри, может эти маршрутные такси удобны для тебя"
-                    dinamicBias2();
-                }
-            },1000);
-
-
-            Handler little2 = new Handler();
-            little2.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    //уменьшение размера фразы "Посмотри, может эти маршрутные такси удобны для тебя"
-                    dinamicLittleTxt2=25;
-                    dinamicLittleTxt2();
-                }
-            },500);
-
-
-            Handler ttG = new Handler();
-            ttG.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    // запуск фразы "Зарезервируй место вместе с time to go"
-                    dinamic4Size();
-                }
-            },2500);
-        }
-    }
+    // 08.12.2020 удалено из проекта
     // Смещение фразы "Посмотри, может эти маршрутные такси удобны для тебя"
-    public void dinamicBias2(){
-        if(goubleRef2>0.09){
-
-            Handler Date = new Handler();
-            Date.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-
-                    ConstraintLayout.LayoutParams params= (ConstraintLayout.LayoutParams) tV4.getLayoutParams();
-                    params.verticalBias= (float) goubleRef2;
-                    tV4.setLayoutParams(params);
-                    goubleRef2=goubleRef2-0.005;
-                    dinamicBias2();
-                }
-            },5);
-        }
-        else {
-//            tV4.setTextSize(20);
-//            tV5.setTextSize(20);
-//            tV6.setTextSize(20);
+//    public void dinamicBias2(){
+//        if(goubleRef2>0.09){
 //
-//            tV4.setText("Посмотри, может эти маршрутные");
-//            tV5.setText("такси удобны для тебя");
-//            tV6.setText("");
-//            ConstraintSet set=new ConstraintSet();
-//            // считываем параметры constraintLayout
-//            set.clone(constraintLayout);
-//            // очищаем именно нижнюю привязку  для tV4
-//            set.clear(R.id.tV4,ConstraintSet.BOTTOM);
-//            // очищаем именно правую привязку  для tV4, tv5
-//            set.clear(R.id.tV4,ConstraintSet.END);
-//            set.clear(R.id.tV5,ConstraintSet.END);
-//            // очищаем именно правую привязку  для tV5
-//            set.clear(R.id.tV5,ConstraintSet.END);
-//            // привязываем верхушку TV4  к нижней границе tV2,  можно сделать отступ от tV2 указав значение, н-р 5
-//            set.connect(R.id.tV4,ConstraintSet.TOP,R.id.tV2,ConstraintSet.BOTTOM,5);
-//            // привязываем левую часть tv4 и tv5 к левой стороне окна consrtainLayouut cl с отступом
-//            set.connect(R.id.tV4,ConstraintSet.START,R.id.cl,ConstraintSet.START,5);
-//            set.connect(R.id.tV5,ConstraintSet.START,R.id.cl,ConstraintSet.START,5);
+//            Handler Date = new Handler();
+//            Date.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
 //
-//            tV1.setTextSize(20);
-//            tV2.setTextSize(20);
-//            tV3.setTextSize(20);
-//            tV4.setTextSize(20);
-//            tV5.setTextSize(20);
-//            tV6.setTextSize(20);
-//
-//            tV4.setText("Посмотри, может эти маршрутные");
-//            tV5.setText("такси удобны для тебя");
-//            tV6.setText("");
-//
-//
-//            //приминение нужных параметров
-//            set.applyTo(constraintLayout);
-//            // library for dinamic show
-//        //TransitionManager.beginDelayedTransition(constraintLayout);
-        }
-    }
-
+//                    ConstraintLayout.LayoutParams params= (ConstraintLayout.LayoutParams) tV4.getLayoutParams();
+//                    params.verticalBias= (float) goubleRef2;
+//                    tV4.setLayoutParams(params);
+//                    goubleRef2=goubleRef2-0.005;
+//                    dinamicBias2();
+//                }
+//            },5);
+//        }
+//        else {
+////            tV4.setTextSize(20);
+////            tV5.setTextSize(20);
+////            tV6.setTextSize(20);
+////
+////            tV4.setText("Посмотри, может эти маршрутные");
+////            tV5.setText("такси удобны для тебя");
+////            tV6.setText("");
+////            ConstraintSet set=new ConstraintSet();
+////            // считываем параметры constraintLayout
+////            set.clone(constraintLayout);
+////            // очищаем именно нижнюю привязку  для tV4
+////            set.clear(R.id.tV4,ConstraintSet.BOTTOM);
+////            // очищаем именно правую привязку  для tV4, tv5
+////            set.clear(R.id.tV4,ConstraintSet.END);
+////            set.clear(R.id.tV5,ConstraintSet.END);
+////            // очищаем именно правую привязку  для tV5
+////            set.clear(R.id.tV5,ConstraintSet.END);
+////            // привязываем верхушку TV4  к нижней границе tV2,  можно сделать отступ от tV2 указав значение, н-р 5
+////            set.connect(R.id.tV4,ConstraintSet.TOP,R.id.tV2,ConstraintSet.BOTTOM,5);
+////            // привязываем левую часть tv4 и tv5 к левой стороне окна consrtainLayouut cl с отступом
+////            set.connect(R.id.tV4,ConstraintSet.START,R.id.cl,ConstraintSet.START,5);
+////            set.connect(R.id.tV5,ConstraintSet.START,R.id.cl,ConstraintSet.START,5);
+////
+////            tV1.setTextSize(20);
+////            tV2.setTextSize(20);
+////            tV3.setTextSize(20);
+////            tV4.setTextSize(20);
+////            tV5.setTextSize(20);
+////            tV6.setTextSize(20);
+////
+////            tV4.setText("Посмотри, может эти маршрутные");
+////            tV5.setText("такси удобны для тебя");
+////            tV6.setText("");
+////
+////
+////            //приминение нужных параметров
+////            set.applyTo(constraintLayout);
+////            // library for dinamic show
+////        //TransitionManager.beginDelayedTransition(constraintLayout);
+//        }
+//    }
+    // 08.12.2020 удалено из проекта
     //уменьшение размера фразы "Посмотри, может эти маршрутные такси удобны для тебя"
-    public void dinamicLittleTxt2(){
-        if (dinamicLittleTxt2>18){
-
-            Handler Date = new Handler();
-            Date.postDelayed(new Runnable() {
-                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                @Override
-                public void run() {
-                    tV4.setTextSize(dinamicLittleTxt2);
-                    tV5.setTextSize(dinamicLittleTxt2);
-                    tV6.setTextSize(dinamicLittleTxt2);
-                    dinamicLittleTxt2=dinamicLittleTxt2-1;
-                    dinamicLittleTxt2();
-                }
-            },200);
-        }
-    }
+//    public void dinamicLittleTxt2(){
+//        if (dinamicLittleTxt2>18){
+//
+//            Handler Date = new Handler();
+//            Date.postDelayed(new Runnable() {
+//                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+//                @Override
+//                public void run() {
+//                    tV4.setTextSize(dinamicLittleTxt2);
+//                    tV5.setTextSize(dinamicLittleTxt2);
+//                    tV6.setTextSize(dinamicLittleTxt2);
+//                    dinamicLittleTxt2=dinamicLittleTxt2-1;
+//                    dinamicLittleTxt2();
+//                }
+//            },200);
+//        }
+//    }
     // Появление фраз "Зарезервируй место,"
     public void dinamic4Size(){
         if (dinamic4Size<26){
-
             Handler Date = new Handler();
             Date.postDelayed(new Runnable() {
                 @Override
