@@ -261,6 +261,13 @@ public class Main6Activity extends AppCompatActivity {
                     String map= (String) ddd.child("направление").getValue();
                     String flidht_number= (String) ddd.child("рейс_самолета").getValue();
                     String сarDrive= (String) ddd.child("Автомобиль").getValue();
+                    Log.d(TAG, "Получаем токен"+token);
+                    Log.d(TAG, "Получаем data"+data);
+                    Log.d(TAG, "Получаем roar_number"+roar_number);
+                    Log.d(TAG, "Получаем road_name"+road_name);
+                    Log.d(TAG, "Получаем map"+map);
+                    Log.d(TAG, "Получаем flidht_number"+flidht_number);
+                    Log.d(TAG, "Получаем сarDrive"+сarDrive);
 
                     proverka=data;
                     Log.d(TAG, "Получаем статус"+data+map+roar_number+road_name+flidht_number+сarDrive+token);

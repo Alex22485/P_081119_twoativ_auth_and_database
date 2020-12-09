@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import java.util.Calendar;
@@ -22,6 +23,7 @@ import java.util.Calendar;
 public class Zakaz1 extends AppCompatActivity {
 
     // Первый лист заказа
+    // есть таймер сворачивания для перехода в Zakaz2 выбор маршрута
 
     private static final String TAG ="Zakaz1" ;
 
@@ -35,6 +37,8 @@ public class Zakaz1 extends AppCompatActivity {
     TextView No1,No2,No3,No4,No5;
     TextView Exclamation1,Exclamation2,Exclamation3,Exclamation4;
     TextView OderRight;
+    // прогресс бар появляется в момент запуска времени сессии при переходе на лист Zakaz1
+    ProgressBar progressBar;
 
     // выбранный маршрут
     String RefMap;
@@ -98,10 +102,19 @@ public class Zakaz1 extends AppCompatActivity {
     int hourOfDay;
     int minute;
 
+    // время выдержки времени для исключения неперехода на др активити при сварачивании,
+    // есть порог 5 секунд меньше которых переход на др активити не сработает при сварачивании)
+    // поэтому при сварачивании, в OnStop увеличиваем таймер еще на 5 секунд
+    Integer b,c;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zakaz1);
+
+        // для таймера сварачивания
+        // взято призвольное мальнькое время
+        c=10;
 
 
         button1=findViewById(R.id.button1);
@@ -124,8 +137,12 @@ public class Zakaz1 extends AppCompatActivity {
         Exclamation3=findViewById(R.id.Exclamation3);
         Exclamation4=findViewById(R.id.Exclamation4);
         OderRight=findViewById(R.id.OderRight);
+        progressBar=findViewById(R.id.progressBar);
+
         button5.setVisibility(View.INVISIBLE);
         AllLineNoShow();
+        // убрать видимость прогресс бара
+        progressBar.setVisibility(View.INVISIBLE);
 
         //транзит из Заставки MainActivity. переход скачком на эту страницу если ранее зарегистрирован и нет новых заявок
         Intent MainActivityToZakaz1= getIntent();
@@ -203,14 +220,14 @@ public class Zakaz1 extends AppCompatActivity {
             Nline3();
             Nline4();
             Nline5();
-            button5.setVisibility(View.VISIBLE);
+
 
             Handler handler0 = new Handler();
             handler0.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     Rline2();
-                    //button2.setTextColor(getResources().getColor(R.color.Zakaz1RightOder));
+
                     }
                     },400);
 
@@ -219,8 +236,10 @@ public class Zakaz1 extends AppCompatActivity {
             setPlain.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    //Выбор заголовка для Alert (рейс самолета)
+                    //Выбор рейс самолета (+ выбор заголовка для Alert )
                     setPlain();
+                    // показать кнопку изменить условия заказа
+                    button5.setVisibility(View.VISIBLE);
                 }
             },700);
         }
@@ -232,6 +251,15 @@ public class Zakaz1 extends AppCompatActivity {
             // динамик дизайн при первом открытии Activity
             dinamicView();
         }
+    }
+    @Override
+    protected void onStop (){
+        super.onStop();
+        Log.d(TAG, "onStop");
+        // таймер-сворачивания для перехода в Zakaz2
+        c=5000;
+        Log.d(TAG, "onStop c="+c);
+
     }
 
     // видимости линии 1-5
@@ -448,6 +476,7 @@ public class Zakaz1 extends AppCompatActivity {
 
                         refCityTaxi=listCityTaxi[which];
                         if (refCityTaxi.equals("Нет нужного города")){
+                            // нет нужного города
                             FeedBack1();
                             return;
                         }
@@ -514,15 +543,13 @@ public class Zakaz1 extends AppCompatActivity {
         mAlertDialog.create();
         mAlertDialog.show();
     }
-    // задержка для дизайна
+    // задержка для дизайна+ переход на  Zakaz1 выбор маршрута
     public void timeOut1(){
         Handler handler5 = new Handler();
         handler5.postDelayed(new Runnable() {
             @Override
             public void run() {
                 Rline1();
-
-
             }
         },500);
 
@@ -530,10 +557,22 @@ public class Zakaz1 extends AppCompatActivity {
         handler6.postDelayed(new Runnable() {
             @Override
             public void run() {
-                // выбор маршрута
-                Zakaz1ToZakaz2();
+                //таймер сварачивания для перехода на Zakaz2 выбор маршрута
+                timePlus();
+                // показать видимость прогресс бара
+                progressBar.setVisibility(View.VISIBLE);
+                // запуск времени сессии на случай если приложение не перейдет на др. активити Zakaz1 при сворачивании приложения
+                Log.d(TAG, "Time Session Start");
+                Handler timeSession = new Handler();
+                timeSession.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // время сессии истекло
+                        timeSessionEnd();
+                    }
+                },20000);
             }
-        },900);
+        },600);
     }
     public void Zakaz1ToZakaz2(){
 
@@ -587,7 +626,8 @@ public class Zakaz1 extends AppCompatActivity {
                             FeedBack1();
                             return;
                         }
-
+                        // убрать кнопку изменить условия заказа
+                        button5.setVisibility(View.INVISIBLE);
                         Rline3();
                         // Задержка на появление Календаря
                         Handler Date = new Handler();
@@ -596,6 +636,8 @@ public class Zakaz1 extends AppCompatActivity {
                             public void run() {
                                 // выбрать дату
                                 setData();
+                                // показать кнопку изменить условия заказа
+                                button5.setVisibility(View.VISIBLE);
                             }
                         },300);
                     }
@@ -640,12 +682,17 @@ public class Zakaz1 extends AppCompatActivity {
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         Calend=day + " " + (month + 1) + " " + year;
                         button4.setEnabled(false);
+                        // скрыть кнопку изменить условия заказа
+                        button5.setVisibility(View.INVISIBLE);
+
                         Handler handlerNeg1 = new Handler();
                         handlerNeg1.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 // выбрать время
                                 choiseSetTime();
+                                // показать кнопку изменить условия заказа
+                                button5.setVisibility(View.VISIBLE);
                             }
                         },300);
                     }
@@ -840,10 +887,48 @@ public class Zakaz1 extends AppCompatActivity {
         Zakaz1ToZakaz3finish.putExtra("RefPoint", RefPoint);
         startActivity(Zakaz1ToZakaz3finish);
     }
-
+    // нет нужного города
     public void FeedBack1(){
         Intent FeedBack1= new Intent(this,FeedBack1.class);
         startActivity(FeedBack1);
+    }
+    // ТАЙМЕР СВАРАЧИВАНИЯ
+
+    // 1.при переходе на лист Zakaz2
+    public void timePlus(){
+        b=c+10;
+        Log.d(TAG, "timePlus b="+b);
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // выбор маршрута
+                Zakaz1ToZakaz2();
+            }
+        },b);
+    }
+
+    // время сессии истекло
+    public void timeSessionEnd(){
+        Log.d(TAG, "время сессии истекло");
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
+        mAlertDialog.setCancelable(false);
+        mAlertDialog
+                .setMessage("Время сессии истекло, приложение будет перезапущено")
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //перезапуск приложения
+                       reStartApp();
+                    }
+                });
+        mAlertDialog.create();
+        // Showing Alert Message
+        mAlertDialog.show();
+    }
+    //перезапуск приложения если время сессии истекло
+    public void reStartApp(){
+        Intent ddd=new Intent(this,MainActivity.class);
+        startActivity(ddd);
     }
     // Блокировка кнопки Back!!!! :)))
     @Override

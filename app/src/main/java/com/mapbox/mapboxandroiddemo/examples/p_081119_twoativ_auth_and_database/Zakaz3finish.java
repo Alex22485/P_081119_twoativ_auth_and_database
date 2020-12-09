@@ -172,7 +172,7 @@ public class Zakaz3finish extends AppCompatActivity {
                 time1.setText(time);
                 btnTime.setVisibility(View.INVISIBLE);
             }
-            Calend1.setText(Calend);
+            Calend1.setText("Заказ на "+Calend);
             RefMap1.setText(RefMap);
             RefPoint1.setText(RefPoint);
             RefplaneCity1.setText(RefplaneCity);
@@ -388,13 +388,6 @@ public class Zakaz3finish extends AppCompatActivity {
             visibilityProcessNo();
             showAlertDialog();
         }
-        //(по идее не должно никогда появиться но на всякий случай оставил)
-        else if (proverka.equals("Повтор")){
-            Log.d(TAG, "Повтор");
-            // убрать визуализацию процесса
-            visibilityProcessNo();
-            showAlertDialog3();
-        }
     }
 
 //Alert Dialogs
@@ -463,24 +456,6 @@ public class Zakaz3finish extends AppCompatActivity {
                     }
                 });
         mAlertDialog.create();
-        mAlertDialog.show();
-    }
-    // Всплывающая информация "Повтор!!!" (по идее не должно никогда появиться но на всякий случай оставил)
-    public void showAlertDialog3() {
-        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
-                Zakaz3finish.this);
-        mAlertDialog.setTitle("!!!");
-        mAlertDialog.setCancelable(false);
-        mAlertDialog
-                .setMessage("По этому направлению вы уже зарегистрированы ранее")
-                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //переход в окно статуса
-                        onStatusList();
-                    }
-                });
-        mAlertDialog.create();
-        // Showing Alert Message
         mAlertDialog.show();
     }
     // Ошибка регистрации заявки
@@ -598,5 +573,10 @@ public class Zakaz3finish extends AppCompatActivity {
     public void visibilityProcessYes(){
         tVProgressB.setVisibility(View.VISIBLE);
         progressB.setVisibility(View.VISIBLE);
+    }
+
+    // Блокировка кнопки Back!!!! :)))
+    @Override
+    public void onBackPressed(){
     }
 }

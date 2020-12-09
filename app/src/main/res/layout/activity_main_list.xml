@@ -54,9 +54,9 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Website"
+        android:text="Zakaz1 быстрый переход"
         android:textSize="20sp"
-        android:onClick="Website1"/>
+        android:onClick="Zakaz1"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     // главная страница заставка
     // применен таймер сварачивания для корректного перехода на любую другую активити при свернутом приложении
+    // реализовано врмя сессии
 
     private static final String TAG ="MainActivity" ;
 
