@@ -24,6 +24,9 @@ public class Zakaz1 extends AppCompatActivity {
 
     // Первый лист заказа
     // есть таймер сворачивания для перехода в Zakaz2 выбор маршрута
+    // есть таймер сворачивания для перехода в Zakaz3Finish итоговый лист заказа
+    // есть время сессии, запускается при переходе в Zakaz2 выбор маршрута
+    // есть время сессии, запускается при переходе в Zakaz3Finish итоговый лист заказа
 
     private static final String TAG ="Zakaz1" ;
 
@@ -105,7 +108,7 @@ public class Zakaz1 extends AppCompatActivity {
     // время выдержки времени для исключения неперехода на др активити при сварачивании,
     // есть порог 5 секунд меньше которых переход на др активити не сработает при сварачивании)
     // поэтому при сварачивании, в OnStop увеличиваем таймер еще на 5 секунд
-    Integer b,c;
+    Integer b,c,d,e;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +118,7 @@ public class Zakaz1 extends AppCompatActivity {
         // для таймера сварачивания
         // взято призвольное мальнькое время
         c=10;
+        e=10;
 
 
         button1=findViewById(R.id.button1);
@@ -258,6 +262,8 @@ public class Zakaz1 extends AppCompatActivity {
         Log.d(TAG, "onStop");
         // таймер-сворачивания для перехода в Zakaz2
         c=5000;
+        // таймер-сворачивания для перехода в Zakaz3Finish
+        e=5000;
         Log.d(TAG, "onStop c="+c);
 
     }
@@ -403,7 +409,8 @@ public class Zakaz1 extends AppCompatActivity {
                 .setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        // скрыть кнопку изменить условия заказа
+                        button5.setVisibility(View.INVISIBLE);
                         AllLineNoShow();
 
                         Handler handler1 = new Handler();
@@ -569,6 +576,7 @@ public class Zakaz1 extends AppCompatActivity {
                     public void run() {
                         // время сессии истекло
                         timeSessionEnd();
+                        Log.d(TAG, "время сессии 1 истекло");
                     }
                 },20000);
             }
@@ -843,15 +851,27 @@ public class Zakaz1 extends AppCompatActivity {
         mAlertDialog.show();
     }
 
-    // Oder is Finish
+    // Заказ готов
     public void finishOder(){
+        // запуск времени сессии на случай если приложение не перейдет на др. активити Zakaz3Finish при сворачивании приложения
+        Handler timeSession = new Handler();
+        timeSession.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // время сессии истекло
+                timeSessionEnd();
+                Log.d(TAG, "время сессии 2 истекло");
+            }
+        },20000);
         Handler handler5 = new Handler();
         handler5.postDelayed(new Runnable() {
             @Override
             public void run() {
                 Rline5();
-                //переход на итоговый лист регистрации заявки Zakaz3finish()
-                Zakaz3finish();
+                //таймер сварачивания  при переходе на Zakaz3finish()
+                timePlus2();
+                // показать видимость прогресс бара
+                progressBar.setVisibility(View.VISIBLE);
             }
         },300);
     }
@@ -907,10 +927,22 @@ public class Zakaz1 extends AppCompatActivity {
             }
         },b);
     }
+    // 1.при переходе на итоговый лист регистрации заявки Zakaz3finish()
+    public void timePlus2(){
+        d=e+10;
+        Log.d(TAG, "timePlus2 d="+d);
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //переход на итоговый лист регистрации заявки Zakaz3finish()
+                Zakaz3finish();
+            }
+        },d);
+    }
 
     // время сессии истекло
     public void timeSessionEnd(){
-        Log.d(TAG, "время сессии истекло");
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
         mAlertDialog.setCancelable(false);
         mAlertDialog

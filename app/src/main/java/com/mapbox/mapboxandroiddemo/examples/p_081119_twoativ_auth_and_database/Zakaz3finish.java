@@ -33,6 +33,8 @@ public class Zakaz3finish extends AppCompatActivity {
     String newToken;
     // формируется ok после ввода телефона при авторизации
     String authOK="";
+    // формируется ErrorAuth после перехода из листа Proba при неудачной авторизации
+    String ErrorAuth;
     // для регистрации заявки
     String timeOut,proverka;
     FirebaseDatabase database01;
@@ -100,6 +102,28 @@ public class Zakaz3finish extends AppCompatActivity {
         authOK= "K"+ ProbaToZakaz3finish.getStringExtra("authOk");
         Log.d(TAG, "authOk: "+authOK);
 
+//        // проверка был ли переход из листа Proba при неуспешной авторизации
+//        Intent ProbaTOZakaz3FinishError= getIntent();
+//        ErrorAuth= ""+ ProbaTOZakaz3FinishError.getStringExtra("ErrorAuth");
+//        Log.d(TAG, "ErrorAuth: "+ErrorAuth);
+//        if(ErrorAuth.equals("ErrorAuth")){
+//            // дата поездки
+//            Calend=ProbaTOZakaz3FinishError.getStringExtra("Calend");
+//            // рейс самолета
+//            RefplaneCity=ProbaTOZakaz3FinishError.getStringExtra("RefplaneCity");
+//            // маршрут такси
+//            RefMap=ProbaTOZakaz3FinishError.getStringExtra("RefMap");
+//            // пункт сбора
+//            RefPoint=ProbaTOZakaz3FinishError.getStringExtra("RefPoint");
+//            // время вылета/прилета/номер рейса для чартера
+//            time=ProbaTOZakaz3FinishError.getStringExtra("time");
+//            Log.d(TAG, "ErrorAuth Calend:"+Calend);
+//            Log.d(TAG, "ErrorAuth RefplaneCity:"+RefplaneCity);
+//            Log.d(TAG, "ErrorAuth time:"+time);
+//            Log.d(TAG, "ErrorAuth RefMap:"+RefMap);
+//            Log.d(TAG, "ErrorAuth RefPoint:"+RefPoint);
+//        }
+
         // автоматическая регистрация заявки после авторизации
         if(authOK.equals("KOk")){
             // показать визуализацию процесса
@@ -162,6 +186,13 @@ public class Zakaz3finish extends AppCompatActivity {
             // точка сбора
             RefPoint=""+Zakaz1ToZakaz3finish.getStringExtra("RefPoint");
 
+            Log.d(TAG, "экспорт из Zakaz1 phoneNew:"+phoneNew);
+            Log.d(TAG, "экспорт из Zakaz1 Calend:"+Calend);
+            Log.d(TAG, "экспорт из Zakaz1 RefplaneCity:"+RefplaneCity);
+            Log.d(TAG, "экспорт из Zakaz1 time:"+time);
+            Log.d(TAG, "экспорт из Zakaz1 RefMap:"+RefMap);
+            Log.d(TAG, "экспорт из Zakaz1 RefPoint:"+RefPoint);
+
             if (time.equals("1 рейс")||time.equals("2 рейс")||time.equals("3 рейс")){
                 text3.setText("Чартер ");
                 NumberCharter.setText(time);
@@ -176,13 +207,6 @@ public class Zakaz3finish extends AppCompatActivity {
             RefMap1.setText(RefMap);
             RefPoint1.setText(RefPoint);
             RefplaneCity1.setText(RefplaneCity);
-
-            Log.d(TAG, "phoneNew:"+phoneNew);
-            Log.d(TAG, "Calend:"+Calend);
-            Log.d(TAG, "RefplaneCity:"+RefplaneCity);
-            Log.d(TAG, "time:"+time);
-            Log.d(TAG, "RefMap:"+RefMap);
-            Log.d(TAG, "RefPoint:"+RefPoint);
         }
     }
     // кнопка зарегистрировать заявку
@@ -487,7 +511,7 @@ public class Zakaz3finish extends AppCompatActivity {
     public void goListRegistration(){
         Intent Zakaz3finishToProba =new Intent(this, Proba.class);
         // телефон
-        Zakaz3finishToProba.putExtra("phoneNew",phoneNew);
+        //Zakaz3finishToProba.putExtra("phoneNew",phoneNew);
         // дата поездки
         Zakaz3finishToProba.putExtra("Calend",Calend);
         // рейс самолета
