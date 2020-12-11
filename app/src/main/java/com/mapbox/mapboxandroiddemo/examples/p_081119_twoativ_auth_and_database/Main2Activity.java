@@ -37,6 +37,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Main2Activity extends AppCompatActivity {
 
+    // c 10.2020 не использется
+
     // Лист авторизации по телефону
     private static final String TAG ="Main2activity" ;
 

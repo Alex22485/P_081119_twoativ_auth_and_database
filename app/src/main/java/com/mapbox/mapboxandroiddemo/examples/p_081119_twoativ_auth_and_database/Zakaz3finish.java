@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -57,6 +58,11 @@ public class Zakaz3finish extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zakaz3finish);
+
+        // блокировка спящего режима экрана
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        // отмена блокировки спящего режима экрана
+        //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         Calend1=findViewById(R.id.Calend1);
         RefMap1=findViewById(R.id.RefMap1);
@@ -546,9 +552,9 @@ public class Zakaz3finish extends AppCompatActivity {
     // Переход на лист Статуса
     public void onStatusList() {
         //Переход на лист Статуса
-        Intent Main3ActivTOMain6 = new Intent( this,Main6Activity.class );
-        Main3ActivTOMain6.putExtra("phoneRef",phoneNew);
-        startActivity(Main3ActivTOMain6);
+        Intent Zakaz3FinishTOMain6 = new Intent( this,Main6Activity.class );
+        Zakaz3FinishTOMain6.putExtra("phoneRef",phoneNew);
+        startActivity(Zakaz3FinishTOMain6);
     }
 
     // визуализации

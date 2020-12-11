@@ -134,7 +134,7 @@ public class Main6Activity extends AppCompatActivity {
         // Видимость кнопки "Скрыть"
         BtnShortly.setVisibility(View.GONE);
 
-        //Экспорт СС номера из MainActivity
+        //Экспорт СС номера из MainActivity начальная страница заставки
         Intent MainTOMain6=getIntent();
         phoneNew1=""+MainTOMain6.getStringExtra("phoneNew");
         Log.d(TAG, "phoneNew1: "+phoneNew1);
@@ -145,19 +145,16 @@ public class Main6Activity extends AppCompatActivity {
             Log.d(TAG, "phoneNew: "+phoneNew);
         }
 
-        //Экспорт СС номера из Main3Activity
-        Intent Main3ActivTOMain6=getIntent();
-        phoneNew2=""+Main3ActivTOMain6.getStringExtra("phoneRef");
+        //Экспорт СС номера из Zakaz3Finish после регистрации заявки
+        Intent Zakaz3FinishTOMain6=getIntent();
+        phoneNew2=""+Zakaz3FinishTOMain6.getStringExtra("phoneRef");
         Log.d(TAG, "phoneNew2: "+phoneNew2);
-
 
         //если значение не равно "null"
         if (!phoneNew2.equals("null")){
             phoneNew=phoneNew2;
             Log.d(TAG, "phoneNew: "+phoneNew);
         }
-
-
 
         TextProcess.setVisibility(View.VISIBLE);
         number.setText("получение данных...");
