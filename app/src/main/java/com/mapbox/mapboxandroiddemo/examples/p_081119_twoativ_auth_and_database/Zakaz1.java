@@ -116,12 +116,10 @@ public class Zakaz1 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zakaz1);
-
         // для таймера сварачивания
         // взято призвольное мальнькое время
         c=10;
         e=10;
-
 
         button1=findViewById(R.id.button1);
         button2=findViewById(R.id.button2);

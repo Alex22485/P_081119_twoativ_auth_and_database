@@ -28,8 +28,23 @@ import com.google.firebase.messaging.FirebaseMessaging;
 public class Zakaz3finish extends AppCompatActivity {
 
     //финишный лист заказа с кнопкой зарегистрировать заказ
+    // реализован метод времени точки сбора как  время вылета -(время дороги +время до начала регистрации) только для целых чисел
 
     private static final String TAG ="Zakaz3finish" ;
+
+    //  для определения времени сбора (преобразование слова в число и обратно)
+    String[] array1 ={"0","1","2","3","4","5","6","7","8","9"};
+    Integer[] array2 ={0,1,2,3,4,5,6,7,8,9};
+    Integer onePointHour;
+    Integer twoPointHour;
+    Integer finalIntHour;
+    Integer reftime;
+    String refStringHour;
+    // время дороги до аэропорта
+    Integer timeRoad;
+    // время регистрации (за сколько часов до вылета начинается регистрация)
+    Integer timeRegistrtation;
+
     // токен
     String newToken;
     // формируется ok после ввода телефона при авторизации
@@ -194,6 +209,7 @@ public class Zakaz3finish extends AppCompatActivity {
             // точка сбора
             RefPoint=""+Zakaz1ToZakaz3finish.getStringExtra("RefPoint");
 
+
             Log.d(TAG, "экспорт из Zakaz1 phoneNew:"+phoneNew);
             Log.d(TAG, "экспорт из Zakaz1 Calend:"+Calend);
             Log.d(TAG, "экспорт из Zakaz1 RefplaneCity:"+RefplaneCity);
@@ -214,8 +230,8 @@ public class Zakaz3finish extends AppCompatActivity {
                 //.setVisibility(View.INVISIBLE);
             }
             else{
-                // кнопка время сбора
-                BtnRefTime.setText(time+" подробнее");
+                // метод определения времени сбора
+                timeStringToInt();
                 time1.setText(time);
                 //btnTime.setVisibility(View.INVISIBLE);
             }
@@ -620,5 +636,81 @@ public class Zakaz3finish extends AppCompatActivity {
     // Блокировка кнопки Back!!!! :)))
     @Override
     public void onBackPressed(){
+    }
+
+    // time преобразование string в int
+    public void timeStringToInt(){
+        // время дороги до аэропорта
+        timeRoad=1;
+        // время регистрации (за сколько часов до вылета начинается регистрация)
+        timeRegistrtation=2;
+        // общее время Затрат
+        int sum=timeRoad+timeRegistrtation;
+
+        // преобразуем слово по символьно
+        String one= ""+time.charAt(0);
+        String two= ""+time.charAt(1);
+        String tree= ""+time.charAt(2);
+        String four= ""+time.charAt(3);
+        String five= ""+time.charAt(4);
+        Log.d(TAG, "one:"+one);
+        Log.d(TAG, "two:"+two);
+        Log.d(TAG, "tree:"+tree);
+        Log.d(TAG, "four:"+four);
+        Log.d(TAG, "five:"+five);
+        // преобразуем первый символ в число
+        for(int i=0;i<10;i++){
+            Log.d(TAG, "i:"+i);
+            if(one.equals(array1[i])){
+                onePointHour=array2[i];
+                Log.d(TAG, "onePointHour:"+onePointHour);
+            }
+        }
+        // преобразуем второй символ в число
+        for(int i=0;i<10;i++){
+            Log.d(TAG, "ii:"+i);
+            if(two.equals(array1[i])){
+                twoPointHour=array2[i];
+                Log.d(TAG, "twoPointHour:"+twoPointHour);
+            }
+        }
+        Log.d(TAG, "итоговый час:"+onePointHour+""+twoPointHour);
+        // преобразуем два символа в общее число
+        if(onePointHour==0){
+            onePointHour=onePointHour*10;
+            finalIntHour=onePointHour+twoPointHour;
+            Log.d(TAG, "итоговый час <10: "+finalIntHour);
+        }
+        else {
+            onePointHour=onePointHour*10;
+            finalIntHour=onePointHour+twoPointHour;
+            Log.d(TAG, "итоговый час =>10: "+finalIntHour);
+        }
+
+        // определяем время сбора = время вылета - (время дороги + время регистрации)-только целые числа (т.е. за сколько надо быть в аэропорту)
+        //н-р 5:40 время дороги 1 час время регистрации за 2 часа до вылета итог 5-(1+2)=2
+        // если время вылета ЧИСЛО меньше чем времени затрат (н-р вылет 02:00 время затрат 1+2=3 т.е 2<3)
+        // то вычисляем итоговое время сбора
+        if (finalIntHour<sum){
+            int diff = sum-finalIntHour;
+            reftime =24-diff;
+            Log.d(TAG, " Integer ВРЕМЯ точки сбора: "+reftime);
+        }
+        else {
+            reftime=finalIntHour-sum;
+            Log.d(TAG, "Integer ВРЕМЯ точки сбора: "+reftime);
+        }
+
+        // преобразуем результат в строку (ВРЕМЯ СБОРА ИТОГОВОЕ)
+        if (reftime<10){
+            refStringHour="0"+reftime+tree+four+five;
+        }
+        else {
+            refStringHour=""+reftime+tree+four+five;
+        }
+        Log.d(TAG, "String ВРЕМЯ точки сбора: "+refStringHour);
+
+        // отображние времени сбора
+        BtnRefTime.setText(refStringHour+" подробней");
     }
 }
