@@ -43,6 +43,8 @@ import java.util.Calendar;
 
 public class Main3Activity extends AppCompatActivity {
 
+    // не используется
+
     private static final String TAG ="Main3Activity";
 
 

@@ -104,6 +104,8 @@ public class Zakaz1 extends AppCompatActivity {
     TimePickerDialog timePickerDialog;
     int hourOfDay;
     int minute;
+    // Итоговое значение часа вылета в виде слова
+    String hourRef;
 
     // время выдержки времени для исключения неперехода на др активити при сварачивании,
     // есть порог 5 секунд меньше которых переход на др активити не сработает при сварачивании)
@@ -741,9 +743,17 @@ public class Zakaz1 extends AppCompatActivity {
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        // преобразования часа в два символа (Н-р 6->06)
+                        if (hourOfDay<10){
+                            hourRef="0"+hourOfDay;
+                        }
+                        else {
+                            hourRef=""+hourOfDay;
+                        }
+
                         if (minute<10){
                             //time=hourOfDay+":"+"0"+minute;
-                            time=(hourOfDay+":"+"0"+minute);
+                            time=(hourRef+":"+"0"+minute);
                             button4.setEnabled(false);
                             button5.setVisibility(View.INVISIBLE);
                             Handler han = new Handler();
@@ -756,7 +766,7 @@ public class Zakaz1 extends AppCompatActivity {
                             },300);
                         }
                         if (minute>=10){
-                            time=(hourOfDay+":"+minute);
+                            time=(hourRef+":"+minute);
                             button4.setEnabled(false);
                             button5.setVisibility(View.INVISIBLE);
                             Handler han = new Handler();

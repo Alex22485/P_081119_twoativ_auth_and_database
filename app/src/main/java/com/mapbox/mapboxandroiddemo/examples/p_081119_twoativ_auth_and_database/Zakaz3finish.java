@@ -46,10 +46,10 @@ public class Zakaz3finish extends AppCompatActivity {
     // значения экспорта из других активити
     String phoneNew,Calend,RefplaneCity,time,RefMap,RefPoint;
     // наполнение активити
-    TextView Calend1,RefMap1,RefPoint1,RefplaneCity1,time1,NumberCharter;
+    TextView Calend1,RefMap1,RefPoint1,textTime,RefplaneCity1,time1,NumberCharter;
     TextView text2,text3,text4,text5,text6,text7;
-    // кнопки Нажми, Зарегестрировать заявку, изменить условия заявки
-    Button btnTime,btnOder,button9;
+    // кнопки подробней, Зарегестрировать заявку, изменить условия заявки
+    Button BtnRefTime,btnOder,button9;
     // для регистрации заявки
     String tOBeforReg;
     String proverkaBeforRegistraion;
@@ -67,6 +67,8 @@ public class Zakaz3finish extends AppCompatActivity {
         Calend1=findViewById(R.id.Calend1);
         RefMap1=findViewById(R.id.RefMap1);
         RefPoint1=findViewById(R.id.RefPoint1);
+        textTime=findViewById(R.id.textTime);
+        BtnRefTime=findViewById(R.id.BtnRefTime);
         RefplaneCity1=findViewById(R.id.RefplaneCity1);
         time1=findViewById(R.id.time1);
         text2=findViewById(R.id.text2);
@@ -76,7 +78,6 @@ public class Zakaz3finish extends AppCompatActivity {
         text5=findViewById(R.id.text5);
         text6=findViewById(R.id.text6);
         text7=findViewById(R.id.text7);
-        btnTime=findViewById(R.id.btnTime);
         btnOder=findViewById(R.id.btnOder);
         button9=findViewById(R.id.button9);
         tVProgressB=findViewById(R.id.tVProgressB);
@@ -158,6 +159,7 @@ public class Zakaz3finish extends AppCompatActivity {
             // время вылета/прилета/номер рейса для чартера
             time=ProbaToZakaz3finish.getStringExtra("time");
 
+
             Log.d(TAG, "phoneNew:"+phoneNew);
             Log.d(TAG, "Calend:"+Calend);
             Log.d(TAG, "RefplaneCity:"+RefplaneCity);
@@ -199,15 +201,23 @@ public class Zakaz3finish extends AppCompatActivity {
             Log.d(TAG, "экспорт из Zakaz1 RefMap:"+RefMap);
             Log.d(TAG, "экспорт из Zakaz1 RefPoint:"+RefPoint);
 
+            // если вылет из Игарки Чартер
             if (time.equals("1 рейс")||time.equals("2 рейс")||time.equals("3 рейс")){
-                text3.setText("Чартер ");
-                NumberCharter.setText(time);
-                btnTime.setVisibility(View.VISIBLE);
+                // кнопка время сбора
+                BtnRefTime.setText("по факту прилета");
+                text3.setText("Чартер "+time);
+                // убрать видимость текста время вылета + само время вылета
+                text4.setVisibility(View.INVISIBLE);
                 time1.setVisibility(View.INVISIBLE);
+                //NumberCharter.setText(time);
+                //btnTime.setVisibility(View.VISIBLE);
+                //.setVisibility(View.INVISIBLE);
             }
             else{
+                // кнопка время сбора
+                BtnRefTime.setText(time+" подробнее");
                 time1.setText(time);
-                btnTime.setVisibility(View.INVISIBLE);
+                //btnTime.setVisibility(View.INVISIBLE);
             }
             Calend1.setText("Заказ на "+Calend);
             RefMap1.setText(RefMap);
@@ -563,6 +573,8 @@ public class Zakaz3finish extends AppCompatActivity {
         Calend1.setVisibility(View.GONE);
         RefMap1.setVisibility(View.GONE);
         RefPoint1.setVisibility(View.GONE);
+        textTime.setVisibility(View.GONE);
+        BtnRefTime.setVisibility(View.GONE);
         RefplaneCity1.setVisibility(View.GONE);
         time1.setVisibility(View.GONE);
         text2.setVisibility(View.GONE);
@@ -572,7 +584,6 @@ public class Zakaz3finish extends AppCompatActivity {
         text5.setVisibility(View.GONE);
         text6.setVisibility(View.GONE);
         text7.setVisibility(View.GONE);
-        btnTime.setVisibility(View.GONE);
         btnOder.setVisibility(View.GONE);
         button9.setVisibility(View.GONE);
     }
@@ -581,6 +592,8 @@ public class Zakaz3finish extends AppCompatActivity {
         Calend1.setVisibility(View.VISIBLE);
         RefMap1.setVisibility(View.VISIBLE);
         RefPoint1.setVisibility(View.VISIBLE);
+        textTime.setVisibility(View.VISIBLE);
+        BtnRefTime.setVisibility(View.VISIBLE);
         RefplaneCity1.setVisibility(View.VISIBLE);
         time1.setVisibility(View.VISIBLE);
         text2.setVisibility(View.VISIBLE);
@@ -590,7 +603,6 @@ public class Zakaz3finish extends AppCompatActivity {
         text5.setVisibility(View.VISIBLE);
         text6.setVisibility(View.VISIBLE);
         text7.setVisibility(View.VISIBLE);
-        btnTime.setVisibility(View.VISIBLE);
         btnOder.setVisibility(View.VISIBLE);
         button9.setVisibility(View.VISIBLE);
     }
