@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="Ваш пункт сбора:"
+        android:text="Пункт сбора:"
         android:textColor="#201F1F"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,17 +71,18 @@
 
     <Button
         android:id="@+id/BtnRefTime"
-        style="@android:style/TextAppearance.DeviceDefault.Widget.TextView.PopupMenu"
+        style="@android:style/Widget.Button.Inset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
-        android:drawableLeft="@android:drawable/ic_menu_recent_history"
+        android:layout_marginTop="5dp"
+        android:drawableLeft="@android:drawable/ic_menu_help"
+        android:onClick="BtnRefTime"
         android:text="06:30 подробней"
         android:textAllCaps="false"
         android:textColor="@color/colorNew"
         android:textSize="15sp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textTime" />
@@ -90,72 +91,119 @@
         android:id="@+id/text3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
-        android:text="Рейс самолета:"
+        android:text="Самолет:"
         android:textColor="#201F1F"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BtnRefTime" />
-
-    <TextView
-        android:id="@+id/NumberCharter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:textColor="#201F1F"
-        android:textSize="15sp"
-        app:layout_constraintStart_toEndOf="@+id/text3"
-        app:layout_constraintTop_toTopOf="@+id/text3" />
+        app:layout_constraintTop_toBottomOf="@+id/detailsOder" />
 
     <TextView
         android:id="@+id/RefplaneCity1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
         android:text="Новосибирск->Красноярск"
-        android:textSize="20sp"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/text3"
+        app:layout_constraintTop_toTopOf="@+id/text3" />
+
+    <TextView
+        android:id="@+id/TextDateFly"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Дата вылета:"
+        android:textColor="#201F1F"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text3" />
+
+    <TextView
+        android:id="@+id/dateFly"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:text="12 02 2021"
+        android:textColor="@color/colorNew"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/TextDateFly"
+        app:layout_constraintTop_toTopOf="@+id/TextDateFly" />
 
     <TextView
         android:id="@+id/text4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
-        android:text="Время вылета(прилета):"
+        android:text="Время вылета:"
         android:textColor="#201F1F"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RefplaneCity1" />
+        app:layout_constraintTop_toBottomOf="@+id/TextDateFly" />
 
     <TextView
         android:id="@+id/time1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
         android:text="04:30"
         android:textColor="@color/colorNew"
-        android:textSize="20sp"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text4" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/text4"
+        app:layout_constraintTop_toTopOf="@+id/text4" />
+
+
 
     <TextView
         android:id="@+id/text5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:text="Стоимость поездки:"
         android:textColor="#201F1F"
         android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintHorizontal_bias="0.108"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/time1" />
+        app:layout_constraintTop_toBottomOf="@+id/BtnRefTime" />
+
+    <Button
+        android:id="@+id/detailsOder"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:text="детали заказа"
+        android:textAllCaps="false"
+        android:textSize="15sp"
+        android:onClick="detailsOder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text5" />
 
     <TextView
         android:id="@+id/text6"

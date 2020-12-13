@@ -83,7 +83,11 @@ public class Proba extends AppCompatActivity {
     ConstraintLayout constraintLayout;
 
     // для экспорта из Zakaz3finish
-    String Calend, RefplaneCity, RefMap, RefPoint, time;
+    String Calend, RefplaneCity, RefMap, RefPoint, time,timeOfPoint,dateOfPoint;
+    // Экспорт из Zakaz3finish реф слово чтобы определить какой маршрут "в Аэропорт" или "из Аэропорта" (для правильного отображения активити Zakaz3finish)
+    String RefInFromAirport="";
+    // Экспорт из Zakaz1 стоимость проезда
+    String fare;
     // токен
     String newToken;
     //для шифрования
@@ -114,9 +118,6 @@ public class Proba extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_proba);
-
-        //proba
-        proba();
 
         // блокировка спящего режима экрана
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -154,12 +155,24 @@ public class Proba extends AppCompatActivity {
         RefPoint=Zakaz3finishToProba.getStringExtra("RefPoint");
         // время вылета/прилета/номер рейса для чартера
         time=Zakaz3finishToProba.getStringExtra("time");
+        // Время точки сбора (для рейсов из Аэропорта)
+        timeOfPoint=Zakaz3finishToProba.getStringExtra("timeOfPoint");
+        // дата точки сбора (для рейсов из Аэропорта)
+        dateOfPoint=Zakaz3finishToProba.getStringExtra("dateOfPoint");
+        // Экспорт из Zakaz3finish реф слово чтобы определить какой маршрут "в Аэропорт" или "из Аэропорта" (для правильного отображения активити Zakaz3finish)
+        RefInFromAirport=Zakaz3finishToProba.getStringExtra("RefInFromAirport");
+        // стоимость проезда
+        fare=Zakaz3finishToProba.getStringExtra("fare");
 
-        Log.d(TAG, "Calend:"+Calend);
-        Log.d(TAG, "RefplaneCity:"+RefplaneCity);
-        Log.d(TAG, "time:"+time);
-        Log.d(TAG, "RefMap:"+RefMap);
-        Log.d(TAG, "RefPoint:"+RefPoint);
+        Log.d(TAG, "экспорт из Zakaz3Finish дата вылета-прилета: "+Calend);
+        Log.d(TAG, "экспорт из Zakaz3Finish дата точки сбора: "+dateOfPoint);
+        Log.d(TAG, "экспорт из Zakaz3Finish время вылета-прилета: "+time);
+        Log.d(TAG, "экспорт из Zakaz3Finish время точки сбора: "+timeOfPoint);
+        Log.d(TAG, "экспорт из Zakaz3Finish самолет: "+RefplaneCity);
+        Log.d(TAG, "экспорт из Zakaz3Finish маршрут: "+RefMap);
+        Log.d(TAG, "экспорт из Zakaz3Finish точка сбора: "+RefPoint);
+        Log.d(TAG, "экспорт из Zakaz3Finish тип Маршрута В(из) Аэропорта: "+RefInFromAirport);
+        Log.d(TAG, "экспорт из Zakaz3Finish стоимость проезда: "+fare);
 
         // получить токен для
         FirebaseMessaging. getInstance (). getToken ()
@@ -475,15 +488,6 @@ public class Proba extends AppCompatActivity {
             }
         },1000);
 
-
-        Log.d(TAG, "переход в Zakaz3Finish:");
-
-        Log.d(TAG, "Calend:"+Calend);
-        Log.d(TAG, "RefplaneCity:"+RefplaneCity);
-        Log.d(TAG, "time:"+time);
-        Log.d(TAG, "RefMap:"+RefMap);
-        Log.d(TAG, "RefPoint:"+RefPoint);
-
         // переход на Zakaz3finish для регистрации заявки
         GoToZakaz3Finish();
     }
@@ -506,6 +510,14 @@ public class Proba extends AppCompatActivity {
         ProbaToZakaz3finish.putExtra("RefPoint",RefPoint);
         // время вылета/прилета/номер рейса для чартера
         ProbaToZakaz3finish.putExtra("time",time);
+        // Время точки сбора (для рейсов из Аэропорта)
+        ProbaToZakaz3finish.putExtra("timeOfPoint",timeOfPoint);
+        // дата точки сбора (для рейсов из Аэропорта)
+        ProbaToZakaz3finish.putExtra("dateOfPoint",dateOfPoint);
+        // реф слово чтобы определить какой маршрут "в Аэропорт" или "из Аэропорта" (для правильного отображения активити Zakaz3finish)
+        ProbaToZakaz3finish.putExtra("RefInFromAirport",RefInFromAirport);
+        // стоимость проезда
+        ProbaToZakaz3finish.putExtra("fare",fare);
         startActivity(ProbaToZakaz3finish);
     }
 
@@ -865,77 +877,5 @@ public class Proba extends AppCompatActivity {
     // Блокировка кнопки Back!!!! :)))
     @Override
     public void onBackPressed(){
-    }
-    public void proba(){
-        time="00:53";
-        // время дороги до аэропорта
-        timeRoad=1;
-        // время регистрации (за сколько часов до вылета начинается регистрация)
-        timeRegistrtation=2;
-        // общее время Затрат
-        int sum=timeRoad+timeRegistrtation;
-
-        // преобразуем слово по символьно
-        String one= ""+time.charAt(0);
-        String two= ""+time.charAt(1);
-        String tree= ""+time.charAt(2);
-        String four= ""+time.charAt(3);
-        String five= ""+time.charAt(4);
-        Log.d(TAG, "one:"+one);
-        Log.d(TAG, "two:"+two);
-        Log.d(TAG, "tree:"+tree);
-        Log.d(TAG, "four:"+four);
-        Log.d(TAG, "five:"+five);
-        // преобразуем первый символ в число
-        for(int i=0;i<10;i++){
-            Log.d(TAG, "i:"+i);
-            if(one.equals(array1[i])){
-                onePointHour=array2[i];
-                Log.d(TAG, "onePointHour:"+onePointHour);
-            }
-        }
-        // преобразуем второй символ в число
-        for(int i=0;i<10;i++){
-            Log.d(TAG, "ii:"+i);
-            if(two.equals(array1[i])){
-                twoPointHour=array2[i];
-                Log.d(TAG, "twoPointHour:"+twoPointHour);
-            }
-        }
-        Log.d(TAG, "итоговый час:"+onePointHour+""+twoPointHour);
-        // преобразуем два символа в общее число
-        if(onePointHour==0){
-            onePointHour=onePointHour*10;
-            finalIntHour=onePointHour+twoPointHour;
-            Log.d(TAG, "итоговый час <10: "+finalIntHour);
-        }
-        else {
-            onePointHour=onePointHour*10;
-            finalIntHour=onePointHour+twoPointHour;
-            Log.d(TAG, "итоговый час =>10: "+finalIntHour);
-        }
-
-        // определяем время сбора = время вылета - (время дороги + время регистрации)-только целые числа (т.е. за сколько надо быть в аэропорту)
-        //н-р 5:40 время дороги 1 час время регистрации за 2 часа до вылета итог 5-(1+2)=2
-        // если время вылета ЧИСЛО меньше чем времени затрат (н-р вылет 02:00 время затрат 1+2=3 т.е 2<3)
-        // то вычисляем итоговое время сбора
-        if (finalIntHour<sum){
-            int diff = sum-finalIntHour;
-            reftime =24-diff;
-            Log.d(TAG, " Integer ВРЕМЯ точки сбора: "+reftime);
-        }
-        else {
-            reftime=finalIntHour-sum;
-            Log.d(TAG, "Integer ВРЕМЯ точки сбора: "+reftime);
-        }
-
-        // преобразуем результат в строку (ВРЕМЯ СБОРА ИТОГОВОЕ)
-        if (reftime<10){
-            refStringHour="0"+reftime+tree+four+five;
-        }
-        else {
-            refStringHour=""+reftime+tree+four+five;
-        }
-        Log.d(TAG, "String ВРЕМЯ точки сбора: "+refStringHour);
     }
 }

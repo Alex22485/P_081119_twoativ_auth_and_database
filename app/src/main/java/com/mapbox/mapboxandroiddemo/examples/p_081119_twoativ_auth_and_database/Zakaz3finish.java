@@ -29,28 +29,19 @@ public class Zakaz3finish extends AppCompatActivity {
 
     //финишный лист заказа с кнопкой зарегистрировать заказ
     // реализован метод времени точки сбора как  время вылета -(время дороги +время до начала регистрации) только для целых чисел
+    // реализована блокировка спящего режима экрана getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
 
     private static final String TAG ="Zakaz3finish" ;
-
-    //  для определения времени сбора (преобразование слова в число и обратно)
-    String[] array1 ={"0","1","2","3","4","5","6","7","8","9"};
-    Integer[] array2 ={0,1,2,3,4,5,6,7,8,9};
-    Integer onePointHour;
-    Integer twoPointHour;
-    Integer finalIntHour;
-    Integer reftime;
-    String refStringHour;
-    // время дороги до аэропорта
-    Integer timeRoad;
-    // время регистрации (за сколько часов до вылета начинается регистрация)
-    Integer timeRegistrtation;
 
     // токен
     String newToken;
     // формируется ok после ввода телефона при авторизации
     String authOK="";
-    // формируется ErrorAuth после перехода из листа Proba при неудачной авторизации
-    String ErrorAuth;
+    // Экспорт из Zakaz1 реф слово чтобы определить какой маршрут "в Аэропорт" или "из Аэропорта" (для правильного отображения активити)
+    String RefInFromAirport="";
+    // Экспорт из Zakaz1 стоимость проезда
+    String fare;
     // для регистрации заявки
     String timeOut,proverka;
     FirebaseDatabase database01;
@@ -59,12 +50,23 @@ public class Zakaz3finish extends AppCompatActivity {
     TextView tVProgressB;
     ProgressBar progressB;
     // значения экспорта из других активити
-    String phoneNew,Calend,RefplaneCity,time,RefMap,RefPoint;
+    String phoneNew,Calend,RefplaneCity,time,RefMap,RefPoint,timeOfPoint,dateOfPoint;
     // наполнение активити
-    TextView Calend1,RefMap1,RefPoint1,textTime,RefplaneCity1,time1,NumberCharter;
-    TextView text2,text3,text4,text5,text6,text7;
-    // кнопки подробней, Зарегестрировать заявку, изменить условия заявки
-    Button BtnRefTime,btnOder,button9;
+    TextView Calend1,RefMap1,RefPoint1,textTime,RefplaneCity1,time1,dateFly;
+    TextView text2,text3,text4,TextDateFly,text5,text6,text7;
+
+    // Сообщение кнопки времени точки сбора (Присваивается в зависимости от типап Маршрута Чартер, В Аэропорт Из  Аэропорта)
+    String stringExplanation="";
+    // пояснение при Чартерных рейсах из Играки
+    String forIgarkaCharter="Пожалуйста, вылетая из Игарки, сообщите водителю об этом, иначе он приедет не вовремя";
+    // пояснение при рейсах В Аэропорт
+    String inAirport="Время рассчитано до вашего прибытия к началу регистрации на рейс (за 2ч.до вылета), с учетом времени дороги";
+    // пояснение при рейсах из Аэропорта
+    String fromAirport="В "+time+" водитель будет ждать вас в Аэропорту. Пожалуйста, перед вылетом в Красноярск сообщите ему об этом";
+
+
+    // кнопки подробней, Зарегестрировать заявку, изменить условия заявки, детали заказа
+    Button BtnRefTime,btnOder,button9,detailsOder;
     // для регистрации заявки
     String tOBeforReg;
     String proverkaBeforRegistraion;
@@ -74,11 +76,6 @@ public class Zakaz3finish extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zakaz3finish);
 
-        // блокировка спящего режима экрана
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        // отмена блокировки спящего режима экрана
-        //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
         Calend1=findViewById(R.id.Calend1);
         RefMap1=findViewById(R.id.RefMap1);
         RefPoint1=findViewById(R.id.RefPoint1);
@@ -86,15 +83,17 @@ public class Zakaz3finish extends AppCompatActivity {
         BtnRefTime=findViewById(R.id.BtnRefTime);
         RefplaneCity1=findViewById(R.id.RefplaneCity1);
         time1=findViewById(R.id.time1);
+        dateFly=findViewById(R.id.dateFly);
         text2=findViewById(R.id.text2);
         text3=findViewById(R.id.text3);
-        NumberCharter=findViewById(R.id.NumberCharter);
         text4=findViewById(R.id.text4);
+        TextDateFly=findViewById(R.id.TextDateFly);
         text5=findViewById(R.id.text5);
         text6=findViewById(R.id.text6);
         text7=findViewById(R.id.text7);
         btnOder=findViewById(R.id.btnOder);
         button9=findViewById(R.id.button9);
+        detailsOder=findViewById(R.id.detailsOder);
         tVProgressB=findViewById(R.id.tVProgressB);
         progressB=findViewById(R.id.progressB);
         // получить токен
@@ -116,6 +115,8 @@ public class Zakaz3finish extends AppCompatActivity {
                 });
         // скрыть всю визуализацию активити
         visibilityNo();
+        // скрыть  визуализацию детали
+        visibilityDetailseNo();
         // скрыть визуализацию процесса
         visibilityProcessNo();
 
@@ -124,43 +125,10 @@ public class Zakaz3finish extends AppCompatActivity {
         authOK= "K"+ ProbaToZakaz3finish.getStringExtra("authOk");
         Log.d(TAG, "authOk: "+authOK);
 
-//        // проверка был ли переход из листа Proba при неуспешной авторизации
-//        Intent ProbaTOZakaz3FinishError= getIntent();
-//        ErrorAuth= ""+ ProbaTOZakaz3FinishError.getStringExtra("ErrorAuth");
-//        Log.d(TAG, "ErrorAuth: "+ErrorAuth);
-//        if(ErrorAuth.equals("ErrorAuth")){
-//            // дата поездки
-//            Calend=ProbaTOZakaz3FinishError.getStringExtra("Calend");
-//            // рейс самолета
-//            RefplaneCity=ProbaTOZakaz3FinishError.getStringExtra("RefplaneCity");
-//            // маршрут такси
-//            RefMap=ProbaTOZakaz3FinishError.getStringExtra("RefMap");
-//            // пункт сбора
-//            RefPoint=ProbaTOZakaz3FinishError.getStringExtra("RefPoint");
-//            // время вылета/прилета/номер рейса для чартера
-//            time=ProbaTOZakaz3FinishError.getStringExtra("time");
-//            Log.d(TAG, "ErrorAuth Calend:"+Calend);
-//            Log.d(TAG, "ErrorAuth RefplaneCity:"+RefplaneCity);
-//            Log.d(TAG, "ErrorAuth time:"+time);
-//            Log.d(TAG, "ErrorAuth RefMap:"+RefMap);
-//            Log.d(TAG, "ErrorAuth RefPoint:"+RefPoint);
-//        }
 
-        // автоматическая регистрация заявки после авторизации
+        // автоматическая регистрация заявки (после успешной авторизации) при переходе из Proba.class
         if(authOK.equals("KOk")){
-            // показать визуализацию процесса
-            visibilityProcessYes();
-            Log.d(TAG, "автоматическая регистрация после авторизации: ");
-//            refCity=Main3Activity.getStringExtra("refCity");
-//            toOrFrom=Main3Activity.getStringExtra("toOrFrom");
-//            MapTop=Main3Activity.getStringExtra("MapTop");
-//            Calend.setText(Main3Activity.getStringExtra("Calend"));
-//            CalendTime.setText(Main3Activity.getStringExtra("CalendTime"));
-//            Flight.setText(Main3Activity.getStringExtra("Flight"));
-//            time.setText(Main3Activity.getStringExtra("time"));
-//            TVchoiseMap=Main3Activity.getStringExtra("TVchoiseMap");
-//            phoneNew=Main3Activity.getStringExtra("phoneNew");
-
+            // данные экспорта из Proba
             // телефон
             phoneNew=ProbaToZakaz3finish.getStringExtra("phoneNew");
             // дата поездки
@@ -173,14 +141,32 @@ public class Zakaz3finish extends AppCompatActivity {
             RefPoint=ProbaToZakaz3finish.getStringExtra("RefPoint");
             // время вылета/прилета/номер рейса для чартера
             time=ProbaToZakaz3finish.getStringExtra("time");
+            // Время точки сбора (для рейсов из Аэропорта)
+            timeOfPoint=ProbaToZakaz3finish.getStringExtra("timeOfPoint");
+            // дата точки сбора (для рейсов из Аэропорта)
+            dateOfPoint=ProbaToZakaz3finish.getStringExtra("dateOfPoint");
+            // реф слово чтобы определить какой маршрут "в Аэропорт" или "из Аэропорта" (для правильного отображения активити)
+            RefInFromAirport=ProbaToZakaz3finish.getStringExtra("RefInFromAirport");
+            // стоимость проезда
+            RefInFromAirport=ProbaToZakaz3finish.getStringExtra("fare");
 
 
-            Log.d(TAG, "phoneNew:"+phoneNew);
-            Log.d(TAG, "Calend:"+Calend);
-            Log.d(TAG, "RefplaneCity:"+RefplaneCity);
-            Log.d(TAG, "time:"+time);
-            Log.d(TAG, "RefMap:"+RefMap);
-            Log.d(TAG, "RefPoint:"+RefPoint);
+            Log.d(TAG, "автоматическая регистрация после авторизации: ");
+
+            Log.d(TAG, "экспорт из Proba телефон: "+phoneNew);
+            Log.d(TAG, "экспорт из Proba дата вылета-прилета: "+Calend);
+            Log.d(TAG, "экспорт из Proba дата точки сбора: "+dateOfPoint);
+            Log.d(TAG, "экспорт из Proba время вылета-прилета: "+time);
+            Log.d(TAG, "экспорт из Proba время точки сбора: "+timeOfPoint);
+            Log.d(TAG, "экспорт из Proba самолет: "+RefplaneCity);
+            Log.d(TAG, "экспорт из Proba маршрут: "+RefMap);
+            Log.d(TAG, "экспорт из Proba точка сбора: "+RefPoint);
+            Log.d(TAG, "экспорт из Proba тип маршрута В(ИЗ) Аэропорта: "+RefInFromAirport);
+            Log.d(TAG, "экспорт из Proba стоимость проезда: "+fare);
+
+            // показать визуализацию процесса автоматической регистрации заявки после авторизации
+            visibilityProcessYes();
+
             //задержка 4 секунды чтобы успел записаться NO в БД Заявки из другого кода
             Handler handler1 = new Handler();
             handler1.postDelayed(new Runnable() {
@@ -191,9 +177,8 @@ public class Zakaz3finish extends AppCompatActivity {
                 }
             },4000);
         }
+        // переход из Zakaz1 получение данных экспорта
         else{
-            // показать всю визуализацию активити
-            visibilityYes();
             // получение данных из Zakaz1
             Intent Zakaz1ToZakaz3finish = getIntent();
             // secretNumber
@@ -208,68 +193,110 @@ public class Zakaz3finish extends AppCompatActivity {
             RefMap=""+Zakaz1ToZakaz3finish.getStringExtra("RefMap");
             // точка сбора
             RefPoint=""+Zakaz1ToZakaz3finish.getStringExtra("RefPoint");
+            // Время точки сбора (для рейсов из Аэропорта)
+            timeOfPoint=Zakaz1ToZakaz3finish.getStringExtra("timeOfPoint");
+            // дата точки сбора (для рейсов из Аэропорта)
+            dateOfPoint=Zakaz1ToZakaz3finish.getStringExtra("dateOfPoint");
+            // реф слово чтобы определить какой маршрут "в Аэропорт" или "из Аэропорта" (для правильного отображения активити)
+            RefInFromAirport=Zakaz1ToZakaz3finish.getStringExtra("RefInFromAirport");
+            // стоимость проезда
+            fare=Zakaz1ToZakaz3finish.getStringExtra("fare");
 
+            Log.d(TAG, "экспорт из Zakaz1 телефон: "+phoneNew);
+            Log.d(TAG, "экспорт из Zakaz1 дата вылета-прилета: "+Calend);
+            Log.d(TAG, "экспорт из Zakaz1 дата точки сбора: "+dateOfPoint);
+            Log.d(TAG, "экспорт из Zakaz1 время вылета-прилета: "+time);
+            Log.d(TAG, "экспорт из Zakaz1 время точки сбора: "+timeOfPoint);
+            Log.d(TAG, "экспорт из Zakaz1 самолет: "+RefplaneCity);
+            Log.d(TAG, "экспорт из Zakaz1 маршрут: "+RefMap);
+            Log.d(TAG, "экспорт из Zakaz1 точка сбора: "+RefPoint);
+            Log.d(TAG, "экспорт из Zakaz1 тип маршрута В(ИЗ) Аэропорта: "+RefInFromAirport);
+            Log.d(TAG, "экспорт из Zakaz1 стоимость проезда: "+fare);
 
-            Log.d(TAG, "экспорт из Zakaz1 phoneNew:"+phoneNew);
-            Log.d(TAG, "экспорт из Zakaz1 Calend:"+Calend);
-            Log.d(TAG, "экспорт из Zakaz1 RefplaneCity:"+RefplaneCity);
-            Log.d(TAG, "экспорт из Zakaz1 time:"+time);
-            Log.d(TAG, "экспорт из Zakaz1 RefMap:"+RefMap);
-            Log.d(TAG, "экспорт из Zakaz1 RefPoint:"+RefPoint);
-
-            // если вылет из Игарки Чартер
-            if (time.equals("1 рейс")||time.equals("2 рейс")||time.equals("3 рейс")){
-                // кнопка время сбора
-                BtnRefTime.setText("по факту прилета");
-                text3.setText("Чартер "+time);
-                // убрать видимость текста время вылета + само время вылета
-                text4.setVisibility(View.INVISIBLE);
-                time1.setVisibility(View.INVISIBLE);
-                //NumberCharter.setText(time);
-                //btnTime.setVisibility(View.VISIBLE);
-                //.setVisibility(View.INVISIBLE);
-            }
-            else{
-                // метод определения времени сбора
-                timeStringToInt();
-                time1.setText(time);
-                //btnTime.setVisibility(View.INVISIBLE);
-            }
-            Calend1.setText("Заказ на "+Calend);
-            RefMap1.setText(RefMap);
-            RefPoint1.setText(RefPoint);
-            RefplaneCity1.setText(RefplaneCity);
+            // отображение заявки на экране
+            VisualOderShow();
         }
     }
-    // кнопка зарегистрировать заявку
-    public void btnOder(View view) {
-        if (phoneNew.equals("null")) {
-            AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz3finish.this);
-            mAlertDialog.setMessage("Для продолжения необходимо" +
-                    " авторизироваться." +
-                    " Вам придет SMS c кодом подтверждения")
-                    .setPositiveButton("Принять", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // переход на лист авторизации
-                            goListRegistration();
-                        }
-                    })
-                    .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    });
-            mAlertDialog.create();
-            mAlertDialog.show();
+
+    // отображение заявки на экране
+    public void VisualOderShow(){
+        // показать всю визуализацию активити
+        visibilityYes();
+
+        // Если Рейс Чартер из Игарки
+        if (time.equals("1 рейс")||time.equals("2 рейс")||time.equals("3 рейс")){
+            // дата заказа
+            Calend1.setText("Заказ на "+Calend);
+            // маршрут
+            RefMap1.setText(RefMap);
+            // пункт сбора
+            RefPoint1.setText(RefPoint);
+            // кнопка время сбора
+            BtnRefTime.setText("по факту прилета");
+            // кнопка время сбора (Сообщение ПОЯСНЕНИЕ)
+            stringExplanation=forIgarkaCharter;
+            // стоимость поездки
+            text6.setText(fare);
+            // номер чартера
+            text3.setText("Чартер "+time);
+            // самолет
+            RefplaneCity1.setText(RefplaneCity);
+            // Текст дата вылета из Игарки
+            TextDateFly.setText("Дата вылета из Игарки:");
+            // дата вылета
+            dateFly.setText(Calend);
         }
-        else {
-            // проверка интернета перед регистрацией заявки
-            btnInsert();
-            // отображение видимости
-            visibilityNo();
-            visibilityProcessYes();
+        else{
+            // если рейс в Аэропорт
+            if (RefInFromAirport.equals("в Аэропорт")){
+                // дата заказа
+                Calend1.setText("Заказ на "+dateOfPoint);
+                // маршрут
+                RefMap1.setText(RefMap);
+                // пункт сбора
+                RefPoint1.setText(RefPoint);
+                // кнопка время сбора
+                BtnRefTime.setText(timeOfPoint+" подробней");
+                // кнопка время сбора (Сообщение ПОЯСНЕНИЕ)
+                stringExplanation=inAirport;
+                // стоимость поездки
+                text6.setText(fare);
+                // самолет
+                RefplaneCity1.setText(RefplaneCity);
+                // дата вылета
+                dateFly.setText(Calend);
+                // время вылета вылета
+                time1.setText(time);
+
+            }
+            // если рейс из Аэропорта
+            else if (RefInFromAirport.equals("из Аэропорта")) {
+                // дата заказа
+                Calend1.setText("Заказ на "+dateOfPoint);
+                // маршрут
+                RefMap1.setText(RefMap);
+                // пункт сбора
+                RefPoint1.setText(RefPoint);
+                // кнопка время сбора
+                BtnRefTime.setText(timeOfPoint+" подробней");
+                // кнопка время сбора (Сообщение ПОЯСНЕНИЕ)
+                stringExplanation=fromAirport;
+                // стоимость поездки
+                text6.setText(fare);
+                // самолет
+                RefplaneCity1.setText(RefplaneCity);
+                // Текст дата прилета
+                TextDateFly.setText("Дата прилета:");
+                // дата прилета
+                dateFly.setText(Calend);
+                // время прилета
+                text4.setText("Время прилета");
+                // время прилета
+                time1.setText(time);
+            }
         }
-        }
+    }
+
     // проверка интернета перед регистрацией заявки
     public void btnInsert(){
         Log.d(TAG, "Старт проверка интернета ЧЕРЕЗ YesNO");
@@ -446,8 +473,66 @@ public class Zakaz3finish extends AppCompatActivity {
         }
     }
 
-//Alert Dialogs
+//КНОПКИ
+    // кнопка "время сбора нажми на меня" (подробности формирования времени сбора)
+    public void BtnRefTime(View view) {
+        showAlertDialog6();
+    }
+    // кнопка зарегистрировать заявку
+    public void btnOder(View view) {
+        if (phoneNew.equals("null")) {
+            AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz3finish.this);
+            mAlertDialog.setMessage("Для продолжения необходимо" +
+                    " авторизироваться." +
+                    " Вам придет SMS c кодом подтверждения")
+                    .setPositiveButton("Принять", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // переход на лист авторизации
+                            goListRegistration();
+                        }
+                    })
+                    .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+            mAlertDialog.create();
+            mAlertDialog.show();
+        }
+        else {
+            // блокировка спящего режима экрана
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            // отмена блокировки спящего режима экрана
+            //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+            // проверка интернета перед регистрацией заявки
+            btnInsert();
+            // отображение видимости
+            visibilityNo();
+            visibilityDetailseNo();
+            visibilityProcessYes();
+        }
+    }
+    // кнопка детали поездки
+    public void detailsOder(View view){
+        String d=detailsOder.getText().toString();
+        Log.d(TAG, "d: "+d);
+
+        // показать детали
+        if(detailsOder.getText().toString().equals("детали заказа")) {
+            visibilityDetailseYes();
+            detailsOder.setText("скрыть");
+            Log.d(TAG, "показать: "+detailsOder.getText().toString());
+        }
+        // скрыть детали
+        else {
+            visibilityDetailseNo();
+            detailsOder.setText("детали заказа");
+            Log.d(TAG, "скрыть: "+detailsOder.getText().toString());
+        }
+    }
+
+//ALERT DIALOGS
     // ошибка загрузки данных приложение будет перезапущено (по идее не должно никогда появиться но на всякий случай оставил)
     public void AlertMistake(){
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz3finish.this);
@@ -461,26 +546,6 @@ public class Zakaz3finish extends AppCompatActivity {
                     }
                 });
         mAlertDialog.create();
-        mAlertDialog.show();
-    }
-    // Найдена ваша старая заявка (по идее не должно никогда появиться но на всякий случай оставил)
-    public void showAlertDialog5(){
-        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
-                Zakaz3finish.this);
-        // Set Title
-        mAlertDialog.setTitle("Найдена ваша старая заявка");
-        mAlertDialog.setCancelable(false);
-        // Set Message
-        mAlertDialog
-                .setMessage("отмените старую заявку")
-                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //Переход на лист Статуса
-                        onStatusList();
-                    }
-                });
-        mAlertDialog.create();
-        // Showing Alert Message
         mAlertDialog.show();
     }
     // Всплывающая информация "Заявка отклонена!!!"
@@ -514,7 +579,7 @@ public class Zakaz3finish extends AppCompatActivity {
         mAlertDialog.create();
         mAlertDialog.show();
     }
-    // Ошибка регистрации заявки
+    // Нет интернета перед регистрацией заявки (при считывании YesNO)
     public void showAlertDialog4(){
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
                 Zakaz3finish.this);
@@ -524,17 +589,70 @@ public class Zakaz3finish extends AppCompatActivity {
                 .setMessage("проверьте настройки интернета")
                 .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // изменение визуализации
+                        // убрать визуализацию процесса
                         visibilityProcessNo();
-                        visibilityYes();
+                        // отображение заявки на экране
+                        VisualOderShow();
                     }
                 });
         mAlertDialog.create();
         mAlertDialog.show();
     }
-    // Переходы на др активити
+    // Найдена ваша старая заявка (по идее не должно никогда появиться но на всякий случай оставил)
+    public void showAlertDialog5(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
+                Zakaz3finish.this);
+        // Set Title
+        mAlertDialog.setTitle("Найдена ваша старая заявка");
+        mAlertDialog.setCancelable(false);
+        // Set Message
+        mAlertDialog
+                .setMessage("отмените старую заявку")
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //Переход на лист Статуса
+                        onStatusList();
+                    }
+                });
+        mAlertDialog.create();
+        // Showing Alert Message
+        mAlertDialog.show();
+    }
+    // подробности как формируется время сбора
+    public void showAlertDialog6() {
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz3finish.this);
+        mAlertDialog.setCancelable(false);
+        mAlertDialog
+                // Message в зависимости от типа Маршрута (Чартер, В Аэропорт, из Аэропорта)
+                .setMessage(stringExplanation)
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+        mAlertDialog.create();
+        mAlertDialog.show();
+    }
+    // Нет интернета при получении  РАЗРЕШЕНО-ЗАПРЕЩЕНО из БД при регистрации заявки
+    public void showAlertDialog7(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
+                Zakaz3finish.this);
+        mAlertDialog.setTitle("Проверьте настройки интернета");
+        mAlertDialog.setCancelable(false);
+        mAlertDialog
+                .setMessage("Приложение будет перезапущено")
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // перезапуск приложения
+                        reStartApp();
+                    }
+                });
+        mAlertDialog.create();
+        mAlertDialog.show();
+    }
 
-    // перезагрузка приложения из-за ошибки получения токена
+// ПЕРЕХОДЫ НА ДР АКТИВИТИ
+    // 1. перезагрузка приложения из-за ошибки получения токена
+    // 2. перезагрузка приложения Нет интернета при получении  РАЗРЕШЕНО-ЗАПРЕЩЕНО из БД при регистрации заявки
     public void reStartApp(){
         Intent GoMainActivity= new Intent(this,MainActivity.class);
         startActivity(GoMainActivity);
@@ -554,6 +672,15 @@ public class Zakaz3finish extends AppCompatActivity {
         Zakaz3finishToProba.putExtra("RefPoint",RefPoint);
         // время вылета/прилета/номер рейса для чартера
         Zakaz3finishToProba.putExtra("time",time);
+        // Время точки сбора (для рейсов из Аэропорта)
+        Zakaz3finishToProba.putExtra("timeOfPoint", timeOfPoint);
+        // дата точки сбора (для рейсов из Аэропорта)
+        Zakaz3finishToProba.putExtra("dateOfPoint", dateOfPoint);
+        // реф слово чтобы определить какой маршрут "в Аэропорт" или "из Аэропорта" (для правильного отображения активити)
+        Zakaz3finishToProba.putExtra("RefInFromAirport", RefInFromAirport);
+        // стоимость проезда
+        Zakaz3finishToProba.putExtra("fare", fare);
+
         startActivity(Zakaz3finishToProba);
     }
     //Нет интернета при регистрации заявки
@@ -563,8 +690,8 @@ public class Zakaz3finish extends AppCompatActivity {
         }
         else{
             Log.d(TAG, "Время поиска Разрешение/Запрет для записи заявки вышло not internet");
-            Intent Main6ActivityNotInternet  = new Intent(this,Main6ActivityNotInternet.class);
-            startActivity(Main6ActivityNotInternet);
+            // Нет интернета при получении  РАЗРЕШЕНО-ЗАПРЕЩЕНО из БД при регистрации заявки
+            showAlertDialog7(); // ПРОВЕРИТЬ ОБЯЗАТЕЛЬНО
         }
     }
     // Переход на лист оформления заявки т.к. выбранный пункт сбора уже сформирован
@@ -583,7 +710,7 @@ public class Zakaz3finish extends AppCompatActivity {
         startActivity(Zakaz3FinishTOMain6);
     }
 
-    // визуализации
+// ВИЗУАЛИЗАЦИИ АКТИВИТИ
     // убрать всю визуализацию активити
     public void visibilityNo(){
         Calend1.setVisibility(View.GONE);
@@ -591,18 +718,14 @@ public class Zakaz3finish extends AppCompatActivity {
         RefPoint1.setVisibility(View.GONE);
         textTime.setVisibility(View.GONE);
         BtnRefTime.setVisibility(View.GONE);
-        RefplaneCity1.setVisibility(View.GONE);
-        time1.setVisibility(View.GONE);
         text2.setVisibility(View.GONE);
-        text3.setVisibility(View.GONE);
-        NumberCharter.setVisibility(View.GONE);
-        text4.setVisibility(View.GONE);
         text5.setVisibility(View.GONE);
         text6.setVisibility(View.GONE);
         text7.setVisibility(View.GONE);
         btnOder.setVisibility(View.GONE);
         button9.setVisibility(View.GONE);
-    }
+        detailsOder.setVisibility(View.GONE);
+            }
     //показать визулизацию активити
     public void visibilityYes(){
         Calend1.setVisibility(View.VISIBLE);
@@ -610,17 +733,44 @@ public class Zakaz3finish extends AppCompatActivity {
         RefPoint1.setVisibility(View.VISIBLE);
         textTime.setVisibility(View.VISIBLE);
         BtnRefTime.setVisibility(View.VISIBLE);
-        RefplaneCity1.setVisibility(View.VISIBLE);
-        time1.setVisibility(View.VISIBLE);
         text2.setVisibility(View.VISIBLE);
-        text3.setVisibility(View.VISIBLE);
-        NumberCharter.setVisibility(View.VISIBLE);
-        text4.setVisibility(View.VISIBLE);
         text5.setVisibility(View.VISIBLE);
         text6.setVisibility(View.VISIBLE);
         text7.setVisibility(View.VISIBLE);
         btnOder.setVisibility(View.VISIBLE);
         button9.setVisibility(View.VISIBLE);
+        detailsOder.setVisibility(View.VISIBLE);
+    }
+    // убрать визуализацию Детали заказа
+    public void visibilityDetailseNo(){
+        text3.setVisibility(View.GONE);
+        RefplaneCity1.setVisibility(View.GONE);
+        TextDateFly.setVisibility(View.GONE);
+        dateFly.setVisibility(View.GONE);
+        text4.setVisibility(View.GONE);
+        time1.setVisibility(View.GONE);
+    }
+    // показать визуализацию Детали заказа
+    public void visibilityDetailseYes(){
+        text3.setVisibility(View.VISIBLE);
+        RefplaneCity1.setVisibility(View.VISIBLE);
+        TextDateFly.setVisibility(View.VISIBLE);
+        dateFly.setVisibility(View.VISIBLE);
+        // если рейсы Чартер из Игарки
+        if (time.equals("1 рейс")||time.equals("2 рейс")||time.equals("3 рейс")){
+            // убрать видимость ТЕКСТ время вылета-прилета
+            text4.setVisibility(View.INVISIBLE);
+            // убрать видимость время вылета-прилета
+            time1.setVisibility(View.INVISIBLE);
+        }
+        else {
+            // показать видимость ТЕКСТ время вылета-прилета
+            text4.setVisibility(View.VISIBLE);
+            // показать видимость время вылета-прилета
+            time1.setVisibility(View.VISIBLE);
+        }
+
+
     }
     // убрать визуализацию процесса
     public void visibilityProcessNo(){
@@ -633,84 +783,89 @@ public class Zakaz3finish extends AppCompatActivity {
         progressB.setVisibility(View.VISIBLE);
     }
 
-    // Блокировка кнопки Back!!!! :)))
+// Блокировка кнопки Back!!!! :)))
     @Override
     public void onBackPressed(){
     }
 
-    // time преобразование string в int
-    public void timeStringToInt(){
-        // время дороги до аэропорта
-        timeRoad=1;
-        // время регистрации (за сколько часов до вылета начинается регистрация)
-        timeRegistrtation=2;
-        // общее время Затрат
-        int sum=timeRoad+timeRegistrtation;
+    // метод определения времени сбора (преобразование string в int)
+//    public void timeStringToInt(){
+//        // время дороги до аэропорта
+//        timeRoad=1;
+//        // время регистрации (за сколько часов до вылета начинается регистрация)
+//        timeRegistrtation=2;
+//        // общее время Затрат
+//        int sum=timeRoad+timeRegistrtation;
+//
+//        // преобразуем слово "время вылета" по символьно
+//        String one= ""+time.charAt(0);
+//        String two= ""+time.charAt(1);
+//        String tree= ""+time.charAt(2);
+//        String four= ""+time.charAt(3);
+//        String five= ""+time.charAt(4);
+//        Log.d(TAG, "one:"+one);
+//        Log.d(TAG, "two:"+two);
+//        Log.d(TAG, "tree:"+tree);
+//        Log.d(TAG, "four:"+four);
+//        Log.d(TAG, "five:"+five);
+//        // преобразуем первый символ в число
+//        for(int i=0;i<10;i++){
+//            Log.d(TAG, "i:"+i);
+//            if(one.equals(array1[i])){
+//                onePointHour=array2[i];
+//                Log.d(TAG, "onePointHour:"+onePointHour);
+//            }
+//        }
+//        // преобразуем второй символ в число
+//        for(int i=0;i<10;i++){
+//            Log.d(TAG, "ii:"+i);
+//            if(two.equals(array1[i])){
+//                twoPointHour=array2[i];
+//                Log.d(TAG, "twoPointHour:"+twoPointHour);
+//            }
+//        }
+//        Log.d(TAG, "итоговый час:"+onePointHour+""+twoPointHour);
+//        // преобразуем два символа в общее число
+//        if(onePointHour==0){
+//            onePointHour=onePointHour*10;
+//            finalIntHour=onePointHour+twoPointHour;
+//            Log.d(TAG, "итоговый час <10: "+finalIntHour);
+//        }
+//        else {
+//            onePointHour=onePointHour*10;
+//            finalIntHour=onePointHour+twoPointHour;
+//            Log.d(TAG, "итоговый час =>10: "+finalIntHour);
+//        }
+//
+//        // определяем время сбора = время вылета - (время дороги + время регистрации)-только целые числа (т.е. за сколько надо быть в аэропорту)
+//        //н-р 5:40 время дороги 1 час время регистрации за 2 часа до вылета итог 5-(1+2)=2
+//
+//        // если время вылета ЧИСЛО меньше чем времени затрат (н-р вылет 02:00 время затрат 1+2=3 т.е 2<3)
+//        // то вычисляем итоговое время сбора
+//
+//        // если время сбора выпадает на другие сутки то меняем и дату сбора
+//        if (finalIntHour<sum){
+//            int diff = sum-finalIntHour;
+//            reftime =24-diff;
+//            Log.d(TAG, " Integer ВРЕМЯ точки сбора: "+reftime);
+//
+//        }
+//        else {
+//            reftime=finalIntHour-sum;
+//            Log.d(TAG, "Integer ВРЕМЯ точки сбора: "+reftime);
+//        }
+//
+//        // преобразуем результат в строку (ВРЕМЯ СБОРА ИТОГОВОЕ)
+//        if (reftime<10){
+//            refStringHour="0"+reftime+tree+four+five;
+//        }
+//        else {
+//            refStringHour=""+reftime+tree+four+five;
+//        }
+//        Log.d(TAG, "String ВРЕМЯ точки сбора: "+refStringHour);
+//
+//        // отображние времени сбора
+//        BtnRefTime.setText(refStringHour+" нажми на меня");
+//    }
 
-        // преобразуем слово по символьно
-        String one= ""+time.charAt(0);
-        String two= ""+time.charAt(1);
-        String tree= ""+time.charAt(2);
-        String four= ""+time.charAt(3);
-        String five= ""+time.charAt(4);
-        Log.d(TAG, "one:"+one);
-        Log.d(TAG, "two:"+two);
-        Log.d(TAG, "tree:"+tree);
-        Log.d(TAG, "four:"+four);
-        Log.d(TAG, "five:"+five);
-        // преобразуем первый символ в число
-        for(int i=0;i<10;i++){
-            Log.d(TAG, "i:"+i);
-            if(one.equals(array1[i])){
-                onePointHour=array2[i];
-                Log.d(TAG, "onePointHour:"+onePointHour);
-            }
-        }
-        // преобразуем второй символ в число
-        for(int i=0;i<10;i++){
-            Log.d(TAG, "ii:"+i);
-            if(two.equals(array1[i])){
-                twoPointHour=array2[i];
-                Log.d(TAG, "twoPointHour:"+twoPointHour);
-            }
-        }
-        Log.d(TAG, "итоговый час:"+onePointHour+""+twoPointHour);
-        // преобразуем два символа в общее число
-        if(onePointHour==0){
-            onePointHour=onePointHour*10;
-            finalIntHour=onePointHour+twoPointHour;
-            Log.d(TAG, "итоговый час <10: "+finalIntHour);
-        }
-        else {
-            onePointHour=onePointHour*10;
-            finalIntHour=onePointHour+twoPointHour;
-            Log.d(TAG, "итоговый час =>10: "+finalIntHour);
-        }
-
-        // определяем время сбора = время вылета - (время дороги + время регистрации)-только целые числа (т.е. за сколько надо быть в аэропорту)
-        //н-р 5:40 время дороги 1 час время регистрации за 2 часа до вылета итог 5-(1+2)=2
-        // если время вылета ЧИСЛО меньше чем времени затрат (н-р вылет 02:00 время затрат 1+2=3 т.е 2<3)
-        // то вычисляем итоговое время сбора
-        if (finalIntHour<sum){
-            int diff = sum-finalIntHour;
-            reftime =24-diff;
-            Log.d(TAG, " Integer ВРЕМЯ точки сбора: "+reftime);
-        }
-        else {
-            reftime=finalIntHour-sum;
-            Log.d(TAG, "Integer ВРЕМЯ точки сбора: "+reftime);
-        }
-
-        // преобразуем результат в строку (ВРЕМЯ СБОРА ИТОГОВОЕ)
-        if (reftime<10){
-            refStringHour="0"+reftime+tree+four+five;
-        }
-        else {
-            refStringHour=""+reftime+tree+four+five;
-        }
-        Log.d(TAG, "String ВРЕМЯ точки сбора: "+refStringHour);
-
-        // отображние времени сбора
-        BtnRefTime.setText(refStringHour+" подробней");
-    }
 }

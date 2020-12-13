@@ -2,7 +2,6 @@ package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -12,7 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ProgressBar;
@@ -23,10 +21,13 @@ import java.util.Calendar;
 public class Zakaz1 extends AppCompatActivity {
 
     // Первый лист заказа
-    // есть таймер сворачивания для перехода в Zakaz2 выбор маршрута
-    // есть таймер сворачивания для перехода в Zakaz3Finish итоговый лист заказа
-    // есть время сессии, запускается при переходе в Zakaz2 выбор маршрута
-    // есть время сессии, запускается при переходе в Zakaz3Finish итоговый лист заказа
+    // 1.есть таймер сворачивания для перехода в Zakaz2 выбор маршрута
+    // 2.есть таймер сворачивания для перехода в Zakaz3Finish итоговый лист заказа
+    // 3.есть время сессии, запускается при переходе в Zakaz2 выбор маршрута
+    // 4.есть время сессии, запускается при переходе в Zakaz3Finish итоговый лист заказа
+    // 5.метод DateTimePointOfMap вычисляет время точки сбора и дату заказа для маршрутов До АЭропорта для разных городов
+    // (время дороги и время до начала регистрации забивается в timeRoad и timeRegistration ) если время сбора также пересчитывается на предыдущие сутки месяц
+    // и год при необходимости
 
     private static final String TAG ="Zakaz1" ;
 
@@ -54,6 +55,10 @@ public class Zakaz1 extends AppCompatActivity {
     // выбранный рейс самолета (город)
     String RefplaneCity;
 
+    // реф слово для экспорта в Zaka3Finish (чтобы определить какой маршрут в Аэропорт или из Аэропорта)
+    // по умолчанию ставим "из Аэропорта", есть будет наоборот слово перепишется на "в Аэропорт"
+    String RefInFromAirport="из Аэропорта";
+
     // для Чартерных рейсов из Игарки
     String knowOrNotTime="Вы знаете время прилета в Красноярск?";
     String [] knowOrNotTimeChoise= {"1. Да","2. Нет, я лечу на чартере"};
@@ -76,6 +81,40 @@ public class Zakaz1 extends AppCompatActivity {
     String AlertFrom="В какой город вы летите из Красноярска?";
     String AlertIn="Из какого города вы летите в Красноярск?";
     String RefAlertTitle;
+    // Стоимость проезда Красноярск, Сосновоборск, Ачинск, Канск, Лесосибирск
+    String [] RefFare = {"300","300","300","300","300","500","700","1500","2000"};
+    // Выбранная стоимость проезда
+    String fare="";
+
+    // ДЛЯ ВЫБОРА ДАТЫ И ВРЕМЕНИ ТОЧКИ СБОРА МАРШРУТОВ в АЭРОПОРТ
+
+    // время дороги до аэропорта ( часы соответствуют массиву refOne)
+    //c Красноярска 60 минут
+    //c Сосновоборска 60 минут
+    //c Ачинска 120 минут (165 км)
+    // c Канска 240 минут (265 км)
+    // c Лесосибирск 300 минут (312 км)
+    Integer [] timeRoad ={60,60,60,60,60,60,120,240,300};
+    // Время начала регистрации (за сколько часов до вылета)
+    Integer [] timeRegistration ={120,120,120,120,120,120,120,120,120,};
+    // год выбранный календарем
+    Integer yearReferens;
+    // месяц выбранный календарем
+    Integer mounthReferens;
+    // день выбранный календарем
+    Integer dayReferens;
+    // час выбранный календарем
+    Integer hourReferens;
+    // минуты выбранный календарем
+    Integer minuteReferens;
+    // дата точки сбора
+    String dateOfPoint;
+    // время точки сбора
+    String timeOfPoint;
+    // cоответствие месяца и количество дней в предыдущем месяце
+    Integer [] monthChesk ={1,2,3,4,5,6,7,8,9,10,11,12};
+    // количество дней предыдущего месяца
+    Integer [] monthCheskDay ={31,31,28,31,30,31,30,31,31,30,31,30};
 
     // for title of Calendar
     String titleCalendarFromAirport="Дата вылета из Красноярска";
@@ -95,17 +134,26 @@ public class Zakaz1 extends AppCompatActivity {
     int month;
     int dayOfmonth;
 
-    //выбранная дата
+    //выбранная дата вылета-прилета (из календаря)
     String Calend;
-
+    //выбранное вылета-прилета из (календаря)
     String time;
+
+    // Итоговое значение часа вылета-прилета в виде двух символов
+    String hourRef;
+    // Итоговое значение минут вылета-прилета в виде двух символов
+    String minuteRef;
+    // Итоговое значение дня вылета-прилета в виде двух символов
+    String dayRef;
+    // Итоговое значение месяца вылета-прилета в виде двух символов
+    String monthRef;
 
     //показ часов
     TimePickerDialog timePickerDialog;
     int hourOfDay;
     int minute;
-    // Итоговое значение часа вылета в виде слова
-    String hourRef;
+
+
 
     // время выдержки времени для исключения неперехода на др активити при сварачивании,
     // есть порог 5 секунд меньше которых переход на др активити не сработает при сварачивании)
@@ -527,6 +575,8 @@ public class Zakaz1 extends AppCompatActivity {
                 .setItems(listCityFromIn, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // обнуляем число для таймера сварачивания
+                        c=10;
                         refFromInCity=listCityFromIn[which];
                         button1.setEnabled(false);
                         // задержка для дизайна
@@ -688,7 +738,30 @@ public class Zakaz1 extends AppCompatActivity {
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
-                        Calend=day + " " + (month + 1) + " " + year;
+                        // данные для выбора даты точки сбора (только для маршрутов в АЭРОПОРТ)
+                        yearReferens=year;
+                        mounthReferens=month+1;
+                        dayReferens=day;
+                        // преобразования дня в два символа (Н-р 6->06)
+                        if (day<10){
+                            dayRef="0"+day;
+                        }
+                        else {
+                            dayRef=""+day;
+                        }
+                        // преобразования месяца в два символа (Н-р 3->03)
+                        if (month+1<10){
+                            // +1 т.к. почему-то календарь заведомо занижает выбранный месяц на один
+                            monthRef="0"+(month + 1);
+                            Log.d(TAG, "ПРОВЕРКА1:"+monthRef);
+                        }
+                        else {
+                            monthRef=""+(month + 1);
+                            Log.d(TAG, "ПРОВЕРКА2:"+monthRef);
+                        }
+                        // итоговая дата вылета-прилета в виде слова
+                        Calend=dayRef + " " + monthRef + " " + year;
+                        // недоступность кнопки дата,время
                         button4.setEnabled(false);
                         // скрыть кнопку изменить условия заказа
                         button5.setVisibility(View.INVISIBLE);
@@ -741,6 +814,10 @@ public class Zakaz1 extends AppCompatActivity {
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        // данные для выбора времени точки сбора (только для маршрутов в АЭРОПОРТ)
+                        hourReferens=hourOfDay;
+                        minuteReferens=minute;
+
                         // преобразования часа в два символа (Н-р 6->06)
                         if (hourOfDay<10){
                             hourRef="0"+hourOfDay;
@@ -750,38 +827,34 @@ public class Zakaz1 extends AppCompatActivity {
                         }
 
                         if (minute<10){
-                            //time=hourOfDay+":"+"0"+minute;
-                            time=(hourRef+":"+"0"+minute);
-                            button4.setEnabled(false);
-                            button5.setVisibility(View.INVISIBLE);
-                            Handler han = new Handler();
-                            han.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Rline4();
-                                    finishOder();
-                                }
-                            },300);
+                            minuteRef="0"+minute;
                         }
                         if (minute>=10){
-                            time=(hourRef+":"+minute);
+                            minuteRef=""+minute;
+                        }
+                        // итоговое время вылета в виде слова
+                            time=hourRef+":"+minuteRef;
                             button4.setEnabled(false);
                             button5.setVisibility(View.INVISIBLE);
-                            Handler han = new Handler();
-                            han.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Rline4();
-                                    finishOder();
-                                }
-                            },300);
-                        }
+
+
+                        // приравниваем время+даты точки сбора с временем вылета
+                        // Если маршруты ИЗ АЭРОПОРТА то это время поменяется в методе DateTimePointOfMap();
+                        timeOfPoint=time;
+                        dateOfPoint=Calend;
+
+                        Log.d(TAG, "дата точки сбора+прилета из Аэропорта:"+Calend);
+                        Log.d(TAG, "время точки сбора+прилета из Аэропорта:"+time);
+
+                        // Запуск метода вычисления времени точки сбора и даты (только для маршрутов в АЭРОПОРТ)
+                        DateTimePointOfMap();
+
                     }
                 },hourOfDay,minute,true);
         timePickerDialog.setTitle(ReftitleTime);
         timePickerDialog.show();
     }
-
+    // Вопрос знаешь ли время прибытия самолета или у тебя Чартер (Для Игарки)
     public void showKnowTimeorNot(){
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
         mAlertDialog.setTitle(knowOrNotTime);
@@ -818,7 +891,7 @@ public class Zakaz1 extends AppCompatActivity {
         mAlertDialog.create();
         mAlertDialog.show();
     }
-
+    // Выбор номра чартера для Игарки
     public void choisNumberCharter(){
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
         mAlertDialog.setTitle(choiseNumberCharter);
@@ -898,13 +971,14 @@ public class Zakaz1 extends AppCompatActivity {
         if (RefAlertTitle.equals(AlertFrom)){
             RefplaneCity="Красноярск"+"-"+RefplaneCity;
         }
-
         // передаем данные для регистрации заявки
         Intent Zakaz1ToZakaz3finish = new Intent (this,Zakaz3finish.class);
         // secretNumber
         Zakaz1ToZakaz3finish.putExtra("phoneNew", phoneNew);
         // дата полета
         Zakaz1ToZakaz3finish.putExtra("Calend", Calend);
+        // дата точки сбора (для рейсов из Аэропорта)
+        Zakaz1ToZakaz3finish.putExtra("dateOfPoint", dateOfPoint);
         // рейс самолета
         Zakaz1ToZakaz3finish.putExtra("RefplaneCity", RefplaneCity);
         // время вылета/прилета/номер рейса для чартера
@@ -913,14 +987,243 @@ public class Zakaz1 extends AppCompatActivity {
         Zakaz1ToZakaz3finish.putExtra("RefMap", RefMap);
         // точка сбора
         Zakaz1ToZakaz3finish.putExtra("RefPoint", RefPoint);
+        // Время точки сбора (для рейсов из Аэропорта)
+        Zakaz1ToZakaz3finish.putExtra("timeOfPoint", timeOfPoint);
+        // Время точки сбора (для рейсов из Аэропорта)
+        Zakaz1ToZakaz3finish.putExtra("timeOfPoint", timeOfPoint);
+        // реф слово для экспорта в Zaka3Finish (чтобы определить какой маршрут "в Аэропорт" или "из Аэропорта")
+        Zakaz1ToZakaz3finish.putExtra("RefInFromAirport", RefInFromAirport);
+        // стоимость проезда
+        Zakaz1ToZakaz3finish.putExtra("fare", fare);
+
+
         startActivity(Zakaz1ToZakaz3finish);
+
+        Log.d(TAG, "итог телефон:"+phoneNew);
+        Log.d(TAG, "итог дата вылета-прилета:"+Calend);
+        Log.d(TAG, "итог дата точки сбора:"+dateOfPoint);
+        Log.d(TAG, "итог время вылета-прилета:"+time);
+        Log.d(TAG, "итог время точки сбора:"+timeOfPoint);
+        Log.d(TAG, "итог самолет:"+RefplaneCity);
+        Log.d(TAG, "итог маршрут:"+RefMap);
+        Log.d(TAG, "итог точка сбора:"+RefPoint);
+        Log.d(TAG, "итог тип маршрута В(из) Аэропорта:"+RefInFromAirport);
+        Log.d(TAG, "итог стоимость проезда:"+fare);
+    }
+
+    // метод вычисления времени и даты точки сбора только для маршрутов в АЭРОПОРТ
+    public void DateTimePointOfMap(){
+        //ОПРЕДЕЛЯЕМ выбранный рейс в АЭРОПОРТ или из АЭРОПОРТА
+        int i=refOne.length;
+        int x;
+        for ( x=0; x<i; x++){
+            // КОД работает, только если выбранный рейс в АЭРОПОРТ ( для расчета ВРЕМЕНИ и ДАТЫ ТОЧКИ СБОРА)
+            if (RefMap.equals(refOne[x])){
+
+                // реф слово для экспорта в Zaka3Finish (чтобы определить какой маршрут в Аэропорт или из Аэропорта)
+                RefInFromAirport="в Аэропорт";
+
+
+                // ОПРЕДЕЛЕНИЕ ВРЕМЕНИ ТОЧКИ СБОРА
+
+               // вычисление времени затрат в минутах
+                int sum=timeRoad[x]+timeRegistration[x];
+                // вычисление времени вылета в минутах
+                int timePlane = hourReferens*60+minuteReferens;
+
+
+                //если время вылета меньше времени затрат МЕНЯЕМ ВРЕМЯ и ДАТУ
+                if (timePlane<sum){
+                    // время точки сбора в минутах
+                    int timePoint=24*60-(sum-timePlane);
+
+                    // перевод в часы+минуты
+                    int h = timePoint/60;
+                    int m =timePoint%60;
+
+                    // итоговый час точки сбора
+                    if(h<10){
+                        timeOfPoint ="0"+h;
+                    }
+                    if(h>=10){
+                        timeOfPoint =""+h;
+                    }
+                    // итоговое общее время точки сбора
+                    if(m<10){
+                        timeOfPoint =timeOfPoint+":"+"0"+m;
+                    }
+                    if(m>=10){
+                        timeOfPoint =timeOfPoint+":"+m;
+                    }
+
+                    Log.d(TAG, "ВРЕМЯ ТОЧКИ СБОРА"+timeOfPoint);
+
+                    // ИЗМЕНЕНИЕ ДАТЫ ТОЧКИ СБОРА
+
+                    // если день вылета равен 1 то день точки сбора принимаем из предыдущего месяца
+                    if(dayReferens==1){
+
+                        // если год високосный
+                        if (yearReferens==2020||yearReferens==2024||yearReferens==2028||yearReferens==2032||yearReferens==2036||yearReferens==2040){
+                            // проверяем март ли это
+                            if(mounthReferens==3){
+                                // устанавливаем день точки сбора
+                                dayReferens=29;
+                            }
+                            // проверяем какой тогда выбран месяц
+                            else {
+                                int y=monthChesk.length;
+                                int n;
+                                for ( n=0; n<y; n++){
+                                    // сравниваем массив с выбранным месяцем и устанавливаем день точки сбора
+                                    if (mounthReferens.equals(monthChesk[n])){
+                                        // устанавливаем день точки сбора
+                                        dayReferens=monthCheskDay[n];
+                                    }
+                                }
+                            }
+                        }
+                        // если год НЕ високосный
+                        else {
+                            int y=monthChesk.length;
+                            int n;
+                            for ( n=0; n<y; n++){
+                                // сравниваем массив с выбранным месяцем и устанавливаем день точки сбора
+                                if (mounthReferens.equals(monthChesk[n])){
+                                    // устанавливаем день точки сбора
+                                    dayReferens=monthCheskDay[n];
+                                }
+                            }
+                        }
+
+                        // уменьшаем год точки сбора если месяц январь
+                        if (mounthReferens==1){
+                            yearReferens=yearReferens-1;
+                        }
+                        //уменьшаем месяц точки сбора если выбранный =1 (январь)
+                        if(mounthReferens==1){
+                            mounthReferens=12;
+                        }
+                        else {
+                            mounthReferens=mounthReferens-1;
+                        }
+
+                        // ИТОГОВАЯ ДАТА точки сбора
+                        if (mounthReferens<10){
+                            // дата точки сбора (строка)
+                            dateOfPoint=dayReferens+" "+"0"+mounthReferens+" "+yearReferens;
+                        }
+                        if (mounthReferens>=10){
+                            // дата точки сбора (строка)
+                            dateOfPoint=dayReferens+" "+mounthReferens+" "+yearReferens;
+                        }
+
+                        Log.d(TAG, "ДАТА ТОЧКИ СБОРА"+dateOfPoint);
+                        //Итоговая дата
+
+                    }
+                    // если день вылета больше 1
+                    else {
+                        // день точки сбора (число)
+                        dayReferens=dayReferens-1;
+
+                        // дата точки сбора (строка)
+                        if(dayReferens<10){
+                            if(mounthReferens<10){
+                                dateOfPoint="0"+dayReferens+" "+"0"+mounthReferens+" "+yearReferens;
+                                Log.d(TAG, "ДАТА ТОЧКИ СБОРА"+dateOfPoint);
+                            }
+                            if(mounthReferens>=10){
+                                dateOfPoint="0"+dayReferens+" "+mounthReferens+" "+yearReferens;
+                                Log.d(TAG, "ДАТА ТОЧКИ СБОРА"+dateOfPoint);
+                            }
+                        }
+                        if(dayReferens>=10){
+                            if(mounthReferens<10){
+                                dateOfPoint=dayReferens+" "+"0"+mounthReferens+" "+yearReferens;
+                                Log.d(TAG, "ДАТА ТОЧКИ СБОРА"+dateOfPoint);
+                            }
+                            if(mounthReferens>=10){
+                                dateOfPoint=dayReferens+" "+mounthReferens+" "+yearReferens;
+                                Log.d(TAG, "ДАТА ТОЧКИ СБОРА"+dateOfPoint);
+                            }
+                        }
+                    }
+                }
+                //если время вылета больше или рано времени затрат
+                else {
+                    // время точки сбора в минутах
+                    int timePoint = timePlane-sum;
+
+                    // перевод в часы+минуты
+                    int h = timePoint/60;
+                    int m =timePoint%60;
+
+                    // итоговый час точки сбора
+                    if(h<10){
+                        timeOfPoint ="0"+h;
+                    }
+                    if(h>=10){
+                        timeOfPoint =""+h;
+                    }
+                    // итоговое общее время точки сбора
+                    if(m<10){
+                        timeOfPoint =timeOfPoint+":"+"0"+m;
+                    }
+                    if(m>=10){
+                        timeOfPoint =timeOfPoint+":"+m;
+                    }
+
+                    Log.d(TAG, "ВРЕМЯ ТОЧКИ СБОРА в Аэропорт"+timeOfPoint);
+
+                    // дата точки сбора ПРИ этом не меняется и равна дате вылета
+
+                }
+            }
+        }
+
+        // определение стоимости проезда
+        Choisfare();
+
+
+    }
+    // определение стоимости проезда
+    public void Choisfare(){
+        //ОПРЕДЕЛЯЕМ выбранный рейс в АЭРОПОРТ или из АЭРОПОРТА
+        int i=refOne.length;
+        int x;
+        for ( x=0; x<i; x++){
+            // если рейс в Аэропорт
+            if (RefMap.equals(refOne[x])) {
+                // стоимость поездки равна
+                fare=RefFare[x];
+            }
+            // если рейс в Аэропорт
+            else if (RefMap.equals(refTwo[x])){
+                // стоимость поездки равна
+                fare=RefFare[x];
+            }
+        }
+
+
+        // переход на лист Zaka3Finish
+        // выдержка с запасом чтобы метод успел завершиться
+        Handler han = new Handler();
+        han.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Rline4();
+                finishOder();
+            }
+        },300);
     }
     // нет нужного города
     public void FeedBack1(){
         Intent FeedBack1= new Intent(this,FeedBack1.class);
         startActivity(FeedBack1);
     }
-    // ТАЙМЕР СВАРАЧИВАНИЯ
+
+    // ТАЙМЕРЫ СВАРАЧИВАНИЯ
 
     // 1.при переходе на лист Zakaz2
     public void timePlus(){
@@ -935,7 +1238,7 @@ public class Zakaz1 extends AppCompatActivity {
             }
         },b);
     }
-    // 1.при переходе на итоговый лист регистрации заявки Zakaz3finish()
+    // 2.при переходе на итоговый лист регистрации заявки Zakaz3finish()
     public void timePlus2(){
         d=e+10;
         Log.d(TAG, "timePlus2 d="+d);
@@ -948,7 +1251,6 @@ public class Zakaz1 extends AppCompatActivity {
             }
         },d);
     }
-
     // время сессии истекло
     public void timeSessionEnd(){
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
