@@ -320,21 +320,21 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="количества заявок. В любом случае "
+                    android:text="количества заявок. Увеличте громкость "
                     android:textSize="15sp"
                     android:layout_gravity="center_horizontal"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="вам прийдет уведомление о результате."
+                    android:text="телефона, чтобы не пропустить"
                     android:textSize="15sp"
                     android:layout_gravity="center_horizontal"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Увеличте громкость телефона"
+                    android:text="уведомление о найденном авто."
                     android:textSize="15sp"
                     android:layout_gravity="center_horizontal"/>
 

@@ -10,18 +10,19 @@
 
     <Button
         android:id="@+id/button1"
+        style="@android:style/Widget.Button.Inset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
+        android:enabled="false"
+        android:onClick="button1"
         android:text="Город"
-        android:textSize="20sp"
         android:textAllCaps="false"
+        android:textColor="#201F1F"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:enabled="false"
-        android:visibility="visible"
-        android:onClick="button1"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/Right1"
@@ -61,7 +62,7 @@
         android:layout_marginLeft="24dp"
         android:text="!"
         android:textSize="30sp"
-        android:textColor="#FB3D01"
+        android:textColor="#BA7004"
         app:layout_constraintBottom_toBottomOf="@+id/button1"
         app:layout_constraintStart_toEndOf="@+id/button1"
         app:layout_constraintTop_toTopOf="@+id/button1"
@@ -72,11 +73,11 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="15dp"
         android:enabled="false"
         android:text="Маршрут"
+        android:textColor="#201F1F"
         android:textSize="25sp"
-        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -120,7 +121,7 @@
         android:layout_marginLeft="24dp"
         android:text="!"
         android:textSize="30sp"
-        android:textColor="#FB3D01"
+        android:textColor="#BA7004"
         app:layout_constraintBottom_toBottomOf="@+id/button2"
         app:layout_constraintStart_toEndOf="@+id/button2"
         app:layout_constraintTop_toTopOf="@+id/button2"
@@ -128,22 +129,22 @@
         android:visibility="visible"/>
 
 
-
     <Button
         android:id="@+id/button3"
+        style="@android:style/Widget.Button.Inset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:enabled="false"
+        android:onClick="button3"
         android:text="Рейс самолета"
-        android:textSize="20sp"
         android:textAllCaps="false"
+        android:textSize="20sp"
+        android:textColor="#201F1F"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2"
-        android:enabled="false"
-        android:visibility="visible"
-        android:onClick="button3"/>
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
 
     <TextView
         android:id="@+id/Right3"
@@ -183,7 +184,7 @@
         android:layout_marginLeft="24dp"
         android:text="!"
         android:textSize="30sp"
-        android:textColor="#FB3D01"
+        android:textColor="#BA7004"
         app:layout_constraintBottom_toBottomOf="@+id/button3"
         app:layout_constraintStart_toEndOf="@+id/button3"
         app:layout_constraintTop_toTopOf="@+id/button3"
@@ -192,19 +193,20 @@
 
     <Button
         android:id="@+id/button4"
+        style="@android:style/Widget.Button.Inset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:enabled="false"
+        android:onClick="button4"
         android:text="Дата, время"
-        android:textSize="20sp"
         android:textAllCaps="false"
+        android:textSize="20sp"
+        android:textColor="#201F1F"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3"
-        android:enabled="false"
-        android:visibility="visible"
-        android:onClick="button4"/>
+        app:layout_constraintTop_toBottomOf="@+id/button3" />
 
     <TextView
         android:id="@+id/Right4"
@@ -244,7 +246,7 @@
         android:layout_marginLeft="24dp"
         android:text="!"
         android:textSize="30sp"
-        android:textColor="#FB3D01"
+        android:textColor="#BA7004"
         app:layout_constraintBottom_toBottomOf="@+id/button4"
         app:layout_constraintStart_toEndOf="@+id/button4"
         app:layout_constraintTop_toTopOf="@+id/button4"
@@ -258,12 +260,11 @@
         android:layout_marginTop="15dp"
         android:text="Заявка готова"
         android:textSize="25sp"
+        android:textColor="#201F1F"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button4"
-        android:enabled="false"
-        android:visibility="visible"/>
+        app:layout_constraintTop_toBottomOf="@+id/button4"/>
 
     <TextView
         android:id="@+id/Right5"
@@ -297,15 +298,17 @@
 
     <Button
         android:id="@+id/button5"
-        android:layout_width="wrap_content"
+        style="@android:style/Widget.Button.Inset"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:onClick="button5"
+        android:textSize="15sp"
         android:text="Изменить условия заказа"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.47"
-        app:layout_constraintStart_toStartOf="parent"
-        android:onClick="button5"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
         android:id="@+id/progressBar"

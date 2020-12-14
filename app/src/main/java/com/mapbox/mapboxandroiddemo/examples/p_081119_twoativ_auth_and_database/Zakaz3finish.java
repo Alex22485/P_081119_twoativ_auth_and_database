@@ -58,12 +58,13 @@ public class Zakaz3finish extends AppCompatActivity {
     // Сообщение кнопки времени точки сбора (Присваивается в зависимости от типап Маршрута Чартер, В Аэропорт Из  Аэропорта)
     String stringExplanation="";
     // пояснение при Чартерных рейсах из Играки
-    String forIgarkaCharter="Пожалуйста, вылетая из Игарки, сообщите водителю об этом, иначе он приедет не вовремя";
+    String forIgarkaCharter="Пожалуйста, вылетая из Игарки, сообщите водителю об этом, иначе он не узнает время вашего прилета.";
     // пояснение при рейсах В Аэропорт
-    String inAirport="Время рассчитано до вашего прибытия к началу регистрации на рейс (за 2ч.до вылета), с учетом времени дороги";
+    String inAirport="Время рассчитано к началу регистрации на рейс (за 2часа до вылета) и с учетом дороги до Аэропорта.";
     // пояснение при рейсах из Аэропорта
-    String fromAirport="В "+time+" водитель будет ждать вас в Аэропорту. Пожалуйста, перед вылетом в Красноярск сообщите ему об этом";
-
+    String fromAirport="Водитель будет ждать вас в Аэропорту. Пожалуйста, перед вылетом в Красноярск сообщите ему об этом.";
+    // сообщение при нажатии на кнопку изменить заказ
+    String textMassageChaingeOder="Данные заказа будут стёрты, продолжить? ";
 
     // кнопки подробней, Зарегестрировать заявку, изменить условия заявки, детали заказа
     Button BtnRefTime,btnOder,button9,detailsOder;
@@ -280,7 +281,7 @@ public class Zakaz3finish extends AppCompatActivity {
                 // кнопка время сбора
                 BtnRefTime.setText(timeOfPoint+" подробней");
                 // кнопка время сбора (Сообщение ПОЯСНЕНИЕ)
-                stringExplanation=fromAirport;
+                stringExplanation="В "+time+" "+fromAirport;
                 // стоимость поездки
                 text6.setText(fare);
                 // самолет
@@ -531,6 +532,11 @@ public class Zakaz3finish extends AppCompatActivity {
             Log.d(TAG, "скрыть: "+detailsOder.getText().toString());
         }
     }
+    // кнопка изменить условия заказа
+    public void  button9(View view){
+        //Alert вы действительно хотите изменить уловия заявки
+        AlertChangeOder();
+    }
 
 //ALERT DIALOGS
     // ошибка загрузки данных приложение будет перезапущено (по идее не должно никогда появиться но на всякий случай оставил)
@@ -639,11 +645,31 @@ public class Zakaz3finish extends AppCompatActivity {
         mAlertDialog.setTitle("Проверьте настройки интернета");
         mAlertDialog.setCancelable(false);
         mAlertDialog
-                .setMessage("Приложение будет перезапущено")
+                .setMessage("Приложение будет перезапущено.")
                 .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // перезапуск приложения
                         reStartApp();
+                    }
+                });
+        mAlertDialog.create();
+        mAlertDialog.show();
+    }
+    //Alert вы действительно хотите изменить уловия заявки
+    public void AlertChangeOder(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz3finish.this);
+        mAlertDialog.setMessage(textMassageChaingeOder);
+        mAlertDialog.setCancelable(false);
+        mAlertDialog
+                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // переход на лист Zakaz1 для изменения заявки
+                        onBackList();
+                    }
+                });
+        mAlertDialog
+                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
                     }
                 });
         mAlertDialog.create();
@@ -694,7 +720,8 @@ public class Zakaz3finish extends AppCompatActivity {
             showAlertDialog7(); // ПРОВЕРИТЬ ОБЯЗАТЕЛЬНО
         }
     }
-    // Переход на лист оформления заявки т.к. выбранный пункт сбора уже сформирован
+    // Переход на лист оформления заявки т.к. выбранный пункт сбора уже сформирован либо
+    // для изменения заявки (по кнопке изменить Условия заказа)
     public void onBackList() {
         //Переход на лист оформления заявки
         Intent Zakaz3FinishToZakaz1 = new Intent( this,Zakaz1.class );

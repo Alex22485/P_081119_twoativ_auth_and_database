@@ -14,11 +14,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Zakaz3finish"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".Zakaz1"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".Zakaz2"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".Zakaz3finish"
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name=".FeedBack1" />
         <activity android:name=".Proba" />
-        <activity android:name=".Zakaz2" />
-        <activity android:name=".Zakaz1" />
         <activity android:name=".ViewMapLesosibirsk" />
         <activity android:name=".ViewMapKansk" />
         <activity android:name=".ViewMapAchinsk" />
@@ -69,7 +82,6 @@
         <activity android:name=".Main4Activity" />
         <activity android:name=".Main3Activity" />
         <activity android:name=".Main2Activity" />
-        <activity android:name=".MainActivity" />
         <activity android:name=".ViewDatabase" />
     </application>
 

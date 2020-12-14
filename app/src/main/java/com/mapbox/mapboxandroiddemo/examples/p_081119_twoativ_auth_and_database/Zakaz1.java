@@ -21,13 +21,11 @@ import java.util.Calendar;
 public class Zakaz1 extends AppCompatActivity {
 
     // Первый лист заказа
-    // 1.есть таймер сворачивания для перехода в Zakaz2 выбор маршрута
-    // 2.есть таймер сворачивания для перехода в Zakaz3Finish итоговый лист заказа
-    // 3.есть время сессии, запускается при переходе в Zakaz2 выбор маршрута
-    // 4.есть время сессии, запускается при переходе в Zakaz3Finish итоговый лист заказа
-    // 5.метод DateTimePointOfMap вычисляет время точки сбора и дату заказа для маршрутов До АЭропорта для разных городов
-    // (время дороги и время до начала регистрации забивается в timeRoad и timeRegistration ) если время сбора также пересчитывается на предыдущие сутки месяц
-    // и год при необходимости
+    // 1.есть ловушка AlertZakaz2 неперехода на Zakaz2 (лист выбора маршрута) при несварачивании приложения
+    // 2. есть ловушка AlertZakaz3finish неперехода на Zakaz3Finish (итоговый лист заказа)
+    // 3.метод DateTimePointOfMap вычисляет время точки сбора и дату заказа для маршрутов До АЭропорта для разных городов
+    // (время дороги и время до начала регистрации забивается в timeRoad и timeRegistration )
+    // при необходимости(если заказ выпадает на первый день месяца и года) время сбора и дата заявки пересчитывается на предыдущие сутки месяц и год
 
     private static final String TAG ="Zakaz1" ;
 
@@ -62,7 +60,7 @@ public class Zakaz1 extends AppCompatActivity {
     // для Чартерных рейсов из Игарки
     String knowOrNotTime="Вы знаете время прилета в Красноярск?";
     String [] knowOrNotTimeChoise= {"1. Да","2. Нет, я лечу на чартере"};
-    String knowOrNotTimeRef;
+    String knowOrNotTimeRef="";
     String choiseNumberCharter="Ваш порядковый номер самолета чартера из Игарки";
     String [] numberCharter = {"1 рейс","2 рейс","3 рейс"};
     String numberCharterRef;
@@ -86,9 +84,9 @@ public class Zakaz1 extends AppCompatActivity {
     // Выбранная стоимость проезда
     String fare="";
 
-    // ДЛЯ ВЫБОРА ДАТЫ И ВРЕМЕНИ ТОЧКИ СБОРА МАРШРУТОВ в АЭРОПОРТ
+// ДЛЯ ВЫБОРА ДАТЫ И ВРЕМЕНИ ТОЧКИ СБОРА МАРШРУТОВ в АЭРОПОРТ
 
-    // время дороги до аэропорта ( часы соответствуют массиву refOne)
+    // время дороги до аэропорта ( часы соответствуют массиву refOne выше по тексту)
     //c Красноярска 60 минут
     //c Сосновоборска 60 минут
     //c Ачинска 120 минут (165 км)
@@ -126,7 +124,6 @@ public class Zakaz1 extends AppCompatActivity {
     String titleTimeInAirport="Время прилета в Красноярск";
     String ReftitleTime;
 
-
     // показ календаря
     Calendar calendar;
     DatePickerDialog datePickerDialog;
@@ -153,21 +150,10 @@ public class Zakaz1 extends AppCompatActivity {
     int hourOfDay;
     int minute;
 
-
-
-    // время выдержки времени для исключения неперехода на др активити при сварачивании,
-    // есть порог 5 секунд меньше которых переход на др активити не сработает при сварачивании)
-    // поэтому при сварачивании, в OnStop увеличиваем таймер еще на 5 секунд
-    Integer b,c,d,e;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zakaz1);
-        // для таймера сварачивания
-        // взято призвольное мальнькое время
-        c=10;
-        e=10;
 
         button1=findViewById(R.id.button1);
         button2=findViewById(R.id.button2);
@@ -216,22 +202,18 @@ public class Zakaz1 extends AppCompatActivity {
         Intent Zakaz3FinishToZakaz1=getIntent();
         regFromZaka3finish=""+Zakaz3FinishToZakaz1.getStringExtra("regFromMain3");
         Log.d(TAG, "regFromMain3:"+regFromZaka3finish);
-
-        //если был то присваеваем phoneNew (лист с Заставкой)
+        //если был то присваиваем phoneNew (лист с Заставкой)
         if (!regFromZaka3finish.equals("null")){
             phoneNew=regFromZaka3finish;
             Log.d(TAG, "phoneNewAfterSTOPODER:"+phoneNew);
         }
-
 
         // Экспорт данных с листа Zakaz2 Проверка был ли переход сюда с листа Zakaz2
         Intent backZakaz2ToZakaz1=getIntent();
         RefMap=""+backZakaz2ToZakaz1.getStringExtra("RefMap");
         RefPoint=""+backZakaz2ToZakaz1.getStringExtra("RefPoint");
         RefBackFromZakaz2=""+backZakaz2ToZakaz1.getStringExtra("RefBackFromZakaz2");
-
-
-        // переход был нажатием кнопки НАЗАД
+        // Если переход был нажатием кнопки НАЗАД Zakaz2
         if(RefBackFromZakaz2.equals("backNoFromZakaz2")){
             // экспорт phoneNew из Zakaz2
             phoneNew=""+backZakaz2ToZakaz1.getStringExtra("phoneNew");
@@ -260,8 +242,7 @@ public class Zakaz1 extends AppCompatActivity {
               }
               },700);
         }
-
-        // переход был c выбором маршрута
+        // переход из Zakaz2 был c выбором маршрута
         if (RefBackFromZakaz2.equals("backYesFromZakaz2")){
             // экспорт phoneNew из Zakaz2
             phoneNew=""+backZakaz2ToZakaz1.getStringExtra("phoneNew");
@@ -272,7 +253,6 @@ public class Zakaz1 extends AppCompatActivity {
             Nline3();
             Nline4();
             Nline5();
-
 
             Handler handler0 = new Handler();
             handler0.postDelayed(new Runnable() {
@@ -288,17 +268,15 @@ public class Zakaz1 extends AppCompatActivity {
             setPlain.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    //Выбор рейс самолета (+ выбор заголовка для Alert )
+                    //Выбор рейса самолета (+ выбор заголовка для Alert )
                     setPlain();
                     // показать кнопку изменить условия заказа
                     button5.setVisibility(View.VISIBLE);
                 }
             },700);
         }
-
-        // переход  Не был
+        // переход из Zakaz2  Не был. START при первом открытии Activity
         if (RefBackFromZakaz2.equals("null")){
-
             Nline1();
             // динамик дизайн при первом открытии Activity
             dinamicView();
@@ -308,219 +286,11 @@ public class Zakaz1 extends AppCompatActivity {
     protected void onStop (){
         super.onStop();
         Log.d(TAG, "onStop");
-        // таймер-сворачивания для перехода в Zakaz2
-        c=5000;
-        // таймер-сворачивания для перехода в Zakaz3Finish
-        e=5000;
-        Log.d(TAG, "onStop c="+c);
-
     }
 
-    // видимости линии 1-5
-    public void Rline1(){
-        button1.setVisibility(View.VISIBLE);
-        button1.setEnabled(false);
-        Right1.setVisibility(View.VISIBLE);
-        No1.setVisibility(View.INVISIBLE);
-        Exclamation1.setVisibility(View.INVISIBLE);
-    }
-    public void Nline1(){
-        button1.setVisibility(View.VISIBLE);
-        button1.setEnabled(false);
-        Right1.setVisibility(View.INVISIBLE);
-        No1.setVisibility(View.VISIBLE);
-        Exclamation1.setVisibility(View.INVISIBLE);
-    }
-    public void Exline1(){
-        button1.setVisibility(View.VISIBLE);
-        button1.setEnabled(true);
-        Right1.setVisibility(View.INVISIBLE);
-        No1.setVisibility(View.INVISIBLE);
-        Exclamation1.setVisibility(View.VISIBLE);
-    }
-    public void Rline2(){
-        button2.setVisibility(View.VISIBLE);
-        button2.setEnabled(false);
-        Right2.setVisibility(View.VISIBLE);
-        No2.setVisibility(View.INVISIBLE);
-        Exclamation2.setVisibility(View.INVISIBLE);
-    }
-    public void Nline2(){
-        button2.setVisibility(View.VISIBLE);
-        Right2.setVisibility(View.INVISIBLE);
-        No2.setVisibility(View.VISIBLE);
-        Exclamation2.setVisibility(View.INVISIBLE);
-    }
-    public void Exline2(){
-        button2.setVisibility(View.VISIBLE);
-        Right2.setVisibility(View.INVISIBLE);
-        No2.setVisibility(View.INVISIBLE);
-        Exclamation2.setVisibility(View.VISIBLE);
-    }
-    public void Rline3(){
-        button3.setVisibility(View.VISIBLE);
-        button3.setEnabled(false);
-        Right3.setVisibility(View.VISIBLE);
-        No3.setVisibility(View.INVISIBLE);
-        Exclamation3.setVisibility(View.INVISIBLE);
-    }
-    public void Nline3(){
-        button3.setVisibility(View.VISIBLE);
-        button3.setEnabled(false);
-        Right3.setVisibility(View.INVISIBLE);
-        No3.setVisibility(View.VISIBLE);
-        Exclamation3.setVisibility(View.INVISIBLE);
-    }
-    public void Exline3(){
-        button3.setVisibility(View.VISIBLE);
-        button3.setEnabled(true);
-        Right3.setVisibility(View.INVISIBLE);
-        No3.setVisibility(View.INVISIBLE);
-        Exclamation3.setVisibility(View.VISIBLE);
-    }
-    public void Rline4(){
-        button4.setVisibility(View.VISIBLE);
-        button4.setEnabled(false);
-        Right4.setVisibility(View.VISIBLE);
-        No4.setVisibility(View.INVISIBLE);
-        Exclamation4.setVisibility(View.INVISIBLE);
-    }
-    public void Nline4(){
-        button4.setVisibility(View.VISIBLE);
-        button4.setEnabled(false);
-        Right4.setVisibility(View.INVISIBLE);
-        No4.setVisibility(View.VISIBLE);
-        Exclamation4.setVisibility(View.INVISIBLE);
-    }
-    public void Exline4(){
-        button4.setVisibility(View.VISIBLE);
-        button4.setEnabled(true);
-        Right4.setVisibility(View.INVISIBLE);
-        No4.setVisibility(View.INVISIBLE);
-        Exclamation4.setVisibility(View.VISIBLE);
-    }
-    public void Rline5(){
-        OderRight.setVisibility(View.VISIBLE);
-        OderRight.setEnabled(true);
-        Right5.setVisibility(View.VISIBLE);
-        No5.setVisibility(View.INVISIBLE);
-    }
-    public void Nline5(){
-        OderRight.setVisibility(View.VISIBLE);
-        Right5.setVisibility(View.INVISIBLE);
-        No5.setVisibility(View.VISIBLE);
-    }
-    public void AllLineNoShow(){
-        button1.setVisibility(View.INVISIBLE);
-        button2.setVisibility(View.INVISIBLE);
-        button3.setVisibility(View.INVISIBLE);
-        button4.setVisibility(View.INVISIBLE);
-        Right1.setVisibility(View.INVISIBLE);
-        Right2.setVisibility(View.INVISIBLE);
-        Right3.setVisibility(View.INVISIBLE);
-        Right4.setVisibility(View.INVISIBLE);
-        Right5.setVisibility(View.INVISIBLE);
-        No2.setVisibility(View.INVISIBLE);
-        No3.setVisibility(View.INVISIBLE);
-        No4.setVisibility(View.INVISIBLE);
-        No5.setVisibility(View.INVISIBLE);
-        Exclamation1.setVisibility(View.INVISIBLE);
-        Exclamation2.setVisibility(View.INVISIBLE);
-        Exclamation3.setVisibility(View.INVISIBLE);
-        Exclamation4.setVisibility(View.INVISIBLE);
-        OderRight.setVisibility(View.INVISIBLE);
-    }
-
-    // кнопка button1 выбор города
-    public void button1(View view){
-        AlertChoiceCity();
-    }
-    // кнопка button3 рейс самолета
-    public void button3(View view){
-        showAlert();
-    }
-    // кнопка button4 дата время
-    public void button4(View view){
-        setData();
-    }
-    // кнопка button5 изменить условия заказа
-    public void button5(View view){
-        changeMyOder();
-    }
-    //изменить условия заказа
-    public void changeMyOder(){
-
-        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
-        mAlertDialog.setTitle("Настройки вашего заказа будут стерты, продолжить?");
-        mAlertDialog.setCancelable(false);
-        mAlertDialog
-                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // скрыть кнопку изменить условия заказа
-                        button5.setVisibility(View.INVISIBLE);
-                        AllLineNoShow();
-
-                        Handler handler1 = new Handler();
-                        handler1.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                Nline1();
-                                dinamicView();
-                            }
-                        },300);
-
-                    }
-                });
-        mAlertDialog
-                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                });
-        mAlertDialog.create();
-        mAlertDialog.show();
-    }
-
-    // динамик дизайн при входе в Activity
-    public void dinamicView(){
-
-        Handler handler1 = new Handler();
-        handler1.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Nline2();
-            }
-        },300);
-
-        Handler handler2 = new Handler();
-        handler2.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Nline3();
-            }
-        },600);
-
-        Handler handler3 = new Handler();
-        handler3.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Nline4();
-            }
-        },900);
-
-        Handler handler4 = new Handler();
-        handler4.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Nline5();
-                //выбор города
-                AlertChoiceCity();
-            }
-        },1200);
-    }
+ // ALERT DIALOGS
     // Выбор города
     public void AlertChoiceCity(){
-
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
         mAlertDialog.setTitle("Выберите город");
         mAlertDialog.setCancelable(false);
@@ -535,7 +305,7 @@ public class Zakaz1 extends AppCompatActivity {
                             FeedBack1();
                             return;
                         }
-
+                        // недоступность кнопки выбора города
                         button1.setEnabled(false);
 
                         // Задержка второго Диалога
@@ -552,7 +322,6 @@ public class Zakaz1 extends AppCompatActivity {
         mAlertDialog
                 .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
                         Handler handlerNeg1 = new Handler();
                         handlerNeg1.postDelayed(new Runnable() {
                             @Override
@@ -567,7 +336,7 @@ public class Zakaz1 extends AppCompatActivity {
     }
     // Выбор в/из города
     public void AlertFromInCity(){
-        listCityFromIn= new String[]{refCityTaxi + "->Аэропорт","Аэропорт->"+refCityTaxi};
+        listCityFromIn= new String[]{refCityTaxi + "->Аэропорт", "Аэропорт->" + refCityTaxi};
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
         mAlertDialog.setTitle("Куда поедем?");
         mAlertDialog.setCancelable(false);
@@ -576,10 +345,10 @@ public class Zakaz1 extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // обнуляем число для таймера сварачивания
-                        c=10;
+                        //c=10;
                         refFromInCity=listCityFromIn[which];
                         button1.setEnabled(false);
-                        // задержка для дизайна
+                        // задержка для дизайна+переход на Zakaz2
                         timeOut1();
                     }
                 });
@@ -600,75 +369,6 @@ public class Zakaz1 extends AppCompatActivity {
         mAlertDialog.create();
         mAlertDialog.show();
     }
-    // задержка для дизайна+ переход на  Zakaz1 выбор маршрута
-    public void timeOut1(){
-        Handler handler5 = new Handler();
-        handler5.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Rline1();
-            }
-        },500);
-
-        Handler handler6 = new Handler();
-        handler6.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //таймер сварачивания для перехода на Zakaz2 выбор маршрута
-                timePlus();
-                // показать видимость прогресс бара
-                progressBar.setVisibility(View.VISIBLE);
-                // запуск времени сессии на случай если приложение не перейдет на др. активити Zakaz1 при сворачивании приложения
-                Log.d(TAG, "Time Session Start");
-                Handler timeSession = new Handler();
-                timeSession.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        // время сессии истекло
-                        timeSessionEnd();
-                        Log.d(TAG, "время сессии 1 истекло");
-                    }
-                },20000);
-            }
-        },600);
-    }
-    public void Zakaz1ToZakaz2(){
-
-        Intent Zakaz1ToZakaz2=new Intent(this,Zakaz2.class);
-        Zakaz1ToZakaz2.putExtra("refFromInCity",refFromInCity);
-        //отправляем phoneNew в Zakaz2
-        Zakaz1ToZakaz2.putExtra("phoneNew",phoneNew);
-        Log.d(TAG, "Cтарт переход в Zakaz2 phoneNew:"+phoneNew);
-
-        startActivity(Zakaz1ToZakaz2);
-    }
-
-    //Выбор заголовка для Alert (рейс самолета)
-    public void setPlain(){
-        int x=refOne.length;
-        int i;
-         for ( i=0; i<x; i++){
-             if (RefMap.equals(refOne[i])){
-                 RefAlertTitle=AlertFrom;
-                 ReftitleCalendar=titleCalendarFromAirport;
-                 ReftitleTime=titleTimeFromAirport;
-                 // Alert рейс самолета
-                 showAlert();
-             }
-         }
-        int y=refTwo.length;
-        int b;
-        for ( b=0; b<y; b++){
-            if (RefMap.equals(refTwo[b])){
-                RefAlertTitle=AlertIn;
-                ReftitleCalendar=titleCalendarInAirport;
-                ReftitleTime=titleTimeInAirport;
-                // Alert рейс самолета
-                showAlert();
-            }
-        }
-    }
-
     // Alert рейс самолета
     public void showAlert(){
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
@@ -692,8 +392,8 @@ public class Zakaz1 extends AppCompatActivity {
                         Date.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                // выбрать дату
-                                setData();
+                                // проверка самолет из Игарки?
+                                CheskPlainFromIgarka();
                                 // показать кнопку изменить условия заказа
                                 button5.setVisibility(View.VISIBLE);
                             }
@@ -715,16 +415,8 @@ public class Zakaz1 extends AppCompatActivity {
         mAlertDialog.create();
         mAlertDialog.show();
     }
-    // вызов календаря
-    public void setData(){
-        Handler ha = new Handler();
-        ha.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Exline4();
-            }
-        },300);
-
+    // Alert выбор даты
+    public void AlertCalendar(){
         calendar= Calendar.getInstance();
         year=calendar.get(Calendar.YEAR);
         month=calendar.get(Calendar.MONTH);
@@ -778,31 +470,10 @@ public class Zakaz1 extends AppCompatActivity {
                         },300);
                     }
                 },year,month,dayOfmonth);
+        // Индивидуальный заголовок в календаре
         datePickerDialog.setTitle(ReftitleCalendar);
         datePickerDialog.setCancelable(false);
         datePickerDialog.show();
-        }
-    // вызов времени
-    public void choiseSetTime(){
-        Handler ha = new Handler();
-        ha.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Exline4();
-            }
-        },300);
-
-        // если человек летит из Игарки показать вопрос знает ли он время прибытия самолета или у него чартер
-        if(RefplaneCity.equals("Игарка")&& RefAlertTitle.equals(AlertIn)){
-            // вызов Alert знаю/ не знаю время прилета
-            showKnowTimeorNot();
-        }
-
-        // в других случаях выбрать время прилета
-        else {
-            //выбрать время прилета
-            showTimeCalendar();
-        }
     }
     //выбрать время прилета
     public void showTimeCalendar(){
@@ -833,10 +504,9 @@ public class Zakaz1 extends AppCompatActivity {
                             minuteRef=""+minute;
                         }
                         // итоговое время вылета в виде слова
-                            time=hourRef+":"+minuteRef;
-                            button4.setEnabled(false);
-                            button5.setVisibility(View.INVISIBLE);
-
+                        time=hourRef+":"+minuteRef;
+                        button4.setEnabled(false);
+                        button5.setVisibility(View.INVISIBLE);
 
                         // приравниваем время+даты точки сбора с временем вылета
                         // Если маршруты ИЗ АЭРОПОРТА то это время поменяется в методе DateTimePointOfMap();
@@ -852,6 +522,7 @@ public class Zakaz1 extends AppCompatActivity {
                     }
                 },hourOfDay,minute,true);
         timePickerDialog.setTitle(ReftitleTime);
+        timePickerDialog.setCancelable(false);
         timePickerDialog.show();
     }
     // Вопрос знаешь ли время прибытия самолета или у тебя Чартер (Для Игарки)
@@ -867,9 +538,10 @@ public class Zakaz1 extends AppCompatActivity {
 
                         // если знаю время прилета,
                         if (knowOrNotTimeRef.equals("1. Да")){
-                            //выбрать время прилета
-                            showTimeCalendar();
+                            //выбрать дату прилета из Игарки
+                            AlertCalendar();
                         }
+                        // если НЕ знаю время прилета,
                         else {
                             // выбрать номер чартера
                             choisNumberCharter();
@@ -891,7 +563,7 @@ public class Zakaz1 extends AppCompatActivity {
         mAlertDialog.create();
         mAlertDialog.show();
     }
-    // Выбор номра чартера для Игарки
+    // Выбор номера чартера ИЗ Игарки
     public void choisNumberCharter(){
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
         mAlertDialog.setTitle(choiseNumberCharter);
@@ -906,12 +578,11 @@ public class Zakaz1 extends AppCompatActivity {
                         han.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Rline4();
-                                finishOder();
+                                //выбора даты вылета из Игарки ТОЛЬКО ДЛЯ ЧАРТЕРА
+                                AlertDataFromCharter();
+                                button5.setVisibility(View.VISIBLE);
                             }
                         },300);
-
-
                     }
                 });
         mAlertDialog
@@ -931,87 +602,138 @@ public class Zakaz1 extends AppCompatActivity {
         mAlertDialog.create();
         mAlertDialog.show();
     }
+    // Выбор даты чартера ИЗ Игарки
+    public void AlertDataFromCharter(){
+        Exline4();
+        calendar= Calendar.getInstance();
+        year=calendar.get(Calendar.YEAR);
+        month=calendar.get(Calendar.MONTH);
+        dayOfmonth=calendar.get(Calendar.DAY_OF_MONTH);
 
-    // Заказ готов
-    public void finishOder(){
-        // запуск времени сессии на случай если приложение не перейдет на др. активити Zakaz3Finish при сворачивании приложения
-        Handler timeSession = new Handler();
-        timeSession.postDelayed(new Runnable() {
+        //выбирая разные параметры style календарь отображается по разному
+        //datePickerDialog=new DatePickerDialog(this,android.R.style.Theme_Light_NoTitleBar,
+        // .....Zakaz1.this,AlertDialog.BUTTON_POSITIVE дает написать заголовок в календаре! УРА
+
+        datePickerDialog=new DatePickerDialog(Zakaz1.this,AlertDialog.BUTTON_POSITIVE,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int day) {
+                        // данные для выбора даты точки сбора (только для маршрутов в АЭРОПОРТ)
+                        yearReferens=year;
+                        mounthReferens=month+1;
+                        dayReferens=day;
+                        // преобразования дня в два символа (Н-р 6->06)
+                        if (day<10){
+                            dayRef="0"+day;
+                        }
+                        else {
+                            dayRef=""+day;
+                        }
+                        // преобразования месяца в два символа (Н-р 3->03)
+                        if (month+1<10){
+                            // +1 т.к. почему-то календарь заведомо занижает выбранный месяц на один
+                            monthRef="0"+(month + 1);
+                            Log.d(TAG, "ПРОВЕРКА1:"+monthRef);
+                        }
+                        else {
+                            monthRef=""+(month + 1);
+                            Log.d(TAG, "ПРОВЕРКА2:"+monthRef);
+                        }
+                        // итоговая дата вылета-прилета в виде слова
+                        Calend=dayRef + " " + monthRef + " " + year;
+                        // недоступность кнопки дата,время
+                        button4.setEnabled(false);
+                        // скрыть кнопку изменить условия заказа
+                        button5.setVisibility(View.INVISIBLE);
+
+                        // Расчет Cтоимости проезда
+                        Choisfare();
+                    }
+                },year,month,dayOfmonth);
+        // Индивидуальный заголовок в календаре Только для Чартера ИЗ Игарки
+        datePickerDialog.setTitle("Дата вылета из Игарки");
+        datePickerDialog.setCancelable(false);
+        datePickerDialog.show();
+    }
+    // Alert ловушка неперехода на Zakaz2
+    public void AlertZakaz2(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
+        mAlertDialog.setMessage("Нажмите ОК, для продолжения.");
+        mAlertDialog.setCancelable(false);
+        mAlertDialog
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Переход в Zaka2 для выбора маршрута
+                        Zakaz1ToZakaz2();
+                    }
+                });
+        mAlertDialog.create();
+        mAlertDialog.show();
+    }
+    // Alert ловушка неперехода на Zakaz3finish
+    public void AlertZakaz3finish(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
+        mAlertDialog.setMessage("Нажмите ОК, для продолжения.");
+        mAlertDialog.setCancelable(false);
+        mAlertDialog
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Переход в Zaka3finish на итоговый лист заказа
+                        Zakaz3finish();
+                    }
+                });
+        mAlertDialog.create();
+        mAlertDialog.show();
+    }
+
+//МЕТОДЫ
+    //Выбор заголовков для Alert dialogs (1.В-из города, 2. В Календаре, 3. При выборе времени)
+    public void setPlain(){
+    int x=refOne.length;
+    int i;
+    for ( i=0; i<x; i++){
+        if (RefMap.equals(refOne[i])){
+            RefAlertTitle=AlertFrom;
+            ReftitleCalendar=titleCalendarFromAirport;
+            ReftitleTime=titleTimeFromAirport;
+            // Alert рейс самолета
+            showAlert();
+        }
+    }
+    int y=refTwo.length;
+    int b;
+    for ( b=0; b<y; b++){
+        if (RefMap.equals(refTwo[b])){
+            RefAlertTitle=AlertIn;
+            ReftitleCalendar=titleCalendarInAirport;
+            ReftitleTime=titleTimeInAirport;
+            // Alert рейс самолета
+            showAlert();
+        }
+    }
+}
+    // проверка самолет из Игарки?.
+    public void CheskPlainFromIgarka(){
+        Handler ha = new Handler();
+        ha.postDelayed(new Runnable() {
             @Override
             public void run() {
-                // время сессии истекло
-                timeSessionEnd();
-                Log.d(TAG, "время сессии 2 истекло");
-            }
-        },20000);
-        Handler handler5 = new Handler();
-        handler5.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Rline5();
-                //таймер сварачивания  при переходе на Zakaz3finish()
-                timePlus2();
-                // показать видимость прогресс бара
-                progressBar.setVisibility(View.VISIBLE);
+                Exline4();
             }
         },300);
+
+        // если из Игарки то сначала спрашиваем Чартер или нет
+        if(RefplaneCity.equals("Игарка")&& RefAlertTitle.equals(AlertIn)){
+            // вызов Alert знаю/ не знаю время прилета
+            showKnowTimeorNot();
+        }
+        //если маршрут не из Игарки запускантся выбор даты
+        else{
+            // выбор даты Вылета-Прилета
+            AlertCalendar();
+        }
     }
-
-    public void Zakaz3finish() {
-
-        // если рейс самолета чартер из Игарки то присваиваем time номер рейса чартера 1,2,3
-        if (haveACharter.equals("haveACharter")){
-            time=numberCharterRef;
-        }
-
-        // присваиваем полное название рейса самолета Н-р Игарка красноярск или Красноярск-Новосибирск
-        if (RefAlertTitle.equals(AlertIn)){
-            RefplaneCity=RefplaneCity+"-"+"Красноярск";
-        }
-        if (RefAlertTitle.equals(AlertFrom)){
-            RefplaneCity="Красноярск"+"-"+RefplaneCity;
-        }
-        // передаем данные для регистрации заявки
-        Intent Zakaz1ToZakaz3finish = new Intent (this,Zakaz3finish.class);
-        // secretNumber
-        Zakaz1ToZakaz3finish.putExtra("phoneNew", phoneNew);
-        // дата полета
-        Zakaz1ToZakaz3finish.putExtra("Calend", Calend);
-        // дата точки сбора (для рейсов из Аэропорта)
-        Zakaz1ToZakaz3finish.putExtra("dateOfPoint", dateOfPoint);
-        // рейс самолета
-        Zakaz1ToZakaz3finish.putExtra("RefplaneCity", RefplaneCity);
-        // время вылета/прилета/номер рейса для чартера
-        Zakaz1ToZakaz3finish.putExtra("time", time);
-        // маршрут
-        Zakaz1ToZakaz3finish.putExtra("RefMap", RefMap);
-        // точка сбора
-        Zakaz1ToZakaz3finish.putExtra("RefPoint", RefPoint);
-        // Время точки сбора (для рейсов из Аэропорта)
-        Zakaz1ToZakaz3finish.putExtra("timeOfPoint", timeOfPoint);
-        // Время точки сбора (для рейсов из Аэропорта)
-        Zakaz1ToZakaz3finish.putExtra("timeOfPoint", timeOfPoint);
-        // реф слово для экспорта в Zaka3Finish (чтобы определить какой маршрут "в Аэропорт" или "из Аэропорта")
-        Zakaz1ToZakaz3finish.putExtra("RefInFromAirport", RefInFromAirport);
-        // стоимость проезда
-        Zakaz1ToZakaz3finish.putExtra("fare", fare);
-
-
-        startActivity(Zakaz1ToZakaz3finish);
-
-        Log.d(TAG, "итог телефон:"+phoneNew);
-        Log.d(TAG, "итог дата вылета-прилета:"+Calend);
-        Log.d(TAG, "итог дата точки сбора:"+dateOfPoint);
-        Log.d(TAG, "итог время вылета-прилета:"+time);
-        Log.d(TAG, "итог время точки сбора:"+timeOfPoint);
-        Log.d(TAG, "итог самолет:"+RefplaneCity);
-        Log.d(TAG, "итог маршрут:"+RefMap);
-        Log.d(TAG, "итог точка сбора:"+RefPoint);
-        Log.d(TAG, "итог тип маршрута В(из) Аэропорта:"+RefInFromAirport);
-        Log.d(TAG, "итог стоимость проезда:"+fare);
-    }
-
-    // метод вычисления времени и даты точки сбора только для маршрутов в АЭРОПОРТ
+    // Метод вычисления время и дата точки сбора только для маршрутов в АЭРОПОРТ
     public void DateTimePointOfMap(){
         //ОПРЕДЕЛЯЕМ выбранный рейс в АЭРОПОРТ или из АЭРОПОРТА
         int i=refOne.length;
@@ -1019,12 +741,10 @@ public class Zakaz1 extends AppCompatActivity {
         for ( x=0; x<i; x++){
             // КОД работает, только если выбранный рейс в АЭРОПОРТ ( для расчета ВРЕМЕНИ и ДАТЫ ТОЧКИ СБОРА)
             if (RefMap.equals(refOne[x])){
-
                 // реф слово для экспорта в Zaka3Finish (чтобы определить какой маршрут в Аэропорт или из Аэропорта)
                 RefInFromAirport="в Аэропорт";
 
-
-                // ОПРЕДЕЛЕНИЕ ВРЕМЕНИ ТОЧКИ СБОРА
+// ОПРЕДЕЛЕНИЕ ВРЕМЕНИ ТОЧКИ СБОРА
 
                // вычисление времени затрат в минутах
                 int sum=timeRoad[x]+timeRegistration[x];
@@ -1058,7 +778,7 @@ public class Zakaz1 extends AppCompatActivity {
 
                     Log.d(TAG, "ВРЕМЯ ТОЧКИ СБОРА"+timeOfPoint);
 
-                    // ИЗМЕНЕНИЕ ДАТЫ ТОЧКИ СБОРА
+// ИЗМЕНЕНИЕ ДАТЫ ТОЧКИ СБОРА
 
                     // если день вылета равен 1 то день точки сбора принимаем из предыдущего месяца
                     if(dayReferens==1){
@@ -1177,17 +897,13 @@ public class Zakaz1 extends AppCompatActivity {
                     Log.d(TAG, "ВРЕМЯ ТОЧКИ СБОРА в Аэропорт"+timeOfPoint);
 
                     // дата точки сбора ПРИ этом не меняется и равна дате вылета
-
                 }
             }
         }
-
         // определение стоимости проезда
         Choisfare();
-
-
     }
-    // определение стоимости проезда
+    // Cтоимости проезда
     public void Choisfare(){
         //ОПРЕДЕЛЯЕМ выбранный рейс в АЭРОПОРТ или из АЭРОПОРТА
         int i=refOne.length;
@@ -1204,74 +920,346 @@ public class Zakaz1 extends AppCompatActivity {
                 fare=RefFare[x];
             }
         }
-
-
         // переход на лист Zaka3Finish
         // выдержка с запасом чтобы метод успел завершиться
         Handler han = new Handler();
         han.postDelayed(new Runnable() {
             @Override
             public void run() {
+                // Последние присваивания слов для экспорта time-время самолета или номер рейса, RefplaneCity-рейс самолет
+                finishChesk();
                 Rline4();
-                finishOder();
+                Rline5();
             }
         },300);
     }
-    // нет нужного города
-    public void FeedBack1(){
-        Intent FeedBack1= new Intent(this,FeedBack1.class);
-        startActivity(FeedBack1);
+    // Последние присваивания слов для экспорта time-время самолета или номер рейса, RefplaneCity-рейс самолет
+    public void finishChesk(){
+        // если рейс самолета чартер из Игарки то присваиваем time номер рейса чартера 1,2,3
+        if (haveACharter.equals("haveACharter")){
+            time=numberCharterRef;
+        }
+
+        // присваиваем полное название рейса самолета Н-р Игарка красноярск или Красноярск-Новосибирск
+        if (RefAlertTitle.equals(AlertIn)){
+            RefplaneCity=RefplaneCity+"-"+"Красноярск";
+        }
+        if (RefAlertTitle.equals(AlertFrom)){
+            RefplaneCity="Красноярск"+"-"+RefplaneCity;
+        }
+        //переход на итоговый лист регистрации заявки Zakaz3finish()
+        Zakaz3finish();
     }
 
-    // ТАЙМЕРЫ СВАРАЧИВАНИЯ
+// ВИЗУАЛИЗАЦИИ
+    // Дизайн при входе в Activity
+    public void dinamicView(){
 
-    // 1.при переходе на лист Zakaz2
-    public void timePlus(){
-        b=c+10;
-        Log.d(TAG, "timePlus b="+b);
-        Handler handler1 = new Handler();
-        handler1.postDelayed(new Runnable() {
+    Handler handler1 = new Handler();
+    handler1.postDelayed(new Runnable() {
+        @Override
+        public void run() {
+            Nline2();
+        }
+    },300);
+
+    Handler handler2 = new Handler();
+    handler2.postDelayed(new Runnable() {
+        @Override
+        public void run() {
+            Nline3();
+        }
+    },600);
+
+    Handler handler3 = new Handler();
+    handler3.postDelayed(new Runnable() {
+        @Override
+        public void run() {
+            Nline4();
+        }
+    },900);
+
+    Handler handler4 = new Handler();
+    handler4.postDelayed(new Runnable() {
+        @Override
+        public void run() {
+            Nline5();
+            //выбор города
+            AlertChoiceCity();
+        }
+    },1200);
+}
+    // Визуализация при вызове календаря вызов времени
+    public void choiseSetTime(){
+        Handler ha = new Handler();
+        ha.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Exline4();
+            }
+        },300);
+            showTimeCalendar();
+    }
+    // Видимости линии 1-5
+    public void Rline1(){
+        button1.setVisibility(View.VISIBLE);
+        button1.setEnabled(false);
+        Right1.setVisibility(View.VISIBLE);
+        No1.setVisibility(View.INVISIBLE);
+        Exclamation1.setVisibility(View.INVISIBLE);
+    }
+    public void Nline1(){
+        button1.setVisibility(View.VISIBLE);
+        button1.setEnabled(false);
+        Right1.setVisibility(View.INVISIBLE);
+        No1.setVisibility(View.VISIBLE);
+        Exclamation1.setVisibility(View.INVISIBLE);
+    }
+    public void Exline1(){
+        button1.setVisibility(View.VISIBLE);
+        button1.setEnabled(true);
+        Right1.setVisibility(View.INVISIBLE);
+        No1.setVisibility(View.INVISIBLE);
+        Exclamation1.setVisibility(View.VISIBLE);
+    }
+    public void Rline2(){
+        button2.setVisibility(View.VISIBLE);
+        button2.setEnabled(false);
+        Right2.setVisibility(View.VISIBLE);
+        No2.setVisibility(View.INVISIBLE);
+        Exclamation2.setVisibility(View.INVISIBLE);
+    }
+    public void Nline2(){
+        button2.setVisibility(View.VISIBLE);
+        Right2.setVisibility(View.INVISIBLE);
+        No2.setVisibility(View.VISIBLE);
+        Exclamation2.setVisibility(View.INVISIBLE);
+    }
+    public void Exline2(){
+        button2.setVisibility(View.VISIBLE);
+        Right2.setVisibility(View.INVISIBLE);
+        No2.setVisibility(View.INVISIBLE);
+        Exclamation2.setVisibility(View.VISIBLE);
+    }
+    public void Rline3(){
+        button3.setVisibility(View.VISIBLE);
+        button3.setEnabled(false);
+        Right3.setVisibility(View.VISIBLE);
+        No3.setVisibility(View.INVISIBLE);
+        Exclamation3.setVisibility(View.INVISIBLE);
+    }
+    public void Nline3(){
+        button3.setVisibility(View.VISIBLE);
+        button3.setEnabled(false);
+        Right3.setVisibility(View.INVISIBLE);
+        No3.setVisibility(View.VISIBLE);
+        Exclamation3.setVisibility(View.INVISIBLE);
+    }
+    public void Exline3(){
+        button3.setVisibility(View.VISIBLE);
+        button3.setEnabled(true);
+        Right3.setVisibility(View.INVISIBLE);
+        No3.setVisibility(View.INVISIBLE);
+        Exclamation3.setVisibility(View.VISIBLE);
+    }
+    public void Rline4(){
+        button4.setVisibility(View.VISIBLE);
+        button4.setEnabled(false);
+        Right4.setVisibility(View.VISIBLE);
+        No4.setVisibility(View.INVISIBLE);
+        Exclamation4.setVisibility(View.INVISIBLE);
+    }
+    public void Nline4(){
+        button4.setVisibility(View.VISIBLE);
+        button4.setEnabled(false);
+        Right4.setVisibility(View.INVISIBLE);
+        No4.setVisibility(View.VISIBLE);
+        Exclamation4.setVisibility(View.INVISIBLE);
+    }
+    public void Exline4(){
+        button4.setVisibility(View.VISIBLE);
+        button4.setEnabled(true);
+        Right4.setVisibility(View.INVISIBLE);
+        No4.setVisibility(View.INVISIBLE);
+        Exclamation4.setVisibility(View.VISIBLE);
+    }
+    public void Rline5(){
+        OderRight.setVisibility(View.VISIBLE);
+        OderRight.setEnabled(true);
+        Right5.setVisibility(View.VISIBLE);
+        No5.setVisibility(View.INVISIBLE);
+    }
+    public void Nline5(){
+        OderRight.setVisibility(View.VISIBLE);
+        Right5.setVisibility(View.INVISIBLE);
+        No5.setVisibility(View.VISIBLE);
+    }
+    public void AllLineNoShow(){
+        button1.setVisibility(View.INVISIBLE);
+        button2.setVisibility(View.INVISIBLE);
+        button3.setVisibility(View.INVISIBLE);
+        button4.setVisibility(View.INVISIBLE);
+        Right1.setVisibility(View.INVISIBLE);
+        Right2.setVisibility(View.INVISIBLE);
+        Right3.setVisibility(View.INVISIBLE);
+        Right4.setVisibility(View.INVISIBLE);
+        Right5.setVisibility(View.INVISIBLE);
+        No2.setVisibility(View.INVISIBLE);
+        No3.setVisibility(View.INVISIBLE);
+        No4.setVisibility(View.INVISIBLE);
+        No5.setVisibility(View.INVISIBLE);
+        Exclamation1.setVisibility(View.INVISIBLE);
+        Exclamation2.setVisibility(View.INVISIBLE);
+        Exclamation3.setVisibility(View.INVISIBLE);
+        Exclamation4.setVisibility(View.INVISIBLE);
+        OderRight.setVisibility(View.INVISIBLE);
+    }
+    // задержка для дизайна+ переход на Zakaz2 выбор маршрута
+    public void timeOut1(){
+        Handler handler5 = new Handler();
+        handler5.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Rline1();
+            }
+        },400);
+
+        // переход на Zakaz2 выбор маршрута
+        Handler handler6 = new Handler();
+        handler6.postDelayed(new Runnable() {
             @Override
             public void run() {
                 // выбор маршрута
                 Zakaz1ToZakaz2();
             }
-        },b);
+        },500);
     }
-    // 2.при переходе на итоговый лист регистрации заявки Zakaz3finish()
-    public void timePlus2(){
-        d=e+10;
-        Log.d(TAG, "timePlus2 d="+d);
+
+//КНОПКИ
+    // кнопка button1 выбор города
+    public void button1(View view){
+        AlertChoiceCity();
+    }
+    // кнопка button3 рейс самолета
+    public void button3(View view){
+        showAlert();
+    }
+    // кнопка button4 дата время
+    public void button4(View view){
+        // проверка самолет из Игарки?
+        CheskPlainFromIgarka();
+    }
+    // кнопка button5 изменить условия заказа
+    public void button5(View view){
+        changeMyOder();
+    }
+    //изменить условия заказа
+    public void changeMyOder(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
+        mAlertDialog.setTitle("Настройки вашего заказа будут стерты, продолжить?");
+        mAlertDialog.setCancelable(false);
+        mAlertDialog
+                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // скрыть кнопку изменить условия заказа
+                        button5.setVisibility(View.INVISIBLE);
+                        AllLineNoShow();
+
+                        Handler handler1 = new Handler();
+                        handler1.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Nline1();
+                                dinamicView();
+                            }
+                        },300);
+                    }
+                });
+        mAlertDialog
+                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+        mAlertDialog.create();
+        mAlertDialog.show();
+    }
+
+// ПЕРЕХОДЫ НА ДРУГИЕ АКТИВИТИ
+    // Переход в Zaka2 для выбора маршрута
+    public void Zakaz1ToZakaz2(){
+    Intent Zakaz1ToZakaz2=new Intent(this,Zakaz2.class);
+    Zakaz1ToZakaz2.putExtra("refFromInCity",refFromInCity);
+    //отправляем phoneNew в Zakaz2
+    Zakaz1ToZakaz2.putExtra("phoneNew",phoneNew);
+    Log.d(TAG, "Cтарт переход в Zakaz2 phoneNew:"+phoneNew);
+    startActivity(Zakaz1ToZakaz2);
+
+        // Alert ловушка неперехода на Zakaz2
+    Handler handler1 = new Handler();
+    handler1.postDelayed(new Runnable() {
+        @Override
+        public void run() {
+            // Alert ловушка неперехода на Zakaz2
+            AlertZakaz2();
+            }
+            },1000);
+}
+    // Переход на Форму обратной связи (если нет нужного города)
+    public void FeedBack1(){
+        Intent FeedBack1= new Intent(this,FeedBack1.class);
+        startActivity(FeedBack1);
+    }
+    // Переход на Zakaz3finish
+    public void Zakaz3finish() {
+        // передаем данные для регистрации заявки
+        Intent Zakaz1ToZakaz3finish = new Intent (this,Zakaz3finish.class);
+        // secretNumber
+        Zakaz1ToZakaz3finish.putExtra("phoneNew", phoneNew);
+        // дата полета
+        Zakaz1ToZakaz3finish.putExtra("Calend", Calend);
+        // дата точки сбора (для рейсов из Аэропорта)
+        Zakaz1ToZakaz3finish.putExtra("dateOfPoint", dateOfPoint);
+        // рейс самолета
+        Zakaz1ToZakaz3finish.putExtra("RefplaneCity", RefplaneCity);
+        // время вылета/прилета/номер рейса для чартера
+        Zakaz1ToZakaz3finish.putExtra("time", time);
+        // маршрут
+        Zakaz1ToZakaz3finish.putExtra("RefMap", RefMap);
+        // точка сбора
+        Zakaz1ToZakaz3finish.putExtra("RefPoint", RefPoint);
+        // Время точки сбора (для рейсов из Аэропорта)
+        Zakaz1ToZakaz3finish.putExtra("timeOfPoint", timeOfPoint);
+        // Время точки сбора (для рейсов из Аэропорта)
+        Zakaz1ToZakaz3finish.putExtra("timeOfPoint", timeOfPoint);
+        // реф слово для экспорта в Zaka3Finish (чтобы определить какой маршрут "в Аэропорт" или "из Аэропорта")
+        Zakaz1ToZakaz3finish.putExtra("RefInFromAirport", RefInFromAirport);
+        // стоимость проезда
+        Zakaz1ToZakaz3finish.putExtra("fare", fare);
+        startActivity(Zakaz1ToZakaz3finish);
+
+        // Alert ловушка неперехода на Zakaz2
         Handler handler1 = new Handler();
         handler1.postDelayed(new Runnable() {
             @Override
             public void run() {
-                //переход на итоговый лист регистрации заявки Zakaz3finish()
-                Zakaz3finish();
+                // Alert ловушка неперехода на Zakaz3finish
+                AlertZakaz3finish();
             }
-        },d);
+        },1000);
+
+        Log.d(TAG, "итог телефон:"+phoneNew);
+        Log.d(TAG, "итог дата вылета-прилета:"+Calend);
+        Log.d(TAG, "итог дата точки сбора:"+dateOfPoint);
+        Log.d(TAG, "итог время вылета-прилета:"+time);
+        Log.d(TAG, "итог время точки сбора:"+timeOfPoint);
+        Log.d(TAG, "итог самолет:"+RefplaneCity);
+        Log.d(TAG, "итог маршрут:"+RefMap);
+        Log.d(TAG, "итог точка сбора:"+RefPoint);
+        Log.d(TAG, "итог тип маршрута В(из) Аэропорта:"+RefInFromAirport);
+        Log.d(TAG, "итог стоимость проезда:"+fare);
     }
-    // время сессии истекло
-    public void timeSessionEnd(){
-        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz1.this);
-        mAlertDialog.setCancelable(false);
-        mAlertDialog
-                .setMessage("Время сессии истекло, приложение будет перезапущено")
-                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //перезапуск приложения
-                       reStartApp();
-                    }
-                });
-        mAlertDialog.create();
-        // Showing Alert Message
-        mAlertDialog.show();
-    }
-    //перезапуск приложения если время сессии истекло
-    public void reStartApp(){
-        Intent ddd=new Intent(this,MainActivity.class);
-        startActivity(ddd);
-    }
+
     // Блокировка кнопки Back!!!! :)))
     @Override
     public void onBackPressed(){

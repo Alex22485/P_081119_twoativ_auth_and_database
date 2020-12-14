@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,7 +24,8 @@ public class MainActivity extends AppCompatActivity {
 
     // главная страница заставка
     // применен таймер сварачивания для корректного перехода на любую другую активити при свернутом приложении
-    // реализовано врмя сессии
+    // реализовано вермя сессии
+    // блокировка спящего режима экрана
 
     private static final String TAG ="MainActivity" ;
 
@@ -52,6 +54,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate");
+
+        // блокировка спящего режима экрана
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        // отмена блокировки спящего режима экрана
+        //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // запуск времени сессии
         Log.d(TAG, "Time Session Start");
