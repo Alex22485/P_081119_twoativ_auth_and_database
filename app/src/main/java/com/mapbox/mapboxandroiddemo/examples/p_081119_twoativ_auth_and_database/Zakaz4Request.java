@@ -10,10 +10,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,6 +25,10 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class Zakaz4Request extends AppCompatActivity {
+
+    // Зарегистрированый заказ
+    // реализована блокировка и разблокировка спящего режима экрана getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    
 
     private static final String TAG ="Zakaz4Request" ;
     // наполнение активити
@@ -38,11 +44,11 @@ public class Zakaz4Request extends AppCompatActivity {
     // Сообщение кнопки времени точки сбора (Присваивается в зависимости от типап Маршрута Чартер, В Аэропорт Из  Аэропорта)
     String stringExplanation="";
     // пояснение при Чартерных рейсах из Играки
-    String forIgarkaCharter="Вылетая из Игарки, сообщите водителю об этом. Только так он узнает время вашего прилета (Функция станет доступна, когда водитель будет найден).";
+    String forIgarkaCharter="Вылетая из Игарки, сообщите водителю об этом. Только так он узнает время вашего прилета. (Функция станет доступна, когда водитель будет найден).";
     // пояснение при рейсах В Аэропорт
-    String inAirport="Время рассчитано к началу регистрации на рейс (т.е. за 2часа до вылета плюс время дороги до Аэропорта).";
+    String inAirport="Время рассчитано к началу регистрации на рейс (т.е. за 2 часа до вылета плюс время дороги до Аэропорта).";
     // пояснение при рейсах из Аэропорта
-    String fromAirport="Водитель будет ждать вас в Аэропорту. Пожалуйста, перед вылетом в Красноярск сообщите ему об этом (Функция станет доступна, когда водитель будет найден).";
+    String fromAirport="Водитель будет ждать вас в Аэропорту. Пожалуйста, перед вылетом в Красноярск сообщите ему об этом. (Функция станет доступна, когда водитель будет найден).";
     // сообщение при нажатии на кнопку изменить заказ
 
     //Экспорт СС номера из MainActivity начальная страница заставки
@@ -84,6 +90,22 @@ public class Zakaz4Request extends AppCompatActivity {
     // Стоимость
     String fare="";
 
+// Для отмены заявки
+    // заголовок Alert причины отмены
+    String TitleWhyDellOder="Укажите причину отмены";
+    // Причина отмены
+    String[] CancelOderWhy ={"Самолет отменён","Передумал", };
+
+    // реф слова для процесса удаления заявки
+    String timeOutBeforDel="";
+    String proverkaBeforDel="";
+    // для удаления из БД заявки
+    FirebaseDatabase ggg;
+    DatabaseReference mmm;
+    // реф слова для проверки после удаления заявки
+    String timeOutDel;
+    String proverkaDel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,8 +145,8 @@ public class Zakaz4Request extends AppCompatActivity {
         VisibleOderNo();
         // Скрыть Статус Автомобиля
         VisibleSearchCarNo();
-        //Скрыть детали заказа В АЭРОПОРТ
-        VisibleDetailesInAirNo();
+        //Скрыть детали заказа
+        VisibleDetailesNo();
         //Скрыть Сообщение водителю Я Вылетел-Приземлился
         VisibleMessageDriverNo();
         //Скрыть QR code
@@ -133,8 +155,8 @@ public class Zakaz4Request extends AppCompatActivity {
         VisibleLoadingYes();
 
         //Экспорт СС номера из MainActivity начальная страница заставки
-        Intent MainTOMain6=getIntent();
-        phoneNew1=""+MainTOMain6.getStringExtra("phoneNew");
+        Intent MainTOZakaz4=getIntent();
+        phoneNew1=""+MainTOZakaz4.getStringExtra("phoneNew");
         Log.d(TAG, "phoneNew1: "+phoneNew1);
 
         //если значение не равно "null"
@@ -162,6 +184,12 @@ public class Zakaz4Request extends AppCompatActivity {
                 // Метод считывания заявки
                 readOder();
                 Log.d(TAG, "Start ");
+
+                // блокировка спящего режима экрана
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                // отмена блокировки спящего режима экрана
+                //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
             }
         },4000);
     }
@@ -271,24 +299,6 @@ public class Zakaz4Request extends AppCompatActivity {
         time1.setVisibility(View.VISIBLE);
 
     }
-    //Скрыть детали заказа В АЭРОПОРТ
-    public void VisibleDetailesInAirNo(){
-        // Текст самолет
-        text3.setVisibility(View.INVISIBLE);
-        // Самолет
-        RefplaneCity1.setVisibility(View.INVISIBLE);
-        //Текст дата вылета
-        TextDateFly.setVisibility(View.INVISIBLE);
-        // Дата вылета
-        dateFly.setVisibility(View.INVISIBLE);
-        // Текст время вылета
-        text4.setText("Время вылета");
-        text4.setVisibility(View.INVISIBLE);
-        // Время вылета
-        time1.setVisibility(View.INVISIBLE);
-
-    }
-
     //Показать детали заказа ИЗ АЭРОПОРТА
     public void VisibleDetailesFromAirYes(){
         // Текст самолет
@@ -306,24 +316,6 @@ public class Zakaz4Request extends AppCompatActivity {
         time1.setVisibility(View.VISIBLE);
 
     }
-    //Скрыть детали заказа ИЗ АЭРОПОРТА
-    public void VisibleDetailesFromAirNo(){
-        // Текст самолет
-        text3.setVisibility(View.INVISIBLE);
-        // Самолет
-        RefplaneCity1.setVisibility(View.INVISIBLE);
-        //Текст дата вылета
-        TextDateFly.setVisibility(View.INVISIBLE);
-        // Дата вылета
-        dateFly.setVisibility(View.INVISIBLE);
-        // Текст время вылета
-        text4.setText("Время прилета");
-        text4.setVisibility(View.INVISIBLE);
-        // Время вылета
-        time1.setVisibility(View.INVISIBLE);
-
-    }
-
     //Показать детали заказа ЧАРТЕР ИЗ ИГАРКИ
     public void VisibleDetailesCharterYes(){
         // Текст самолет
@@ -339,8 +331,9 @@ public class Zakaz4Request extends AppCompatActivity {
         // Время вылета
         time1.setVisibility(View.INVISIBLE);
     }
-    //Скрыть детали заказа ЧАРТЕР ИЗ ИГАРКИ
-    public void VisibleDetailesCharterNo(){
+
+    //Скрыть детали заказа
+    public void VisibleDetailesNo(){
         // Текст самолет
         text3.setVisibility(View.INVISIBLE);
         // Самолет
@@ -373,7 +366,6 @@ public class Zakaz4Request extends AppCompatActivity {
         BtnIfly.setVisibility(View.INVISIBLE);
         //Кнопка Я приземлился
         BtnIland.setVisibility(View.INVISIBLE);
-
     }
 
     //Показать QR code
@@ -428,38 +420,39 @@ public class Zakaz4Request extends AppCompatActivity {
     // кнопка "время сбора нажми на меня" (подробности формирования времени сбора)
     public void BtnRefTime(View view) {
     showAlertDialog6();
-}
-    // кнопка детали заявки
+    }
+    // Детали заявки
     public void detailsOder(View view){
-
-        Log.d(TAG, "1detailsOder: "+detailsOder.getText().toString());
         // показать детали
-        // если Чартер из Игарки
         if(detailsOder.getText().toString().equals("детали заказа")) {
+            // если Чартер из Игарки
             if (time.equals("1 рейс")||time.equals("2 рейс")||time.equals("3 рейс")){
                 VisibleDetailesCharterYes();
-                detailsOder.setText("скрыть");
             }
             else {
                 // Если маршрут в Аэропорт
                 if(!timeOfPoint.equals(time)){
                     VisibleDetailesInAirYes();
-                    detailsOder.setText("скрыть");
                 }
                 else {
                     // Если маршрут из Аэропорта
                     VisibleDetailesFromAirYes();
-                    detailsOder.setText("скрыть");
                 }
             }
-            Log.d(TAG, "2detailsOder: "+detailsOder.getText().toString());
+            detailsOder.setText("скрыть");
         }
         // скрыть детали
         else {
-            VisibleDetailesFromAirNo();
+            VisibleDetailesNo();
             detailsOder.setText("детали заказа");
             Log.d(TAG, "3detailsOder: "+detailsOder.getText().toString());
         }
+    }
+    // Отменить заказ
+    public void cancelOder(View view){
+        // Alert укажите причину отмены заявки
+        AlertWhyDell();
+
     }
 
 //МЕТОДЫ
@@ -552,7 +545,13 @@ public class Zakaz4Request extends AppCompatActivity {
     }
     // запуск метода заполнения активити
     public void StartShowActivity(){
-
+        // обнуляем данные т.к. при повторном выполнении метода (когда пропал интернет) они удваиваются
+        dateOfPoint="";
+        Calend="";
+        timeOfPoint="";
+        time="";
+        RefMap="";
+        fare="";
 // ИДЕНТИФИКАЦИЯ ДАННЫХ
     // Выделяем дату точки сбора и дату вылета-прилета
         Log.d(TAG, " старт FOR Data");
@@ -710,9 +709,205 @@ public class Zakaz4Request extends AppCompatActivity {
         VisibleSearchCarYes();
         //Скрыть Прогресс загрузки
        VisibleLoadingNo();
+
+       // отмена блокировки спящего режима экрана
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-    // ALERT DIALOG
+// МЕТОДЫ УДАЛЕНИЯ ЗАЯВКИ
+    //проверка интернета перед удалением (считывание YES-NO)
+    public void CheskInternetbeforDellOder(){
+        // реф слова для процесса удаления заявки
+        timeOutBeforDel="";
+        proverkaBeforDel="";
+
+        //ТАЙМ-АУТ проверка интернета
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Завершен ТАЙМ-АУТ проверка интернета
+                timeOutBeforDel="Out";
+                // время проверки интернета вышло
+                internetNotBeforDel();
+            }
+        },20000);
+
+        //Важно в БД с читаемым объектом не должно быть параллельных линий :)
+        // только тогда считывает значения с первого раза без null
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        Query query = rootRef.child("Пользователи")
+                .child("Personal")
+                .child(phoneNew)
+                .child("Proverka")
+                .orderByChild("Oder");
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ddd : dataSnapshot.getChildren()) {
+
+                    String yesNo=ddd.child("Заявка").getValue(String.class);
+
+                    proverkaBeforDel=yesNo;
+                    Log.d(TAG, "инетрнет есть, заявка есть?"+yesNo);
+
+                    // проверка YES NO перед удалением
+                    StartDellOder();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        };
+        query.addListenerForSingleValueEvent(valueEventListener);
+    }
+    // время проверки интернета вышло при Удалении заявки
+    public void internetNotBeforDel(){
+        if (!proverkaBeforDel.isEmpty()){
+            Log.d(TAG, "время проверки интернета вышло, но интернет есть");
+        }
+        else{
+            Log.d(TAG, "Время проверки вышло, not internet");
+            // Alert нет Интернета при Удалении заявки
+            showAlertDialog4();
+        }
+    }
+    // проверка YES NO перед удалением
+    public void StartDellOder(){
+        if (timeOutBeforDel.equals("Out")){
+            Log.d(TAG, "интернет есть, но время проверки вышло");
+        }
+        else if (proverkaBeforDel.equals("No")){
+            // этот пункт вообще не должен появляться но на всякий случай сделал защиту
+            Log.d(TAG, "Ошибка сервера");
+            //Alert ошибка сервера
+            AlertMistakeServer();
+        }
+        else if (proverkaBeforDel.equals("null")){
+            // этот пункт вообще не должен появляться но на всякий случай сделал защиту
+            Log.d(TAG, "Ошибка сервера");
+            //Alert ошибка сервера
+            AlertMistakeServer();
+        }
+        else if (proverkaBeforDel.equals("Yes")){
+            Log.d(TAG, "старт удаления");
+            // Старт удаления заявки
+            DeleteOder();
+        }
+    }
+    // Старт удаления
+    public void DeleteOder(){
+        ggg = FirebaseDatabase.getInstance();
+        mmm = ggg.getReference("Пользователи")
+                .child("Personal")
+                .child(phoneNew)
+                .child("Status")
+                .child("Status");
+        mmm.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "запрос удаления отправлен в БД");
+                mmm.child("Dell").setValue("Oder");
+
+                //задержка на проверку YES-NO из БД после удаления
+                checkDellOderWithTime();
+                // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ
+                mmm.removeEventListener(this);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+    //задержка на проверку YES-NO из БД после удаления
+    public void checkDellOderWithTime(){
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // проверка удалилась заявка или нет
+                checkDellOder();
+                Log.d(TAG, "проверка удаления");
+            }
+        }, 3000);
+    }
+    // проверка удалилась заявка или нет
+    public void checkDellOder(){
+        timeOutDel="";
+        proverkaDel="";
+
+        //ТАЙМ-АУТ ЗАПРОСА YesNo
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                // Завершен ТАЙМ-АУТ ЗАПРОСА YesNo
+                timeOutDel="Out";
+                // пропал интернет при считывании YES-NO  после удаления заявки
+                internetNotDel();
+            }
+        },55000); // такое большое время чтобы точно завершился циклический процесс удаления
+
+        //Важно в БД с читаемым объектом не должно быть параллельных линий :)
+        // только тогда считывает значения с первого раза без null
+        DatabaseReference rootRef1 = FirebaseDatabase.getInstance().getReference();
+        Query query1 = rootRef1.child("Пользователи")
+                .child("Personal")
+                .child(phoneNew)
+                .child("Proverka")
+                .orderByChild("Oder");
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ddd : dataSnapshot.getChildren()) {
+
+                    String YesNo=ddd.child("Заявка").getValue(String.class);
+
+                    proverkaDel=YesNo;
+                    Log.d(TAG, "Получаем статус"+YesNo);
+
+                    // Проверка YesNo после удаления
+                    checkYesNo();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        };
+        query1.addListenerForSingleValueEvent(valueEventListener);
+    }
+    // пропал интернет при считывании YES-NO  после удаления заявки
+    public void internetNotDel(){
+        if (!proverkaDel.isEmpty()){
+            Log.d(TAG, "время удаления вышло, но опрос получен");
+        }
+        else{
+            Log.d(TAG, "Время считывании YES-NO после удаления вышло нет интернета");
+            //Alert ошибка сервера приложение будет перезагружено при считывании YES_NO после удалении
+            AlertMistakeServer();
+        }
+    }
+    // Проверка YesNo после удаления
+    public void checkYesNo(){
+        if (timeOutDel.equals("Out")) {
+            Log.d(TAG, "Время удаления вышло но запрос YesNo получен");
+        }
+        else if (proverkaDel.equals("Yes")){
+            Log.d(TAG, "удаление не завершено повторяем цикл проверки");
+            //цикл еще раз проверка удаления на YesNo
+            checkDellOderWithTime();
+        }
+        else if (proverkaDel.equals("No")){
+            Toast.makeText(Zakaz4Request.this,"Заявка Отменена....",Toast.LENGTH_LONG).show();
+            Log.d(TAG, "Заявка удалена");
+
+            // переход в лист заказов после удаления заявки
+            GoZaka1();
+        }
+    }
+
+// ALERT DIALOG
     // подробности как формируется время сбора
     public void showAlertDialog6() {
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz4Request.this);
@@ -727,11 +922,11 @@ public class Zakaz4Request extends AppCompatActivity {
         mAlertDialog.create();
         mAlertDialog.show();
     }
-    // Alert нет интернента
+    // Alert нет интернента при считывании данных
     public void AlertNotInternet(){
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz4Request.this);
         mAlertDialog.setTitle("Слабый сигнал интернета!");
-        mAlertDialog.setMessage("Нажмите ОК, чтобы поробовать еще раз, либо закрыть приложение");
+        mAlertDialog.setMessage("Нажмите ОК, чтобы поробовать еще раз.");
         mAlertDialog.setCancelable(false);
         mAlertDialog
                 .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
@@ -750,6 +945,99 @@ public class Zakaz4Request extends AppCompatActivity {
         mAlertDialog.create();
         mAlertDialog.show();
 }
+    // Alert укажите причину отмены заявки
+    public void AlertWhyDell(){
+        AlertDialog.Builder builder=new AlertDialog.Builder( Zakaz4Request.this );
+        builder.setTitle(TitleWhyDellOder);
+        builder.setItems(CancelOderWhy, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+
+                        //проверка интернета перед удалением
+                        CheskInternetbeforDellOder();
+
+                    //ВИЗУАЛИЗАЦИЯ
+                        // Скрыть заказ без Деталей
+                        VisibleOderNo();
+                        // Скрыть Статус Автомобиля
+                        VisibleSearchCarNo();
+                        // Скрыть детали заказа
+                        VisibleDetailesNo();
+                        //Показать Прогресс удаления заказа
+                        VisibleRemoveYes();
+
+                        // блокировка спящего режима экрана
+                        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                        // отмена блокировки спящего режима экрана
+                        //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+
+                    }
+                }
+        ).setNeutralButton("Назад", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    // Alert нет Интернета при Удалении заявки
+    public void showAlertDialog4(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz4Request.this);
+        mAlertDialog.setTitle("Слабый сигнал интернета!");
+        mAlertDialog.setMessage("Нажмите ОК, чтобы поробовать еще раз.");
+        mAlertDialog.setCancelable(false);
+        mAlertDialog
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //проверка интернета перед удалением
+                        CheskInternetbeforDellOder();
+                    }
+                });
+        mAlertDialog
+                .setNegativeButton("Закрыть приложение", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // закрытие приложения реальное
+                        closeApp();
+                    }
+                });
+        mAlertDialog.create();
+        mAlertDialog.show();
+    }
+    //Alert ошибка сервера приложение будет перезагружено при получении NO и null при считывании YES_NO перед удалением, либо после удалении
+    public void AlertMistakeServer(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(
+                Zakaz4Request.this);
+        mAlertDialog.setTitle("Ошибка сервера");
+        mAlertDialog.setCancelable(false);
+        mAlertDialog
+                .setMessage("Приложение будет перезапущено")
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // перезагрузка приложение
+                        reStartApp();
+                    }
+                });
+        mAlertDialog.create();
+        mAlertDialog.show();
+    }
+    // Alert ловушка неперехода на Zakaz1
+    public void AlertZakaz2(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz4Request.this);
+        mAlertDialog.setTitle("Заявка удалена");
+        mAlertDialog.setMessage("Нажмите ОК, для продолжения.");
+        mAlertDialog.setCancelable(false);
+        mAlertDialog
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Переход в Zaka1 для выбора маршрута
+                        GoZaka1();
+                    }
+                });
+        mAlertDialog.create();
+        mAlertDialog.show();
+    }
 
 
 // ПЕРЕХОДЫ на ДР Активити
@@ -759,5 +1047,27 @@ public class Zakaz4Request extends AppCompatActivity {
     finishAffinity();
     System.exit(0);
 }
+    // перезагрузка приложение
+    public void reStartApp(){
+        Intent GoMainActivity= new Intent(this,MainActivity.class);
+        startActivity(GoMainActivity);
+    }
+    // переход в лист заказов после удаления заявки
+    public void GoZaka1(){
+        Intent Zakaz4ToZakaz1  = new Intent(this,Zakaz1.class);
+        // отправляем phoneNew в Zakaz1
+        Zakaz4ToZakaz1.putExtra("regFromMain6",phoneNew);
+        startActivity(Zakaz4ToZakaz1);
+
+        // Alert ловушка неперехода на Zakaz1
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Alert ловушка неперехода на Zakaz1
+                AlertZakaz2();
+            }
+        },1000);
+    }
 
 }

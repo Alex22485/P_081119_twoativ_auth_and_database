@@ -58,11 +58,11 @@ public class Zakaz3finish extends AppCompatActivity {
     // Сообщение кнопки времени точки сбора (Присваивается в зависимости от типап Маршрута Чартер, В Аэропорт Из  Аэропорта)
     String stringExplanation="";
     // пояснение при Чартерных рейсах из Играки
-    String forIgarkaCharter="Вылетая из Игарки, сообщите водителю об этом. Только так он узнает время вашего прилета (Функция будет доступна после регистрации заявки).";
+    String forIgarkaCharter="Вылетая из Игарки, сообщите водителю об этом. Только так он узнает время вашего прилета. (Функция доступна после регистрации заявки).";
     // пояснение при рейсах В Аэропорт
-    String inAirport="Время рассчитано к началу регистрации на рейс (т.е. за 2часа до вылета плюс время дороги до Аэропорта).";
+    String inAirport="Время рассчитано к началу регистрации на рейс (т.е. за 2 часа до вылета плюс время дороги до Аэропорта).";
     // пояснение при рейсах из Аэропорта
-    String fromAirport="Водитель будет ждать вас в Аэропорту. Пожалуйста, перед вылетом в Красноярск сообщите ему об этом (Функция будет доступна после регистрации заявки).";
+    String fromAirport="Водитель будет ждать вас в Аэропорту. Пожалуйста, перед вылетом в Красноярск сообщите ему об этом. (Функция доступна после регистрации заявки).";
     // сообщение при нажатии на кнопку изменить заказ
     String textMassageChaingeOder="Данные заказа будут стёрты, продолжить? ";
 
@@ -560,7 +560,7 @@ public class Zakaz3finish extends AppCompatActivity {
         mAlertDialog.setTitle("Заявка отклонена :(");
         mAlertDialog.setCancelable(false);
         mAlertDialog
-                .setMessage("На Пункте сбора"+" "+RefPoint+" "+"все места заняты. Попробуйте, другие ближайшие к вам пункты сбора данного маршрута")
+                .setMessage("На Пункте сбора"+" "+RefPoint+" "+"все места заняты. Попробуйте выбрать, другие пункты сбора данного маршрута")
                 .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         onBackList();
@@ -575,7 +575,7 @@ public class Zakaz3finish extends AppCompatActivity {
         mAlertDialog.setTitle("Спасибо, заявка оформлена!!!");
         mAlertDialog.setCancelable(false);
         mAlertDialog
-                .setMessage("Ищем автомобиль..."+" "+"Вы получите уведомление о результате поиска")
+                .setMessage("Ищем автомобиль..."+"Вы получите уведомление о результате поиска")
                 .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         //переход в окно статуса
@@ -686,8 +686,7 @@ public class Zakaz3finish extends AppCompatActivity {
     // переход на лист авторизации
     public void goListRegistration(){
         Intent Zakaz3finishToProba =new Intent(this, Proba.class);
-        // телефон
-        //Zakaz3finishToProba.putExtra("phoneNew",phoneNew);
+
         // дата поездки
         Zakaz3finishToProba.putExtra("Calend",Calend);
         // рейс самолета
@@ -764,6 +763,7 @@ public class Zakaz3finish extends AppCompatActivity {
         text5.setVisibility(View.VISIBLE);
         text6.setVisibility(View.VISIBLE);
         text7.setVisibility(View.VISIBLE);
+        detailsOder.setText("детали заказа");
         btnOder.setVisibility(View.VISIBLE);
         button9.setVisibility(View.VISIBLE);
         detailsOder.setVisibility(View.VISIBLE);
@@ -796,8 +796,6 @@ public class Zakaz3finish extends AppCompatActivity {
             // показать видимость время вылета-прилета
             time1.setVisibility(View.VISIBLE);
         }
-
-
     }
     // убрать визуализацию процесса
     public void visibilityProcessNo(){
@@ -814,85 +812,5 @@ public class Zakaz3finish extends AppCompatActivity {
     @Override
     public void onBackPressed(){
     }
-
-    // метод определения времени сбора (преобразование string в int)
-//    public void timeStringToInt(){
-//        // время дороги до аэропорта
-//        timeRoad=1;
-//        // время регистрации (за сколько часов до вылета начинается регистрация)
-//        timeRegistrtation=2;
-//        // общее время Затрат
-//        int sum=timeRoad+timeRegistrtation;
-//
-//        // преобразуем слово "время вылета" по символьно
-//        String one= ""+time.charAt(0);
-//        String two= ""+time.charAt(1);
-//        String tree= ""+time.charAt(2);
-//        String four= ""+time.charAt(3);
-//        String five= ""+time.charAt(4);
-//        Log.d(TAG, "one:"+one);
-//        Log.d(TAG, "two:"+two);
-//        Log.d(TAG, "tree:"+tree);
-//        Log.d(TAG, "four:"+four);
-//        Log.d(TAG, "five:"+five);
-//        // преобразуем первый символ в число
-//        for(int i=0;i<10;i++){
-//            Log.d(TAG, "i:"+i);
-//            if(one.equals(array1[i])){
-//                onePointHour=array2[i];
-//                Log.d(TAG, "onePointHour:"+onePointHour);
-//            }
-//        }
-//        // преобразуем второй символ в число
-//        for(int i=0;i<10;i++){
-//            Log.d(TAG, "ii:"+i);
-//            if(two.equals(array1[i])){
-//                twoPointHour=array2[i];
-//                Log.d(TAG, "twoPointHour:"+twoPointHour);
-//            }
-//        }
-//        Log.d(TAG, "итоговый час:"+onePointHour+""+twoPointHour);
-//        // преобразуем два символа в общее число
-//        if(onePointHour==0){
-//            onePointHour=onePointHour*10;
-//            finalIntHour=onePointHour+twoPointHour;
-//            Log.d(TAG, "итоговый час <10: "+finalIntHour);
-//        }
-//        else {
-//            onePointHour=onePointHour*10;
-//            finalIntHour=onePointHour+twoPointHour;
-//            Log.d(TAG, "итоговый час =>10: "+finalIntHour);
-//        }
-//
-//        // определяем время сбора = время вылета - (время дороги + время регистрации)-только целые числа (т.е. за сколько надо быть в аэропорту)
-//        //н-р 5:40 время дороги 1 час время регистрации за 2 часа до вылета итог 5-(1+2)=2
-//
-//        // если время вылета ЧИСЛО меньше чем времени затрат (н-р вылет 02:00 время затрат 1+2=3 т.е 2<3)
-//        // то вычисляем итоговое время сбора
-//
-//        // если время сбора выпадает на другие сутки то меняем и дату сбора
-//        if (finalIntHour<sum){
-//            int diff = sum-finalIntHour;
-//            reftime =24-diff;
-//            Log.d(TAG, " Integer ВРЕМЯ точки сбора: "+reftime);
-//
-//        }
-//        else {
-//            reftime=finalIntHour-sum;
-//            Log.d(TAG, "Integer ВРЕМЯ точки сбора: "+reftime);
-//        }
-//
-//        // преобразуем результат в строку (ВРЕМЯ СБОРА ИТОГОВОЕ)
-//        if (reftime<10){
-//            refStringHour="0"+reftime+tree+four+five;
-//        }
-//        else {
-//            refStringHour=""+reftime+tree+four+five;
-//        }
-//        Log.d(TAG, "String ВРЕМЯ точки сбора: "+refStringHour);
-//
-//        // отображние времени сбора
-//        BtnRefTime.setText(refStringHour+" нажми на меня");
-//    }
 
 }

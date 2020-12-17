@@ -188,8 +188,8 @@ public class Zakaz1 extends AppCompatActivity {
         Log.d(TAG, "phoneNew:"+phoneNew);
 
         // проверка был ли переход на эту страницу после отмены заявки
-        Intent Main6ToZakaz1=getIntent();
-        phoneNewFromMain6=""+Main6ToZakaz1.getStringExtra("regFromMain6");
+        Intent Zakaz4ToZakaz1=getIntent();
+        phoneNewFromMain6=""+Zakaz4ToZakaz1.getStringExtra("regFromMain6");
         Log.d(TAG, "phoneNewFromMain6:"+phoneNewFromMain6);
 
         //если был то пишем phoneNew=phoneNewFromMain6

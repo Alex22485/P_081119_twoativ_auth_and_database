@@ -197,16 +197,7 @@ public class Main2Activity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser ghg = mAuth.getCurrentUser();
         phoneUser=ghg.getPhoneNumber();
-
-//        //получение токена
-//        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Main2Activity.this,new OnSuccessListener<InstanceIdResult>() {
-//            @Override
-//            public void onSuccess(InstanceIdResult instanceIdResult) {
-//                UserToken = instanceIdResult.getToken();
-//
-//            }
-//        });
-    }
+            }
 
 // реализация шифрования кнопка пропустить
     public void GoMainOder(View view){

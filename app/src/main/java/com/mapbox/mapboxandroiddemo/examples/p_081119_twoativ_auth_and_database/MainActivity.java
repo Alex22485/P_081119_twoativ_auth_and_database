@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                         else{
                             // получаем токен
                             UserToken = task . getResult ();
-                            Toast. makeText ( MainActivity . this , "токен получен"+UserToken , Toast . LENGTH_SHORT ). show ();
+                            //Toast. makeText ( MainActivity . this , "токен получен"+UserToken , Toast . LENGTH_SHORT ). show ();
                             Log.d(TAG, "UserToken"+UserToken);
                             //задержка чтобы успеть прочитать заставку
                             Handler handler1 = new Handler();
@@ -319,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 Log.d(TAG, "переход лист заявок");
                 // переход на лист заявок
-                GoMain6Activity();
+                GoZakaz4Request();
             }
         },g);
     }
@@ -376,10 +376,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     // переход на лист заявок
-    public void GoMain6Activity(){
-        Intent MainTOMain6= new Intent(this,Main6Activity.class);
-        MainTOMain6.putExtra("phoneNew",keyReg);
-        startActivity(MainTOMain6);
+    public void GoZakaz4Request(){
+        Intent MainTOZakaz4= new Intent(this,Zakaz4Request.class);
+        MainTOZakaz4.putExtra("phoneNew",keyReg);
+        startActivity(MainTOZakaz4);
     }
     // переход на лист формирования заявок
     public void Zakaz1(){

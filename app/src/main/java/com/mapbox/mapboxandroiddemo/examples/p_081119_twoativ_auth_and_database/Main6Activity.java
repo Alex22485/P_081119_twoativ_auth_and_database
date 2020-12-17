@@ -443,7 +443,6 @@ public class Main6Activity extends AppCompatActivity {
             }
         };
         query.addListenerForSingleValueEvent(valueEventListener);
-
     }
 
     public void internetNotBeforDel(){
