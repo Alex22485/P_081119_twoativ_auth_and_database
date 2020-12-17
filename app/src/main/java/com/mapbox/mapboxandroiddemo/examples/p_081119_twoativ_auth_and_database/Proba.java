@@ -233,84 +233,69 @@ public class Proba extends AppCompatActivity {
         c=5000;
         Log.d(TAG, "значение с"+c);
     }
-    // кнопка получить код доступа
-    public void getCode (View view){
 
+// ВИЗУАЛИЗАЦИИ
+    // видимость при старте страницы
+    public void StyleStart(){
+        tVPhone.setVisibility(View.VISIBLE);
+        edtPhone.setVisibility(View.VISIBLE);
+        getCode.setVisibility(View.VISIBLE);
+        tVProgressB.setVisibility(View.INVISIBLE);
+        progressB.setVisibility(View.INVISIBLE);
+        progressB2.setVisibility(View.INVISIBLE);
+        tVCode.setVisibility(View.INVISIBLE);
+        edtCode.setVisibility(View.INVISIBLE);
+        sendCode.setVisibility(View.INVISIBLE);
+        tryAgain.setVisibility(View.INVISIBLE);
+    }
+    // видимость процесс регистрации
+    public void StyleProgressAuth(){
+        tVPhone.setVisibility(View.INVISIBLE);
+        edtPhone.setVisibility(View.INVISIBLE);
+        getCode.setVisibility(View.INVISIBLE);
+        tVProgressB.setVisibility(View.VISIBLE);
+        progressB.setVisibility(View.VISIBLE);
+    }
+    // видимость ввод проверочный код
+    public void StylSentOPT(){
+        //ТАЙМ-АУТ исчезновения StileProgress
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                tVProgressB.setVisibility(View.INVISIBLE);
+                progressB.setVisibility(View.INVISIBLE);
+                tVCode.setVisibility(View.VISIBLE);
+                edtCode.setVisibility(View.VISIBLE);
+                sendCode.setVisibility(View.VISIBLE);
 
-        // проверка пустоты поля
-        if (!edtPhone.getText().toString().isEmpty()){
-            // проверка чила цифр =10
-            if(edtPhone.getText().toString().length()==10){
-                // обнуляем реф слово остановки времени сессии ()
-                refStopTimeSession="";
-                // запуск времени сессии на случай если приложение не перейдет на Web проверку при сворачивании приложения
-                startTimeSession();
-                // видимость процесс регистрации
-                StyleProgressAuth();
-                PhoneAuthOptions options =
-                        PhoneAuthOptions.newBuilder(mAuth)
-                                .setPhoneNumber("+7"+edtPhone.getText().toString())
-                                .setTimeout(60L, TimeUnit.SECONDS)
-                                .setActivity(this)
-                                .setCallbacks(callbacks)
-                                .build();
-                PhoneAuthProvider.verifyPhoneNumber(options);
+                // перепривязка текста
+                ConstraintSet set=new ConstraintSet();
+                // считываем параметры constraintLayout
+                set.clone(constraintLayout);
+                // очистка привязки верхней, хотя это делать не нужно и так работает
+                //set.clear(R.id.tVCode,ConstraintSet.TOP);
+                // привязываем верхушку tVCode  к нижней границе tVAuth,  можно сделать отступ от tVAuth указав значение, н-р 20
+                set.connect(R.id.tVCode,ConstraintSet.TOP,R.id.tVAuth,ConstraintSet.BOTTOM,50);
+                //приминение нужных параметров
+                set.applyTo(constraintLayout);
             }
-            else {
-                // введите корректный номер телефона
-                Alert0();
-            }
-        }
-        else {
-            // введите номер телефона
-            Alert1();
-        }
+        },5000);
     }
-    // кнопка отправить код
-    public void sendCode (View view){
-        // проверка заполненного поля кода
-        if (!edtCode.getText().toString().isEmpty()){
-            //блокировка кнопки от повторных нажатий
-            sendCode.setEnabled(false);
-            // показать процесс отправки кода смс
-            progressB2.setVisibility(View.VISIBLE);
-            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(code,edtCode.getText().toString());
-            mAuth.signInWithCredential(credential)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()){
-                                //Стиль при процессе криптографии
-                                StyleStartCripto();
-                                // Добро пожаловать
-                                Alert3();
-                                // старт криптографии
-                                StartCripto();
-                                                            }
-                            else {
-                                // убрать процесс отправки кода смс
-                                progressB2.setVisibility(View.INVISIBLE);
-                                //Ошибка регистрации
-                                Alert4();
-                                //разблокировка кнопки от повторных нажатий
-                                sendCode.setEnabled(true);
-                            }
-                        }
-                    }
-                    )
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            //Toast.makeText(Proba.this,"Неверный код подтверждения",Toast.LENGTH_SHORT).show();
-                            }
-                    }
-                    );
-        }
-        else {
-            // введите код подтверждения
-            Alert2();
-        }
+    // видимость процесса криптографии
+    public void StyleStartCripto(){
+        tVAuth.setText("Авторизация успешна");
+        tVCode.setVisibility(View.INVISIBLE);
+        edtCode.setVisibility(View.INVISIBLE);
+        sendCode.setVisibility(View.INVISIBLE);
+        tryAgain.setVisibility(View.INVISIBLE);
+        tVProgressB.setText("Построение базы данных");
+        tVProgressB.setVisibility(View.VISIBLE);
+        progressB.setVisibility(View.VISIBLE);
+        progressB2.setVisibility(View.INVISIBLE);
     }
+
+// МЕТОДЫ
     // старт криптографии
     public void StartCripto(){
         Log.d(TAG, "Старт шифрования");
@@ -464,65 +449,133 @@ public class Proba extends AppCompatActivity {
 //            startActivity(aaa);
         }
     }
-    //переход на лист Zakaz3Finish для регистрации ЗАЯВКИ
-    public void getMainList(){
-        Log.d(TAG, "вход В МЕТОД getMainList");
-        if(checkInternet.equals("Out")){
-            Log.d(TAG, "getMainList остановлен");
-            //return нужен чтобы при возобноблении интернета автоматически не переходило на лист с заявками
-            return;
-        }
 
-        // ловушка не перехода
-        // попав сюда обязательно д.б. осуществлен переход на лист Zaka3Finish для дальнейшей регистрации
-        // может возникнуть ошибка не перехода (такое бывает при сварачивании приложения в момент меньше 5 секунд до перехода на другое октивити)
-        // для этого создаю выдержку времени для появления уведомления для подтверждения перехода на др активити
-
-        // ловушка неперехода
-        Handler handler1 = new Handler();
-        handler1.postDelayed(new Runnable() {
+// ВРЕМЯ СЕССИИ AUTH при переходе на Web страницу при сварачивании
+    //старт время сессии auth
+    public void startTimeSession(){
+        Log.d(TAG, "Time Auth Session Start");
+        Handler timeSession = new Handler();
+        timeSession.postDelayed(new Runnable() {
             @Override
             public void run() {
-                //уведомление нажмите Ок для регистрации заявки
-                Alert5();
+                // время сессии истекло
+                timeSessionEnd();
             }
-        },1000);
-
-        // переход на Zakaz3finish для регистрации заявки
-        GoToZakaz3Finish();
+        },100000);
     }
-    // переход на Zakaz3finish для регистрации заявки
-    public void GoToZakaz3Finish() {
+    // время сессии auth истекло
+    public void timeSessionEnd(){
+        Log.d(TAG, " первое значение refShowOnlyOne "+refShowOnlyOne);
+        // остановка времени сессии если код отправлен или потерян интернет
+        if (!refStopTimeSession.equals("StopTimeSession")){
+            Log.d(TAG, " второе значение refShowOnlyOne "+refShowOnlyOne);
+            // проверка однократности появления такого уведомления
+            if (refShowOnlyOne==1){
+                // увеличиваем число на 1 чтобы уведомление повторно не показывалось (однократность уведомления)
+                refShowOnlyOne=refShowOnlyOne+1;
+                Log.d(TAG, "время сессии истекло");
+                Log.d(TAG, " третье значение refShowOnlyOne "+refShowOnlyOne);
 
-        Intent ProbaToZakaz3finish=new Intent(this,Zakaz3finish.class);
-        //регистрация завершена успешно передаем Ok в Zakaz3finish в лист регистрации заявки
-        ProbaToZakaz3finish.putExtra("authOk","Ok");
-        //параметры заявки полученные из Zakaz3finish возвращаем обратно в Zakaz3finish
-        // телефон
-        ProbaToZakaz3finish.putExtra("phoneNew",phoneNew);
-        // дата поездки
-        ProbaToZakaz3finish.putExtra("Calend",Calend);
-        // рейс самолета
-        ProbaToZakaz3finish.putExtra("RefplaneCity",RefplaneCity);
-        // маршрут такси
-        ProbaToZakaz3finish.putExtra("RefMap",RefMap);
-        // пункт сбора
-        ProbaToZakaz3finish.putExtra("RefPoint",RefPoint);
-        // время вылета/прилета/номер рейса для чартера
-        ProbaToZakaz3finish.putExtra("time",time);
-        // Время точки сбора (для рейсов из Аэропорта)
-        ProbaToZakaz3finish.putExtra("timeOfPoint",timeOfPoint);
-        // дата точки сбора (для рейсов из Аэропорта)
-        ProbaToZakaz3finish.putExtra("dateOfPoint",dateOfPoint);
-        // реф слово чтобы определить какой маршрут "в Аэропорт" или "из Аэропорта" (для правильного отображения активити Zakaz3finish)
-        ProbaToZakaz3finish.putExtra("RefInFromAirport",RefInFromAirport);
-        // стоимость проезда
-        ProbaToZakaz3finish.putExtra("fare",fare);
-        startActivity(ProbaToZakaz3finish);
+                // реф слово чтобы Toast "ожидайте смс" в onCodeSent не появилось при истечении времени сессии
+                refSmsNoShow="Yes";
+
+                AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Proba.this);
+                mAlertDialog.setCancelable(false);
+                mAlertDialog
+                        .setMessage("Время сессии истекло, приложение будет закрыто")
+                        .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                // закрытие приложения реальное
+                                closeApp();
+                            }
+                        });
+                mAlertDialog.create();
+                // Showing Alert Message
+                mAlertDialog.show();
+            }
+        }
+        else {Log.d(TAG, "время сессии auth остановлено");}
+
     }
 
-    // Кнопки
-
+// КНОПКИ
+    // кнопка получить код доступа
+    public void getCode (View view){
+    // проверка пустоты поля
+    if (!edtPhone.getText().toString().isEmpty()){
+        // проверка чила цифр =10
+        if(edtPhone.getText().toString().length()==10){
+            // обнуляем реф слово остановки времени сессии ()
+            refStopTimeSession="";
+            // запуск времени сессии на случай если приложение не перейдет на Web проверку при сворачивании приложения
+            startTimeSession();
+            // видимость процесс регистрации
+            StyleProgressAuth();
+            PhoneAuthOptions options =
+                    PhoneAuthOptions.newBuilder(mAuth)
+                            .setPhoneNumber("+7"+edtPhone.getText().toString())
+                            .setTimeout(60L, TimeUnit.SECONDS)
+                            .setActivity(this)
+                            .setCallbacks(callbacks)
+                            .build();
+            PhoneAuthProvider.verifyPhoneNumber(options);
+        }
+        else {
+            // введите корректный номер телефона
+            Alert0();
+        }
+    }
+    else {
+        // введите номер телефона
+        Alert1();
+    }
+}
+    // кнопка отправить код
+    public void sendCode (View view){
+        // проверка заполненного поля кода
+        if (!edtCode.getText().toString().isEmpty()){
+            //блокировка кнопки от повторных нажатий
+            sendCode.setEnabled(false);
+            // показать процесс отправки кода смс
+            progressB2.setVisibility(View.VISIBLE);
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(code,edtCode.getText().toString());
+            mAuth.signInWithCredential(credential)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                               @Override
+                                               public void onComplete(@NonNull Task<AuthResult> task) {
+                                                   if(task.isSuccessful()){
+                                                       //Стиль при процессе криптографии
+                                                       StyleStartCripto();
+                                                       // Добро пожаловать
+                                                       Alert3();
+                                                       // старт криптографии
+                                                       StartCripto();
+                                                   }
+                                                   else {
+                                                       // убрать процесс отправки кода смс
+                                                       progressB2.setVisibility(View.INVISIBLE);
+                                                       //Ошибка регистрации
+                                                       Alert4();
+                                                       //разблокировка кнопки от повторных нажатий
+                                                       sendCode.setEnabled(true);
+                                                   }
+                                               }
+                                           }
+                    )
+                    .addOnFailureListener(new OnFailureListener() {
+                                              @Override
+                                              public void onFailure(@NonNull Exception e) {
+                                                  //Toast.makeText(Proba.this,"Неверный код подтверждения",Toast.LENGTH_SHORT).show();
+                                              }
+                                          }
+                    );
+        }
+        else {
+            // введите код подтверждения
+            Alert2();
+        }
+    }
     // кнопка попробовать еще раз после пропажи интернета при старте криптографии
     public void tryAgain(View view){
         // выбор работы кода
@@ -555,8 +608,7 @@ public class Proba extends AppCompatActivity {
 
     }
 
-    //Alert Dialogs
-
+//ALERT DIALOG
     // Введите корректный номер телефона
     public void Alert0(){
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Proba.this);
@@ -617,7 +669,6 @@ public class Proba extends AppCompatActivity {
         mAlertDialog
                 .setPositiveButton("Попробовать снова", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
                     }
                 });
         mAlertDialog.create();
@@ -684,8 +735,7 @@ public class Proba extends AppCompatActivity {
         mAlertDialog.show();
     }
 
-    // ТАЙМЕР СВАРАЧИВАНИЯ
-
+// ТАЙМЕР СВАРАЧИВАНИЯ
     // таймер сварачивания (переход на лист Zakaz3Finish для регистрации ЗАЯВКИ)
     public void timePlus(){
         b=5000+c+10;
@@ -700,122 +750,69 @@ public class Proba extends AppCompatActivity {
         },b);
     }
 
-    // Визуализации
-    // видимость при старте страницы
-    public void StyleStart(){
-        tVPhone.setVisibility(View.VISIBLE);
-        edtPhone.setVisibility(View.VISIBLE);
-        getCode.setVisibility(View.VISIBLE);
-        tVProgressB.setVisibility(View.INVISIBLE);
-        progressB.setVisibility(View.INVISIBLE);
-        progressB2.setVisibility(View.INVISIBLE);
-        tVCode.setVisibility(View.INVISIBLE);
-        edtCode.setVisibility(View.INVISIBLE);
-        sendCode.setVisibility(View.INVISIBLE);
-        tryAgain.setVisibility(View.INVISIBLE);
-    }
-    // видимость процесс регистрации
-    public void StyleProgressAuth(){
-        tVPhone.setVisibility(View.INVISIBLE);
-        edtPhone.setVisibility(View.INVISIBLE);
-        getCode.setVisibility(View.INVISIBLE);
-        tVProgressB.setVisibility(View.VISIBLE);
-        progressB.setVisibility(View.VISIBLE);
-    }
-    // видимость ввод проверочный код
-    public void StylSentOPT(){
-        //ТАЙМ-АУТ исчезновения StileProgress
-        Handler handler1 = new Handler();
-        handler1.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                tVProgressB.setVisibility(View.INVISIBLE);
-                progressB.setVisibility(View.INVISIBLE);
-                tVCode.setVisibility(View.VISIBLE);
-                edtCode.setVisibility(View.VISIBLE);
-                sendCode.setVisibility(View.VISIBLE);
-
-                // перепривязка текста
-                ConstraintSet set=new ConstraintSet();
-                // считываем параметры constraintLayout
-                set.clone(constraintLayout);
-                // очистка привязки верхней, хотя это делать не нужно и так работает
-                //set.clear(R.id.tVCode,ConstraintSet.TOP);
-                // привязываем верхушку tVCode  к нижней границе tVAuth,  можно сделать отступ от tVAuth указав значение, н-р 20
-                set.connect(R.id.tVCode,ConstraintSet.TOP,R.id.tVAuth,ConstraintSet.BOTTOM,50);
-                //приминение нужных параметров
-                set.applyTo(constraintLayout);
-            }
-        },5000);
-    }
-    // видимость процесса криптографии
-    public void StyleStartCripto(){
-        tVAuth.setText("Авторизация успешна");
-        tVCode.setVisibility(View.INVISIBLE);
-        edtCode.setVisibility(View.INVISIBLE);
-        sendCode.setVisibility(View.INVISIBLE);
-        tryAgain.setVisibility(View.INVISIBLE);
-        tVProgressB.setText("Построение базы данных");
-        tVProgressB.setVisibility(View.VISIBLE);
-        progressB.setVisibility(View.VISIBLE);
-        progressB2.setVisibility(View.INVISIBLE);
+// ПЕРЕХОДЫ на Другие Активити
+    //переход на лист Zakaz3Finish для регистрации ЗАЯВКИ
+    public void getMainList(){
+    Log.d(TAG, "вход В МЕТОД getMainList");
+    if(checkInternet.equals("Out")){
+        Log.d(TAG, "getMainList остановлен");
+        //return нужен чтобы при возобноблении интернета автоматически не переходило на лист с заявками
+        return;
     }
 
-    // ВРЕМЯ СЕССИИ AUTH при переходе на Web страницу при сварачивании
+    // ловушка не перехода
+    // попав сюда обязательно д.б. осуществлен переход на лист Zaka3Finish для дальнейшей регистрации
+    // может возникнуть ошибка не перехода (такое бывает при сварачивании приложения в момент меньше 5 секунд до перехода на другое октивити)
+    // для этого создаю выдержку времени для появления уведомления для подтверждения перехода на др активити
 
-    //старт время сессии auth
-    public void startTimeSession(){
-        Log.d(TAG, "Time Auth Session Start");
-        Handler timeSession = new Handler();
-        timeSession.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // время сессии истекло
-                timeSessionEnd();
-            }
-        },100000);
-    }
-    // время сессии auth истекло
-    public void timeSessionEnd(){
-        Log.d(TAG, " первое значение refShowOnlyOne "+refShowOnlyOne);
-        // остановка времени сессии если код отправлен или потерян интернет
-        if (!refStopTimeSession.equals("StopTimeSession")){
-            Log.d(TAG, " второе значение refShowOnlyOne "+refShowOnlyOne);
-            // проверка однократности появления такого уведомления
-            if (refShowOnlyOne==1){
-                // увеличиваем число на 1 чтобы уведомление повторно не показывалось (однократность уведомления)
-                refShowOnlyOne=refShowOnlyOne+1;
-                Log.d(TAG, "время сессии истекло");
-                Log.d(TAG, " третье значение refShowOnlyOne "+refShowOnlyOne);
-
-                // реф слово чтобы Toast "ожидайте смс" в onCodeSent не появилось при истечении времени сессии
-                refSmsNoShow="Yes";
-
-                AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Proba.this);
-                mAlertDialog.setCancelable(false);
-                mAlertDialog
-                        .setMessage("Время сессии истекло, приложение будет закрыто")
-                        .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-
-                                //переход на лист Zakaz3Finish при неудачной авторизации
-                                restartActivity();
-                            }
-                        });
-                mAlertDialog.create();
-                // Showing Alert Message
-                mAlertDialog.show();
-            }
+    // ловушка неперехода
+    Handler handler1 = new Handler();
+    handler1.postDelayed(new Runnable() {
+        @Override
+        public void run() {
+            //уведомление нажмите Ок для регистрации заявки
+            Alert5();
         }
-        else {Log.d(TAG, "время сессии auth остановлено");}
+    },1000);
 
+    // переход на Zakaz3finish для регистрации заявки
+    GoToZakaz3Finish();
+}
+    // переход на Zakaz3finish для регистрации заявки
+    public void GoToZakaz3Finish() {
+
+        Intent ProbaToZakaz3finish=new Intent(this,Zakaz3finish.class);
+        //регистрация завершена успешно передаем Ok в Zakaz3finish в лист регистрации заявки
+        ProbaToZakaz3finish.putExtra("authOk","Ok");
+        //параметры заявки полученные из Zakaz3finish возвращаем обратно в Zakaz3finish
+        // телефон
+        ProbaToZakaz3finish.putExtra("phoneNew",phoneNew);
+        // дата поездки
+        ProbaToZakaz3finish.putExtra("Calend",Calend);
+        // рейс самолета
+        ProbaToZakaz3finish.putExtra("RefplaneCity",RefplaneCity);
+        // маршрут такси
+        ProbaToZakaz3finish.putExtra("RefMap",RefMap);
+        // пункт сбора
+        ProbaToZakaz3finish.putExtra("RefPoint",RefPoint);
+        // время вылета/прилета/номер рейса для чартера
+        ProbaToZakaz3finish.putExtra("time",time);
+        // Время точки сбора (для рейсов из Аэропорта)
+        ProbaToZakaz3finish.putExtra("timeOfPoint",timeOfPoint);
+        // дата точки сбора (для рейсов из Аэропорта)
+        ProbaToZakaz3finish.putExtra("dateOfPoint",dateOfPoint);
+        // реф слово чтобы определить какой маршрут "в Аэропорт" или "из Аэропорта" (для правильного отображения активити Zakaz3finish)
+        ProbaToZakaz3finish.putExtra("RefInFromAirport",RefInFromAirport);
+        // стоимость проезда
+        ProbaToZakaz3finish.putExtra("fare",fare);
+        startActivity(ProbaToZakaz3finish);
     }
     // закрытие приложения при окончании времени сессии auth (т.е. не удачной авторизации)
-   public void restartActivity(){
+    public void closeApp(){
         // закрытие приложения реальное
-       finishAffinity();
-       System.exit(0);
-   }
+        finishAffinity();
+        System.exit(0);
+    }
 
 //    // ВРЕМЯ СЕССИИ Cripto при переходе на Zakaz3Finish страницу при сварачивании
 //

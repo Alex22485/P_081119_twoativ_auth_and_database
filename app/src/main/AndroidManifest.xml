@@ -30,6 +30,10 @@
             android:name=".Zakaz3finish"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".Zakaz4Request"
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name=".FeedBack1" />
         <activity android:name=".Proba" />
         <activity android:name=".ViewMapLesosibirsk" />

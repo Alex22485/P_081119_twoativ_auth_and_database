@@ -37,12 +37,12 @@ public class MainList extends AppCompatActivity {
     }
 
     public void OPT_Auth(View view){
-        Intent OPT_Auth= new Intent(this,Zakaz1.class);
+        Intent OPT_Auth= new Intent(this,Zakaz3finish.class);
         startActivity(OPT_Auth);
     }
 
     public void Zakaz1(View view){
-        Intent Zakaz1= new Intent(this,Zakaz1.class);
+        Intent Zakaz1= new Intent(this,Zakaz4Request.class);
         startActivity(Zakaz1);
     }
     public void probaRegDriver(View view){

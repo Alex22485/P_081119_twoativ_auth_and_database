@@ -646,6 +646,11 @@ public class Zakaz1 extends AppCompatActivity {
                         // скрыть кнопку изменить условия заказа
                         button5.setVisibility(View.INVISIBLE);
 
+                        // приравниваем время+даты точки сбора с временем вылета оно будет совпадать с датой прилет и временем прилета
+                        // чтобы не было null
+                        timeOfPoint=time;
+                        dateOfPoint=Calend;
+
                         // Расчет Cтоимости проезда
                         Choisfare();
                     }
@@ -938,6 +943,10 @@ public class Zakaz1 extends AppCompatActivity {
         // если рейс самолета чартер из Игарки то присваиваем time номер рейса чартера 1,2,3
         if (haveACharter.equals("haveACharter")){
             time=numberCharterRef;
+            // приравниваем время+даты точки сбора с временем вылета оно будет совпадать с датой прилет и временем прилета
+            // чтобы не было null
+            timeOfPoint=time;
+            dateOfPoint=Calend;
         }
 
         // присваиваем полное название рейса самолета Н-р Игарка красноярск или Красноярск-Новосибирск
@@ -1228,8 +1237,6 @@ public class Zakaz1 extends AppCompatActivity {
         Zakaz1ToZakaz3finish.putExtra("RefMap", RefMap);
         // точка сбора
         Zakaz1ToZakaz3finish.putExtra("RefPoint", RefPoint);
-        // Время точки сбора (для рейсов из Аэропорта)
-        Zakaz1ToZakaz3finish.putExtra("timeOfPoint", timeOfPoint);
         // Время точки сбора (для рейсов из Аэропорта)
         Zakaz1ToZakaz3finish.putExtra("timeOfPoint", timeOfPoint);
         // реф слово для экспорта в Zaka3Finish (чтобы определить какой маршрут "в Аэропорт" или "из Аэропорта")

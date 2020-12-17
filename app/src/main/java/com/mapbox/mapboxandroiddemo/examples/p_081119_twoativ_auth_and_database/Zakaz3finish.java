@@ -52,22 +52,22 @@ public class Zakaz3finish extends AppCompatActivity {
     // значения экспорта из других активити
     String phoneNew,Calend,RefplaneCity,time,RefMap,RefPoint,timeOfPoint,dateOfPoint;
     // наполнение активити
-    TextView Calend1,RefMap1,RefPoint1,textTime,RefplaneCity1,time1,dateFly;
+    TextView Calend1,RefMap1,textTime,RefplaneCity1,time1,dateFly;
     TextView text2,text3,text4,TextDateFly,text5,text6,text7;
 
     // Сообщение кнопки времени точки сбора (Присваивается в зависимости от типап Маршрута Чартер, В Аэропорт Из  Аэропорта)
     String stringExplanation="";
     // пояснение при Чартерных рейсах из Играки
-    String forIgarkaCharter="Пожалуйста, вылетая из Игарки, сообщите водителю об этом, иначе он не узнает время вашего прилета.";
+    String forIgarkaCharter="Вылетая из Игарки, сообщите водителю об этом. Только так он узнает время вашего прилета (Функция будет доступна после регистрации заявки).";
     // пояснение при рейсах В Аэропорт
-    String inAirport="Время рассчитано к началу регистрации на рейс (за 2часа до вылета) и с учетом дороги до Аэропорта.";
+    String inAirport="Время рассчитано к началу регистрации на рейс (т.е. за 2часа до вылета плюс время дороги до Аэропорта).";
     // пояснение при рейсах из Аэропорта
-    String fromAirport="Водитель будет ждать вас в Аэропорту. Пожалуйста, перед вылетом в Красноярск сообщите ему об этом.";
+    String fromAirport="Водитель будет ждать вас в Аэропорту. Пожалуйста, перед вылетом в Красноярск сообщите ему об этом (Функция будет доступна после регистрации заявки).";
     // сообщение при нажатии на кнопку изменить заказ
     String textMassageChaingeOder="Данные заказа будут стёрты, продолжить? ";
 
-    // кнопки подробней, Зарегестрировать заявку, изменить условия заявки, детали заказа
-    Button BtnRefTime,btnOder,button9,detailsOder;
+    // кнопки подробней, Зарегестрировать заявку, изменить условия заявки, детали заказа, карта
+    Button BtnRefTime,btnOder,button9,detailsOder,RefPoint1;
     // для регистрации заявки
     String tOBeforReg;
     String proverkaBeforRegistraion;
@@ -79,7 +79,6 @@ public class Zakaz3finish extends AppCompatActivity {
 
         Calend1=findViewById(R.id.Calend1);
         RefMap1=findViewById(R.id.RefMap1);
-        RefPoint1=findViewById(R.id.RefPoint1);
         textTime=findViewById(R.id.textTime);
         BtnRefTime=findViewById(R.id.BtnRefTime);
         RefplaneCity1=findViewById(R.id.RefplaneCity1);
@@ -95,8 +94,10 @@ public class Zakaz3finish extends AppCompatActivity {
         btnOder=findViewById(R.id.btnOder);
         button9=findViewById(R.id.button9);
         detailsOder=findViewById(R.id.detailsOder);
+        RefPoint1=findViewById(R.id.RefPoint1);
         tVProgressB=findViewById(R.id.tVProgressB);
         progressB=findViewById(R.id.progressB);
+
         // получить токен
         FirebaseMessaging. getInstance (). getToken ()
                 . addOnCompleteListener ( new OnCompleteListener< String >() {
@@ -149,7 +150,7 @@ public class Zakaz3finish extends AppCompatActivity {
             // реф слово чтобы определить какой маршрут "в Аэропорт" или "из Аэропорта" (для правильного отображения активити)
             RefInFromAirport=ProbaToZakaz3finish.getStringExtra("RefInFromAirport");
             // стоимость проезда
-            RefInFromAirport=ProbaToZakaz3finish.getStringExtra("fare");
+            fare=ProbaToZakaz3finish.getStringExtra("fare");
 
 
             Log.d(TAG, "автоматическая регистрация после авторизации: ");
@@ -218,7 +219,7 @@ public class Zakaz3finish extends AppCompatActivity {
             VisualOderShow();
         }
     }
-
+// МЕТОДЫ
     // отображение заявки на экране
     public void VisualOderShow(){
         // показать всю визуализацию активити
@@ -297,7 +298,6 @@ public class Zakaz3finish extends AppCompatActivity {
             }
         }
     }
-
     // проверка интернета перед регистрацией заявки
     public void btnInsert(){
         Log.d(TAG, "Старт проверка интернета ЧЕРЕЗ YesNO");
@@ -389,10 +389,10 @@ public class Zakaz3finish extends AppCompatActivity {
                 .child("Personal")
                 .child(phoneNew)
                 .child("Заявки")
-                .child(Calend)
+                .child(dateOfPoint+"*"+Calend) // дата точки сбор*дата вылета(прилета)
                 .child(RefplaneCity)
-                .child(time)
-                .child(RefMap)
+                .child(timeOfPoint+"*"+time) // время точки сбор*время вылета(прилета)
+                .child(RefMap+"*"+fare) // маршрут*стоимость
                 .child(RefPoint)
                 .child("CheckStopOder")
                 .child(phoneNew);
@@ -421,10 +421,10 @@ public class Zakaz3finish extends AppCompatActivity {
                 .child("Personal")
                 .child(phoneNew)
                 .child("Заявки")
-                .child(Calend)
+                .child(dateOfPoint+"*"+Calend) // дата точки сбор*дата вылета(прилета)
                 .child(RefplaneCity)
-                .child(time)
-                .child(RefMap)
+                .child(timeOfPoint+"*"+time) // время точки сбор*время вылета(прилета)
+                .child(RefMap+"*"+fare) // маршрут*стоимость
                 .child(RefPoint)
                 .child("Разрешение")
                 .child(phoneNew)
@@ -732,7 +732,7 @@ public class Zakaz3finish extends AppCompatActivity {
     // Переход на лист Статуса
     public void onStatusList() {
         //Переход на лист Статуса
-        Intent Zakaz3FinishTOMain6 = new Intent( this,Main6Activity.class );
+        Intent Zakaz3FinishTOMain6 = new Intent( this,Zakaz4Request.class );
         Zakaz3FinishTOMain6.putExtra("phoneRef",phoneNew);
         startActivity(Zakaz3FinishTOMain6);
     }
