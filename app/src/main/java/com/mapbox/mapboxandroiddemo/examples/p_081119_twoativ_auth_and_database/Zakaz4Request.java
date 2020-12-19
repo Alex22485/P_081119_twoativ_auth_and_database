@@ -26,9 +26,11 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Zakaz4Request extends AppCompatActivity {
 
+    // КОД ПРОТЕСТИРОВАН 19.12.2020
+
     // Зарегистрированый заказ
     // реализована блокировка и разблокировка спящего режима экрана getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-    
+
 
     private static final String TAG ="Zakaz4Request" ;
     // наполнение активити
@@ -507,6 +509,7 @@ public class Zakaz4Request extends AppCompatActivity {
                     Log.d(TAG, "Маршрут*стоимость"+RefMapANDfare);
                     Log.d(TAG, "Точка сбора"+RefPoint);
                     Log.d(TAG, "Найденный Автомобиль"+сarDrive);
+                    Log.d(TAG, "Человек в заявке"+peopleOder);
 
                     //данные считаны реф значение становится не равно нулю
                     proverka=dateOfPointANDCalend;
@@ -963,6 +966,10 @@ public class Zakaz4Request extends AppCompatActivity {
                         VisibleSearchCarNo();
                         // Скрыть детали заказа
                         VisibleDetailesNo();
+                        // Скрыть QRcode
+                        VisibleQRcodeNo();
+                        //Скрыть Сообщение водителю Я Вылетел-Приземлился
+                        VisibleMessageDriverNo();
                         //Показать Прогресс удаления заказа
                         VisibleRemoveYes();
 

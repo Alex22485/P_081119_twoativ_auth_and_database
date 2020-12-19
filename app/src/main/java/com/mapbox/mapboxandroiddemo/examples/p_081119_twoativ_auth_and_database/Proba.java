@@ -43,6 +43,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Proba extends AppCompatActivity {
 
+    // КОД ПРОТЕСТИРОВАН 19.12.2020
+
     // 1. Авторизация по номеру телефона
     // а.если в момент отправки номера телефона свернуть приложение процесс Auth может (почти всегда, но бывает и нормально) не завершится
     // поэтому добавил время сессии 100 секунд по истечении которых уведомление "Приложение будт закрыто"
@@ -54,18 +56,6 @@ public class Proba extends AppCompatActivity {
     // a. c таймером сворачивания, который обнуляется (с 5000 до 10) при запуске длительного метода StartCripto(). т.к есть  всегда первый-нормальный переход в onStop при Web переходе
     // б. реализована ловушка неперехода в Zakaz3Finish (при сворачивании приложения до 5 секунд ) через Alert5() (он принудительно разрешает переход на др активити после сварачивания)
 
-    //  для определения времени сбора (преобразование слова в число и обратно)
-    String[] array1 ={"0","1","2","3","4","5","6","7","8","9"};
-    Integer[] array2 ={0,1,2,3,4,5,6,7,8,9};
-    Integer onePointHour;
-    Integer twoPointHour;
-    Integer finalIntHour;
-    Integer reftime;
-    String refStringHour;
-    // время дороги до аэропорта
-    Integer timeRoad;
-    // время регистрации (за сколько часов до вылета начинается регистрация)
-    Integer timeRegistrtation;
 
     private static final String TAG ="Proba";
     // ввод телефона и OTP кода
@@ -110,9 +100,6 @@ public class Proba extends AppCompatActivity {
     Integer refShowOnlyOne=1;
     // ref слово для выбора какой использовать код в кнопке "Попробовать еще раз" при пропаже интернета в процессе криптографии и записи токена в личную комнату
     String refBtnTryAgain="";
-    // таймер сварачивания для перехода в Zakaz3Finish для автоамтической регистрации
-    // заявки при сворачивании приложения
-    Integer b,c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,10 +110,6 @@ public class Proba extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         // отмена блокировки спящего режима экрана
         //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-        // для таймера сварачивания
-        // взято призвольное мальнькое время
-        c=10;
 
         mAuth=FirebaseAuth.getInstance();
         constraintLayout=findViewById(R.id.constraintLayout);
@@ -142,7 +125,7 @@ public class Proba extends AppCompatActivity {
         sendCode=findViewById(R.id.sendCode);
         tryAgain=findViewById(R.id.tryAgain);
 
-        //данные из main3Activity
+        //данные из Zakaz3finish
         Intent Zakaz3finishToProba=getIntent();
 
         // дата поездки
@@ -229,9 +212,6 @@ public class Proba extends AppCompatActivity {
     protected void onStop (){
         super.onStop();
         Log.d(TAG, "onStop");
-        // таймер-сворачивания для перехода в Zakaz3Finish
-        c=5000;
-        Log.d(TAG, "значение с"+c);
     }
 
 // ВИЗУАЛИЗАЦИИ
@@ -299,10 +279,6 @@ public class Proba extends AppCompatActivity {
     // старт криптографии
     public void StartCripto(){
         Log.d(TAG, "Старт шифрования");
-        // повторно присваеваем с=10 в начале длительного процесса
-        // т.к. при авторизации, активити нормально всегда переходит в OnStop и становится равным 5000 поэтому обновляем значение С снова до 10
-        c=10;
-        Log.d(TAG, "c в StartCripto() равно"+c);
 
         //проверка интернета
         Handler handler1 = new Handler();
@@ -395,10 +371,7 @@ public class Proba extends AppCompatActivity {
     // запись в личную комнату токена для дальнейшего формирования данных о пользователе
     public void WritePrivatTokentoBD(){
         Log.d(TAG, "Start записи токена");
-        // повторно присваеваем с=10 в начале длительного процесса
-        // т.к. при авторизации, активити нормально всегда переходит в OnStop и становится равным 5000 поэтому обновляем значение С снова до 10
-        c=10;
-        Log.d(TAG, "c в WritePrivatTokentoBD равно"+c);
+
         //ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА
         Handler handler1 = new Handler();
         handler1.postDelayed(new Runnable() {
@@ -424,14 +397,26 @@ public class Proba extends AppCompatActivity {
                 // ОСТАНАВЛИВАЕМ ПРОСЛУШИВАНИЕ БД БД ЗАЯВКИ...-...-...-"CheckStopOder"...
                 ref01.removeEventListener(this);
                 writeData="Yes";
-                // таймер сварачивания (переход на лист Zakaz3Finish для регистрации ЗАЯВКИ)
-                timePlus();
+                //  проверка не Вышло ли время интернета для перехода в Zakaz3Finish
+                getMainList();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         }
         );
+    }
+    //  проверка не Вышло ли время интернета для перехода в Zakaz3Finish
+    public void getMainList(){
+        Log.d(TAG, "вход В МЕТОД getMainList");
+        if(checkInternet.equals("Out")){
+            Log.d(TAG, "getMainList остановлен");
+            //return нужен чтобы при возобноблении интернета автоматически не переходило на лист с заявками
+            return;
+        }
+        // переход на Zakaz3finish для регистрации заявки
+        GoToZakaz3Finish();
+
     }
     // проверка интернета при записи токена в БД
     public void inetNotWhenGoCheckRegistration(){
@@ -444,14 +429,9 @@ public class Proba extends AppCompatActivity {
             // ref слово для выбора кода в кнопке "Попробовать еще раз"
             refBtnTryAgain="twoCode";
             Log.d(TAG, "Интернета пропал при записи данных пользователя в личную комнату");
-
-//            Intent aaa = new Intent(this,InternetNot.class);
-//            startActivity(aaa);
         }
     }
-
-// ВРЕМЯ СЕССИИ AUTH при переходе на Web страницу при сварачивании
-    //старт время сессии auth
+    // ВРЕМЯ СЕССИИ AUTH при переходе на Web страницу при сварачивании
     public void startTimeSession(){
         Log.d(TAG, "Time Auth Session Start");
         Handler timeSession = new Handler();
@@ -463,41 +443,7 @@ public class Proba extends AppCompatActivity {
             }
         },100000);
     }
-    // время сессии auth истекло
-    public void timeSessionEnd(){
-        Log.d(TAG, " первое значение refShowOnlyOne "+refShowOnlyOne);
-        // остановка времени сессии если код отправлен или потерян интернет
-        if (!refStopTimeSession.equals("StopTimeSession")){
-            Log.d(TAG, " второе значение refShowOnlyOne "+refShowOnlyOne);
-            // проверка однократности появления такого уведомления
-            if (refShowOnlyOne==1){
-                // увеличиваем число на 1 чтобы уведомление повторно не показывалось (однократность уведомления)
-                refShowOnlyOne=refShowOnlyOne+1;
-                Log.d(TAG, "время сессии истекло");
-                Log.d(TAG, " третье значение refShowOnlyOne "+refShowOnlyOne);
 
-                // реф слово чтобы Toast "ожидайте смс" в onCodeSent не появилось при истечении времени сессии
-                refSmsNoShow="Yes";
-
-                AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Proba.this);
-                mAlertDialog.setCancelable(false);
-                mAlertDialog
-                        .setMessage("Время сессии истекло, приложение будет закрыто")
-                        .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-
-                                // закрытие приложения реальное
-                                closeApp();
-                            }
-                        });
-                mAlertDialog.create();
-                // Showing Alert Message
-                mAlertDialog.show();
-            }
-        }
-        else {Log.d(TAG, "время сессии auth остановлено");}
-
-    }
 
 // КНОПКИ
     // кнопка получить код доступа
@@ -648,7 +594,7 @@ public class Proba extends AppCompatActivity {
         mAlertDialog.create();
         mAlertDialog.show();
     }
-    // Добро пожаловать
+    // Авторизация успешна, нажмите ОК
     public void Alert3(){
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Proba.this);
         mAlertDialog.setMessage("Авторизация успешна, нажмите ОК!");
@@ -661,7 +607,7 @@ public class Proba extends AppCompatActivity {
         mAlertDialog.create();
         mAlertDialog.show();
     }
-    //Ошибка авторизации
+    //Неверный код подтверждения или слабый сигнал интернета
     public void Alert4(){
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Proba.this);
         mAlertDialog.setMessage("Неверный код подтверждения или слабый сигнал интернета");
@@ -673,6 +619,55 @@ public class Proba extends AppCompatActivity {
                 });
         mAlertDialog.create();
         mAlertDialog.show();
+    }
+    //ошибка связи проверьте интернет выдает callback
+    public void AlertNotInternet(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Proba.this);
+        mAlertDialog.setMessage("Ошибка связи, проверьте интернет");
+        mAlertDialog.setCancelable(false);
+        mAlertDialog
+                .setPositiveButton("Ок", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        StyleStart();
+                    }
+                });
+        mAlertDialog.create();
+        mAlertDialog.show();
+    }
+    // время сессии auth истекло
+    public void timeSessionEnd(){
+        Log.d(TAG, " первое значение refShowOnlyOne "+refShowOnlyOne);
+        // остановка времени сессии если код отправлен или потерян интернет
+        if (!refStopTimeSession.equals("StopTimeSession")){
+            Log.d(TAG, " второе значение refShowOnlyOne "+refShowOnlyOne);
+            // проверка однократности появления такого уведомления
+            if (refShowOnlyOne==1){
+                // увеличиваем число на 1 чтобы уведомление повторно не показывалось (однократность уведомления)
+                refShowOnlyOne=refShowOnlyOne+1;
+                Log.d(TAG, "время сессии истекло");
+                Log.d(TAG, " третье значение refShowOnlyOne "+refShowOnlyOne);
+
+                // реф слово чтобы Toast "ожидайте смс" в onCodeSent не появилось при истечении времени сессии
+                refSmsNoShow="Yes";
+
+                AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Proba.this);
+                mAlertDialog.setCancelable(false);
+                mAlertDialog
+                        .setMessage("Время сессии истекло, приложение будет закрыто")
+                        .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                // закрытие приложения реальное
+                                closeApp();
+                            }
+                        });
+                mAlertDialog.create();
+                // Showing Alert Message
+                mAlertDialog.show();
+            }
+        }
+        else {Log.d(TAG, "время сессии auth остановлено");}
+
     }
     //ловушка от неперехода работает если приложение не перешло на Zakaz3Finish для дальнейшей регистрации заявки
     public void Alert5(){
@@ -690,22 +685,8 @@ public class Proba extends AppCompatActivity {
         mAlertDialog.create();
         mAlertDialog.show();
     }
-    //ошибка связи проверьте интернет
-    public void AlertNotInternet(){
-        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Proba.this);
-        mAlertDialog.setMessage("Ошибка связи, проверьте интернет");
-        mAlertDialog.setCancelable(false);
-        mAlertDialog
-                .setPositiveButton("Ок", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        StyleStart();
-                    }
-                });
-        mAlertDialog.create();
-        mAlertDialog.show();
-    }
     // 1. Интернет пропал при работе криптографии
-    // 2. Интернет пропал при записи данных пользователя в личную комнату
+    // 2. Интернет пропал при записи токена пользователя в личную комнату
     public void showAlertDialog4(){
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Proba.this);
         mAlertDialog.setMessage("Низкая скорость передачи данных, проверьте интернет");
@@ -735,49 +716,7 @@ public class Proba extends AppCompatActivity {
         mAlertDialog.show();
     }
 
-// ТАЙМЕР СВАРАЧИВАНИЯ
-    // таймер сварачивания (переход на лист Zakaz3Finish для регистрации ЗАЯВКИ)
-    public void timePlus(){
-        b=5000+c+10;
-        Log.d(TAG, "timePlus b="+b);
-        Handler handler1 = new Handler();
-        handler1.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // переход в Zakaz3Finish для автоматической регистрации заявки после авторизации
-                getMainList();
-            }
-        },b);
-    }
-
 // ПЕРЕХОДЫ на Другие Активити
-    //переход на лист Zakaz3Finish для регистрации ЗАЯВКИ
-    public void getMainList(){
-    Log.d(TAG, "вход В МЕТОД getMainList");
-    if(checkInternet.equals("Out")){
-        Log.d(TAG, "getMainList остановлен");
-        //return нужен чтобы при возобноблении интернета автоматически не переходило на лист с заявками
-        return;
-    }
-
-    // ловушка не перехода
-    // попав сюда обязательно д.б. осуществлен переход на лист Zaka3Finish для дальнейшей регистрации
-    // может возникнуть ошибка не перехода (такое бывает при сварачивании приложения в момент меньше 5 секунд до перехода на другое октивити)
-    // для этого создаю выдержку времени для появления уведомления для подтверждения перехода на др активити
-
-    // ловушка неперехода
-    Handler handler1 = new Handler();
-    handler1.postDelayed(new Runnable() {
-        @Override
-        public void run() {
-            //уведомление нажмите Ок для регистрации заявки
-            Alert5();
-        }
-    },1000);
-
-    // переход на Zakaz3finish для регистрации заявки
-    GoToZakaz3Finish();
-}
     // переход на Zakaz3finish для регистрации заявки
     public void GoToZakaz3Finish() {
 
@@ -806,6 +745,16 @@ public class Proba extends AppCompatActivity {
         // стоимость проезда
         ProbaToZakaz3finish.putExtra("fare",fare);
         startActivity(ProbaToZakaz3finish);
+
+        // ловушка не перехода в Zakaz3finish
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //уведомление нажмите Ок для регистрации заявки
+                Alert5();
+            }
+        },1000);
     }
     // закрытие приложения при окончании времени сессии auth (т.е. не удачной авторизации)
     public void closeApp(){
@@ -813,62 +762,6 @@ public class Proba extends AppCompatActivity {
         finishAffinity();
         System.exit(0);
     }
-
-//    // ВРЕМЯ СЕССИИ Cripto при переходе на Zakaz3Finish страницу при сварачивании
-//
-//    //старт время сессии Cripto
-//    public void startTimeSessionCripto(){
-//        Log.d(TAG, "Time Cripto Session Start");
-//        Handler timeSession = new Handler();
-//        timeSession.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                // время сессии истекло
-//                timeCriptoSessionEnd();
-//            }
-//        },100000);
-//    }
-//    // время сессии Cripto истекло
-//    public void timeCriptoSessionEnd(){
-//        Log.d(TAG, " первое значение refShowOnlyOne "+refShowOnlyOne);
-//        // остановка времени сессии если код отправлен или потерян интернет
-//        if (!refStopTimeSession.equals("StopTimeSession")){
-//            Log.d(TAG, " второе значение refShowOnlyOne "+refShowOnlyOne);
-//            // проверка однократности появления такого уведомления
-//            if (refShowOnlyOne==1){
-//                // увеличиваем число на 1 чтобы уведомление повторно не показывалось (однократность уведомления)
-//                refShowOnlyOne=refShowOnlyOne+1;
-//                Log.d(TAG, "время сессии истекло");
-//                Log.d(TAG, " третье значение refShowOnlyOne "+refShowOnlyOne);
-//
-//                // реф слово чтобы Toast "ожидайте смс" в onCodeSent не появилось при истечении времени сессии
-//                refSmsNoShow="Yes";
-//
-//                AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Proba.this);
-//                mAlertDialog.setCancelable(false);
-//                mAlertDialog
-//                        .setMessage("Время сессии истекло, приложение будет закрыто")
-//                        .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
-//
-//                                //переход на лист Zakaz3Finish при неудачной авторизации
-//                                restartActivity();
-//                            }
-//                        });
-//                mAlertDialog.create();
-//                // Showing Alert Message
-//                mAlertDialog.show();
-//            }
-//        }
-//        else {Log.d(TAG, "время сессии auth остановлено");}
-//
-//    }
-//    // закрытие приложения при окончании времени сессии Cripto (т.е. не удачной авторизации)
-//    public void restartApp(){
-//        // закрытие приложения реальное
-//        finishAffinity();
-//        System.exit(0);
-//    }
 
     // ВРЕМЯ СЕССИИ КРИПТО  AUTH
     // Блокировка кнопки Back!!!! :)))

@@ -20,6 +20,8 @@ import java.util.Calendar;
 
 public class Zakaz1 extends AppCompatActivity {
 
+    // КОД ПРОТЕСТИРОВАН 19.12.2020
+
     // Первый лист заказа
     // 1.есть ловушка AlertZakaz2 неперехода на Zakaz2 (лист выбора маршрута) при несварачивании приложения
     // 2. есть ловушка AlertZakaz3finish неперехода на Zakaz3Finish (итоговый лист заказа)
@@ -27,7 +29,7 @@ public class Zakaz1 extends AppCompatActivity {
     // (время дороги и время до начала регистрации забивается в timeRoad и timeRegistration )
     // при необходимости(если заказ выпадает на первый день месяца и года) время сбора и дата заявки пересчитывается на предыдущие сутки месяц и год
 
-    private static final String TAG ="Zakaz1" ;
+    private static final String TAG ="Zakaz1";
 
     String phoneNew;
     String phoneNewFromMain6;
@@ -344,8 +346,6 @@ public class Zakaz1 extends AppCompatActivity {
                 .setItems(listCityFromIn, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // обнуляем число для таймера сварачивания
-                        //c=10;
                         refFromInCity=listCityFromIn[which];
                         button1.setEnabled(false);
                         // задержка для дизайна+переход на Zakaz2
@@ -1205,15 +1205,15 @@ public class Zakaz1 extends AppCompatActivity {
     startActivity(Zakaz1ToZakaz2);
 
         // Alert ловушка неперехода на Zakaz2
-    Handler handler1 = new Handler();
-    handler1.postDelayed(new Runnable() {
-        @Override
-        public void run() {
-            // Alert ловушка неперехода на Zakaz2
-            AlertZakaz2();
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Alert ловушка неперехода на Zakaz2
+                AlertZakaz2();
             }
             },1000);
-}
+    }
     // Переход на Форму обратной связи (если нет нужного города)
     public void FeedBack1(){
         Intent FeedBack1= new Intent(this,FeedBack1.class);

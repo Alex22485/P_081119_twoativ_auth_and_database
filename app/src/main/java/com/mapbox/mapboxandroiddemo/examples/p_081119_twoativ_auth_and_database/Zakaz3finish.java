@@ -27,6 +27,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 public class Zakaz3finish extends AppCompatActivity {
 
+    // КОД ПРОТЕСТИРОВАН 19.12.2020
+
     //финишный лист заказа с кнопкой зарегистрировать заказ
     // реализован метод времени точки сбора как  время вылета -(время дороги +время до начала регистрации) только для целых чисел
     // реализована блокировка спящего режима экрана getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -130,6 +132,12 @@ public class Zakaz3finish extends AppCompatActivity {
 
         // автоматическая регистрация заявки (после успешной авторизации) при переходе из Proba.class
         if(authOK.equals("KOk")){
+
+            // блокировка спящего режима экрана
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            // отмена блокировки спящего режима экрана
+            //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
             // данные экспорта из Proba
             // телефон
             phoneNew=ProbaToZakaz3finish.getStringExtra("phoneNew");
@@ -716,7 +724,7 @@ public class Zakaz3finish extends AppCompatActivity {
         else{
             Log.d(TAG, "Время поиска Разрешение/Запрет для записи заявки вышло not internet");
             // Нет интернета при получении  РАЗРЕШЕНО-ЗАПРЕЩЕНО из БД при регистрации заявки
-            showAlertDialog7(); // ПРОВЕРИТЬ ОБЯЗАТЕЛЬНО
+            showAlertDialog7();
         }
     }
     // Переход на лист оформления заявки т.к. выбранный пункт сбора уже сформирован либо

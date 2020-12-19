@@ -1,19 +1,49 @@
 package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 public class MainList extends AppCompatActivity {
+
+    private static final String TAG ="MainList" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_list);
+    }
 
-        //IamUser();
+    // Alert нет Интернета Перезапуск активити или закрыть приложение
+    public void showAlertDialog4(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(MainList.this);
+        mAlertDialog.setTitle("Слабый сигнал интернета!");
+        mAlertDialog.setMessage("Нажмите ОК, чтобы поробовать еще раз.");
+        mAlertDialog.setCancelable(false);
+        mAlertDialog
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        Intent mIntent=getIntent();
+                        finish();
+                        startActivity(mIntent);
+                    }
+                });
+        mAlertDialog
+                .setNegativeButton("Закрыть приложение", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // закрытие приложения реальное
+                        finishAffinity();
+                        System.exit(0);
+                    }
+                });
+        mAlertDialog.create();
+        mAlertDialog.show();
     }
 
     public void IamUser(){
@@ -37,7 +67,7 @@ public class MainList extends AppCompatActivity {
     }
 
     public void OPT_Auth(View view){
-        Intent OPT_Auth= new Intent(this,Zakaz3finish.class);
+        Intent OPT_Auth= new Intent(this,Proba.class);
         startActivity(OPT_Auth);
     }
 

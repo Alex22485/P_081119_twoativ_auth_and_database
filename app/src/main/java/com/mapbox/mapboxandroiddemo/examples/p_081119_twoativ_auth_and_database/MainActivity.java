@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.WindowManager;
-import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +22,14 @@ import com.google.firebase.messaging.FirebaseMessaging;
 public class MainActivity extends AppCompatActivity {
 
     // главная страница заставка
+    // Alert перезапуск или закрытие приложения при пропаже интернета:
+    // 1. при считывании токена(в самый первый запуск приложения)
+    // 2. при считывании данных авторизации
+    // 3. при при проверке YES-NO
+    // ЛОАВУШКА не Перехода
+    // 1. на лист без авторизации
+    // 2. на лист формирования заявок
+    // 3. на лист статуса заявки
     // применен таймер сварачивания для корректного перехода на любую другую активити при свернутом приложении
     // реализовано вермя сессии
     // блокировка спящего режима экрана
@@ -39,10 +46,6 @@ public class MainActivity extends AppCompatActivity {
     String checkregistrationTimeOut2="";
     // реф Srting проверка заявок Yes/No
     String proverka="";
-    // время выдержки времени для исключения неперехода на др активити при сварачивании,
-    // есть порог 5 секунд меньше которых переход на др активити не сработает при сварачивании)
-    // поэтому при сварачивании, в OnStop увеличиваем таймер еще на 5 секунд
-    Integer b,c,d,e,f,g,i,h,j,k;
 
     FirebaseDatabase database01;
     FirebaseDatabase database02;
@@ -60,23 +63,6 @@ public class MainActivity extends AppCompatActivity {
         // отмена блокировки спящего режима экрана
         //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        // запуск времени сессии
-        Log.d(TAG, "Time Session Start");
-        Handler timeSession = new Handler();
-        timeSession.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // время сессии истекло
-                timeSessionEnd();
-            }
-        },60000);
-
-         //взято призвольное мальнькое время
-         c=10;
-         e=10;
-         f=10;
-         i=10;
-         j=10;
         // получение токена
         // токен будет если есть интернет
         // токен будет если есть нет интернета но это 2,3,4... вход в приложение (без удаления настроек приложения APP)
@@ -92,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
                             handler1.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    // таймер-сварачивания
-                                    timePlus();
+                                    // 1. не загрузился токен (такое будет если при первом запуске нет интернета)
+                                    inetNotWhenGoCheckRegistration ();
                                 }
                             },2000);
                         }
@@ -144,21 +130,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop (){
         super.onStop();
         Log.d(TAG, "onStop");
-        // таймер-сворачивания для перехода inetNotWhenGoCheckRegistration()
-        c=5000;
-        // таймер-сворачивания для перехода inetNotWhenGoCheckRegistration2()
-        e=5000;
-        // таймер-сворачивания для перехода на лист заявок GoMain6Activity();
-        f=5000;
-        // таймер-сворачивания для перехода на лист формирования заявок GOMainUserNewOne3()
-        i=5000;
-        // таймер-сворачивания для перехода на лист без авторизации GOMainUserNewOne()
-        j=5000;
-        Log.d(TAG, "onStop c="+c);
-        Log.d(TAG, "onStop e="+e);
-        Log.d(TAG, "onStop f="+f);
-        Log.d(TAG, "onStop i="+i);
-        Log.d(TAG, "onStop j="+j);
     }
     //проверка авторизации
     public void CheckRegistration(){
@@ -171,9 +142,8 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 // Завершен таймер ЗАПРОСА ИНТЕРНЕТА-1
                 checkregistrationTimeOut="Out";
-                // метод увеличения времени для удачного перехода на др активити при сварачивании
-                // если сворачивания не было то время почти не увеличивается
-                timePlus();
+                //  проверка интернета при считывании данных авторизации из БД
+                inetNotWhenGoCheckRegistration ();
             }
         },35000);
         //чтение из БД данных об авторизации с "правилом для любых пользователей"
@@ -206,8 +176,8 @@ public class MainActivity extends AppCompatActivity {
         else{
             // null если авторизации не было
             if (keyReg.equals("null")){
-                //таймер сварачивания для Переход на лист без авторизации
-                timePlus5();
+                // Переход на лист без авторизации
+                GOMainUserOne();
             }
             // авторизация была
             else if (!keyReg.isEmpty()){
@@ -224,8 +194,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 checkregistrationTimeOut2="Out";
-                //таймер сварачивания
-                timePlus2();
+                // когда нет интерента при проверке наличия заявок)
+                inetNotWhenGoCheckRegistration2();
             }
             },35000);
         Log.d(TAG, "Чтение Yes/No из БД");
@@ -270,149 +240,165 @@ public class MainActivity extends AppCompatActivity {
         else {
             // Заявка есть
             if(proverka.equals("Yes")){
-                //таймер-сворачивания
-                timePlus3();
+                // переход на лист Статуса заявок
+                GoZakaz4Request();
             }
             // Заявки нет
             if(proverka.equals("No")){
-                //таймер-сворачивания
-                timePlus4();
+                // переход на лист формирования заявок
+                Zakaz1();
                     }
         }
     }
-    // ТАЙМЕРЫ СВАРАЧИВАНИЯ
+// ALERT DIALOG
+    // Alert нет Интернета Перезапуск активити или закрыть приложение
+    public void showAlertDialog4(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(MainActivity.this);
+        mAlertDialog.setTitle("Слабый сигнал интернета!");
+        mAlertDialog.setMessage("Нажмите ОК, чтобы поробовать еще раз.");
+        mAlertDialog.setCancelable(false);
+        mAlertDialog
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // Перезапуск активити
+                    Intent mIntent=getIntent();
+                    finish();
+                    startActivity(mIntent);
+                }
+            });
+        mAlertDialog
+                .setNegativeButton("Закрыть приложение", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // закрытие приложения реальное
+                    finishAffinity();
+                    System.exit(0);
+                }
+                });
+        mAlertDialog.create();
+        mAlertDialog.show();
+    }
+    // Alert ловушка неперехода на на лист без авторизации
+    public void AlertMainUserNewOne(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(MainActivity.this);
+        mAlertDialog.setMessage("Нажмите ОК, для продолжения.");
+        mAlertDialog.setCancelable(false);
+        mAlertDialog
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // переход на лист без авторизации MainUserNewOne
+                        GOMainUserOne();
+                    }
+                });
+        mAlertDialog.create();
+        mAlertDialog.show();
+    }
+    // Alert ловушка неперехода на Zakaz4Request
+    public void AlertZakaz4Request() {
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(MainActivity.this);
+        mAlertDialog.setMessage("Нажмите ОК, для продолжения.");
+        mAlertDialog.setCancelable(false);
+        mAlertDialog
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // переход на лист без авторизации Zakaz4Request
+                        GoZakaz4Request();
+                    }
+                });
+        mAlertDialog.create();
+        mAlertDialog.show();
+    }
+    // Alert ловушка неперехода на Zakaz1
+    public void AlertZakaz1() {
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(MainActivity.this);
+        mAlertDialog.setMessage("Нажмите ОК, для продолжения.");
+        mAlertDialog.setCancelable(false);
+        mAlertDialog
+                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // переход на лист без авторизации Zakaz1
+                        Zakaz1();
+                    }
+                });
+        mAlertDialog.create();
+        mAlertDialog.show();
+    }
 
-    // 1.когда токен не считался при первом чистом запуске приложения
-    // 2.когда нет интерента при считывании данных для авторизации)
-    public void timePlus(){
-        b=c+10;
-        Log.d(TAG, "timePlus b="+b);
-        Handler handler1 = new Handler();
-        handler1.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // нет интернета
-                inetNotWhenGoCheckRegistration();
-            }
-        },b);
-    }
-    // 1. когда нет интерента при проверке наличия заявок)
-    public void timePlus2(){
-        d=e+10;
-        Log.d(TAG, "timePlus2 d="+d);
-        Handler handler1 = new Handler();
-        handler1.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // нет интернета
-                inetNotWhenGoCheckRegistration2();
-            }
-        },d);
-    }
-    // при сворачивании приложения для перехода на лист заявок Main6Activity
-    public void timePlus3(){
-        g=f+10;
-        Log.d(TAG, "timePlus3 g="+g);
-        Handler handler1 = new Handler();
-        handler1.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "переход лист заявок");
-                // переход на лист заявок
-                GoZakaz4Request();
-            }
-        },g);
-    }
-    // при сворачивании приложения для перехода на лист формирования заявок  GOMainUserNewOne3()
-    public void timePlus4(){
-        h=i+10;
-        Log.d(TAG, "timePlus4 i="+i);
-        Handler handler1 = new Handler();
-        handler1.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "Заявок нет");
-                // переход на лист формирования заявок
-                Zakaz1();
-            }
-        },h);
-    }
-    // при сворачивании приложения для перехода на лист без авторизации  GOMainUserNewOne
-    public void timePlus5(){
-        k=j+10;
-        Log.d(TAG, "timePlus5 j="+j);
-        Handler handler1 = new Handler();
-        handler1.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Переход на лист без авторизации
-                GOMainUserOne();
-            }
-        },k);
-    }
-    // ПЕРЕХОДЫ НА ДР АКТИВИТИ
-
-    // переход на лист "Нет интернета" при считывании токена
+// МЕТОДЫ
+    // Проверка
+    // 1. не загрузился токен (такое будет если при первом запуске нет интернета)
+    // 2. если пропал интернет при считывании данных авторизации из БД
     public void inetNotWhenGoCheckRegistration (){
         if (!keyReg.isEmpty()){
             Log.d(TAG, "таймер проверки интернета вышел, но данные авторизации считаны");
         }
         else {
-            //пропал интернет во время проверки наличия регистрации
-            Log.d(TAG, "Интернета пропал при считывании токена или при чтении авторизации");
-            Intent aaa = new Intent(this,InternetNot.class);
-            startActivity(aaa);
+            // Alert нет Интернета Перезапуск активити или закрыть приложение
+            showAlertDialog4();
         }
     }
-    // переход на лист "Нет интернета" при поиске наличия заявок
+    // Проверка интернета при поиске наличия заявок
     public void inetNotWhenGoCheckRegistration2(){
         if(proverka.equals("Yes")||proverka.equals("No")){
             Log.d(TAG, "таймер запроса интернета-2 остановлен");}
         else {
             //пропал интернет во время проверки наличия заявок
             Log.d(TAG, "Интернет пропал при поиске наличия заявок");
-            Intent aaa = new Intent(this,InternetNot.class);
-            startActivity(aaa);
+            // Alert нет Интернета Перезапуск активити или закрыть приложение
+            showAlertDialog4();
         }
     }
-    // переход на лист заявок
-    public void GoZakaz4Request(){
-        Intent MainTOZakaz4= new Intent(this,Zakaz4Request.class);
-        MainTOZakaz4.putExtra("phoneNew",keyReg);
-        startActivity(MainTOZakaz4);
-    }
+
+// ПЕРЕХОДЫ НА ДР АКТИВИТИ
+    // переход на лист без авторизации MainUserNewOne
+    public void GOMainUserOne(){
+    Log.d(TAG, "Переход на лист без авторизации");
+    Intent MainUserNewOne = new Intent(this,MainUserNewOne.class);
+    startActivity(MainUserNewOne);
+
+    // Alert ловушка неперехода на MainUserNewOne
+    Handler handler1 = new Handler();
+    handler1.postDelayed(new Runnable() {
+        @Override
+        public void run() {
+            // Alert ловушка неперехода на лист MainUserNewOne
+            AlertMainUserNewOne();
+        }
+    },1000);
+}
     // переход на лист формирования заявок
     public void Zakaz1(){
         Intent MainActivityToZakaz1= new Intent(this,Zakaz1.class);
         // регистрация есть заявок нет отправляем Hello
         MainActivityToZakaz1.putExtra("phoneNew",keyReg);
         startActivity(MainActivityToZakaz1);
+
+        // Alert ловушка неперехода на Zakaz1
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Alert ловушка неперехода на Zakaz1
+                AlertZakaz1();
+            }
+        },1000);
     }
-    // переход на лист без авторизации
-    public void GOMainUserOne(){
-        Log.d(TAG, "Переход на лист без авторизации");
-        Intent MainUserNewOne = new Intent(this,MainUserNewOne.class);
-        startActivity(MainUserNewOne);
+    // переход на лист Статуса заявок
+    public void GoZakaz4Request(){
+        Intent MainTOZakaz4= new Intent(this,Zakaz4Request.class);
+        MainTOZakaz4.putExtra("phoneNew",keyReg);
+        startActivity(MainTOZakaz4);
+
+        // Alert ловушка неперехода на Zakaz4Request
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Alert ловушка неперехода на Zakaz4Request
+                AlertZakaz4Request();
+            }
+        },1000);
     }
-    // время сессии истекло
-    public void timeSessionEnd(){
-        Log.d(TAG, "время сессии истекло");
-        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(MainActivity.this);
-        mAlertDialog.setCancelable(false);
-        mAlertDialog
-                .setMessage("Время сессии истекло, проверьте интернет и попробуйте еще раз")
-                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //перезапуск активити
-                        Intent mIntent = getIntent();
-                        finish();
-                        startActivity(mIntent);
-                    }
-                });
-        mAlertDialog.create();
-        // Showing Alert Message
-        mAlertDialog.show();
-    }
+
     // Блокировка кнопки Back!!!! :)))
     @Override
     public void onBackPressed(){

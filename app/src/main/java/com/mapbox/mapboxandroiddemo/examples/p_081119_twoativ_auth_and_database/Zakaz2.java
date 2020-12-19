@@ -6,15 +6,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Zakaz2 extends AppCompatActivity {
-    private static final String TAG ="Zakaz2" ;
+
+    // КОД ПРОТЕСТИРОВАН 19.12.2020
+
     //Лист заказа 2, выбор маршрута и пункта сбора
 
+    private static final String TAG ="Zakaz2" ;
     TextView textView;
     Button button1,button2,button3,button4,button5;
     Button map1,map2,map3,map4,map5;
@@ -87,6 +92,7 @@ public class Zakaz2 extends AppCompatActivity {
         Log.d(TAG, "Данные из Zakaz1 phoneNew:"+phoneNew);
     }
 
+// ВИЗУАЛИЗАЦИЯ
     public void visalList(){
         if(refFromInCity.equals("Красноярск->Аэропорт")){
 
@@ -195,6 +201,8 @@ public class Zakaz2 extends AppCompatActivity {
             RefList1=FromAirport;
         }
     }
+//КНОПКИ
+    // Выбор точки сбора
     public void button1 (View view){
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
         mAlertDialog.setTitle("Пункт сбора");
@@ -212,7 +220,6 @@ public class Zakaz2 extends AppCompatActivity {
         mAlertDialog.create();
         mAlertDialog.show();
     }
-
     public void button2 (View view){
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
         mAlertDialog.setTitle("Пункт сбора");
@@ -230,7 +237,6 @@ public class Zakaz2 extends AppCompatActivity {
         mAlertDialog.create();
         mAlertDialog.show();
     }
-
     public void button3 (View view){
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
         mAlertDialog.setTitle("Пункт сбора");
@@ -247,7 +253,6 @@ public class Zakaz2 extends AppCompatActivity {
         mAlertDialog.create();
         mAlertDialog.show();
     }
-
     public void button4 (View view){
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
         mAlertDialog.setTitle("Пункт сбора");
@@ -264,7 +269,6 @@ public class Zakaz2 extends AppCompatActivity {
         mAlertDialog.create();
         mAlertDialog.show();
     }
-
     public void button5 (View view){
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
         mAlertDialog.setTitle("Пункт сбора");
@@ -281,7 +285,17 @@ public class Zakaz2 extends AppCompatActivity {
         mAlertDialog.create();
         mAlertDialog.show();
     }
+    // Кнопка Отмене обратно в Zakaz1
+    public void back(View view){
+        // передаем null в Zakaz1
+        Intent backZakaz2ToZakaz1= new Intent(this,Zakaz1.class);
+        backZakaz2ToZakaz1.putExtra("RefBackFromZakaz2","backNoFromZakaz2");
+        backZakaz2ToZakaz1.putExtra("phoneNew",phoneNew);
+        startActivity(backZakaz2ToZakaz1);
+    }
 
+// ПЕРЕХОДЫ
+    // Переход обратно в Zakaz1 после выбора пункта сбора
     public void backZakaz2ToZakaz1(){
         Intent backZakaz2ToZakaz1= new Intent(this,Zakaz1.class);
         // передаем Маршрут и пункт сбора в Zakaz1
@@ -292,13 +306,6 @@ public class Zakaz2 extends AppCompatActivity {
         startActivity(backZakaz2ToZakaz1);
     }
 
-    public void back(View view){
-        // передаем null в Zakaz1
-        Intent backZakaz2ToZakaz1= new Intent(this,Zakaz1.class);
-        backZakaz2ToZakaz1.putExtra("RefBackFromZakaz2","backNoFromZakaz2");
-        backZakaz2ToZakaz1.putExtra("phoneNew",phoneNew);
-        startActivity(backZakaz2ToZakaz1);
-    }
 
     // Блокировка кнопки Back!!!! :)))
     @Override

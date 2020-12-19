@@ -34,8 +34,10 @@
             android:name=".Zakaz4Request"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".Proba"
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name=".FeedBack1" />
-        <activity android:name=".Proba" />
         <activity android:name=".ViewMapLesosibirsk" />
         <activity android:name=".ViewMapKansk" />
         <activity android:name=".ViewMapAchinsk" />
