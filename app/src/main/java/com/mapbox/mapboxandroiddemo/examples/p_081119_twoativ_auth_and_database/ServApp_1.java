@@ -132,9 +132,6 @@ public class ServApp_1 extends AppCompatActivity {
     String Dr4PhRef;
 
 
-    // НЕ Используется 20.03.2020 для отправки заявки в БД Водителя
-    //ServApp_2 servApp_2;
-
     FirebaseDatabase database01;
     FirebaseDatabase databaseGetPhDR1;
     FirebaseDatabase databaseGetPhDR2;
@@ -221,10 +218,10 @@ public class ServApp_1 extends AppCompatActivity {
         fourTimedelete=findViewById(R.id.fourTimedelete);
 
         Intent nex=getIntent();
-        dataREF=nex.getStringExtra("dataREF");
-        MapREF=nex.getStringExtra("MapREF");
-        TextTime=nex.getStringExtra("TextTime");
-        TextRoad=nex.getStringExtra("TextRoad");
+        dataREF=nex.getStringExtra("dateOfPointCalend");
+        MapREF=nex.getStringExtra("RefplaneCity");
+        TextTime=nex.getStringExtra("timeofPoint");
+        TextRoad=nex.getStringExtra("RefMap");
 
         Data.setText(dataREF);
         Map.setText(MapREF);

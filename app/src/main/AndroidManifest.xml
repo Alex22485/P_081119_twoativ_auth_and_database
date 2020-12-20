@@ -14,29 +14,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".Server1"></activity>
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".Zakaz1"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".Zakaz2"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".Zakaz3finish"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".Zakaz4Request"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity android:name=".Proba"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Proba"
+            android:screenOrientation="portrait"></activity>
         <activity android:name=".FeedBack1" />
         <activity android:name=".ViewMapLesosibirsk" />
         <activity android:name=".ViewMapKansk" />
@@ -60,7 +56,6 @@
         <activity android:name=".DriversApp_0" />
         <activity android:name=".DriversApp_1" />
         <activity android:name=".ServApp_1" />
-
     </application>
 
 </manifest>

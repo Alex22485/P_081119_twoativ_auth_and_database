@@ -1077,4 +1077,9 @@ public class Zakaz4Request extends AppCompatActivity {
         },1000);
     }
 
+    // Блокировка кнопки Back!!!! :)))
+    @Override
+    public void onBackPressed(){
+    }
+
 }

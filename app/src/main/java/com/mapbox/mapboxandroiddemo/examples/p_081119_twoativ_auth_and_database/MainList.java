@@ -62,7 +62,7 @@ public class MainList extends AppCompatActivity {
     }
 
     public void ServAppList(View view){
-        Intent ServAppList= new Intent(this,ServApp_0.class);
+        Intent ServAppList= new Intent(this,Server1.class);
         startActivity(ServAppList);
     }
 
@@ -78,9 +78,5 @@ public class MainList extends AppCompatActivity {
     public void probaRegDriver(View view){
         Intent probaRegDriver= new Intent(this,DriversApp_0.class);
         startActivity(probaRegDriver);
-    }
-    public void prParsing(View view){
-        Intent ParsingCursApp= new Intent(this,ParsingCursApp.class);
-        startActivity(ParsingCursApp);
     }
 }
