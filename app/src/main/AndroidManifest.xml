@@ -54,7 +54,6 @@
         <activity android:name=".ViewMapKrasnoyarsk" />
         <activity android:name=".MainUserNewOne2" />
         <activity android:name=".MainUserNewOne" />
-        <activity android:name=".DriversApp_InternetNot_forDriverApp_0" />
         <activity android:name=".MainList">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,8 +61,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".InternetNotDriver" />
-        <activity android:name=".DriversApp_0" />
         <activity android:name=".DriversApp_1" />
 
     </application>

@@ -76,7 +76,6 @@ public class MainList extends AppCompatActivity {
         startActivity(Zakaz1);
     }
     public void probaRegDriver(View view){
-        Intent probaRegDriver= new Intent(this,DriversApp_0.class);
-        startActivity(probaRegDriver);
+
     }
 }
