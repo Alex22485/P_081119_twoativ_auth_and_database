@@ -38,7 +38,14 @@ public class Zakaz2 extends AppCompatActivity {
     String[] KrasnojarskFiveMap = {"uuu","uuu","Тuuu","uuu"};
 
     // пункты сбора других городов
-    String[] AnyCity={"Подтвердить?"};
+    // Сосновоборск
+    String[] pointSosnovoborsk={"Автовокзал Сосновоборск"};
+    // Ачинск
+    String[] pointAchinsk={"Автовокзал Ачинск"};
+    // Канск
+    String[] pointKansk={"Автовокзал Канск"};
+    // Лесосибирск
+    String[] pointLesosobirsk={"Автовокзал Лесосибирск"};
 
     // пункт сбора из Аэропорта
     String[] FromAirport={"Парковка Р2"};
@@ -148,7 +155,7 @@ public class Zakaz2 extends AppCompatActivity {
         if(refFromInCity.equals("Сосновоборск->Аэропорт")){
             button1.setVisibility(View.VISIBLE);
             map1.setVisibility(View.VISIBLE);
-            RefList1=AnyCity;
+            RefList1=pointSosnovoborsk;
             button1.setText(refFromInCity);
         }
 
@@ -163,7 +170,7 @@ public class Zakaz2 extends AppCompatActivity {
             button1.setVisibility(View.VISIBLE);
             map1.setVisibility(View.VISIBLE);
             button1.setText(refFromInCity);
-            RefList1=AnyCity;
+            RefList1=pointAchinsk;
         }
 
         if(refFromInCity.equals("Аэропорт->Ачинск")){
@@ -177,7 +184,7 @@ public class Zakaz2 extends AppCompatActivity {
             button1.setVisibility(View.VISIBLE);
             map1.setVisibility(View.VISIBLE);
             button1.setText(refFromInCity);
-            RefList1=AnyCity;
+            RefList1=pointKansk;
         }
 
         if(refFromInCity.equals("Аэропорт->Канск")){
@@ -191,7 +198,7 @@ public class Zakaz2 extends AppCompatActivity {
             button1.setVisibility(View.VISIBLE);
             map1.setVisibility(View.VISIBLE);
             button1.setText(refFromInCity);
-            RefList1=AnyCity;
+            RefList1=pointLesosobirsk;
         }
 
         if(refFromInCity.equals("Аэропорт->Лесосибирск")){

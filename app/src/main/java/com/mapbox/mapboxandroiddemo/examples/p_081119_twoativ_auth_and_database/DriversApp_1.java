@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +28,9 @@ import java.util.Calendar;
 public class DriversApp_1 extends AppCompatActivity {
 
     private static final String TAG ="DriverApp_1";
+
+    // Для экспорта данных
+    String phoneNew; // из листа Driver2
 
     TextView yourCar;
     TextView yourNumber;
@@ -93,13 +97,10 @@ public class DriversApp_1 extends AppCompatActivity {
 
         yourCar=findViewById(R.id.yourCar);
         yourNumber=findViewById(R.id.yourNumber);
-
         TextDataOrder=findViewById(R.id.TextDataOrder);
         TextTimeOrder=findViewById(R.id.TextTimeOrder);
-
         DataOrder=findViewById(R.id.DataOrder);
         TimeOrder=findViewById(R.id.TimeOrder);
-        //MapOrder=findViewById(R.id.MapOrder);
         RoutepOrder=findViewById(R.id.RoutepOrder);
         StopOrder1=findViewById(R.id.StopOrder1);
         MenpOrder1=findViewById(R.id.MenpOrder1);
@@ -120,17 +121,17 @@ public class DriversApp_1 extends AppCompatActivity {
         TextMenpOrder3=findViewById(R.id.TextMenpOrder3);
         TextMenpOrder4=findViewById(R.id.TextMenpOrder4);
         TextRoutepOrder=findViewById(R.id.TextRoutepOrder);
-        //TextMapOrder=findViewById(R.id.TextMapOrder);
 
         BtnYes=findViewById(R.id.BtnYes);
         BtnNo=findViewById(R.id.BtnNo);
         timeExpl=findViewById(R.id.timeExpl);
         MapSee=findViewById(R.id.MapSee);
 
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser ghg = mAuth.getCurrentUser();
-        driverPhone=ghg.getPhoneNumber();
-        //Toast.makeText( DriversApp_1.this, "Телефон  "+driverPhone, Toast.LENGTH_SHORT ).show();
+        //Экспорт phoneNew
+        Intent GoDriversApp_1= getIntent();
+        phoneNew=GoDriversApp_1.getStringExtra("phoneNew");
+        //UserToken=GoDriversApp_1.getStringExtra("UserToken");
+        Log.d(TAG, "phoneNew:"+phoneNew);
 
         getNCP();
 
@@ -138,7 +139,10 @@ public class DriversApp_1 extends AppCompatActivity {
     }
 
     public void checkOder (View view){
-        final Query aaa= FirebaseDatabase.getInstance().getReference("Водители").child( "Personal" ).child( driverPhone )
+        final Query aaa= FirebaseDatabase.getInstance()
+                .getReference("Водители")
+                .child( "Personal" )
+                .child( phoneNew )
                 .orderByChild( "Заявка" );
         aaa.addChildEventListener(new ChildEventListener() {
             @Override
@@ -344,8 +348,8 @@ public class DriversApp_1 extends AppCompatActivity {
 
             database02 = FirebaseDatabase.getInstance();
             ref02 = database02.getReference("Заявки")
-                    .child(MapOrder)
                     .child(DataOrder.getText().toString())
+                    .child(MapOrder)
                     .child(TimeOrder.getText().toString())
                     .child(RoutepOrder.getText().toString())
                     .child(StopOrder2.getText().toString())
@@ -372,8 +376,8 @@ public class DriversApp_1 extends AppCompatActivity {
 
             database03 = FirebaseDatabase.getInstance();
             ref03 = database03.getReference("Заявки")
-                    .child(MapOrder)
                     .child(DataOrder.getText().toString())
+                    .child(MapOrder)
                     .child(TimeOrder.getText().toString())
                     .child(RoutepOrder.getText().toString())
                     .child(StopOrder3.getText().toString())
@@ -399,8 +403,8 @@ public class DriversApp_1 extends AppCompatActivity {
 
             database04 = FirebaseDatabase.getInstance();
             ref04 = database04.getReference("Заявки")
-                    .child(MapOrder)
                     .child(DataOrder.getText().toString())
+                    .child(MapOrder)
                     .child(TimeOrder.getText().toString())
                     .child(RoutepOrder.getText().toString())
                     .child(StopOrder4.getText().toString())
@@ -431,7 +435,7 @@ public class DriversApp_1 extends AppCompatActivity {
     public void getNCP(){
         //Toast.makeText( DriversApp_1.this, "Запуск метода  "+driverPhone, Toast.LENGTH_SHORT ).show();
 
-        final Query aaa= FirebaseDatabase.getInstance().getReference("Водители").child( "Personal" ).child(driverPhone)
+        final Query aaa= FirebaseDatabase.getInstance().getReference("Водители").child( "Personal" ).child(phoneNew)
                 .orderByChild("Private");
         aaa.addChildEventListener(new ChildEventListener() {
             @Override

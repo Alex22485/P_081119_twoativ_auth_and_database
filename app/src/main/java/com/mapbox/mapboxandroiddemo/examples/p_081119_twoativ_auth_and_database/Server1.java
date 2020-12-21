@@ -162,10 +162,7 @@ public class Server1 extends AppCompatActivity {
                         // Записываем выбранный маршрут в String
                         RefStringMap=arrayMap[which];
                         //Метод идентификации (выделения из реф RefStringMap слова данных Маршрут-стоимость)
-                        //identifyMap();
-                        // переход на другой лист с заказом
-                        GoServerApp_1();
-
+                        identifyMap();
                     }
                 }
         );
@@ -344,10 +341,20 @@ public class Server1 extends AppCompatActivity {
     // переход на лист заявок
     public void GoServerApp_1(){
         Intent nex = new Intent(this,ServApp_1.class);
-        nex.putExtra("dateOfPointCalend",dateOfPointCalend);
-        nex.putExtra("RefplaneCity",RefplaneCity);
-        nex.putExtra("timeofPoint",timeofPoint);
-        nex.putExtra("RefMap",RefStringMap);
+        nex.putExtra("dateOfPointCalend",dateOfPointCalend); //Дата сбора*дата вылета(прилета)
+        nex.putExtra("RefplaneCity",RefplaneCity); //Самолет
+        nex.putExtra("timeofPoint",timeofPoint); // время сбора*время вылета(прилета)
+        nex.putExtra("RefStringMap",RefStringMap); //Маршрут*стоимость
+        nex.putExtra("RefMap",RefMap); // Маршрут
+        nex.putExtra("fare",fare);     // Стоимость
+
+        Log.d(TAG, " Дата сбора*дата вылета(прилета) "+dateOfPointCalend);
+        Log.d(TAG, " Самолет "+RefplaneCity);
+        Log.d(TAG, " время сбора*время вылета(прилета) "+timeofPoint);
+        Log.d(TAG, " Маршрут*стоимость "+RefStringMap);
+        Log.d(TAG, " Маршрут "+RefMap);
+        Log.d(TAG, " стоимость "+fare);
+
         startActivity(nex);
     }
 

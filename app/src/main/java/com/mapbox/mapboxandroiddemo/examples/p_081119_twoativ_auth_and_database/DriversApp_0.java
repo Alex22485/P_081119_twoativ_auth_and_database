@@ -348,8 +348,8 @@ public class DriversApp_0 extends AppCompatActivity {
         else {
             //пропал интернет во время проверки наличия регистрации
             Log.d(TAG, "Интернета пропал при записи данных");
-            Intent aaa = new Intent(this,DriversApp_InternetNot.class);
-            startActivity(aaa);
+            //Intent aaa = new Intent(this,DriversApp_InternetNot.class);
+            //startActivity(aaa);
         }
 
     }
@@ -369,8 +369,8 @@ public class DriversApp_0 extends AppCompatActivity {
     }
 
     public void DriversApp_Start(View view){
-        Intent DriversApp_Start = new Intent(this,DriversApp_Start.class);
-        startActivity(DriversApp_Start);
+        //Intent DriversApp_Start = new Intent(this,DriversApp_Start.class);
+        //startActivity(DriversApp_Start);
     }
 
 

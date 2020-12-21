@@ -14,25 +14,38 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Server1"></activity>
+        <activity
+            android:name=".Driver1"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Driver2"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverAuth"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Server1"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ServApp_1"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Zakaz1"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Zakaz2"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Zakaz3finish"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Zakaz4Request"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Proba"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity android:name=".FeedBack1" />
         <activity android:name=".ViewMapLesosibirsk" />
         <activity android:name=".ViewMapKansk" />
@@ -41,10 +54,7 @@
         <activity android:name=".ViewMapKrasnoyarsk" />
         <activity android:name=".MainUserNewOne2" />
         <activity android:name=".MainUserNewOne" />
-        <activity android:name=".ServApp_0" />
         <activity android:name=".DriversApp_InternetNot_forDriverApp_0" />
-        <activity android:name=".DriversApp_InternetNot" />
-        <activity android:name=".DriversApp_Start" />
         <activity android:name=".MainList">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,7 +65,7 @@
         <activity android:name=".InternetNotDriver" />
         <activity android:name=".DriversApp_0" />
         <activity android:name=".DriversApp_1" />
-        <activity android:name=".ServApp_1" />
+
     </application>
 
 </manifest>

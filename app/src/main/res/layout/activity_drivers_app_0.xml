@@ -67,6 +67,7 @@
         android:visibility="invisible"
         android:inputType="number"
         android:maxLength="3"/>
+
     <AutoCompleteTextView
         android:id="@+id/editColorCar"
         android:layout_width="match_parent"
