@@ -45,8 +45,7 @@
         android:textSize="20sp"
         android:textAllCaps="false"
         app:layout_constraintStart_toEndOf="@+id/button1"
-        app:layout_constraintTop_toTopOf="@+id/button1"
-        android:onClick="map1"/>
+        app:layout_constraintTop_toTopOf="@+id/button1" />
 
     <Button
         android:id="@+id/button2"
@@ -73,7 +72,6 @@
         android:textAllCaps="false"
         app:layout_constraintStart_toEndOf="@+id/button2"
         app:layout_constraintTop_toTopOf="@+id/button2"
-        android:onClick="map2"
         android:visibility="visible"/>
 
     <Button
@@ -101,7 +99,6 @@
         android:textAllCaps="false"
         app:layout_constraintStart_toEndOf="@+id/button3"
         app:layout_constraintTop_toTopOf="@+id/button3"
-        android:onClick="map3"
         android:visibility="visible"/>
 
     <Button
@@ -129,7 +126,6 @@
         android:textAllCaps="false"
         app:layout_constraintStart_toEndOf="@+id/button4"
         app:layout_constraintTop_toTopOf="@+id/button4"
-        android:onClick="map4"
         android:visibility="visible"/>
 
     <Button
@@ -157,7 +153,6 @@
         android:textAllCaps="false"
         app:layout_constraintStart_toEndOf="@+id/button5"
         app:layout_constraintTop_toTopOf="@+id/button5"
-        android:onClick="map5"
         android:visibility="visible"/>
 
     <Button

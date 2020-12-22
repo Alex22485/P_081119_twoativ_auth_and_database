@@ -359,7 +359,7 @@ public class DriversApp_1 extends AppCompatActivity {
             ref02.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    ref01.child(NCP).setValue(dateTime);
+                    ref02.child(NCP).setValue(dateTime);
                     ref02.removeEventListener(this);
                 }
 
@@ -387,7 +387,7 @@ public class DriversApp_1 extends AppCompatActivity {
             ref03.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    ref01.child(NCP).setValue(dateTime);
+                    ref03.child(NCP).setValue(dateTime);
                     ref03.removeEventListener(this);
                 }
 
@@ -414,7 +414,7 @@ public class DriversApp_1 extends AppCompatActivity {
             ref04.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    ref01.child(NCP).setValue(dateTime);
+                    ref04.child(NCP).setValue(dateTime);
                     ref04.removeEventListener(this);
                 }
 
@@ -447,6 +447,8 @@ public class DriversApp_1 extends AppCompatActivity {
                 carColor=dataSnapshot.child( "carColor" ).getValue(String.class);
                 carPlases=dataSnapshot.child( "carPlases" ).getValue(String.class);
                 NCP=dataSnapshot.child( "NCP" ).getValue(String.class);
+
+                Log.d(TAG, "NCP:"+NCP);
 
                 //останов прослушивания
                 //без нее считывает дважды (сужу по  Toast.makeText )

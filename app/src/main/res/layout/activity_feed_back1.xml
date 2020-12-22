@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#17adcf"
     tools:context=".FeedBack1">
 
     <TextView
@@ -13,6 +14,7 @@
         android:layout_marginTop="8dp"
         android:text="Пожалуйста,"
         android:textSize="20sp"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,6 +26,7 @@
         android:layout_marginTop="5dp"
         android:text="заполните форму,"
         android:textSize="20sp"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -35,6 +38,7 @@
         android:layout_marginTop="5dp"
         android:text="с нужными направлениями"
         android:textSize="20sp"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -88,6 +92,7 @@
         android:layout_marginTop="5dp"
         android:text="Получить письмо, если пожелания учтутся"
         android:textSize="15sp"
+        android:textColor="#FFFFFF"
         android:onClick="checkBox"
         app:layout_constraintStart_toStartOf="@+id/Ed3"
         app:layout_constraintTop_toBottomOf="@+id/Ed3" />

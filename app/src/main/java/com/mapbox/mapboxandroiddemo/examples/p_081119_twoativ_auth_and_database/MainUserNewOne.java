@@ -496,7 +496,7 @@ public class MainUserNewOne extends AppCompatActivity {
 
 
     public void mainUserNewOne2(View view){
-        Intent mainUserNewOne2=new Intent(this,MainUserNewOne2.class);
+        Intent mainUserNewOne2=new Intent(this,Zakaz1.class);
         startActivity(mainUserNewOne2);
     }
 

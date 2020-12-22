@@ -5,8 +5,8 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e1e3e3"
     android:padding="10dp"
+    android:background="#2EA9C5"
     tools:context=".Proba">
 
 
@@ -17,6 +17,7 @@
         android:layout_marginTop="10dp"
         android:text="Авторизация"
         android:textSize="25sp"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -61,6 +62,7 @@
         android:layout_marginTop="20dp"
         android:text="Ваш телефон: +7"
         android:textSize="20sp"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,6 +77,7 @@
         android:layout_marginTop="20dp"
         android:text="Введите SMS код:"
         android:textSize="20sp"
+        android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/getCode" />
 
@@ -117,6 +120,7 @@
         android:text="Получить код доступа"
         android:textAllCaps="false"
         android:textSize="15sp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tVPhone" />

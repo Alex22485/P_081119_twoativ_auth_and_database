@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -82,5 +83,8 @@ public class FeedBack1 extends AppCompatActivity {
     // Блокировка кнопки Back!!!! :)))
     @Override
     public void onBackPressed(){
+        Intent Zakaz1=new Intent(this,Zakaz1.class);
+        startActivity(Zakaz1);
+
     }
 }
