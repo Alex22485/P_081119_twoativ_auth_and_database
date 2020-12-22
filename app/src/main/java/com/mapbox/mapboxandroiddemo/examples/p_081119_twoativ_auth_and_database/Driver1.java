@@ -23,7 +23,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 public class Driver1 extends AppCompatActivity {
 
-    // главная страница заставка
+    // главная страница заставка.
     // Alert перезапуск или закрытие приложения при пропаже интернета:
     // 1. при считывании токена(в самый первый запуск приложения)
     // 2. при считывании данных авторизации
