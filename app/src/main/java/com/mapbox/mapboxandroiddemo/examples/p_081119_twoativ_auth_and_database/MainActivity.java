@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG ="MainActivity" ;
 
+    ImageView imageView;
+    ProgressBar progressBar;
+
     // токен
     String UserToken;
     // реф Srting проверка интернета при 1-ом считываении из БД
@@ -57,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate");
+
+        imageView=findViewById(R.id.imageView);
+        progressBar=findViewById(R.id.progressBar);
 
         // блокировка спящего режима экрана
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.SurfaceControl;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,8 @@ public class MainUserNewOne extends AppCompatActivity {
     // пример плавного увеличения текста
 
     private static final String TAG ="MainUserNewOne" ;
+
+    ImageView imageView;
 
     int dinamic1Size,dinamic2Size,dinamic3Size,dinamic4Size,dinamic5Size,dinamic6Size;
     int dinamicLittleTxt1, dinamicLittleTxt2;
@@ -41,7 +44,7 @@ public class MainUserNewOne extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_user_new_one);
-
+        imageView=findViewById(R.id.imageView);
         tV1=findViewById(R.id.tV1);
         tV2=findViewById(R.id.tV2);
         tV3=findViewById(R.id.tV3);
