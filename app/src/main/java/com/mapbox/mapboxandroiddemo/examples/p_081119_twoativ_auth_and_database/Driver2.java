@@ -168,7 +168,11 @@ public class Driver2 extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // первая строка нужна для правильного добавления/удаления данных в БД через nod js
-                ref03.child("NCP").setValue(editNumberCar.getText().toString()+editCar.getText().toString()+editQuantiatyOfPackages.getText().toString()+"M");
+                ref03.child("NCP")
+                        .setValue(editNumberCar.getText().toString()+ "*"
+                        +editCar.getText().toString()+"№"
+                        +editColorCar.getText().toString()+"@"
+                        +editQuantiatyOfPackages.getText().toString()+"M");
                 ref03.child("name").setValue(editDriverName.getText().toString());
                 ref03.child("phone").setValue(phoneNew);
                 ref03.child("token").setValue(UserToken);

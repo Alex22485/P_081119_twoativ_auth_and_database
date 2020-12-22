@@ -74,11 +74,11 @@ public class Zakaz4Request extends AppCompatActivity {
     // Точка сбора
     String RefPoint="";
     // Найденный Автомобиль
-    String сarDrive="";
+    String cars="";
     // Количество человек в заявке (пока что не используется но в БД есть)
-    Integer peopleOder;
+    //Integer peopleOder;
 
-// Для идентификации даннх из БД
+// ДЛЯ ИДЕНТИФИКАЦИИ ДАННЫХ ИЗ БД
     // Дата точки сбора
     String dateOfPoint="";
     // Дата вылета-прилета
@@ -91,6 +91,17 @@ public class Zakaz4Request extends AppCompatActivity {
     String RefMap="";
     // Стоимость
     String fare="";
+    //ДАННЫЕ О ВОДИТЕЛЕ
+    String carNumber=""; // гос номер
+    String carModel="";    // марка
+    String carColor="";     // цвет
+    String carPlase="";     // число мест
+    //Позиция  Первого разделяющего знака *
+    Integer oneRefIneger;
+    //Позиция  Второго разделяющего знака №
+    Integer twoRefIneger;
+    // НАДПИСИ Найденного АВТОМОБИЛЯ
+    String carFind="К вам подъедет ";
 
 // Для отмены заявки
     // заголовок Alert причины отмены
@@ -250,7 +261,7 @@ public class Zakaz4Request extends AppCompatActivity {
     //Показать Статус Автомобиля
     public void VisibleSearchCarYes(){
         //если автомобиль не найден
-        if(сarDrive.equals("null")){
+        if(cars.equals("null")){
             //Текст к вам подъедет автомобиль
             textCarIsFine.setVisibility(View.INVISIBLE);
             //Текст
@@ -260,19 +271,24 @@ public class Zakaz4Request extends AppCompatActivity {
             progressBB.setVisibility(View.VISIBLE);
         }
         else {
-            //Текст к вам подъедет автомобиль
-            textCarIsFine.setVisibility(View.VISIBLE);
-            //Текст
-            CarCondition.setText("Mazda"+"цвет серый"+"гос номер"+"777");
-            CarCondition.setVisibility(View.VISIBLE);
-            // прогресс
-            progressBB.setVisibility(View.INVISIBLE);
-            // показать сообщения для водителя
-            VisibleMessageDriverYes();
-            //Показать QR code
-            VisibleQRcodeYes();
+            // Метод идентификации водителя
+            driverIdetyfy();
         }
-
+    }
+    // Показать найденный автомобиль
+    public void VisibleFineCar(){
+        //Текст к вам подъедет "МАРКА АВТО"
+        textCarIsFine.setText(carFind+carModel);
+        textCarIsFine.setVisibility(View.VISIBLE);
+        //Текст
+        CarCondition.setText("Цвет "+carColor+" гос номер "+carNumber);
+        CarCondition.setVisibility(View.VISIBLE);
+        // прогресс
+        progressBB.setVisibility(View.INVISIBLE);
+        // показать сообщения для водителя
+        VisibleMessageDriverYes();
+        //Показать QR code
+        VisibleQRcodeYes();
     }
     // Скрыть Статус Автомобиля
     public void VisibleSearchCarNo(){
@@ -499,7 +515,7 @@ public class Zakaz4Request extends AppCompatActivity {
                     // Точка сбора
                     RefPoint=""+ddd.child("маршрут_точкаСбора").getValue();
                     // Найденный Автомобиль
-                    сarDrive=""+ddd.child("Автомобиль").getValue();
+                    cars=""+ddd.child("Автомобиль").getValue();
                     // Человек в заявке (пока что не используется но в БД есть)
                     Integer peopleOder=ddd.child("Человек_в_Заявке").getValue(Integer.class);
 
@@ -508,7 +524,7 @@ public class Zakaz4Request extends AppCompatActivity {
                     Log.d(TAG, "Время точки сбор*время вылета(прилета)"+timeOfPointANDtime);
                     Log.d(TAG, "Маршрут*стоимость"+RefMapANDfare);
                     Log.d(TAG, "Точка сбора"+RefPoint);
-                    Log.d(TAG, "Найденный Автомобиль"+сarDrive);
+                    Log.d(TAG, "Найденный Автомобиль"+cars);
                     Log.d(TAG, "Человек в заявке"+peopleOder);
 
                     //данные считаны реф значение становится не равно нулю
@@ -715,6 +731,65 @@ public class Zakaz4Request extends AppCompatActivity {
 
        // отмена блокировки спящего режима экрана
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+    // Метод идентификации водителя
+    public void driverIdetyfy(){
+        // Обнуляем реф данные (для защиты от повторного выполнения метода)
+        carNumber=""; // гос номер
+        carModel="";    // марка
+        carColor="";     // цвет
+        carPlase="";     // число мест
+
+        // определяем длину слова cars
+        int i =cars.length();
+        for (int a=0;a<i;a++){
+            // Находим элемент * в слове
+            String b=""+cars.charAt(a);
+            Log.d(TAG, " элемент в реф слове RefStringData "+b);
+            if(b.equals("*")){
+                // составляем слово до * (НОМЕР ВОДИТЕЛЯ)
+                for (int x=0;x<a;x++){
+                    // НОМЕР ВОДИТЕЛЯ
+                    carNumber=carNumber+cars.charAt(x);
+                }
+                //Позиция  Первого разделяющего знака *
+                oneRefIneger=a;
+//                int s=oneRefIneger+1;
+//                Log.d(TAG, " Позиция  Первого разделяющего знака № "+oneRefIneger);
+//                Log.d(TAG, " Позиция  ПОСЛЕ разделяющего знака № "+s);
+            }
+            // Находим элемент № в слове
+            if(b.equals("№")){
+                // составляем слово от * до №
+                for(int x=oneRefIneger+1;x<a;x++){
+                    // Модель ВОДИТЕЛЯ
+                    carModel=carModel+cars.charAt(x);
+                }
+                //Позиция  Второго разделяющего знака №
+                twoRefIneger=a;
+            }
+            // Находим элемент "@" в слове
+            if(b.equals("@")){
+                // составляем слово от № до @ (ЦВЕТ ВОДИТЕЛЯ)
+                for(int x=twoRefIneger+1;x<a;x++){
+                    // ЦВЕТ ВОДИТЕЛЯ
+                    carColor=carColor+cars.charAt(x);
+                }
+                // составляем слово после "@ (КОЛИЧЕСТВО МЕСТ)
+                for(int x=a+1;x<cars.length();x++){
+                    // КОЛИЧЕСТВО МЕСТ
+                    carPlase=carPlase+cars.charAt(x);
+                }
+            }
+        }
+
+        Log.d(TAG, " НОМЕР ВОДИТЕЛЯ "+carNumber);
+        Log.d(TAG, " МОДЕЛЬ ВОДИТЕЛЯ "+carModel);
+        Log.d(TAG, " ЦВЕТ ВОДИТЕЛЯ "+carColor);
+        Log.d(TAG, " КОЛИЧЕСТВО МЕСТ "+carPlase);
+
+        //показать найденный автомобиль;
+        VisibleFineCar();
     }
 
 // МЕТОДЫ УДАЛЕНИЯ ЗАЯВКИ

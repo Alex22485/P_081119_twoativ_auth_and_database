@@ -80,10 +80,12 @@ public class DriversApp_1 extends AppCompatActivity {
     DatabaseReference ref04;
 
     String dateTime;
-    String driverPhone;
-    String carNumber;
-    String car;
-    String carPlases;
+    // Данные о водителе
+    String carNumber; // НОМЕР
+    String car; // МОДЕЛЬ
+    String carColor; // ЦВЕТ
+    String carPlases;   // КОЛ_ВО МЕСТ
+    String NCP; //НОМЕР*МОДЕЛЬ№ЦВЕТ№КОЛИЧЕСТВО МЕСТ
 
 
     FirebaseAuth mAuth;
@@ -329,7 +331,7 @@ public class DriversApp_1 extends AppCompatActivity {
             ref01.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    ref01.child(carNumber+car+carPlases).setValue(dateTime);
+                    ref01.child(NCP).setValue(dateTime);
                     ref01.removeEventListener(this);
                 }
 
@@ -357,7 +359,7 @@ public class DriversApp_1 extends AppCompatActivity {
             ref02.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    ref02.child(carNumber+car+carPlases).setValue(dateTime);
+                    ref01.child(NCP).setValue(dateTime);
                     ref02.removeEventListener(this);
                 }
 
@@ -385,7 +387,7 @@ public class DriversApp_1 extends AppCompatActivity {
             ref03.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    ref03.child(carNumber+car+carPlases).setValue(dateTime);
+                    ref01.child(NCP).setValue(dateTime);
                     ref03.removeEventListener(this);
                 }
 
@@ -412,7 +414,7 @@ public class DriversApp_1 extends AppCompatActivity {
             ref04.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    ref04.child(carNumber+car+carPlases).setValue(dateTime);
+                    ref01.child(NCP).setValue(dateTime);
                     ref04.removeEventListener(this);
                 }
 
@@ -442,7 +444,9 @@ public class DriversApp_1 extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 carNumber=dataSnapshot.child( "carNumber" ).getValue(String.class);
                 car=dataSnapshot.child( "car" ).getValue(String.class);
+                carColor=dataSnapshot.child( "carColor" ).getValue(String.class);
                 carPlases=dataSnapshot.child( "carPlases" ).getValue(String.class);
+                NCP=dataSnapshot.child( "NCP" ).getValue(String.class);
 
                 //останов прослушивания
                 //без нее считывает дважды (сужу по  Toast.makeText )
