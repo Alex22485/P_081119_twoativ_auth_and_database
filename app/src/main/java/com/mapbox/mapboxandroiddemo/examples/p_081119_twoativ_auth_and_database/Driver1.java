@@ -186,7 +186,7 @@ public class Driver1 extends AppCompatActivity {
             else if (!keyReg.isEmpty()){
                 // Проверка Записи личных данных
                 checkOder();
-                          }
+            }
         }
     }
     // Проверка Записи личных данных
