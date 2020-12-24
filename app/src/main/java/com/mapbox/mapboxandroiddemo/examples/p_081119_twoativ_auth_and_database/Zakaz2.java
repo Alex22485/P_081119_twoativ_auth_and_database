@@ -312,9 +312,14 @@ public class Zakaz2 extends AppCompatActivity {
         backZakaz2ToZakaz1.putExtra("phoneNew",phoneNew);
         startActivity(backZakaz2ToZakaz1);
     }
-    // Открытие карты маршрута
+    // Открытие АЭРОПОРТ-ЩОРСА
     public void Map1(View view){
         Intent Map1 =new Intent(this,Map1.class);
+        startActivity(Map1);
+    }
+    // Открытие АЭРОПОРТ-КРАСТЭЦ
+    public void Map2(View view){
+        Intent Map1 =new Intent(this,Map2_Air_KrasTeth.class);
         startActivity(Map1);
     }
 

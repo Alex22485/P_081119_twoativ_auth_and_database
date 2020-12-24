@@ -34,6 +34,9 @@
             android:value="@string/google_maps_key" />
 
         <activity
+            android:name=".Map2_Air_KrasTeth"
+            android:label="@string/title_activity_map2__air__kras_teth"></activity>
+        <activity
             android:name=".Map1"
             android:label="@string/title_activity_map1"
             android:screenOrientation="portrait" />
