@@ -6,12 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class Zakaz2 extends AppCompatActivity {
 
@@ -29,6 +27,8 @@ public class Zakaz2 extends AppCompatActivity {
 
     String[] array1 ={"Щорса-Аэропорт","КрасТэц-Аэропорт","Северный-Аэропорт","ЖД вокзал-Аэропорт","Ветлужанка-Аэропорт"};
     String[] array2 ={"Аэропорт-Щорса","Аэропорт-КрасТэц","Аэропорт-Северный","Аэропорт-ЖД вокзал","Аэропорт-Ветлужанка"};
+    String [] proba ={"Map1_Shorsa_Air","","","","",};
+    String [] proba2 ={"Map1_Shorsa_Air","","","","",};
 
     // пункты сбора Красноярск
     String[] KrasnojarskOneMap={"Кинотеатр Металлург","Автобусный пер","Пикра","Мебельная фабрика"};
@@ -312,10 +312,29 @@ public class Zakaz2 extends AppCompatActivity {
         backZakaz2ToZakaz1.putExtra("phoneNew",phoneNew);
         startActivity(backZakaz2ToZakaz1);
     }
-    // Открытие АЭРОПОРТ-ЩОРСА
-    public void Map1(View view){
-        Intent Map1 =new Intent(this,Map1.class);
-        startActivity(Map1);
+    // Открытие АЭРОПОРТ-ЩОРСА-АЭРОПОРТ
+    public void Map1(View view) {
+
+        Log.d(TAG, "1button1:"+button1.getText().toString());
+
+        for (String s : array1) {
+            // Если маршрут В АЭРОПОРТ
+            if (button1.getText().toString().equals(s)) {
+                Log.d(TAG, "3button1:"+button1.getText().toString());
+                
+                Intent Map1_Shorsa_Air = new Intent(this, Map1_Shorsa_Air.class);
+                startActivity(Map1_Shorsa_Air);
+                return;
+            }
+            // Если маршрут ИЗ АЭРОПОРТА
+            else {
+                Log.d(TAG, "4button1:"+button1.getText().toString());
+                // Открываем карту ИЗ АЭРОПОРТА
+                Intent Map1 = new Intent(this, Map1.class);
+                startActivity(Map1);
+                return;
+            }
+        }
     }
     // Открытие АЭРОПОРТ-КРАСТЭЦ
     public void Map2(View view){

@@ -32,6 +32,10 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".Map1_Shorsa_Air"
+            android:label="@string/title_activity_map1__shorsa__air"></activity>
         <activity
             android:name=".Map1"
             android:label="@string/title_activity_map1"
@@ -40,7 +44,6 @@
             android:name=".Map2_Air_KrasTeth"
             android:label="@string/title_activity_map2__air__kras_teth"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".Driver1"
             android:screenOrientation="portrait" />
