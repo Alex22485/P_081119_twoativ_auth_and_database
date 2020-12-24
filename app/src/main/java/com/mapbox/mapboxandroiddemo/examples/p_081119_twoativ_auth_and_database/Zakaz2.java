@@ -32,7 +32,7 @@ public class Zakaz2 extends AppCompatActivity {
 
     // пункты сбора Красноярск
     String[] KrasnojarskOneMap={"Кинотеатр Металлург","Автобусный пер","Пикра","Мебельная фабрика"};
-    String[] KrasnojarskTwoMap = {"ДК КрасТЭЦ","Аэрокосмическая академия","Торговый центр","Предмостная пл"};
+    String[] KrasnojarskTwoMap = {"Гостиннинца Кедр","Аэрокосмическая академия","Торговый центр","Предмостная пл"};
     String[] KrasnojarskTreeMap = {"XXX","xxx","xxx","xxx"};
     String[] KrasnojarskFourMap = {"YYY","yyy","yyy","yyy"};
     String[] KrasnojarskFiveMap = {"uuu","uuu","Тuuu","uuu"};
