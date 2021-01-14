@@ -71,9 +71,9 @@ public class MainList extends AppCompatActivity {
         startActivity(OPT_Auth);
     }
 
-    public void Zakaz1(View view){
-        Intent Zakaz1= new Intent(this,Zakaz4Request.class);
-        startActivity(Zakaz1);
+    public void OSMMap(View view){
+        Intent OSMMap= new Intent(this,OSMmap.class);
+        startActivity(OSMMap);
     }
     public void probaRegDriver(View view){
 

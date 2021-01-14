@@ -54,9 +54,9 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Zakaz3 быстрый переход"
+        android:text="OSMMap"
         android:textSize="20sp"
-        android:onClick="Zakaz1"/>
+        android:onClick="OSMMap"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,8 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Проба Parsing"
-        android:textSize="20sp"
-        android:onClick="prParsing"/>
+        android:textSize="20sp" />
 
 
     <TextView
