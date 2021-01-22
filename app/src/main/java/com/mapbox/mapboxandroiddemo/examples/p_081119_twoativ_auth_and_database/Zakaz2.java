@@ -20,10 +20,21 @@ public class Zakaz2 extends AppCompatActivity {
     private static final String TAG ="Zakaz2" ;
     TextView textView;
     Button button1,button2,button3,button4,button5;
-    Button map1,map2,map3,map4,map5;
+    Button map2,map3,map4,map5;
     // данные из Zakaz1
     String refFromInCity;
     String phoneNew;
+
+    String [] refMap={"Красноярск->Аэропорт","Аэропорт->Красноярск",
+            "Сосновоборск->Аэропорт","Аэропорт->Сосновоборск",
+            "Ачинск->Аэропорт","Аэропорт->Ачинск",
+            "Канск->Аэропорт","Аэропорт->Канск",
+            "Лесосибирск->Аэропорт","Аэропорт->Лесосибирск"};
+
+    // Для выбора какую карту открыть для первой кнопки
+    String [] arrayOneButton={"Щорса-Аэропорт","Аэропорт-Щорса","Cосновоборск-Аэропорт","Аэропорт-Cосновоборск",
+            "Ачинск-Аэропорт","Аэропорт-Ачинск","Канск-Аэропорт","Аэропорт-Канск","Лесосибирск-Аэропорт","Аэропорт-Лесосибирск"};
+
 
     String[] array1 ={"Щорса-Аэропорт","КрасТэц-Аэропорт","Северный-Аэропорт","ЖД вокзал-Аэропорт","Ветлужанка-Аэропорт"};
     String[] array2 ={"Аэропорт-Щорса","Аэропорт-КрасТэц","Аэропорт-Северный","Аэропорт-ЖД вокзал","Аэропорт-Ветлужанка"};
@@ -73,7 +84,6 @@ public class Zakaz2 extends AppCompatActivity {
         button3=findViewById(R.id.button3);
         button4=findViewById(R.id.button4);
         button5=findViewById(R.id.button5);
-        map1=findViewById(R.id.map1);
         map2=findViewById(R.id.map2);
         map3=findViewById(R.id.map3);
         map4=findViewById(R.id.map4);
@@ -84,7 +94,6 @@ public class Zakaz2 extends AppCompatActivity {
         button3.setVisibility(View.INVISIBLE);
         button4.setVisibility(View.INVISIBLE);
         button5.setVisibility(View.INVISIBLE);
-        map1.setVisibility(View.INVISIBLE);
         map2.setVisibility(View.INVISIBLE);
         map3.setVisibility(View.INVISIBLE);
         map4.setVisibility(View.INVISIBLE);
@@ -101,148 +110,190 @@ public class Zakaz2 extends AppCompatActivity {
 
 // ВИЗУАЛИЗАЦИЯ
     public void visalList(){
-        if(refFromInCity.equals("Красноярск->Аэропорт")){
-
-            button1.setVisibility(View.VISIBLE);
-            button2.setVisibility(View.VISIBLE);
-            button3.setVisibility(View.VISIBLE);
-            button4.setVisibility(View.VISIBLE);
-            button5.setVisibility(View.VISIBLE);
-            map1.setVisibility(View.VISIBLE);
-            map2.setVisibility(View.VISIBLE);
-            map3.setVisibility(View.VISIBLE);
-            map4.setVisibility(View.VISIBLE);
-            map5.setVisibility(View.VISIBLE);
-
-            button1.setText(array1[0]);
-            button2.setText(array1[1]);
-            button3.setText(array1[2]);
-            button4.setText(array1[3]);
-            button5.setText(array1[4]);
-
-            RefList1=KrasnojarskOneMap;
-            RefList2=KrasnojarskTwoMap;
-            RefList3=KrasnojarskTreeMap;
-            RefList4=KrasnojarskFourMap;
-            RefList5=KrasnojarskFiveMap;
+        for (int i=0;i<refMap.length;i++){
+            if (refFromInCity.equals(refMap[i])){
+                Log.d(TAG, "refMap: "+refMap[i]);
+                if (i==0){
+                    // Визуализация маршрутов Красноярск->Аэропорт
+                    getMetod0();
+                }
+                if (i==1){
+                    // Визуализация маршрутов Аэропорт->Красноярск
+                    getMetod1();
+                }
+                if (i==2){
+                    // Визуализация маршрутов Сосновоборск->Аэропорт
+                    getMetod2();
+                }
+                if (i==3){
+                    // Визуализация маршрутов Аэропорт->Сосновоборск
+                    getMetod3();
+                }
+                if (i==4){
+                    // Визуализация маршрутов Ачинск->Аэропорт
+                    getMetod4();
+                }
+                if (i==5){
+                    // Визуализация маршрутов Аэропорт->Ачинск
+                    getMetod5();
+                }
+                if (i==6){
+                    // Визуализация маршрутов Канск->Аэропорт
+                    getMetod6();
+                }
+                if (i==7){
+                    // Визуализация маршрутов Аэропорт->Канск
+                    getMetod7();
+                }
+                if (i==8){
+                    // Визуализация маршрутов Лесосибирск->Аэропорт
+                    getMetod8();
+                }
+                if (i==9){
+                    // Визуализация маршрутов Аэропорт->Канск
+                    getMetod9();
+                }
+            }
+        }
     }
+    // Красноярск->Аэропорт
+    public void getMetod0(){
+        button1.setVisibility(View.VISIBLE);
+        button2.setVisibility(View.VISIBLE);
+        button3.setVisibility(View.VISIBLE);
+        button4.setVisibility(View.VISIBLE);
+        button5.setVisibility(View.VISIBLE);
+        map2.setVisibility(View.VISIBLE);
+        map3.setVisibility(View.VISIBLE);
+        map4.setVisibility(View.VISIBLE);
+        map5.setVisibility(View.VISIBLE);
 
-        if(refFromInCity.equals("Аэропорт->Красноярск")){
-            button1.setVisibility(View.VISIBLE);
-            button2.setVisibility(View.VISIBLE);
-            button3.setVisibility(View.VISIBLE);
-            button4.setVisibility(View.VISIBLE);
-            button5.setVisibility(View.VISIBLE);
-            map1.setVisibility(View.VISIBLE);
-            map2.setVisibility(View.VISIBLE);
-            map3.setVisibility(View.VISIBLE);
-            map4.setVisibility(View.VISIBLE);
-            map5.setVisibility(View.VISIBLE);
+        button1.setText(array1[0]);
+        button2.setText(array1[1]);
+        button3.setText(array1[2]);
+        button4.setText(array1[3]);
+        button5.setText(array1[4]);
 
-            button1.setText(array2[0]);
-            button2.setText(array2[1]);
-            button3.setText(array2[2]);
-            button4.setText(array2[3]);
-            button5.setText(array2[4]);
+        RefList1=KrasnojarskOneMap;
+        RefList2=KrasnojarskTwoMap;
+        RefList3=KrasnojarskTreeMap;
+        RefList4=KrasnojarskFourMap;
+        RefList5=KrasnojarskFiveMap;
 
-            RefList1=FromAirport;
-            RefList2=FromAirport;
-            RefList3=FromAirport;
-            RefList4=FromAirport;
-            RefList5=FromAirport;
-        }
+    }
+    //Аэропорт->Красноярск
+    public void getMetod1(){
+        button1.setVisibility(View.VISIBLE);
+        button2.setVisibility(View.VISIBLE);
+        button3.setVisibility(View.VISIBLE);
+        button4.setVisibility(View.VISIBLE);
+        button5.setVisibility(View.VISIBLE);
+        map2.setVisibility(View.VISIBLE);
+        map3.setVisibility(View.VISIBLE);
+        map4.setVisibility(View.VISIBLE);
+        map5.setVisibility(View.VISIBLE);
 
-        if(refFromInCity.equals("Сосновоборск->Аэропорт")){
-            button1.setVisibility(View.VISIBLE);
-            map1.setVisibility(View.VISIBLE);
-            RefList1=pointSosnovoborsk;
-            button1.setText(refFromInCity);
-        }
+        button1.setText(array2[0]);
+        button2.setText(array2[1]);
+        button3.setText(array2[2]);
+        button4.setText(array2[3]);
+        button5.setText(array2[4]);
 
-        if(refFromInCity.equals("Аэропорт->Сосновоборск")){
-            button1.setVisibility(View.VISIBLE);
-            map1.setVisibility(View.VISIBLE);
-            button1.setText(refFromInCity);
-            RefList1=FromAirport;
-        }
+        RefList1=FromAirport;
+        RefList2=FromAirport;
+        RefList3=FromAirport;
+        RefList4=FromAirport;
+        RefList5=FromAirport;
 
-        if(refFromInCity.equals("Ачинск->Аэропорт")){
-            button1.setVisibility(View.VISIBLE);
-            map1.setVisibility(View.VISIBLE);
-            button1.setText(refFromInCity);
-            RefList1=pointAchinsk;
-        }
-
-        if(refFromInCity.equals("Аэропорт->Ачинск")){
-            button1.setVisibility(View.VISIBLE);
-            map1.setVisibility(View.VISIBLE);
-            button1.setText(refFromInCity);
-            RefList1=FromAirport;
-        }
-
-        if(refFromInCity.equals("Канск->Аэропорт")){
-            button1.setVisibility(View.VISIBLE);
-            map1.setVisibility(View.VISIBLE);
-            button1.setText(refFromInCity);
-            RefList1=pointKansk;
-        }
-
-        if(refFromInCity.equals("Аэропорт->Канск")){
-            button1.setVisibility(View.VISIBLE);
-            map1.setVisibility(View.VISIBLE);
-            button1.setText(refFromInCity);
-            RefList1=FromAirport;
-        }
-
-        if(refFromInCity.equals("Лесосибирск->Аэропорт")){
-            button1.setVisibility(View.VISIBLE);
-            map1.setVisibility(View.VISIBLE);
-            button1.setText(refFromInCity);
-            RefList1=pointLesosobirsk;
-        }
-
-        if(refFromInCity.equals("Аэропорт->Лесосибирск")){
-            button1.setVisibility(View.VISIBLE);
-            map1.setVisibility(View.VISIBLE);
-            button1.setText(refFromInCity);
-            RefList1=FromAirport;
-        }
+    }
+    //Сосновоборск->Аэропорт
+    public void getMetod2(){
+        button1.setVisibility(View.VISIBLE);
+        RefList1=pointSosnovoborsk;
+        button1.setText(refFromInCity);
+    }
+    //Аэропорт->Сосновоборск
+    public void getMetod3(){
+        button1.setVisibility(View.VISIBLE);
+        button1.setText(refFromInCity);
+        RefList1=FromAirport;
+    }
+    //Ачинск->Аэропорт
+    public void getMetod4(){
+        button1.setVisibility(View.VISIBLE);
+        button1.setText(refFromInCity);
+        RefList1=pointAchinsk;
+    }
+    //Аэропорт->Ачинск
+    public void getMetod5(){
+        button1.setVisibility(View.VISIBLE);
+        button1.setText(refFromInCity);
+        RefList1=FromAirport;
+    }
+    //Канск->Аэропорт
+    public void getMetod6(){
+        button1.setVisibility(View.VISIBLE);
+        button1.setText(refFromInCity);
+        RefList1=pointKansk;
+    }
+    //Аэропорт->Канск
+    public void getMetod7(){
+        button1.setVisibility(View.VISIBLE);
+        button1.setText(refFromInCity);
+        RefList1=FromAirport;
+    }
+    //Лесосибирск->Аэропорт
+    public void getMetod8(){
+        button1.setVisibility(View.VISIBLE);
+        button1.setText(refFromInCity);
+        RefList1=pointLesosobirsk;
+    }
+    //Аэропорт->Лесосибирск
+    public void getMetod9(){
+        button1.setVisibility(View.VISIBLE);
+        button1.setText(refFromInCity);
+        RefList1=FromAirport;
     }
 //КНОПКИ
     // Выбор точки сбора
     public void button1 (View view){
-        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
-        mAlertDialog.setTitle("Пункт сбора");
-        mAlertDialog
-                .setItems(RefList1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        // Открытие карты
+        button1OpenMap();
 
-                        RefPoint=RefList1[which];
-                        RefMap=button1.getText().toString();
-                        // идем обратно в Zakaz1
-                        backZakaz2ToZakaz1();
-                    }
-                });
-        mAlertDialog.create();
-        mAlertDialog.show();
+//        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
+//        mAlertDialog.setTitle("Пункт сбора");
+//        mAlertDialog
+//                .setItems(RefList1, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                        RefPoint=RefList1[which];
+//                        RefMap=button1.getText().toString();
+//                        // идем обратно в Zakaz1
+//                        backZakaz2ToZakaz1();
+//                    }
+//                });
+//        mAlertDialog.create();
+//        mAlertDialog.show();
     }
     public void button2 (View view){
-        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
-        mAlertDialog.setTitle("Пункт сбора");
-        mAlertDialog
-                .setItems(RefList2, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        RefPoint=RefList2[which];
-                        RefMap=button2.getText().toString();
-                        // идем обратно в Zakaz1
-                        backZakaz2ToZakaz1();
-                    }
-                });
-        mAlertDialog.create();
-        mAlertDialog.show();
+        // Открытие карты
+        button2OpenMap();
+//        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
+//        mAlertDialog.setTitle("Пункт сбора");
+//        mAlertDialog
+//                .setItems(RefList2, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                        RefPoint=RefList2[which];
+//                        RefMap=button2.getText().toString();
+//                        // идем обратно в Zakaz1
+//                        backZakaz2ToZakaz1();
+//                    }
+//                });
+//        mAlertDialog.create();
+//        mAlertDialog.show();
     }
     public void button3 (View view){
         AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
@@ -311,6 +362,34 @@ public class Zakaz2 extends AppCompatActivity {
         backZakaz2ToZakaz1.putExtra("RefBackFromZakaz2","backYesFromZakaz2");
         backZakaz2ToZakaz1.putExtra("phoneNew",phoneNew);
         startActivity(backZakaz2ToZakaz1);
+    }
+    // Открытие карты по первой кнопке
+    public void button1OpenMap(){
+        Intent buttonOpenMap = new Intent(this,Zakaz2ShowMapBtn1.class);
+        // передаем в карту название выбранного маршрута маршрута
+        buttonOpenMap.putExtra("button",""+button1.getText().toString());
+        startActivity(buttonOpenMap);
+    }
+    // Открытие карты по второй кнопке
+    public void button2OpenMap(){
+        Intent buttonOpenMap = new Intent(this,Zakaz2ShowMapBtn1.class);
+        // передаем в карту название выбранного маршрута маршрута
+        buttonOpenMap.putExtra("button",""+button2.getText().toString());
+        startActivity(buttonOpenMap);
+    }
+    // Открытие карты по третьей кнопке
+    public void button3OpenMap(){
+        Intent buttonOpenMap = new Intent(this,Zakaz2ShowMapBtn1.class);
+        // передаем в карту название выбранного маршрута маршрута
+        buttonOpenMap.putExtra("button",""+button3.getText().toString());
+        startActivity(buttonOpenMap);
+    }
+    // Открытие карты по четвертой кнопке
+    public void button4OpenMap(){
+        Intent buttonOpenMap = new Intent(this,Zakaz2ShowMapBtn1.class);
+        // передаем в карту название выбранного маршрута маршрута
+        buttonOpenMap.putExtra("button",""+button4.getText().toString());
+        startActivity(buttonOpenMap);
     }
     // Открытие АЭРОПОРТ-ЩОРСА-АЭРОПОРТ
     public void Map1(View view) {
