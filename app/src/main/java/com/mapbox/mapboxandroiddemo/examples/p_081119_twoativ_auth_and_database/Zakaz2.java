@@ -20,7 +20,6 @@ public class Zakaz2 extends AppCompatActivity {
     private static final String TAG ="Zakaz2" ;
     TextView textView;
     Button button1,button2,button3,button4,button5;
-    Button map2,map3,map4,map5;
     // данные из Zakaz1
     String refFromInCity;
     String phoneNew;
@@ -73,6 +72,7 @@ public class Zakaz2 extends AppCompatActivity {
     String RefPoint;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,20 +84,13 @@ public class Zakaz2 extends AppCompatActivity {
         button3=findViewById(R.id.button3);
         button4=findViewById(R.id.button4);
         button5=findViewById(R.id.button5);
-        map2=findViewById(R.id.map2);
-        map3=findViewById(R.id.map3);
-        map4=findViewById(R.id.map4);
-        map5=findViewById(R.id.map5);
 
         button1.setVisibility(View.INVISIBLE);
         button2.setVisibility(View.INVISIBLE);
         button3.setVisibility(View.INVISIBLE);
         button4.setVisibility(View.INVISIBLE);
         button5.setVisibility(View.INVISIBLE);
-        map2.setVisibility(View.INVISIBLE);
-        map3.setVisibility(View.INVISIBLE);
-        map4.setVisibility(View.INVISIBLE);
-        map5.setVisibility(View.INVISIBLE);
+
 
         // полученине данных из Zakaz1
         Intent Zakaz1ToZakaz2=getIntent();
@@ -163,10 +156,6 @@ public class Zakaz2 extends AppCompatActivity {
         button3.setVisibility(View.VISIBLE);
         button4.setVisibility(View.VISIBLE);
         button5.setVisibility(View.VISIBLE);
-        map2.setVisibility(View.VISIBLE);
-        map3.setVisibility(View.VISIBLE);
-        map4.setVisibility(View.VISIBLE);
-        map5.setVisibility(View.VISIBLE);
 
         button1.setText(array1[0]);
         button2.setText(array1[1]);
@@ -188,10 +177,6 @@ public class Zakaz2 extends AppCompatActivity {
         button3.setVisibility(View.VISIBLE);
         button4.setVisibility(View.VISIBLE);
         button5.setVisibility(View.VISIBLE);
-        map2.setVisibility(View.VISIBLE);
-        map3.setVisibility(View.VISIBLE);
-        map4.setVisibility(View.VISIBLE);
-        map5.setVisibility(View.VISIBLE);
 
         button1.setText(array2[0]);
         button2.setText(array2[1]);
@@ -257,8 +242,10 @@ public class Zakaz2 extends AppCompatActivity {
 //КНОПКИ
     // Выбор точки сбора
     public void button1 (View view){
+        // выбранный маршрут
+        RefMap=button1.getText().toString();
         // Открытие карты
-        button1OpenMap();
+        buttonOpenMap();
 
 //        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
 //        mAlertDialog.setTitle("Пункт сбора");
@@ -277,8 +264,10 @@ public class Zakaz2 extends AppCompatActivity {
 //        mAlertDialog.show();
     }
     public void button2 (View view){
+        // выбранный маршрут
+        RefMap=button2.getText().toString();
         // Открытие карты
-        button2OpenMap();
+        buttonOpenMap();
 //        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
 //        mAlertDialog.setTitle("Пункт сбора");
 //        mAlertDialog
@@ -296,58 +285,73 @@ public class Zakaz2 extends AppCompatActivity {
 //        mAlertDialog.show();
     }
     public void button3 (View view){
-        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
-        mAlertDialog.setTitle("Пункт сбора");
-        mAlertDialog
-                .setItems(RefList3, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        RefPoint=RefList3[which];
-                        RefMap=button3.getText().toString();
-                        // идем обратно в Zakaz1
-                        backZakaz2ToZakaz1();
-                    }
-                });
-        mAlertDialog.create();
-        mAlertDialog.show();
+        // выбранный маршрут
+        RefMap=button3.getText().toString();
+        // Открытие карты
+        buttonOpenMap();
+
+//        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
+//        mAlertDialog.setTitle("Пункт сбора");
+//        mAlertDialog
+//                .setItems(RefList3, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        RefPoint=RefList3[which];
+//                        RefMap=button3.getText().toString();
+//                        // идем обратно в Zakaz1
+//                        backZakaz2ToZakaz1();
+//                    }
+//                });
+//        mAlertDialog.create();
+//        mAlertDialog.show();
     }
     public void button4 (View view){
-        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
-        mAlertDialog.setTitle("Пункт сбора");
-        mAlertDialog
-                .setItems(RefList4, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        RefPoint=RefList4[which];
-                        RefMap=button4.getText().toString();
-                        // идем обратно в Zakaz1
-                        backZakaz2ToZakaz1();
-                    }
-                });
-        mAlertDialog.create();
-        mAlertDialog.show();
+        // выбранный маршрут
+        RefMap=button4.getText().toString();
+        // Открытие карты
+        buttonOpenMap();
+
+//        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
+//        mAlertDialog.setTitle("Пункт сбора");
+//        mAlertDialog
+//                .setItems(RefList4, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        RefPoint=RefList4[which];
+//                        RefMap=button4.getText().toString();
+//                        // идем обратно в Zakaz1
+//                        backZakaz2ToZakaz1();
+//                    }
+//                });
+//        mAlertDialog.create();
+//        mAlertDialog.show();
     }
     public void button5 (View view){
-        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
-        mAlertDialog.setTitle("Пункт сбора");
-        mAlertDialog
-                .setItems(RefList5, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        RefPoint=RefList5[which];
-                        RefMap=button5.getText().toString();
-                        // идем обратно в Zakaz1
-                        backZakaz2ToZakaz1();
-                    }
-                });
-        mAlertDialog.create();
-        mAlertDialog.show();
+        // выбранный маршрут
+        RefMap=button1.getText().toString();
+        // Открытие карты
+        buttonOpenMap();
+
+//        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
+//        mAlertDialog.setTitle("Пункт сбора");
+//        mAlertDialog
+//                .setItems(RefList5, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        RefPoint=RefList5[which];
+//                        RefMap=button5.getText().toString();
+//                        // идем обратно в Zakaz1
+//                        backZakaz2ToZakaz1();
+//                    }
+//                });
+//        mAlertDialog.create();
+//        mAlertDialog.show();
     }
     // Кнопка Отмене обратно в Zakaz1
     public void back(View view){
         // передаем null в Zakaz1
         Intent backZakaz2ToZakaz1= new Intent(this,Zakaz1.class);
-        backZakaz2ToZakaz1.putExtra("RefBackFromZakaz2","backNoFromZakaz2");
+        backZakaz2ToZakaz1.putExtra("RefBackFromZakaz2","BackNoFromZakaz2");
         backZakaz2ToZakaz1.putExtra("phoneNew",phoneNew);
         startActivity(backZakaz2ToZakaz1);
     }
@@ -364,31 +368,13 @@ public class Zakaz2 extends AppCompatActivity {
         startActivity(backZakaz2ToZakaz1);
     }
     // Открытие карты по первой кнопке
-    public void button1OpenMap(){
+    public void buttonOpenMap(){
         Intent buttonOpenMap = new Intent(this,Zakaz2ShowMapBtn1.class);
-        // передаем в карту название выбранного маршрута маршрута
-        buttonOpenMap.putExtra("button",""+button1.getText().toString());
-        startActivity(buttonOpenMap);
-    }
-    // Открытие карты по второй кнопке
-    public void button2OpenMap(){
-        Intent buttonOpenMap = new Intent(this,Zakaz2ShowMapBtn1.class);
-        // передаем в карту название выбранного маршрута маршрута
-        buttonOpenMap.putExtra("button",""+button2.getText().toString());
-        startActivity(buttonOpenMap);
-    }
-    // Открытие карты по третьей кнопке
-    public void button3OpenMap(){
-        Intent buttonOpenMap = new Intent(this,Zakaz2ShowMapBtn1.class);
-        // передаем в карту название выбранного маршрута маршрута
-        buttonOpenMap.putExtra("button",""+button3.getText().toString());
-        startActivity(buttonOpenMap);
-    }
-    // Открытие карты по четвертой кнопке
-    public void button4OpenMap(){
-        Intent buttonOpenMap = new Intent(this,Zakaz2ShowMapBtn1.class);
-        // передаем в карту название выбранного маршрута маршрута
-        buttonOpenMap.putExtra("button",""+button4.getText().toString());
+        // передаем в карту
+        buttonOpenMap.putExtra("RefMap",RefMap); // название выбранного маршрута
+        buttonOpenMap.putExtra("RefBackFromZakaz2","BackYesFromZakaz2"); // подтверждение выбора (а не просто возврат по кнопке НАЗАД)
+        buttonOpenMap.putExtra("phoneNew",phoneNew); // реф phone
+
         startActivity(buttonOpenMap);
     }
     // Открытие АЭРОПОРТ-ЩОРСА-АЭРОПОРТ

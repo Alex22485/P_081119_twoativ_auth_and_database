@@ -216,7 +216,7 @@ public class Zakaz1 extends AppCompatActivity {
         RefPoint=""+backZakaz2ToZakaz1.getStringExtra("RefPoint");
         RefBackFromZakaz2=""+backZakaz2ToZakaz1.getStringExtra("RefBackFromZakaz2");
         // Если переход был нажатием кнопки НАЗАД Zakaz2
-        if(RefBackFromZakaz2.equals("backNoFromZakaz2")){
+        if(RefBackFromZakaz2.equals("BackNoFromZakaz2")){
             // экспорт phoneNew из Zakaz2
             phoneNew=""+backZakaz2ToZakaz1.getStringExtra("phoneNew");
             Log.d(TAG, "Переход из Zakaz2 phoneNew:"+phoneNew);
@@ -245,7 +245,7 @@ public class Zakaz1 extends AppCompatActivity {
               },700);
         }
         // переход из Zakaz2 был c выбором маршрута
-        if (RefBackFromZakaz2.equals("backYesFromZakaz2")){
+        if (RefBackFromZakaz2.equals("BackYesFromZakaz2")){
             // экспорт phoneNew из Zakaz2
             phoneNew=""+backZakaz2ToZakaz1.getStringExtra("phoneNew");
             Log.d(TAG, "Переход из Zakaz2 phoneNew:"+phoneNew);

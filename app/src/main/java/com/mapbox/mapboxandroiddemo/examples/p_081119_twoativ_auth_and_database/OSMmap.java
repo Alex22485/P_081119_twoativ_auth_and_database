@@ -2060,7 +2060,7 @@ public class OSMmap extends AppCompatActivity {
     inAir19.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
     map.getOverlays().add(inAir19);
     inAir19.setTitle("ост. Предмостная пл.");
-
+    // Обработка нажатия на Карту
     inAir19.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
         @Override
         public boolean onMarkerClick(Marker marker, MapView mapView) {

@@ -1,9 +1,11 @@
 package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -25,9 +27,15 @@ import java.util.List;
 
 public class Zakaz2ShowMapBtn1 extends AppCompatActivity {
     private static final String TAG ="Zakaz2Show" ;
+    // Заголовок для карт
     TextView textMapOne;
+    TextView textMapTwo;
+
     // экспорт данных из Zakaz2 Выбранный маршрут
-    String button1="";
+    String RefMap=""; // выбранный маршрут
+    String RefBackFromZakaz2=""; //слово подтверждение что маршрут и точка сбора выбраны
+    String phoneNew=""; // реф phone
+
     String [] refButton = {
             "Щорса-Аэропорт", "Аэропорт-Щорса", // индекс 0 1
             "Сосновоборск-Аэропорт", "Аэропорт-Сосновоборск", // индекс 2 3
@@ -37,7 +45,28 @@ public class Zakaz2ShowMapBtn1 extends AppCompatActivity {
             "КрасТэц-Аэропорт", "Аэропорт-КрасТэц", // индекс 10 11
             "Северный-Аэропорт", "Аэропорт-Северный", // индекс 12 13
             "ЖД вокзал-Аэропорт", "Аэропорт-ЖД вокзал", // индекс 14 15
-    };
+            };
+    // Пояснения к карте из Красноярска в Аэропорт
+    String textMapKrasAir1="Нажмите нужный маркер";
+    String textMapKrasAir2="для выбора места сбора";
+
+// ОСТАНОВКИ МАРШРУТОВ
+
+    // остановки Маршрут КрасТЭЦ-Аэропорт
+    String [] pointKrasTethAirport={
+            "ост. Гостиница Кедр","ост. Поликлиника", "ост. Крылова" // индекс 0 1 2
+            ,"ост. Каменный квартал","ост. Хлебозавод" // индекс 3 4
+            ,"ост. Школа","ост. ДК 1 Мая" // индекс 5 6
+            ,"ост. Аэрокосмическая Академия","ост. Художественная галерея" // индекс 7 8
+            ,"ост. Возрождение кредит","ост. Детская библиотека" // индекс 9 10
+            ,"ост. Кинотеатр Родина","ост. Торговый центр" // индекс 11 12
+            ,"ост. ТЮЗ","ост. Затон" // индекс 13 14
+            ,"ост. Цирк","ост. Правый берег" // индекс 15 16
+            ,"ост. Юбилейная","ост. Предмостная пл."}; // индекс 17 18
+
+    // выбранная точка сбора маршрута
+    String RefPoint;
+    String RefPosition;
 
     MapView map = null;
 
@@ -46,28 +75,32 @@ public class Zakaz2ShowMapBtn1 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zakaz2_show_map_btn1);
-
         textMapOne=findViewById(R.id.textMapOne);
-        textMapOne.setText("Маркеры .");
+        textMapTwo=findViewById(R.id.textMapTwo);
+
+
 
 // Загрузка Карты OSM
         Context ctx = getApplicationContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
-        setContentView(R.layout.activity_zakaz2_show_map_btn1);
-        map = (MapView) findViewById(R.id.map);
+        // Убрал т.к. эта строчка уже есть чуть выше (но в примере была)
+        //setContentView(R.layout.activity_zakaz2_show_map_btn1);
+        map = findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK);
         // увеличение-уменьшение карты пальцами
         map.setMultiTouchControls(true);
         map.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.SHOW_AND_FADEOUT);
 
         // полученине данных выбранного маршрута из Zakaz2
-        Intent button1OpenMap=getIntent();
-        button1= button1OpenMap.getStringExtra("button");
-        Log.d(TAG, "button1: "+button1);
+        Intent buttonOpenMap=getIntent();
+        RefMap= buttonOpenMap.getStringExtra("RefMap");
+        RefBackFromZakaz2= buttonOpenMap.getStringExtra("RefBackFromZakaz2");
+        phoneNew= buttonOpenMap.getStringExtra("phoneNew");
 
-        // Выбор какую карту показать на экране в зависимости от полученного из экспорта button1
+
+        // Выбор какую карту показать на экране в зависимости от полученного из экспорта RefMap
         for (int i=0;i<refButton.length;i++){
-            if (button1.equals(refButton[i])){
+            if (RefMap.equals(refButton[i])){
                 if (i==0){
                     Log.d(TAG, "Переход на Карту индекс 0");
                     //показать карту по индексу "0" из refButton
@@ -111,7 +144,7 @@ public class Zakaz2ShowMapBtn1 extends AppCompatActivity {
                 }
                 if (i==10){
                     //показать карту по индексу "10" из refButton
-                    //showMap10Index();
+                    showMap10Index();
                 }
                 if (i==11){
                     //показать карту по индексу "11" из refButton
@@ -182,6 +215,7 @@ public class Zakaz2ShowMapBtn1 extends AppCompatActivity {
     public void showMap9Index (){
 
     }
+    //Карта КРАСТЭЦ-АЭРОПОРТ
     public void showMap10Index(){
         //handle permissions first, before map is created. not depicted here
         //load/initialize the osmdroid configuration, this can be done
@@ -203,7 +237,8 @@ public class Zakaz2ShowMapBtn1 extends AppCompatActivity {
 //        map.setMultiTouchControls(true);
 //        map.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.SHOW_AND_FADEOUT);
 
-//        textMap1.setText("Маркеры .");
+        textMapOne.setText(textMapKrasAir1);
+        textMapTwo.setText(textMapKrasAir2);
 
         // Загрузка карты с этой точки
         IMapController mapController=map.getController();
@@ -211,154 +246,326 @@ public class Zakaz2ShowMapBtn1 extends AppCompatActivity {
         GeoPoint startPoint= new GeoPoint(56.0155504,92.9826113);
         mapController.setCenter(startPoint);
 
-        // Маркер Начальная точка
+        // Маркер Конечная точка
         Marker EndtMaker= new Marker(map);
-        EndtMaker.setPosition(new GeoPoint(56.0289345,93.0204919));
+        EndtMaker.setPosition(new GeoPoint(56.1811134,92.4868959));
         EndtMaker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
         map.getOverlays().add(EndtMaker);
-        EndtMaker.setTitle("ост. Гостиница Кедр");
-
-        // Маркер Конечная точка
-        Marker startMaker= new Marker(map);
-        startMaker.setPosition(new GeoPoint(56.1811134,92.4868959));
-        startMaker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
-        map.getOverlays().add(startMaker);
-        startMaker.setTitle("Конечная ост. Аэропорт");
+        EndtMaker.setTitle("Конечная ост. Аэропорт");
 
 //ОСТАНОВКИ маршрута КРАСТЭЦ-АЭРОПОРТ
+
+        // Маркер Начальная точка
+        Marker inAir0= new Marker(map);
+        inAir0.setPosition(new GeoPoint(56.0289345,93.0204919));
+        inAir0.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+        map.getOverlays().add(inAir0);
+        inAir0.setTitle(pointKrasTethAirport[0]);
+        // Выбор точки сбора ост. Гостиница Кедр
+        inAir0.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                RefPosition=pointKrasTethAirport[0];
+                AlertshowMap10Index();
+                return false;
+            }
+        });
+
         // Маркер ост. Поликлиника
         Marker inAir1= new Marker(map);
         inAir1.setPosition(new GeoPoint(56.0246284,93.0160716));
         inAir1.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
         map.getOverlays().add(inAir1);
-        inAir1.setTitle("ост. Поликлиника");
+        inAir1.setTitle(pointKrasTethAirport[1]);
+        // Выбор точки сбора ост. Поликлиника
+        inAir1.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                RefPosition=pointKrasTethAirport[1];
+                AlertshowMap10Index();
+                return false;
+            }
+        });
 
         // Маркер ост. Крылова
         Marker inAir2= new Marker(map);
         inAir2.setPosition(new GeoPoint(56.0219348,93.0104068));
         inAir2.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
         map.getOverlays().add(inAir2);
-        inAir2.setTitle("ост. Крылова");
+        inAir2.setTitle(pointKrasTethAirport[2]);
+        // Выбор точки сбора ост. Крылова
+        inAir2.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                RefPosition=pointKrasTethAirport[2];
+                AlertshowMap10Index();
+                return false;
+            }
+        });
 
         // Маркер ост. Каменный квартал
         Marker inAir3= new Marker(map);
         inAir3.setPosition(new GeoPoint(56.0209469,93.0060858));
         inAir3.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
         map.getOverlays().add(inAir3);
-        inAir3.setTitle("ост. Каменный квартал");
+        inAir3.setTitle(pointKrasTethAirport[3]);
+        // Выбор точки сбора ост. Каменный квартал
+        inAir3.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                RefPosition=pointKrasTethAirport[3];
+                AlertshowMap10Index();
+                return false;
+            }
+        });
 
         // Маркер ост. Хлебозавод
         Marker inAir4= new Marker(map);
         inAir4.setPosition(new GeoPoint(56.0187567,92.9965612));
         inAir4.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
         map.getOverlays().add(inAir4);
-        inAir4.setTitle("ост. Хлебозавод");
+        inAir4.setTitle(pointKrasTethAirport[4]);
+        // Выбор точки сбора ост. Хлебозавод
+        inAir4.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                RefPosition=pointKrasTethAirport[4];
+                AlertshowMap10Index();
+                return false;
+            }
+        });
 
         // Маркер ост. Школа
         Marker inAir5= new Marker(map);
         inAir5.setPosition(new GeoPoint(56.0170866,92.9893112));
         inAir5.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
         map.getOverlays().add(inAir5);
-        inAir5.setTitle("ост. Школа");
+        inAir5.setTitle(pointKrasTethAirport[5]);
+        // Выбор точки сбора ост. Школа
+        inAir5.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                RefPosition=pointKrasTethAirport[5];
+                AlertshowMap10Index();
+                return false;
+            }
+        });
 
         // Маркер ост. ДК 1 Мая
         Marker inAir6= new Marker(map);
         inAir6.setPosition(new GeoPoint(56.0155504,92.9826113));
         inAir6.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
         map.getOverlays().add(inAir6);
-        inAir6.setTitle("ост. ДК 1 Мая");
+        inAir6.setTitle(pointKrasTethAirport[6]);
+        // Выбор точки сбора ост. ДК 1 Мая
+        inAir6.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                RefPosition=pointKrasTethAirport[6];
+                AlertshowMap10Index();
+                return false;
+            }
+        });
 
         // Маркер ост. Аэрокосмическая Академия
         Marker inAir7= new Marker(map);
         inAir7.setPosition(new GeoPoint(56.0137957,92.9750177));
         inAir7.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
         map.getOverlays().add(inAir7);
-        inAir7.setTitle("ост. Аэрокосмическая Академия");
+        inAir7.setTitle(pointKrasTethAirport[7]);
+        // Выбор точки сбора ост. Аэрокосмическая Академия
+        inAir7.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                RefPosition=pointKrasTethAirport[7];
+                AlertshowMap10Index();
+                return false;
+            }
+        });
 
         // Маркер ост. Художественная галерея
         Marker inAir8= new Marker(map);
         inAir8.setPosition(new GeoPoint(56.0116456,92.9683149));
         inAir8.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
         map.getOverlays().add(inAir8);
-        inAir8.setTitle("ост. Художественная галерея");
-
-        // Маркер ост. Возрождение кредит
-        Marker inAir10= new Marker(map);
-        inAir10.setPosition(new GeoPoint(56.0088163,92.9563721));
-        inAir10.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
-        map.getOverlays().add(inAir10);
-        inAir10.setTitle("ост. Возрождение кредит");
-
-        // Маркер ост. Детская библиотека
-        Marker inAir11= new Marker(map);
-        inAir11.setPosition(new GeoPoint(56.0070477,92.9491320));
-        inAir11.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
-        map.getOverlays().add(inAir11);
-        inAir11.setTitle("ост. Детская библиотека");
-
-        // Маркер ост. Кинотеатр Родина
-        Marker inAir12= new Marker(map);
-        inAir12.setPosition(new GeoPoint(56.0053220,92.9420480));
-        inAir12.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
-        map.getOverlays().add(inAir12);
-        inAir12.setTitle("ост. Кинотеатр Родина");
-
-        // Маркер ост. Торговый центр
-        Marker inAir13= new Marker(map);
-        inAir13.setPosition(new GeoPoint(56.0027410,92.9313675));
-        inAir13.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
-        map.getOverlays().add(inAir13);
-        inAir13.setTitle("ост. Торговый центр");
-
-        // Маркер ост. ТЮЗ
-        Marker inAir14= new Marker(map);
-        inAir14.setPosition(new GeoPoint(56.0012247,92.9250669));
-        inAir14.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
-        map.getOverlays().add(inAir14);
-        inAir14.setTitle("ост. ТЮЗ");
-
-        // Маркер ост. Затон
-        Marker inAir15= new Marker(map);
-        inAir15.setPosition(new GeoPoint(55.9986194,92.9142603));
-        inAir15.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
-        map.getOverlays().add(inAir15);
-        inAir15.setTitle("ост. Затон");
-
-        // Маркер ост. Цирк
-        Marker inAir16= new Marker(map);
-        inAir16.setPosition(new GeoPoint(55.9967550,92.9065678));
-        inAir16.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
-        map.getOverlays().add(inAir16);
-        inAir16.setTitle("ост. Цирк");
-
-        // Маркер ост. Правый берег
-        Marker inAir17= new Marker(map);
-        inAir17.setPosition(new GeoPoint(55.9954260,92.9010746));
-        inAir17.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
-        map.getOverlays().add(inAir17);
-        inAir17.setTitle("ост. Правый берег");
-
-        // Маркер ост. Юбилейная
-        Marker inAir18= new Marker(map);
-        inAir18.setPosition(new GeoPoint(55.9945574,92.8974858));
-        inAir18.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
-        map.getOverlays().add(inAir18);
-        inAir18.setTitle("ост. Юбилейная");
-
-        // Маркер ост. Предмостная пл
-        Marker inAir19= new Marker(map);
-        inAir19.setPosition(new GeoPoint(55.9929133,92.8906998));
-        inAir19.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
-        map.getOverlays().add(inAir19);
-        inAir19.setTitle("ост. Предмостная пл.");
-
-        inAir19.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+        inAir8.setTitle(pointKrasTethAirport[8]);
+        // Выбор точки сбора ост. Художественная галерея
+        inAir8.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker, MapView mapView) {
-                Toast.makeText(mapView.getContext(), "Алексей, ты миллиардер", Toast.LENGTH_LONG).show();
+                RefPosition=pointKrasTethAirport[8];
+                AlertshowMap10Index();
                 return false;
             }
         });
+
+        // Маркер ост. Возрождение кредит
+        Marker inAir9= new Marker(map);
+        inAir9.setPosition(new GeoPoint(56.0088163,92.9563721));
+        inAir9.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+        map.getOverlays().add(inAir9);
+        inAir9.setTitle(pointKrasTethAirport[9]);
+        // Выбор точки сбора ост. Возрождение кредит
+        inAir9.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                RefPosition=pointKrasTethAirport[9];
+                AlertshowMap10Index();
+                return false;
+            }
+        });
+
+        // Маркер ост. Детская библиотека
+        Marker inAir10= new Marker(map);
+        inAir10.setPosition(new GeoPoint(56.0070477,92.9491320));
+        inAir10.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+        map.getOverlays().add(inAir10);
+        inAir10.setTitle(pointKrasTethAirport[10]);
+        // Выбор точки сбора ост. Возрождение кредит
+        inAir10.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                RefPosition=pointKrasTethAirport[10];
+                AlertshowMap10Index();
+                return false;
+            }
+        });
+
+        // Маркер ост. Кинотеатр Родина
+        Marker inAir11= new Marker(map);
+        inAir11.setPosition(new GeoPoint(56.0053220,92.9420480));
+        inAir11.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+        map.getOverlays().add(inAir11);
+        inAir11.setTitle(pointKrasTethAirport[11]);
+        // Выбор точки сбора ост. Кинотеатр Родина
+        inAir11.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                RefPosition=pointKrasTethAirport[11];
+                AlertshowMap10Index();
+                return false;
+            }
+        });
+
+        // Маркер ост. Торговый центр
+        Marker inAir12= new Marker(map);
+        inAir12.setPosition(new GeoPoint(56.0027410,92.9313675));
+        inAir12.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+        map.getOverlays().add(inAir12);
+        inAir12.setTitle(pointKrasTethAirport[12]);
+        // Выбор точки сбора ост. Торговый центр
+        inAir12.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                RefPosition=pointKrasTethAirport[12];
+                AlertshowMap10Index();
+                return false;
+            }
+        });
+
+        // Маркер ост. ТЮЗ
+        Marker inAir13= new Marker(map);
+        inAir13.setPosition(new GeoPoint(56.0012247,92.9250669));
+        inAir13.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+        map.getOverlays().add(inAir13);
+        inAir13.setTitle(pointKrasTethAirport[13]);
+        // Выбор точки сбора ост. ТЮЗ
+        inAir13.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                RefPosition=pointKrasTethAirport[13];
+                AlertshowMap10Index();
+                return false;
+            }
+        });
+
+        // Маркер ост. Затон
+        Marker inAir14= new Marker(map);
+        inAir14.setPosition(new GeoPoint(55.9986194,92.9142603));
+        inAir14.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+        map.getOverlays().add(inAir14);
+        inAir14.setTitle(pointKrasTethAirport[14]);
+        // Выбор точки сбора ост. Затон
+        inAir14.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                RefPosition=pointKrasTethAirport[14];
+                AlertshowMap10Index();
+                return false;
+            }
+        });
+
+        // Маркер ост. Цирк
+        Marker inAir15= new Marker(map);
+        inAir15.setPosition(new GeoPoint(55.9967550,92.9065678));
+        inAir15.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+        map.getOverlays().add(inAir15);
+        inAir15.setTitle(pointKrasTethAirport[15]);
+        // Выбор точки сбора ост. Цирк
+        inAir15.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                RefPosition=pointKrasTethAirport[15];
+                AlertshowMap10Index();
+                return false;
+            }
+        });
+
+        // Маркер ост. Правый берег
+        Marker inAir16= new Marker(map);
+        inAir16.setPosition(new GeoPoint(55.9954260,92.9010746));
+        inAir16.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+        map.getOverlays().add(inAir16);
+        inAir16.setTitle(pointKrasTethAirport[16]);
+        // Выбор точки сбора ост. Правый берег
+        inAir16.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                RefPosition=pointKrasTethAirport[16];
+                AlertshowMap10Index();
+                return false;
+            }
+        });
+
+        // Маркер ост. Юбилейная
+        Marker inAir17= new Marker(map);
+        inAir17.setPosition(new GeoPoint(55.9945574,92.8974858));
+        inAir17.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+        map.getOverlays().add(inAir17);
+        inAir17.setTitle(pointKrasTethAirport[17]);
+        // Выбор точки сбора ост. Юбилейная
+        inAir17.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                RefPosition=pointKrasTethAirport[17];
+                AlertshowMap10Index();
+                return false;
+            }
+        });
+
+        // Маркер ост. Предмостная пл
+        Marker inAir18= new Marker(map);
+        inAir18.setPosition(new GeoPoint(55.9929133,92.8906998));
+        inAir18.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+        map.getOverlays().add(inAir18);
+        inAir18.setTitle(pointKrasTethAirport[18]);
+        // Выбор точки сбора ост. Юбилейная
+        inAir18.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                RefPosition=pointKrasTethAirport[18];
+                AlertshowMap10Index();
+                return false;
+            }
+        });
+
+//        inAir19.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+//            @Override
+//            public boolean onMarkerClick(Marker marker, MapView mapView) {
+//                Toast.makeText(mapView.getContext(), "Алексей, ты миллиардер", Toast.LENGTH_LONG).show();
+//                return false;
+//            }
+//        });
 
         List<GeoPoint> geoPoints = new ArrayList<>();
 
@@ -4366,4 +4573,42 @@ public class Zakaz2ShowMapBtn1 extends AppCompatActivity {
     public void showMap15Index (){
 
     }
+// ALERTDIALOG ДЛЯ МАРКЕРОВ МАРШРУТОВ
+
+// Маршрут КРАСТЭЦ-АЭРОПОРТ
+
+  // Выбор точки сбора ост. Гостиница Кедр
+    public void AlertshowMap10Index(){
+        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2ShowMapBtn1.this);
+        mAlertDialog.setCancelable(true);
+        mAlertDialog
+                .setMessage(RefPosition)
+                .setPositiveButton("Выбрать", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // переход в Zakaz1 после выбора точки сбора
+                        RefPoint=RefPosition;
+                        GoToZakaz1();
+                    }
+                })
+                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+        mAlertDialog.create();
+        mAlertDialog.show();
+    }
+
+// ПЕРЕХОДЫ
+    // переход в Zakaz1 после выбора точки сбора
+    public void GoToZakaz1(){
+        Intent backZakaz2ToZakaz1= new Intent(this,Zakaz1.class);
+        // передаем Маршрут и пункт сбора в Zakaz1
+        backZakaz2ToZakaz1.putExtra("RefMap",RefMap);
+        backZakaz2ToZakaz1.putExtra("RefPoint",RefPoint);
+        backZakaz2ToZakaz1.putExtra("RefBackFromZakaz2","BackYesFromZakaz2");
+        backZakaz2ToZakaz1.putExtra("phoneNew",phoneNew);
+        startActivity(backZakaz2ToZakaz1);
+    };
 }
