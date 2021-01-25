@@ -27,7 +27,7 @@ import java.util.List;
 
 public class Zakaz2ShowMapBtn1 extends AppCompatActivity {
     private static final String TAG ="Zakaz2Show" ;
-    // Заголовок для карт
+    // Заголовок для карт из Красноярска
     TextView textMapOne;
     TextView textMapTwo;
 
