@@ -379,6 +379,9 @@ public class Zakaz3finish extends AppCompatActivity {
     // Регистрация заявки
     public void startRegistration(){
         Log.d(TAG, "Старт Регистрации заявки");
+        //RefPoint="ост. Волгоградская";
+        Log.d(TAG, "RefPoint "+ RefPoint);
+
         timeOut="";
         proverka="";
         //ТАЙМ-АУТ ЗАПРОСА ИНТЕРНЕТА
