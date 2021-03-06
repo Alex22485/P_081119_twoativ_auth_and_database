@@ -36,7 +36,7 @@ public class Zakaz2 extends AppCompatActivity {
 
 
     String[] array1 ={"Щорса-Аэропорт","Вавилова-Аэропорт","Судостроительная-Аэропорт","Северный-Аэропорт","ЖД вокзал-Аэропорт","Ветлужанка-Аэропорт"};
-    String[] array2 ={"Аэропорт-Щорса","Аэропорт-Вавилова","Аэропорт-Судостроительная","Аэропорт-Свердловская","Аэропорт-ЖД вокзал","Аэропорт-Ветлужанка"};
+    String[] array2 ={"Аэропорт-Щорса","Аэропорт-Вавилова","Аэропорт-Судостроительная","Аэропорт-Свердловская","Аэропорт-Шумяцкого","Аэропорт-Ветлужанка"};
     String [] proba ={"Map1_Shorsa_Air","","","","",};
     String [] proba2 ={"Map1_Shorsa_Air","","","","",};
 
@@ -328,7 +328,7 @@ public class Zakaz2 extends AppCompatActivity {
     }
     public void button5 (View view){
         // выбранный маршрут
-        RefMap=button1.getText().toString();
+        RefMap=button5.getText().toString();
         // Открытие карты
         buttonOpenMap();
 
