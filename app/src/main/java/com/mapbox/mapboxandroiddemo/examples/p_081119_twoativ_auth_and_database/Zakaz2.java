@@ -19,7 +19,7 @@ public class Zakaz2 extends AppCompatActivity {
 
     private static final String TAG ="Zakaz2" ;
     TextView textView;
-    Button button1,button2,button3,button4,button5;
+    Button button1,button2,button3,button4,button5,button6;
     // данные из Zakaz1
     String refFromInCity;
     String phoneNew;
@@ -35,8 +35,8 @@ public class Zakaz2 extends AppCompatActivity {
             "Ачинск-Аэропорт","Аэропорт-Ачинск","Канск-Аэропорт","Аэропорт-Канск","Лесосибирск-Аэропорт","Аэропорт-Лесосибирск"};
 
 
-    String[] array1 ={"Щорса-Аэропорт","Вавилова-Аэропорт","Судостроительная-Аэропорт","Северный-Аэропорт","ЖД вокзал-Аэропорт","Ветлужанка-Аэропорт"};
-    String[] array2 ={"Аэропорт-Щорса","Аэропорт-Вавилова","Аэропорт-Судостроительная","Аэропорт-Свердловская","Аэропорт-Шумяцкого","Аэропорт-Ветлужанка"};
+    String[] array1 ={"Щорса-Аэропорт","Вавилова-Аэропорт","Судостроительная-Аэропорт","Северный-Аэропорт","ЖД вокзал-Аэропорт", "Ястынская-Аэропорт","Ветлужанка-Аэропорт"};
+    String[] array2 ={"Аэропорт-Щорса","Аэропорт-Вавилова","Аэропорт-Судостроительная","Аэропорт-Свердловская","Аэропорт-Урванцева", "Аэропорт-Ястынская","Аэропорт-Ветлужанка"};
     String [] proba ={"Map1_Shorsa_Air","","","","",};
     String [] proba2 ={"Map1_Shorsa_Air","","","","",};
 
@@ -84,12 +84,14 @@ public class Zakaz2 extends AppCompatActivity {
         button3=findViewById(R.id.button3);
         button4=findViewById(R.id.button4);
         button5=findViewById(R.id.button5);
+        button6=findViewById(R.id.button6);
 
         button1.setVisibility(View.INVISIBLE);
         button2.setVisibility(View.INVISIBLE);
         button3.setVisibility(View.INVISIBLE);
         button4.setVisibility(View.INVISIBLE);
         button5.setVisibility(View.INVISIBLE);
+        button6.setVisibility(View.INVISIBLE);
 
 
         // полученине данных из Zakaz1
@@ -156,12 +158,14 @@ public class Zakaz2 extends AppCompatActivity {
         button3.setVisibility(View.VISIBLE);
         button4.setVisibility(View.VISIBLE);
         button5.setVisibility(View.VISIBLE);
+        button6.setVisibility(View.VISIBLE);
 
         button1.setText(array1[0]);
         button2.setText(array1[1]);
         button3.setText(array1[2]);
         button4.setText(array1[3]);
         button5.setText(array1[4]);
+        button6.setText(array1[5]);
 
         RefList1=KrasnojarskOneMap;
         RefList2=KrasnojarskTwoMap;
@@ -177,12 +181,14 @@ public class Zakaz2 extends AppCompatActivity {
         button3.setVisibility(View.VISIBLE);
         button4.setVisibility(View.VISIBLE);
         button5.setVisibility(View.VISIBLE);
+        button6.setVisibility(View.VISIBLE);
 
         button1.setText(array2[0]);
         button2.setText(array2[1]);
         button3.setText(array2[2]);
         button4.setText(array2[3]);
         button5.setText(array2[4]);
+        button6.setText(array2[5]);
 
         RefList1=FromAirport;
         RefList2=FromAirport;
@@ -329,6 +335,27 @@ public class Zakaz2 extends AppCompatActivity {
     public void button5 (View view){
         // выбранный маршрут
         RefMap=button5.getText().toString();
+        // Открытие карты
+        buttonOpenMap();
+
+//        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Zakaz2.this);
+//        mAlertDialog.setTitle("Пункт сбора");
+//        mAlertDialog
+//                .setItems(RefList5, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        RefPoint=RefList5[which];
+//                        RefMap=button5.getText().toString();
+//                        // идем обратно в Zakaz1
+//                        backZakaz2ToZakaz1();
+//                    }
+//                });
+//        mAlertDialog.create();
+//        mAlertDialog.show();
+    }
+    public void button6 (View view){
+        // выбранный маршрут
+        RefMap=button6.getText().toString();
         // Открытие карты
         buttonOpenMap();
 
