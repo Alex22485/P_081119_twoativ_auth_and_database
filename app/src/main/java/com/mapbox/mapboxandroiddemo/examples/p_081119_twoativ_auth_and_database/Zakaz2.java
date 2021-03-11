@@ -19,7 +19,7 @@ public class Zakaz2 extends AppCompatActivity {
 
     private static final String TAG ="Zakaz2" ;
     TextView textView;
-    Button button1,button2,button3,button4,button5,button6,button7,button8;
+    Button button1,button2,button3,button4,button5,button6,button7,button8,button9,button10,button11;
     // данные из Zakaz1
     String refFromInCity;
     String phoneNew;
@@ -35,8 +35,10 @@ public class Zakaz2 extends AppCompatActivity {
             "Ачинск-Аэропорт","Аэропорт-Ачинск","Канск-Аэропорт","Аэропорт-Канск","Лесосибирск-Аэропорт","Аэропорт-Лесосибирск"};
 
 
-    String[] array1 ={"Щорса-Аэропорт","Вавилова-Аэропорт","Судостроительная-Аэропорт","Северный-Аэропорт","ЖД вокзал-Аэропорт", "Ястынская-Аэропорт","Взлетная-Аэропорт", "Покровка-Аэропорт","Ветлужанка-Аэропорт"};
-    String[] array2 ={"Аэропорт-Щорса","Аэропорт-Вавилова","Аэропорт-Судостроительная","Аэропорт-Свердловская","Аэропорт-Урванцева", "Аэропорт-Ястынская","Аэропорт-Взлетная","Аэропорт-Покровка","Аэропорт-Ветлужанка"};
+    String[] array1 ={"Щорса-Аэропорт","Вавилова-Аэропорт","Судостроительная-Аэропорт","Северный-Аэропорт","ЖД вокзал-Аэропорт", "Ястынская-Аэропорт",
+            "Взлетная-Аэропорт", "Покровка-Аэропорт","Калинина-ЖД вокзал-Аэропорт","Свободный-Копылово-Аэропорт","Киренского-Аэропорт"};
+    String[] array2 ={"Аэропорт-Щорса","Аэропорт-Вавилова","Аэропорт-Судостроительная","Аэропорт-Свердловская","Аэропорт-Урванцева", "Аэропорт-Ястынская",
+            "Аэропорт-Взлетная","Аэропорт-Покровка","Аэропорт-Калинина-ЖД вокзал","Аэропорт-Свободный-Копылово","Аэропорт-Киренского"};
     String [] proba ={"Map1_Shorsa_Air","","","","",};
     String [] proba2 ={"Map1_Shorsa_Air","","","","",};
 
@@ -87,6 +89,9 @@ public class Zakaz2 extends AppCompatActivity {
         button6=findViewById(R.id.button6);
         button7=findViewById(R.id.button7);
         button8=findViewById(R.id.button8);
+        button9=findViewById(R.id.button9);
+        button10=findViewById(R.id.button10);
+        button11=findViewById(R.id.button11);
 
         button1.setVisibility(View.INVISIBLE);
         button2.setVisibility(View.INVISIBLE);
@@ -96,6 +101,9 @@ public class Zakaz2 extends AppCompatActivity {
         button6.setVisibility(View.INVISIBLE);
         button7.setVisibility(View.INVISIBLE);
         button8.setVisibility(View.INVISIBLE);
+        button9.setVisibility(View.INVISIBLE);
+        button10.setVisibility(View.INVISIBLE);
+        button11.setVisibility(View.INVISIBLE);
 
 
         // полученине данных из Zakaz1
@@ -152,6 +160,7 @@ public class Zakaz2 extends AppCompatActivity {
                     // Визуализация маршрутов Аэропорт->Канск
                     getMetod9();
                 }
+
             }
         }
     }
@@ -165,6 +174,9 @@ public class Zakaz2 extends AppCompatActivity {
         button6.setVisibility(View.VISIBLE);
         button7.setVisibility(View.VISIBLE);
         button8.setVisibility(View.VISIBLE);
+        button9.setVisibility(View.VISIBLE);
+        button10.setVisibility(View.VISIBLE);
+        button11.setVisibility(View.VISIBLE);
 
         button1.setText(array1[0]);
         button2.setText(array1[1]);
@@ -174,6 +186,9 @@ public class Zakaz2 extends AppCompatActivity {
         button6.setText(array1[5]);
         button7.setText(array1[6]);
         button8.setText(array1[7]);
+        button9.setText(array1[8]);
+        button10.setText(array1[9]);
+        button11.setText(array1[10]);
 
         RefList1=KrasnojarskOneMap;
         RefList2=KrasnojarskTwoMap;
@@ -192,6 +207,9 @@ public class Zakaz2 extends AppCompatActivity {
         button6.setVisibility(View.VISIBLE);
         button7.setVisibility(View.VISIBLE);
         button8.setVisibility(View.VISIBLE);
+        button9.setVisibility(View.VISIBLE);
+        button10.setVisibility(View.VISIBLE);
+        button11.setVisibility(View.VISIBLE);
 
         button1.setText(array2[0]);
         button2.setText(array2[1]);
@@ -201,6 +219,9 @@ public class Zakaz2 extends AppCompatActivity {
         button6.setText(array2[5]);
         button7.setText(array2[6]);
         button8.setText(array2[7]);
+        button9.setText(array2[8]);
+        button10.setText(array2[9]);
+        button11.setText(array2[10]);
 
         RefList1=FromAirport;
         RefList2=FromAirport;
@@ -365,6 +386,24 @@ public class Zakaz2 extends AppCompatActivity {
     public void button8 (View view){
         // выбранный маршрут
         RefMap=button8.getText().toString();
+        // Открытие карты
+        buttonOpenMap();
+    }
+    public void button9 (View view){
+        // выбранный маршрут
+        RefMap=button9.getText().toString();
+        // Открытие карты
+        buttonOpenMap();
+    }
+    public void button10 (View view){
+        // выбранный маршрут
+        RefMap=button10.getText().toString();
+        // Открытие карты
+        buttonOpenMap();
+    }
+    public void button11 (View view){
+        // выбранный маршрут
+        RefMap=button11.getText().toString();
         // Открытие карты
         buttonOpenMap();
     }
