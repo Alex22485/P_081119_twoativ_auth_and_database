@@ -27729,7 +27729,7 @@ public class Zakaz2ShowMapBtn1 extends AppCompatActivity {
         geoPoints.add(new GeoPoint(56.0124643,92.8242320));
         geoPoints.add(new GeoPoint(56.0124583,92.8245404));
 
-        
+
         Polyline line = new Polyline();   //see note below!
         line.setPoints(geoPoints);
         //ine.getOutlinePaint().setColor(R.color.colorBlack);
