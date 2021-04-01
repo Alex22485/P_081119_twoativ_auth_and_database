@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#396718"
-    tools:context=".Zakaz2">
+    tools:context=".Zakaz2"
+    android:id="@+id/constraintLayout">
 
     <ImageView
         android:id="@+id/imageView"
@@ -28,25 +29,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView1"
+    <Button
+        android:id="@+id/BtnRightSide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
+        android:drawableLeft="@android:drawable/ic_menu_mapmode"
         android:text="Правый берег"
-        android:textColor="#FFFFFF"
-        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+
     <Button
         android:id="@+id/button1"
+        style="@android:style/Widget.Holo.Light.GridView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginStart="152dp"
+        android:layout_marginLeft="152dp"
         android:onClick="button1"
         android:rotation="13"
         android:rotationX="33"
@@ -56,16 +57,12 @@
         android:textColor="#38261b"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView1" />
-
+        app:layout_constraintTop_toBottomOf="@+id/BtnRightSide" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="42dp"
-        android:layout_marginLeft="42dp"
-        android:layout_marginTop="33dp"
         android:onClick="button2"
         android:rotation="13"
         android:rotationX="33"
@@ -74,16 +71,15 @@
         android:textAllCaps="false"
         android:textColor="#38261b"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView1" />
+        app:layout_constraintTop_toBottomOf="@+id/button1" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginLeft="28dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="4dp"
         android:onClick="button3"
         android:rotation="26"
         android:rotationX="40"
@@ -92,16 +88,15 @@
         android:textAllCaps="false"
         android:textColor="#38261b"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.527"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView1" />
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
 
     <Button
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginLeft="36dp"
-        android:layout_marginTop="112dp"
         android:onClick="button4"
         android:rotation="13"
         android:rotationX="10"
@@ -110,18 +105,17 @@
         android:textAllCaps="false"
         android:textColor="#38261b"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView1" />
+        app:layout_constraintTop_toBottomOf="@+id/button3" />
 
-    <TextView
-        android:id="@+id/textView2"
+    <Button
+        android:id="@+id/BtnLeftSide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
+        android:drawableLeft="@android:drawable/ic_menu_mapmode"
         android:text="Левый берег"
-        android:textColor="#FFFFFF"
-        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button4" />
 
@@ -129,15 +123,14 @@
         android:id="@+id/button5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
         android:onClick="button1"
         android:text="Button5"
         android:textAllCaps="false"
         android:textColor="#38261b"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/BtnLeftSide" />
 
     <Button
         android:id="@+id/button6"
@@ -153,6 +146,7 @@
         android:textAllCaps="false"
         android:textColor="#38261b"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button5" />
 
@@ -167,6 +161,7 @@
         android:textAllCaps="false"
         android:textColor="#38261b"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button6" />
 
@@ -184,6 +179,7 @@
         android:textAllCaps="false"
         android:textColor="#38261b"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button7" />
 
@@ -198,6 +194,7 @@
         android:textAllCaps="false"
         android:textColor="#38261b"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button8" />
 
@@ -212,6 +209,7 @@
         android:textAllCaps="false"
         android:textColor="#38261b"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button9" />
 
@@ -226,6 +224,7 @@
         android:textAllCaps="false"
         android:textColor="#38261b"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button10" />
 
@@ -241,6 +240,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:onClick="back"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

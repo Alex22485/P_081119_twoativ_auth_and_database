@@ -2,6 +2,8 @@ package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,10 +21,12 @@ public class Zakaz2 extends AppCompatActivity {
 
     private static final String TAG ="Zakaz2" ;
     TextView textView;
-    Button button1,button2,button3,button4,button5,button6,button7,button8,button9,button10,button11;
+    Button button1,button2,button3,button4,button5,button6,button7,button8,button9,button10,button11,BtnRightSide,BtnLeftSide;
     // данные из Zakaz1
     String refFromInCity;
     String phoneNew;
+
+    ConstraintLayout constraintLayout;
 
     String [] refMap={"Красноярск->Аэропорт","Аэропорт->Красноярск",
             "Сосновоборск->Аэропорт","Аэропорт->Сосновоборск",
@@ -80,11 +84,14 @@ public class Zakaz2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zakaz2);
 
+        constraintLayout=findViewById(R.id.constraintLayout);
         textView=findViewById(R.id.textView);
+        BtnRightSide=findViewById(R.id.BtnRightSide);
         button1=findViewById(R.id.button1);
         button2=findViewById(R.id.button2);
         button3=findViewById(R.id.button3);
         button4=findViewById(R.id.button4);
+        BtnLeftSide=findViewById(R.id.BtnLeftSide);
         button5=findViewById(R.id.button5);
         button6=findViewById(R.id.button6);
         button7=findViewById(R.id.button7);
@@ -93,17 +100,19 @@ public class Zakaz2 extends AppCompatActivity {
         button10=findViewById(R.id.button10);
         button11=findViewById(R.id.button11);
 
-        button1.setVisibility(View.INVISIBLE);
-        button2.setVisibility(View.INVISIBLE);
-        button3.setVisibility(View.INVISIBLE);
-        button4.setVisibility(View.INVISIBLE);
-        button5.setVisibility(View.INVISIBLE);
-        button6.setVisibility(View.INVISIBLE);
-        button7.setVisibility(View.INVISIBLE);
-        button8.setVisibility(View.INVISIBLE);
-        button9.setVisibility(View.INVISIBLE);
-        button10.setVisibility(View.INVISIBLE);
-        button11.setVisibility(View.INVISIBLE);
+        BtnRightSide.setVisibility(View.GONE);
+        button1.setVisibility(View.GONE);
+        button2.setVisibility(View.GONE);
+        button3.setVisibility(View.GONE);
+        button4.setVisibility(View.GONE);
+        BtnLeftSide.setVisibility(View.GONE);
+        button5.setVisibility(View.GONE);
+        button6.setVisibility(View.GONE);
+        button7.setVisibility(View.GONE);
+        button8.setVisibility(View.GONE);
+        button9.setVisibility(View.GONE);
+        button10.setVisibility(View.GONE);
+        button11.setVisibility(View.GONE);
 
 
         // полученине данных из Zakaz1
@@ -166,17 +175,34 @@ public class Zakaz2 extends AppCompatActivity {
     }
     // Красноярск->Аэропорт
     public void getMetod0(){
-        button1.setVisibility(View.VISIBLE);
-        button2.setVisibility(View.VISIBLE);
-        button3.setVisibility(View.VISIBLE);
-        button4.setVisibility(View.VISIBLE);
-        button5.setVisibility(View.VISIBLE);
-        button6.setVisibility(View.VISIBLE);
-        button7.setVisibility(View.VISIBLE);
-        button8.setVisibility(View.VISIBLE);
-        button9.setVisibility(View.VISIBLE);
-        button10.setVisibility(View.VISIBLE);
-        button11.setVisibility(View.VISIBLE);
+        BtnRightSide.setVisibility(View.VISIBLE);
+        BtnLeftSide.setVisibility(View.VISIBLE);
+
+                    ConstraintSet set=new ConstraintSet();
+            // считываем параметры constraintLayout
+            set.clone(constraintLayout);
+            // очищаем именно верхнюю привязку  для BtnLeftSide
+        set.clear(R.id.BtnLeftSide,ConstraintSet.TOP);
+        set.clear(R.id.BtnRightSide,ConstraintSet.TOP);
+            // привязываем верхушку BtnLeftSide  к нижней границе BtnRightSide,  можно сделать отступ от BtnRightSide указав значение, н-р 5
+            set.connect(R.id.BtnLeftSide,ConstraintSet.TOP,R.id.BtnRightSide,ConstraintSet.BOTTOM,100);
+        // привязываем верхушку BtnRightSide  к нижней границе BtnRightSide,  можно сделать отступ от BtnRightSide указав значение, н-р 5
+        set.connect(R.id.BtnRightSide,ConstraintSet.TOP,R.id.textView,ConstraintSet.BOTTOM,40);
+
+
+
+
+//        button1.setVisibility(View.VISIBLE);
+//        button2.setVisibility(View.VISIBLE);
+//        button3.setVisibility(View.VISIBLE);
+//        button4.setVisibility(View.VISIBLE);
+//        button5.setVisibility(View.VISIBLE);
+//        button6.setVisibility(View.VISIBLE);
+//        button7.setVisibility(View.VISIBLE);
+//        button8.setVisibility(View.VISIBLE);
+//        button9.setVisibility(View.VISIBLE);
+//        button10.setVisibility(View.VISIBLE);
+//        button11.setVisibility(View.VISIBLE);
 
         button1.setText(array1[0]);
         button2.setText(array1[1]);
