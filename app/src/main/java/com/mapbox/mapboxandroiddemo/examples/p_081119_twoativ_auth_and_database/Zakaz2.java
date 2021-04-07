@@ -1,5 +1,6 @@
 package com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -7,7 +8,10 @@ import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +29,8 @@ public class Zakaz2 extends AppCompatActivity {
     // данные из Zakaz1
     String refFromInCity;
     String phoneNew;
+    // реф значение для кнопки ПРАВВЫЙ БЕРЕГ
+    int RefBtnRightSide;
 
     ConstraintLayout constraintLayout;
 
@@ -113,6 +119,10 @@ public class Zakaz2 extends AppCompatActivity {
         button9.setVisibility(View.GONE);
         button10.setVisibility(View.GONE);
         button11.setVisibility(View.GONE);
+        
+
+        RefBtnRightSide = 0;
+        Log.d(TAG, "RefBtnRightSide: "+RefBtnRightSide);
 
 
         // полученине данных из Zakaz1
@@ -122,6 +132,8 @@ public class Zakaz2 extends AppCompatActivity {
         visalList();
         Log.d(TAG, "Данные из Zakaz1 refFromInCity:"+refFromInCity);
         Log.d(TAG, "Данные из Zakaz1 phoneNew:"+phoneNew);
+
+     
     }
 
 // ВИЗУАЛИЗАЦИЯ
@@ -178,18 +190,20 @@ public class Zakaz2 extends AppCompatActivity {
         BtnRightSide.setVisibility(View.VISIBLE);
         BtnLeftSide.setVisibility(View.VISIBLE);
 
-                    ConstraintSet set=new ConstraintSet();
-            // считываем параметры constraintLayout
-            set.clone(constraintLayout);
-            // очищаем именно верхнюю привязку  для BtnLeftSide
+
+
+        //ПЕРЕПРИВЯЗКА ТЕКСТА
+        ConstraintSet set=new ConstraintSet();
+        // считываем параметры constraintLayout
+        set.clone(constraintLayout);
+        // очищаем именно верхнюю привязку  для BtnLeftSide
         set.clear(R.id.BtnLeftSide,ConstraintSet.TOP);
         set.clear(R.id.BtnRightSide,ConstraintSet.TOP);
-            // привязываем верхушку BtnLeftSide  к нижней границе BtnRightSide,  можно сделать отступ от BtnRightSide указав значение, н-р 5
-            set.connect(R.id.BtnLeftSide,ConstraintSet.TOP,R.id.BtnRightSide,ConstraintSet.BOTTOM,100);
+        // привязываем верхушку BtnLeftSide  к нижней границе BtnRightSide,  можно сделать отступ от BtnRightSide указав значение, н-р 5
+        set.connect(R.id.BtnLeftSide,ConstraintSet.TOP,R.id.BtnRightSide,ConstraintSet.BOTTOM,50);
         // привязываем верхушку BtnRightSide  к нижней границе BtnRightSide,  можно сделать отступ от BtnRightSide указав значение, н-р 5
-        set.connect(R.id.BtnRightSide,ConstraintSet.TOP,R.id.textView,ConstraintSet.BOTTOM,40);
-
-
+        set.connect(R.id.BtnRightSide,ConstraintSet.TOP,R.id.textView,ConstraintSet.BOTTOM,50);
+        set.applyTo(constraintLayout);
 
 
 //        button1.setVisibility(View.VISIBLE);
@@ -305,6 +319,107 @@ public class Zakaz2 extends AppCompatActivity {
         RefList1=FromAirport;
     }
 //КНОПКИ
+    // Развернуть/Свернуть Вкладку ПРАВЫЙ БЕРЕГ
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
+    public void BtnRightSide(View view){
+        
+
+        Log.d(TAG, "RefBtnRightSide: "+RefBtnRightSide);
+        //Развернуть
+        if (RefBtnRightSide==0){
+            BtnLeftSide.setVisibility(View.INVISIBLE);
+            button1.setVisibility(View.VISIBLE);
+
+            Handler Date1 = new Handler();
+            Date1.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    button2.setVisibility(View.VISIBLE);
+                }
+            },50);
+
+            Handler Date2 = new Handler();
+            Date2.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    button3.setVisibility(View.VISIBLE);
+                }
+            },60);
+
+            Handler Date3 = new Handler();
+            Date3.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    button4.setVisibility(View.VISIBLE);
+                }
+            },70);
+
+            Handler Date4 = new Handler();
+            Date4.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    BtnLeftSide.setVisibility(View.VISIBLE);
+                    //ПЕРЕПРИВЯЗКА ТЕКСТА
+                    ConstraintSet set=new ConstraintSet();
+                    // считываем параметры constraintLayout
+                    set.clone(constraintLayout);
+                    // привязываем верхушку BtnRightSide  к нижней границе BtnRightSide,  можно сделать отступ от BtnRightSide указав значение, н-р 5
+                    set.connect(R.id.BtnRightSide,ConstraintSet.TOP,R.id.textView,ConstraintSet.BOTTOM,50);
+                    // привязываем верхушку BtnLeftSide  к нижней границе BtnRightSide,  можно сделать отступ от BtnRightSide указав значение, н-р 5
+                    set.connect(R.id.BtnLeftSide,ConstraintSet.TOP,R.id.button4,ConstraintSet.BOTTOM,100);
+                    //TransitionManager.beginDelayedTransition(constraintLayout);
+                    set.applyTo(constraintLayout);
+                    RefBtnRightSide=1;
+                }
+            },80);
+
+
+//            //ПЕРЕПРИВЯЗКА ТЕКСТА
+//            ConstraintSet set=new ConstraintSet();
+//            // считываем параметры constraintLayout
+//            set.clone(constraintLayout);
+//            // очищаем именно верхнюю привязку  для button1-4
+//            set.clear(R.id.button1,ConstraintSet.TOP);
+//            // перепривязка button1-4
+//            set.connect(R.id.button1,ConstraintSet.TOP,R.id.BtnRightSide,ConstraintSet.BOTTOM,20);
+//
+//            // привязываем верхушку BtnRightSide  к нижней границе BtnRightSide,  можно сделать отступ от BtnRightSide указав значение, н-р 5
+//            set.connect(R.id.BtnRightSide,ConstraintSet.TOP,R.id.textView,ConstraintSet.BOTTOM,50);
+//            // привязываем верхушку BtnLeftSide  к нижней границе BtnRightSide,  можно сделать отступ от BtnRightSide указав значение, н-р 5
+//            set.connect(R.id.BtnLeftSide,ConstraintSet.TOP,R.id.button4,ConstraintSet.BOTTOM,100);
+//            TransitionManager.beginDelayedTransition(constraintLayout);
+//            set.applyTo(constraintLayout);
+//            RefBtnRightSide=1;
+        }
+        //Свернуть
+        else {
+            button1.setVisibility(View.GONE);
+            button2.setVisibility(View.GONE);
+            button3.setVisibility(View.GONE);
+            button4.setVisibility(View.GONE);
+
+            //ПЕРЕПРИВЯЗКА ТЕКСТА
+            ConstraintSet set=new ConstraintSet();
+            // считываем параметры constraintLayout
+            set.clone(constraintLayout);
+            // очищаем именно верхнюю привязку  для BtnLeftSide
+            set.clear(R.id.BtnLeftSide,ConstraintSet.TOP);
+            set.clear(R.id.BtnRightSide,ConstraintSet.TOP);
+            // привязываем верхушку BtnLeftSide  к нижней границе BtnRightSide,  можно сделать отступ от BtnRightSide указав значение, н-р 5
+            set.connect(R.id.BtnLeftSide,ConstraintSet.TOP,R.id.BtnRightSide,ConstraintSet.BOTTOM,50);
+            // привязываем верхушку BtnRightSide  к нижней границе BtnRightSide,  можно сделать отступ от BtnRightSide указав значение, н-р 5
+            set.connect(R.id.BtnRightSide,ConstraintSet.TOP,R.id.textView,ConstraintSet.BOTTOM,50);
+            set.applyTo(constraintLayout);
+            RefBtnRightSide=0;
+        }
+
+
+    }
+    // Развернуть Вкладку ПРАВЫ БЕРЕГ
+    public void BtnLeftSide(View view){
+
+    }
     // Выбор точки сбора
     public void button1 (View view){
         // выбранный маршрут

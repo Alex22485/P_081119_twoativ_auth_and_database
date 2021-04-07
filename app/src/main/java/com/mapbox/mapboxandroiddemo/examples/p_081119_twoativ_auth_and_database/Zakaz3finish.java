@@ -100,6 +100,8 @@ public class Zakaz3finish extends AppCompatActivity {
         tVProgressB=findViewById(R.id.tVProgressB);
         progressB=findViewById(R.id.progressB);
 
+
+
         // получить токен
         FirebaseMessaging. getInstance (). getToken ()
                 . addOnCompleteListener ( new OnCompleteListener< String >() {
