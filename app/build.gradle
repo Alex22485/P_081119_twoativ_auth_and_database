@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
     defaultConfig {
         applicationId "com.mapbox.mapboxandroiddemo.examples.p_081119_twoativ_auth_and_database"
         minSdkVersion 16
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -25,20 +25,21 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
-    implementation 'com.google.firebase:firebase-auth:20.0.1'
-    implementation 'com.google.firebase:firebase-core:18.0.0'
-    implementation 'com.firebaseui:firebase-ui-auth:6.0.2'
-    implementation 'com.google.firebase:firebase-database:19.6.0'
-    implementation 'com.google.firebase:firebase-messaging:21.0.1'
+    implementation 'com.google.firebase:firebase-auth:21.0.1'
+    implementation 'com.google.firebase:firebase-core:19.0.0'
+
+    implementation 'com.google.firebase:firebase-database:20.0.0'
+    implementation 'com.google.firebase:firebase-messaging:22.0.0'
     implementation 'org.jsoup:jsoup:1.13.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     implementation platform('com.google.firebase:firebase-bom:26.1.0')
-    implementation 'com.google.firebase:firebase-auth'
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
 
     implementation 'org.osmdroid:osmdroid-android:6.1.8'
     implementation 'org.osmdroid:osmdroid-wms:6.1.8'
+
+    implementation 'com.airbnb.android:lottie:3.6.1'
 
 
     testImplementation 'junit:junit:4.12'
